@@ -1,0 +1,7 @@
+# Django cache files
+__pycache__/
+*.pyc
+
+# Django migrations
+**/migrations/*.py
+**/migrations/*.pyc

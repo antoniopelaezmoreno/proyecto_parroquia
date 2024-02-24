@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'core',
+    'custom_user',
 ]
 
 MIDDLEWARE = [
@@ -67,6 +69,7 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = 'proyecto_parroquia.wsgi.application'
 
 
@@ -75,8 +78,12 @@ WSGI_APPLICATION = 'proyecto_parroquia.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'parroquiaDB',
+        'USER': 'parroquiaUser',
+        'PASSWORD': 'password',
+        'HOST': 'localhost', # Si PostgreSQL está instalado localmente
+        'PORT': '', # Puerto por defecto (5432)
     }
 }
 
@@ -121,3 +128,4 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+AUTH_USER_MODEL = 'custom_user.CustomUser'
