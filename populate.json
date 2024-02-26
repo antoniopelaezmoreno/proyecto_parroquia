@@ -1,0 +1,197 @@
+[
+    {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Juan",
+        "apellidos": "Perez Perez",
+        "email": "juan@email.com",
+        "dni": "12345678A",
+        "ciclo": "posco_2",
+        "nombre_madre": "Maria",
+        "apellidos_madre": "Perez Perez",
+        "email_madre": "maria@gmail.com",
+        "dni_madre": "12345679A",
+        "nombre_padre": "Jose",
+        "apellidos_padre": "Perez Perez",
+        "email_padre": "jose@gmail.com",
+        "dni_padre": "12345680A",
+        "preferencias": "No tiene ninguna preferencia",
+        "foto": "/media/autorizaciones/plantilla_dafo.jpg"
+
+      }
+    },
+    {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Maria",
+        "apellidos": "Gomez Gomez",
+        "email": "maria2@gmail.com",
+        "dni": "12345679A",
+        "ciclo": "posco_3",
+        "nombre_madre": "Maria",
+        "apellidos_madre": "Gomez Gomez",
+        "email_madre": "madre@gmail.com",
+        "dni_madre": "12345679A",
+        "nombre_padre": "Jose",
+        "apellidos_padre": "Gomez Gomez",
+        "email_padre": "padre@gmail.com",
+        "dni_padre": "12345680A",
+        "preferencias": "No tiene ninguna preferencia",
+        "foto": "/media/autorizaciones/plantilla_dafo.jpg"
+        }
+    },
+    {
+        "model": "catecumeno.Catecumeno",
+        "fields": {
+          "nombre": "Laura",
+          "apellidos": "Jimenez Gomez",
+          "email": "laura@gmail.com",
+          "dni": "12345679A",
+          "ciclo": "posco_4",
+          "nombre_madre": "Maria",
+          "apellidos_madre": "Gomez Gomez",
+          "email_madre": "madre@gmail.com",
+          "dni_madre": "12345679A",
+          "nombre_padre": "Jose",
+          "apellidos_padre": "Gomez Gomez",
+          "email_padre": "padre@gmail.com",
+          "dni_padre": "12345680A",
+          "preferencias": "No tiene ninguna preferencia",
+          "foto": "/media/autorizaciones/plantilla_dafo.jpg"
+          }
+      },
+      {
+        "model": "catecumeno.Catecumeno",
+        "fields": {
+          "nombre": "Jaime",
+          "apellidos": "Lorenzo Gomez",
+          "email": "jaime@gmail.com",
+          "dni": "12345679A",
+          "ciclo": "gr_juv_1",
+          "nombre_madre": "Maria",
+          "apellidos_madre": "Gomez Gomez",
+          "email_madre": "madre@gmail.com",
+          "dni_madre": "12345679A",
+          "nombre_padre": "Jose",
+          "apellidos_padre": "Gomez Gomez",
+          "email_padre": "padre@gmail.com",
+          "dni_padre": "12345680A",
+          "preferencias": "No tiene ninguna preferencia",
+          "foto": "/media/autorizaciones/plantilla_dafo.jpg"
+          }
+      },
+      {
+        "model": "catecumeno.Catecumeno",
+        "fields": {
+          "nombre": "Álvaro",
+          "apellidos": "Vallejo Gomez",
+          "email": "alvaro@gmail.com",
+          "dni": "12345679A",
+          "ciclo": "gr_juv_2",
+          "nombre_madre": "Maria",
+          "apellidos_madre": "Gomez Gomez",
+          "email_madre": "madre@gmail.com",
+          "dni_madre": "12345679A",
+          "nombre_padre": "Jose",
+          "apellidos_padre": "Gomez Gomez",
+          "email_padre": "padre@gmail.com",
+          "dni_padre": "12345680A",
+          "preferencias": "No tiene ninguna preferencia",
+          "foto": "/media/autorizaciones/plantilla_dafo.jpg"
+          }
+      },
+      {
+        "model": "catecumeno.Catecumeno",
+        "fields": {
+          "nombre": "Manuel",
+          "apellidos": "Jerez Gomez",
+          "email": "manuel@gmail.com",
+          "dni": "12345679A",
+          "ciclo": "catequmenados_1",
+          "nombre_madre": "Maria",
+          "apellidos_madre": "Gomez Gomez",
+          "email_madre": "madre@gmail.com",
+          "dni_madre": "12345679A",
+          "nombre_padre": "Jose",
+          "apellidos_padre": "Gomez Gomez",
+          "email_padre": "padre@gmail.com",
+          "dni_padre": "12345680A",
+          "preferencias": "No tiene ninguna preferencia",
+          "foto": "/media/autorizaciones/plantilla_dafo.jpg"
+          }
+      },
+      {
+        "model": "catecumeno.Catecumeno",
+        "fields": {
+          "nombre": "Fátima",
+          "apellidos": "Peláez Gomez",
+          "email": "fatima@gmail.com",
+          "dni": "12345679A",
+          "ciclo": "catequmenados_2",
+          "nombre_madre": "Maria",
+          "apellidos_madre": "Gomez Gomez",
+          "email_madre": "madre@gmail.com",
+          "dni_madre": "12345679A",
+          "nombre_padre": "Jose",
+          "apellidos_padre": "Gomez Gomez",
+          "email_padre": "padre@gmail.com",
+          "dni_padre": "12345680A",
+          "preferencias": "No tiene ninguna preferencia",
+          "foto": "/media/autorizaciones/plantilla_dafo.jpg"
+          }
+      },
+      {
+        "model": "catecumeno.Catecumeno",
+        "fields": {
+          "nombre": "Joaquin",
+          "apellidos": "Barbadillo Gomez",
+          "email": "joaquin@gmail.com",
+          "dni": "12345679A",
+          "ciclo": "catequmenados_3",
+          "nombre_madre": "Maria",
+          "apellidos_madre": "Gomez Gomez",
+          "email_madre": "madre@gmail.com",
+          "dni_madre": "12345679A",
+          "nombre_padre": "Jose",
+          "apellidos_padre": "Gomez Gomez",
+          "email_padre": "padre@gmail.com",
+          "dni_padre": "12345680A",
+          "preferencias": "No tiene ninguna preferencia",
+          "foto": "/media/autorizaciones/plantilla_dafo.jpg"
+          }
+      },
+      {
+        "model": "custom_user.CustomUser",
+        "fields": {
+          "first_name": "Ramon",
+          "last_name": "Pastor Molero",
+          "email": "ramon@gmail.com",
+          "telefono": "625412589",
+          "ciclo": "catequmenados_2",
+          "password":"pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
+          "is_coord": false
+          }
+      },
+      {
+        "model": "solicitud_catequista.SolicitudCatequista",
+        "fields": {
+          "nombre": "Luis",
+          "apellidos": "García Cortés",
+          "email": "antoniopelmore@gmail.com",
+          "disponibilidad": "Lunes y miércoles",
+          "preferencias": "No tiene ninguna preferencia"
+        }
+      },
+      {
+        "model": "solicitud_catequista.SolicitudCatequista",
+        "fields": {
+          "nombre": "María",
+          "apellidos": "Ramírez Pérez",
+          "email": "antoniopemore@gmail.com",
+          "disponibilidad": "Viernes",
+          "preferencias": "Grupos Juveniles 1"
+        }
+      }
+
+
+]
