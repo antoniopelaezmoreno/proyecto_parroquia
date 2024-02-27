@@ -5,7 +5,7 @@ from .models import SolicitudCatequista
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .quickstart import enviar_email
-
+from django.urls import reverse
 
 # Create your views here.
 def crear_solicitud_cateqista(request):
@@ -31,7 +31,7 @@ def asignar_catequistas(request):
             user_id = asignacion.get('userId')
             ciclo_asignado = asignacion.get('cicloAsignado')
             solicitud = SolicitudCatequista.objects.get(id=user_id)
-            enviar_correo(solicitud.email, ciclo_asignado)
+            enviar_correo_solicitud(request,solicitud.email,user_id, ciclo_asignado)
             
         return JsonResponse({'message': 'Asignaciones procesadas correctamente'})
 
@@ -46,3 +46,11 @@ def enviar_correo(to, ciclo_asignado):
     enviar_email(sender, to, subject, message_text)
 
 
+def enviar_correo_solicitud(request, to, solicitud_id, ciclo):
+    sender = "antoniopelaez2002@gmail.com"
+    subject="Asignación de ciclo"
+    url = reverse('crear_usuario_desde_solicitud', args=[solicitud_id, ciclo])
+    enlace = request.build_absolute_uri(url)
+    print(enlace)
+    message_text = f'Haga clic en el siguiente enlace para completar su registro: {enlace}'
+    enviar_email(sender, to, subject, message_text)

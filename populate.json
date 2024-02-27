@@ -1,5 +1,12 @@
 [
     {
+      "model": "curso.Curso",
+      "fields": {
+        "id":1,
+        "curso": "23-24"
+      }
+    },
+    {
       "model": "catecumeno.Catecumeno",
       "fields": {
         "nombre": "Juan",
@@ -16,7 +23,8 @@
         "email_padre": "jose@gmail.com",
         "dni_padre": "12345680A",
         "preferencias": "No tiene ninguna preferencia",
-        "foto": "/media/autorizaciones/plantilla_dafo.jpg"
+        "foto": "/media/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
 
       }
     },
@@ -37,7 +45,8 @@
         "email_padre": "padre@gmail.com",
         "dni_padre": "12345680A",
         "preferencias": "No tiene ninguna preferencia",
-        "foto": "/media/autorizaciones/plantilla_dafo.jpg"
+        "foto": "/media/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
         }
     },
     {
@@ -57,7 +66,8 @@
           "email_padre": "padre@gmail.com",
           "dni_padre": "12345680A",
           "preferencias": "No tiene ninguna preferencia",
-          "foto": "/media/autorizaciones/plantilla_dafo.jpg"
+          "foto": "/media/autorizaciones/plantilla_dafo.jpg",
+          "curso": 1
           }
       },
       {
@@ -77,7 +87,8 @@
           "email_padre": "padre@gmail.com",
           "dni_padre": "12345680A",
           "preferencias": "No tiene ninguna preferencia",
-          "foto": "/media/autorizaciones/plantilla_dafo.jpg"
+          "foto": "/media/autorizaciones/plantilla_dafo.jpg",
+          "curso": 1
           }
       },
       {
@@ -97,7 +108,8 @@
           "email_padre": "padre@gmail.com",
           "dni_padre": "12345680A",
           "preferencias": "No tiene ninguna preferencia",
-          "foto": "/media/autorizaciones/plantilla_dafo.jpg"
+          "foto": "/media/autorizaciones/plantilla_dafo.jpg",
+          "curso": 1
           }
       },
       {
@@ -117,7 +129,8 @@
           "email_padre": "padre@gmail.com",
           "dni_padre": "12345680A",
           "preferencias": "No tiene ninguna preferencia",
-          "foto": "/media/autorizaciones/plantilla_dafo.jpg"
+          "foto": "/media/autorizaciones/plantilla_dafo.jpg",
+          "curso": 1
           }
       },
       {
@@ -137,7 +150,8 @@
           "email_padre": "padre@gmail.com",
           "dni_padre": "12345680A",
           "preferencias": "No tiene ninguna preferencia",
-          "foto": "/media/autorizaciones/plantilla_dafo.jpg"
+          "foto": "/media/autorizaciones/plantilla_dafo.jpg",
+          "curso": 1
           }
       },
       {
@@ -157,21 +171,53 @@
           "email_padre": "padre@gmail.com",
           "dni_padre": "12345680A",
           "preferencias": "No tiene ninguna preferencia",
-          "foto": "/media/autorizaciones/plantilla_dafo.jpg"
+          "foto": "/media/autorizaciones/plantilla_dafo.jpg",
+          "curso": 1
           }
       },
       {
         "model": "custom_user.CustomUser",
         "fields": {
-          "first_name": "Ramon",
-          "last_name": "Pastor Molero",
-          "email": "ramon@gmail.com",
+          "first_name": "Adminsitrador",
+          "last_name": "Administrador",
+          "email": "admin@gmail.com",
           "telefono": "625412589",
-          "ciclo": "catequmenados_2",
-          "password":"pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
-          "is_coord": false
+          "password":"pbkdf2_sha256$600000$3coKQXrrjNeNeMDHvbAtT9$mfRrvsFtmKBvxtT1CngLYwKQgTorvJqiBKC3yrxlYVA=",
+          "is_coord": false,
+          "is_superuser": true,
+          "is_staff": true,
+          "curso": 1
           }
       },
+      {
+        "model": "custom_user.CustomUser",
+        "fields": {
+          "first_name": "Ramón",
+          "last_name": "Pastor Molero",
+          "email": "ramon@gmail.com",
+          "telefono": "628963214",
+          "password":"pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
+          "ciclo": "catequmenados_1",
+          "is_coord": true,
+          "is_superuser": false,
+          "curso": 1
+          }
+      },
+      {
+        "model": "custom_user.CustomUser",
+        "fields": {
+          "first_name": "Luis",
+          "last_name": "Pla Pino",
+          "email": "luis@gmail.com",
+          "telefono": "628963214",
+          "password":"pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
+          "ciclo": "catequmenados_2",
+          "is_coord": false,
+          "is_superuser": false,
+          "curso": 1
+          }
+      },
+      
       {
         "model": "solicitud_catequista.SolicitudCatequista",
         "fields": {

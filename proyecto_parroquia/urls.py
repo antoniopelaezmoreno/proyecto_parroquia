@@ -26,6 +26,7 @@ urlpatterns = [
     path('catecumeno/', include('catecumeno.urls')),
     path('catequista/', include('solicitud_catequista.urls')),
     path('auth/', include('allauth.urls')),
+    path('curso/', include('curso.urls')),
 ]
 
 if settings.DEBUG:
