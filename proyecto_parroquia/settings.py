@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'solicitud_catequista',
     'allauth',
     'allauth.socialaccount',
+    'curso',
+    'grupo'
 ]
 
 MIDDLEWARE = [
@@ -148,5 +150,9 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'custom_user.CustomUser'
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USERNAME_REQUIRED = False
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
