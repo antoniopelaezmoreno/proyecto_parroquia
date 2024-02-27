@@ -22,7 +22,7 @@ def crear_solicitud_cateqista(request):
 @csrf_exempt
 def asignar_catequistas(request):
     if not request.user.is_staff:
-        return render(request, '403.html')
+        return redirect('/403')
 
     if request.method == 'POST':
         data = json.loads(request.body)

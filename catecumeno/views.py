@@ -24,9 +24,9 @@ def listar_catecumenos(request):
             catecumenos = Catecumeno.objects.filter(ciclo=ciclo)
             return render(request, 'listar_catecumenos.html', {'catecumenos': catecumenos})
         else:
-            return render(request, '403.html')
+            return redirect('/403')
     else:
-            return render(request, '403.html')
+            return redirect('/403')
     
 
 

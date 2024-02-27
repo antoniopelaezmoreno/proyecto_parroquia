@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.socialaccount',
     'curso',
-    'grupo'
+    'grupo',
+    'sesion',
 ]
 
 MIDDLEWARE = [

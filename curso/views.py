@@ -13,4 +13,6 @@ def crear_curso(request):
             form = CursoForm()
         return render(request, 'crear_curso.html', {'form': form})
     else:
-        return render(request, '403.html')
+        return redirect('/403')
+    
+

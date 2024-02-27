@@ -32,7 +32,7 @@ def listar_catequistas(request):
         catequistas = CustomUser.objects.filter(ciclo=ciclo)
         return render(request, 'listar_catequistas.html', {'catequistas': catequistas})
     else:
-        return render(request, '403.html')
+        return redirect('/403')
     
 def crear_usuario_desde_solicitud(request, id, ciclo):
     solicitud = SolicitudCatequista.objects.get(id=id)
@@ -60,44 +60,3 @@ def crear_usuario_desde_solicitud(request, id, ciclo):
     
     # Renderizar el formulario para la creación de un CustomUser
     return render(request, 'crear_usuario_desde_solicitud.html', {'form': form})
-
-
-def crear_grupo(request):
-    if request.user.is_authenticated:
-        if request.user.is_coord:
-            ciclo = request.user.ciclo
-            catequistas = CustomUser.objects.filter(ciclo=ciclo)
-            if request.method == 'POST':
-                form = GrupoForm(request.POST, request.FILES, catequistas=catequistas)
-                if form.is_valid():
-                    grupo = form.save()
-                    return redirect('/')
-            else:
-                form = GrupoForm(catequistas=catequistas)
-            return render(request, 'crear_grupo.html', {'form': form, 'ciclo': ciclo})
-        if request.user.is_superuser:
-            return redirect('/catecumeno/crear_grupo/posco_1')
-        else:
-            return render(request, '403.html')
-    else:
-        return render(request, '403.html')
-    
-def crear_grupo_admin(request, ciclo):
-    if request.user.is_authenticated:
-        if request.user.is_superuser:
-            valores_ciclo = [choice[0] for choice in Catecumeno.CicloChoices.choices]
-            if ciclo not in valores_ciclo:
-                return render(request, '404.html')
-            catequistas = CustomUser.objects.filter(ciclo=ciclo)
-            if request.method == 'POST':
-                form = GrupoForm(request.POST, request.FILES, catequistas=catequistas)
-                if form.is_valid():
-                    grupo = form.save()
-                    return redirect('/')
-            else:
-                form = GrupoForm(catequistas=catequistas)
-            return render(request, 'crear_grupo.html', {'form': form, 'ciclo': ciclo})
-        else:
-            return render(request, '403.html')
-    else:
-        return render(request, '403.html')
