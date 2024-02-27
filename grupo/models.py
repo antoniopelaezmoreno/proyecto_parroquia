@@ -1,7 +1,8 @@
 from django.db import models
-from curso.models import Curso
+
 from custom_user.models import CustomUser
 from catecumeno.models import Catecumeno
+from curso.models import Curso
 
 # Create your models here.
 class Grupo(models.Model):

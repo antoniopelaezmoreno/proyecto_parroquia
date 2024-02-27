@@ -29,7 +29,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     telefono = models.CharField(max_length=10, null=True, blank=True)
     is_coord = models.BooleanField(default=False)
-    ciclo = models.CharField(max_length=20, default='posco_1')
+    ciclo = models.CharField(max_length=20, null=True)
     first_name = models.CharField(max_length=30, blank=True)
     last_name = models.CharField(max_length=150, blank=True)
     is_staff = models.BooleanField(default=False)
