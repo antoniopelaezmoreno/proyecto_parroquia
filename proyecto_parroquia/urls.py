@@ -28,6 +28,7 @@ urlpatterns = [
     path('auth/', include('allauth.urls')),
     path('curso/', include('curso.urls')),
     path('grupo/', include('grupo.urls')),
+    path('sesion/', include('sesion.urls')),
 ]
 
 if settings.DEBUG:

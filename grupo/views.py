@@ -24,16 +24,16 @@ def crear_grupo(request):
         if request.user.is_superuser:
             return redirect('/grupo/crear_grupo/posco_1')
         else:
-            return render(request, '403.html')
+            return redirect('/403')
     else:
-        return render(request, '403.html')
+        return redirect('/403')
     
 def crear_grupo_admin(request, ciclo):
     if request.user.is_authenticated:
         if request.user.is_superuser:
             valores_ciclo = [choice[0] for choice in Catecumeno.CicloChoices.choices]
             if ciclo not in valores_ciclo:
-                return render(request, '404.html')
+                return redirect('/403')
             catequistas = CustomUser.objects.filter(ciclo=ciclo)
             if request.method == 'POST':
                 form = GrupoForm(request.POST, request.FILES, catequistas=catequistas)
@@ -46,6 +46,6 @@ def crear_grupo_admin(request, ciclo):
                 form = GrupoForm(catequistas=catequistas)
             return render(request, 'crear_grupo.html', {'form': form, 'ciclo': ciclo})
         else:
-            return render(request, '403.html')
+            return redirect('/403')
     else:
-        return render(request, '403.html')
+        return redirect('/403')
