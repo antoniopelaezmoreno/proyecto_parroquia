@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+
+{% block title %} Solicitudes de Catequistas {% endblock %}
+
+{% block content %}
+   
+    <!-- Contenido principal a la derecha -->
+<div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
+    <h2 class="mb-12 text-2xl text-center">Catecumenos</h2>
+
+    <div class="flex-container">
+        <div class="solicitudes-column">
+            <table class="alumnos-table rounded-border">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Apellidos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for catecumeno in catecumenos %}
+                        <tr class="alumno">
+                            <td class="py-2 px-4 border-b">{{ catecumeno.nombre }}</td>
+                            <td class="py-2 px-4 border-b">{{ catecumeno.apellidos }}</td>
+                            <td class="py-2 px-4 border-b">
+                                <!-- Barra de selección -->
+                                <select class="select-option" data-user-id="{{ catecumeno.id }}">
+                                    {% for grupo in grupos %}
+                                        <option value="{{ grupo.id }}">{{ grupo.catequista1.first_name }} y {{ grupo.catequista2.first_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="cuadricula-column">
+            <div class="grid-container">
+                {% for grupo in grupos %}
+                    <div class="grid-cell-title">{{ grupo.catequista1.first_name }} y {{ grupo.catequista2.first_name }}</div>
+                {% endfor %}
+            </div>
+            <!-- Cuadrícula debajo de la tabla -->
+            <div class="grid-container">
+                {% for grupo in grupos %}
+                    <div class="grid-cell" data-option="{{ grupo.id }}"></div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center">
+        <button  class="asignar-button">Asignar</button>
+    </div>
+</div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Obtener todas las barras de selección y cuadrículas
+            const selectOptions = document.querySelectorAll(".select-option");
+            const gridCells = document.querySelectorAll(".grid-cell");
+
+            // Inicializar el objeto para realizar un seguimiento de las opciones seleccionadas
+            const selectedOptions = {};
+
+            // Obtener el mapeo de ID de usuario a nombres
+            const userNames = {
+                {% for catecumeno in catecumenos %}
+                    "{{ catecumeno.id }}": "{{ catecumeno.nombre }} {{ catecumeno.apellidos }}",
+                {% endfor %}
+            };
+
+            // Agregar evento de cambio a cada barra de selección
+            selectOptions.forEach((selectOption, index) => {
+                selectOption.addEventListener("change", function () {
+                    // Obtener el valor seleccionado y el ID de usuario
+                    const selectedValue = this.value;
+                    const userId = this.getAttribute("data-user-id");
+
+                    // Realizar un seguimiento de la opción seleccionada para el usuario
+                    selectedOptions[userId] = selectedValue;
+                    
+                    // Actualizar la cuadrícula
+                    updateGrid();
+                });
+            });
+
+            // Función para actualizar la cuadrícula
+            function updateGrid() {
+                // Limpiar todas las celdas de la cuadrícula
+                gridCells.forEach((gridCell) => {
+                    gridCell.innerHTML = "";
+                });
+
+                // Llenar las celdas correspondientes según las opciones seleccionadas
+                for (const userId in selectedOptions) {
+                    const selectedValue = selectedOptions[userId];
+                    
+                    const gridCell = document.querySelector(`.grid-cell[data-option="${selectedValue}"]`);
+
+                    // Mostrar el nombre del usuario en lugar del ID
+                    const userName = userNames[userId];
+
+                    // Crear un elemento de separación
+                    const spaceDiv = document.createElement("div");
+                    spaceDiv.style.marginBottom = "8px"; // Ajusta el espacio entre cada solicitud
+
+                    // Añadir el elemento de separación a la celda
+                    gridCell.appendChild(spaceDiv);
+
+                    // Crear un elemento div para mostrar el nombre del usuario
+                    const rectangleDiv = document.createElement("div");
+                    rectangleDiv.className = "name-rectangle";
+                    rectangleDiv.textContent = userName;
+
+                    // Añadir el elemento div a la celda
+                    gridCell.appendChild(rectangleDiv);
+                }
+            }
+
+            // Obtener el botón "Asignar"
+            const asignarButton = document.querySelector(".asignar-button");
+
+            // Agregar un evento de clic al botón "Asignar"
+            asignarButton.addEventListener("click", function () {
+                const asignaciones = [];
+
+                // Recorrer las opciones seleccionadas y construir el array de asignaciones
+                for (const userId in selectedOptions) {
+                    const selectedValue = selectedOptions[userId];
+                    asignaciones.push({ userId, grupoAsignado: selectedValue });
+                }
+
+                // Enviar las asignaciones al servidor a través de una solicitud HTTP
+                const csrftoken = getCookie('csrftoken');
+                fetch("/catecumeno/asignar_a_grupo/", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": csrftoken
+                    },
+                    body: JSON.stringify(asignaciones),
+                })
+                .then(response => {
+                    if (response.ok) {
+                        console.log("Asignaciones enviadas correctamente");
+                    } else {
+                        console.error("Error al enviar las asignaciones");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error al enviar las asignaciones:", error);
+                });
+
+                function getCookie(name) {
+                    const value = `; ${document.cookie}`;
+                    const parts = value.split(`; ${name}=`);
+                    if (parts.length === 2) return parts.pop().split(';').shift();
+                }
+            });
+        });
+    </script>
+
+    
+{% endblock %}
