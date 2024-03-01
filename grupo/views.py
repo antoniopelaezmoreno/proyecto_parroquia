@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect
 from .forms import GrupoForm
-
+from django.http import JsonResponse
 from custom_user.models import CustomUser
 from catecumeno.models import Catecumeno
+from .models import Grupo
+from curso.models import Curso
 
 
 # Create your views here.
@@ -49,3 +51,21 @@ def crear_grupo_admin(request, ciclo):
             return redirect('/403')
     else:
         return redirect('/403')
+    
+def obtener_miembros_de_grupos(request):
+    if request.method == 'GET':
+        ciclo = request.user.ciclo
+        curso_actual = Curso.objects.latest('id')
+        
+        # Obtener los grupos correspondientes al ciclo y curso
+        grupos = Grupo.objects.filter(ciclo=ciclo, curso=curso_actual).prefetch_related('miembros')
+        
+        # Construir un diccionario con los miembros de cada grupo
+        miembros_de_grupos = {}
+        for grupo in grupos:
+            miembros_de_grupo = [miembro.nombre for miembro in grupo.miembros.all()]  # Suponiendo que "nombre" es un campo en el modelo Catecumeno
+            miembros_de_grupos[grupo.id] = miembros_de_grupo
+        
+        return JsonResponse(miembros_de_grupos)
+    else:
+        return JsonResponse({'error': 'Método no permitido'}, status=405) 

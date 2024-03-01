@@ -9,7 +9,7 @@ class Sesion(models.Model):
     fecha = models.DateField()
     ciclo = models.CharField(max_length=20, choices=Catecumeno.CicloChoices.choices, null=True )
     curso= models.ForeignKey(Curso, on_delete=models.CASCADE, null=True, blank=True)
-    asistentes = models.ManyToManyField(Catecumeno, related_name='sesiones_asistentes', null=True, blank=True)
+    asistentes = models.ManyToManyField(Catecumeno, related_name='sesiones_asistentes')
     comentario = models.TextField(null=True, blank=True)
 
     def __str__(self):
