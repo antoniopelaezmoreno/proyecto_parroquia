@@ -1,6 +1,5 @@
 from django.db import models
 
-from custom_user.models import CustomUser
 from curso.models import Curso
 
     
@@ -34,7 +33,6 @@ class Catecumeno(models.Model):
     preferencias_procesadas =models.ManyToManyField('self', related_name='preferencias_procesadas_rel', symmetrical=False)
     foto = models.ImageField(upload_to='autorizaciones/', blank=True, null=True)
     curso= models.ForeignKey(Curso, on_delete=models.CASCADE, null=True, blank=True)
-    #grupo = models.ForeignKey(Grupo, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.nombre + ' ' + self.apellidos

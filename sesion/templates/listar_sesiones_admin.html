@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Listar Catecúmenos {% endblock %}
+
+{% block content %}
+
+<div class="filter-panel">
+    <button class="filter-btn" onclick="filterByCiclo('')">Todos</button>
+    <button class="filter-btn" onclick="filterByCiclo('posco_1')">Poscomunión 1</button>
+    <button class="filter-btn" onclick="filterByCiclo('posco_2')">Poscomunión 2</button>
+    <button class="filter-btn" onclick="filterByCiclo('posco_3')">Poscomunión 3</button>
+    <button class="filter-btn" onclick="filterByCiclo('posco_4')">Poscomunión 4</button>
+    <button class="filter-btn" onclick="filterByCiclo('gr_juv_1')">Grupos Juveniles 1</button>
+    <button class="filter-btn" onclick="filterByCiclo('gr_juv_2')">Grupos Juveniles 2</button>
+    <button class="filter-btn" onclick="filterByCiclo('catequmenados_1')">Catecumenados 1</button>
+    <button class="filter-btn" onclick="filterByCiclo('catequmenados_2')">Catecumenados 2</button>
+    <button class="filter-btn" onclick="filterByCiclo('catequmenados_3')">Catecumenados 3</button>
+</div>
+
+<div class="sesiones-container">
+    {% for sesion in sesiones %}
+    <div class="sesion" data-ciclo="{{ sesion.ciclo }}">
+        <h3>{{ sesion.titulo }}</h3>
+        <p>{{ sesion.descripcion }}</p>
+        <p> - {{ sesion.fecha }} - </p>
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+    // Función para filtrar las sesiones por ciclo
+    function filterByCiclo(ciclo) {
+        var sesiones = document.getElementsByClassName('sesion');
+
+        for (var i = 0; i < sesiones.length; i++) {
+            var sesion = sesiones[i];
+            var cicloSesion = sesion.getAttribute('data-ciclo');
+
+            if (ciclo === '' || cicloSesion === ciclo) {
+                sesion.style.display = 'block';
+            } else {
+                sesion.style.display = 'none';
+            }
+        }
+    }
+</script>
+{% endblock %}

@@ -3,6 +3,7 @@ from .forms import SesionForm
 from .models import Catecumeno
 from django.utils import timezone
 from django.contrib import messages
+from .models import Sesion
 # Create your views here.
 
 def crear_sesion(request):
@@ -50,5 +51,17 @@ def crear_sesion_admin(request, ciclo):
         else:
             form = SesionForm()
         return render(request, 'crear_sesion.html', {'form': form, 'ciclo': ciclo})
+    else:
+        return redirect('/403')
+    
+def listar_sesiones(request):
+    if request.user.is_authenticated:
+        if request.user.is_superuser:
+            sesiones = Sesion.objects.all()
+            return render(request, 'listar_sesiones_admin.html', {'sesiones': sesiones})
+        else:
+            ciclo=request.user.ciclo
+            sesiones = Sesion.objects.filter(ciclo=ciclo)
+            return render(request, 'listar_sesiones.html', {'sesiones': sesiones})
     else:
         return redirect('/403')

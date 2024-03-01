@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Listar Sesiones {% endblock %}
+
+{% block content %}
+
+<div id="alumnos-container">
+    <table class="alumnos-table rounded-border">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Descripción</th>
+                <th>Fecha</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sesion in sesiones %}
+                <tr class="alumno" data-ciclo="{{ catecumeno.ciclo }}">
+                    <td>{{ sesion.titulo }}</td>
+                    <td>{{ sesion.descripcion }}</td>
+                    <td>{{ sesion.fecha }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock %}
