@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Listar Catecúmenos {% endblock %}
+
+{% block content %}
+
+<div id="alumnos-container">
+    <table class="alumnos-table rounded-border">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Apellidos</th>
+                <th>Email</th>
+                <th>Ciclo</th>
+                <th>Nombre Madre</th>
+                <th>Apellidos Madre</th>
+                <th>Email Madre</th>
+                <th>Nombre Padre</th>
+                <th>Apellidos Padre</th>
+                <th>Email Padre</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for catecumeno in catecumenos %}
+                <tr class="alumno" data-ciclo="{{ catecumeno.ciclo }}">
+                    <td>{{ catecumeno.nombre }}</td>
+                    <td>{{ catecumeno.apellidos }}</td>
+                    <td>{{ catecumeno.email }}</td>
+                    <td>{{ catecumeno.get_ciclo_display }}</td>
+                    <td>{{ catecumeno.nombre_madre }}</td>
+                    <td>{{ catecumeno.apellidos_madre }}</td>
+                    <td>{{ catecumeno.email_madre }}</td>
+                    <td>{{ catecumeno.nombre_padre }}</td>
+                    <td>{{ catecumeno.apellidos_padre }}</td>
+                    <td>{{ catecumeno.email_padre }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock %}
