@@ -21,7 +21,7 @@ def crear_solicitud_cateqista(request):
 
 @csrf_exempt
 def asignar_catequistas(request):
-    if not request.user.is_staff:
+    if not request.user.is_superuser:
         return redirect('/403')
 
     if request.method == 'POST':

@@ -4,19 +4,57 @@
 {% block title %} Inicio {% endblock %}
 
 {% block content %}
+
+
+{% if user.is_authenticated %}
+  {% if user.is_coord %}
+  <div>
+    <div class="widget">
+      <a href="{% url 'asociar_preferencias' user.ciclo %}">
+        <h2>Asignar preferencias</h2>
+      </a>
+      <p>This is the content of Widget 1.</p>
+    </div>
+    <div class="widget">
+      <a href="{% url 'crear_grupo' %}">
+        <h2>Crear Grupo</h2>
+      </a>
+      <p>This is the content of Widget 1.</p>
+    </div>
+    <div class="widget">
+      <a href="{% url 'asignar_catecumenos_a_grupo' %}">
+        <h2>Asignar a Grupo</h2>
+      </a>
+      <p>This is the content of Widget 1.</p>
+    </div>
+  </div>
+  {% endif %}
+
+  {% if user.is_superuser %}
+  <div>
+    <div class="widget">
+      <a href="{% url 'asignar_catequistas' %}">
+        <h2>Asignar Catequistas</h2>
+      </a>
+      <p>This is the content of Widget 1.</p>
+    </div>
+  </div>
+  {% endif %}
+{% else %}
 <div>
   <div class="widget">
-    <h2>Widget 1</h2>
+    <a href="{% url 'crear_catecumeno' %}">
+      <h2>Registrate a catequesis</h2>
+    </a>
     <p>This is the content of Widget 1.</p>
   </div>
   <div class="widget">
-    <h2>Widget 2</h2>
-    <p>This is the content of Widget 2.</p>
-  </div>
-  <div class="widget">
-    <h2>Widget 3</h2>
-    <p>This is the content of Widget 3.</p>
+    <a href="{% url 'crear_solicitud_catequista' %}">
+      <h2>Solicitud Catequista</h2>
+    </a>
+    <p>This is the content of Widget 1.</p>
   </div>
 </div>
+{% endif %}
 
 {% endblock %}
