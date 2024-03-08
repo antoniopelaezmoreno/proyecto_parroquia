@@ -34,13 +34,13 @@
         {% if user.is_superuser %}
             <a href="{% url 'index' %}" class="menu-btn">Inicio</a>
             <a href="{% url 'listar_catecumenos' %}" class="menu-btn">Lista catecúmenos</a>
-            <button class="menu-btn" onclick="toggleSidebar()">Reports</button>
+            <a href="{% url 'ver_autorizaciones' %}" class="menu-btn">Autorizaciones</a>
             <button class="menu-btn" onclick="toggleSidebar()">Analytics</button>
         {% else %}
           {% if user.is_coord %}
             <a href="{% url 'index' %}" class="menu-btn">Inicio</a>
             <a href="{% url 'listar_catecumenos' %}" class="menu-btn">Lista catecúmenos</a>
-            <button class="menu-btn" onclick="toggleSidebar()">Reports</button>
+            <a href="{% url 'ver_autorizaciones' %}" class="menu-btn">Autorizaciones</a>
             <button class="menu-btn" onclick="toggleSidebar()">Analytics</button>
           {% else %}
             <a href="{% url 'index' %}" class="menu-btn">Inicio</a>

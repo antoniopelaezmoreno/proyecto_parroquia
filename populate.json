@@ -9,341 +9,2005 @@
     {
       "model": "catecumeno.Catecumeno",
       "fields": {
-        "nombre": "Juan",
-        "apellidos": "Perez Perez",
-        "email": "juan@email.com",
-        "dni": "12345678A",
+        "nombre": "Yevette",
+        "apellidos": "Askam",
+        "email": "clockhurst0@gravatar.com",
+        "dni": "436993916",
         "ciclo": "posco_2",
-        "nombre_madre": "Maria",
-        "apellidos_madre": "Perez Perez",
-        "email_madre": "maria@gmail.com",
-        "dni_madre": "12345679A",
-        "nombre_padre": "Jose",
-        "apellidos_padre": "Perez Perez",
-        "email_padre": "jose@gmail.com",
-        "dni_padre": "12345680A",
-        "preferencias": "No tiene ninguna preferencia",
-        "foto": "/media/autorizaciones/plantilla_dafo.jpg",
+        "nombre_madre": "Alanson",
+        "apellidos_madre": "Langelay",
+        "email_madre": "clockhurst0@cnn.com",
+        "dni_madre": "427981507",
+        "nombre_padre": "Cammi",
+        "apellidos_padre": "Lockhurst",
+        "email_padre": "clockhurst0@google.it",
+        "dni_padre": "305010172",
+        "preferencias": "Optimized directional throughput",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
         "curso": 1
-
       }
-    },
-    {
+    }, {
       "model": "catecumeno.Catecumeno",
       "fields": {
-        "nombre": "Juan2",
-        "apellidos": "Perez Perez",
-        "email": "juan2@email.com",
-        "dni": "12345678A",
+        "nombre": "Pip",
+        "apellidos": "Wilkenson",
+        "email": "bhalward1@digg.com",
+        "dni": "177552522",
+        "ciclo": "gr_juv_2",
+        "nombre_madre": "Pat",
+        "apellidos_madre": "Proud",
+        "email_madre": "bhalward1@360.cn",
+        "dni_madre": "646651107",
+        "nombre_padre": "Briney",
+        "apellidos_padre": "Halward",
+        "email_padre": "bhalward1@weibo.com",
+        "dni_padre": "799536791",
+        "preferencias": "Seamless systemic attitude",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Margot",
+        "apellidos": "Laxe",
+        "email": "lbrigstock2@oracle.com",
+        "dni": "227351397",
+        "ciclo": "posco_1",
+        "nombre_madre": "Leeanne",
+        "apellidos_madre": "Cino",
+        "email_madre": "lbrigstock2@xing.com",
+        "dni_madre": "101853870",
+        "nombre_padre": "Lin",
+        "apellidos_padre": "Brigstock",
+        "email_padre": "lbrigstock2@wikispaces.com",
+        "dni_padre": "182022049",
+        "preferencias": "Synergized asynchronous matrices",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Fran",
+        "apellidos": "Amott",
+        "email": "kdeackes3@mashable.com",
+        "dni": "416253441",
+        "ciclo": "catequmenados_1",
+        "nombre_madre": "Sidoney",
+        "apellidos_madre": "Lockey",
+        "email_madre": "kdeackes3@exblog.jp",
+        "dni_madre": "695941383",
+        "nombre_padre": "Kristyn",
+        "apellidos_padre": "Deackes",
+        "email_padre": "kdeackes3@spiegel.de",
+        "dni_padre": "758955392",
+        "preferencias": "Networked gridenabled strategy",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Jules",
+        "apellidos": "Sherborn",
+        "email": "cbarmby4@sourceforge.net",
+        "dni": "816261783",
+        "ciclo": "gr_juv_2",
+        "nombre_madre": "Ginni",
+        "apellidos_madre": "Basketfield",
+        "email_madre": "cbarmby4@ihg.com",
+        "dni_madre": "650846202",
+        "nombre_padre": "Cleve",
+        "apellidos_padre": "Barmby",
+        "email_padre": "cbarmby4@digg.com",
+        "dni_padre": "289768512",
+        "preferencias": "Devolved empowering servicedesk",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Farlie",
+        "apellidos": "Greenfield",
+        "email": "yruthven5@tinypic.com",
+        "dni": "843676015",
+        "ciclo": "posco_4",
+        "nombre_madre": "Lester",
+        "apellidos_madre": "Facer",
+        "email_madre": "yruthven5@shinystat.com",
+        "dni_madre": "397803977",
+        "nombre_padre": "Yuma",
+        "apellidos_padre": "Ruthven",
+        "email_padre": "yruthven5@sciencedirect.com",
+        "dni_padre": "480953503",
+        "preferencias": "Recontextualized heuristic frame",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Merci",
+        "apellidos": "Duerden",
+        "email": "ndedam6@jalbum.net",
+        "dni": "122260526",
+        "ciclo": "posco_3",
+        "nombre_madre": "Marchelle",
+        "apellidos_madre": "Hickenbottom",
+        "email_madre": "ndedam6@moonfruit.com",
+        "dni_madre": "473388790",
+        "nombre_padre": "Nancie",
+        "apellidos_padre": "Dedam",
+        "email_padre": "ndedam6@bbc.co.uk",
+        "dni_padre": "429349114",
+        "preferencias": "Reactive neutral function",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Rosaleen",
+        "apellidos": "Claridge",
+        "email": "cohms7@weather.com",
+        "dni": "782770995",
+        "ciclo": "gr_juv_1",
+        "nombre_madre": "Helenka",
+        "apellidos_madre": "MacFaul",
+        "email_madre": "cohms7@usatoday.com",
+        "dni_madre": "140378305",
+        "nombre_padre": "Carri",
+        "apellidos_padre": "Ohms",
+        "email_padre": "cohms7@soundcloud.com",
+        "dni_padre": "347197215",
+        "preferencias": "Cloned mobile timeframe",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Olin",
+        "apellidos": "Whitsun",
+        "email": "cborne8@mail.ru",
+        "dni": "752608335",
+        "ciclo": "catequmenados_1",
+        "nombre_madre": "Celinka",
+        "apellidos_madre": "Braga",
+        "email_madre": "cborne8@cam.ac.uk",
+        "dni_madre": "589549255",
+        "nombre_padre": "Cooper",
+        "apellidos_padre": "Borne",
+        "email_padre": "cborne8@github.com",
+        "dni_padre": "282211353",
+        "preferencias": "Centralized composite superstructure",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Oswell",
+        "apellidos": "Kamena",
+        "email": "eley9@nih.gov",
+        "dni": "723249299",
+        "ciclo": "catequmenados_3",
+        "nombre_madre": "Robin",
+        "apellidos_madre": "Jurasz",
+        "email_madre": "eley9@jiathis.com",
+        "dni_madre": "248622942",
+        "nombre_padre": "Eric",
+        "apellidos_padre": "Ley",
+        "email_padre": "eley9@google.ca",
+        "dni_padre": "435190259",
+        "preferencias": "Multilateral discrete analyzer",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Curtice",
+        "apellidos": "Debenham",
+        "email": "lmcclunea@google.co.uk",
+        "dni": "144071698",
+        "ciclo": "gr_juv_1",
+        "nombre_madre": "Jamie",
+        "apellidos_madre": "Pattington",
+        "email_madre": "lmcclunea@statcounter.com",
+        "dni_madre": "200314006",
+        "nombre_padre": "Livvyy",
+        "apellidos_padre": "McClune",
+        "email_padre": "lmcclunea@indiatimes.com",
+        "dni_padre": "880242374",
+        "preferencias": "Face to face zero administration frame",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Vanessa",
+        "apellidos": "Verma",
+        "email": "gburrellsb@mashable.com",
+        "dni": "852102152",
+        "ciclo": "catequmenados_2",
+        "nombre_madre": "Adriaens",
+        "apellidos_madre": "Gravey",
+        "email_madre": "gburrellsb@usda.gov",
+        "dni_madre": "729210906",
+        "nombre_padre": "Glyn",
+        "apellidos_padre": "Burrells",
+        "email_padre": "gburrellsb@example.com",
+        "dni_padre": "414068200",
+        "preferencias": "Optional exuding initiative",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Cullan",
+        "apellidos": "Luton",
+        "email": "sizkovitchc@ocn.ne.jp",
+        "dni": "387108435",
+        "ciclo": "catequmenados_1",
+        "nombre_madre": "Tiffi",
+        "apellidos_madre": "Carhart",
+        "email_madre": "sizkovitchc@bravesites.com",
+        "dni_madre": "393607703",
+        "nombre_padre": "Scotti",
+        "apellidos_padre": "Izkovitch",
+        "email_padre": "sizkovitchc@wordpress.com",
+        "dni_padre": "404023556",
+        "preferencias": "Diverse nonvolatile functionalities",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Morganica",
+        "apellidos": "Cone",
+        "email": "tspinked@bbb.org",
+        "dni": "796392622",
+        "ciclo": "posco_1",
+        "nombre_madre": "Samuele",
+        "apellidos_madre": "Paulmann",
+        "email_madre": "tspinked@spotify.com",
+        "dni_madre": "681870282",
+        "nombre_padre": "Tabbie",
+        "apellidos_padre": "Spinke",
+        "email_padre": "tspinked@mashable.com",
+        "dni_padre": "520986949",
+        "preferencias": "Digitized logistical hub",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Horatia",
+        "apellidos": "Callander",
+        "email": "nwillacote@example.com",
+        "dni": "335114899",
+        "ciclo": "catequmenados_1",
+        "nombre_madre": "Saleem",
+        "apellidos_madre": "Ovill",
+        "email_madre": "nwillacote@apache.org",
+        "dni_madre": "893028212",
+        "nombre_padre": "Nikkie",
+        "apellidos_padre": "Willacot",
+        "email_padre": "nwillacote@ovh.net",
+        "dni_padre": "683216731",
+        "preferencias": "Futureproofed motivating algorithm",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Jessamyn",
+        "apellidos": "Moyers",
+        "email": "adearlf@biglobe.ne.jp",
+        "dni": "575220887",
+        "ciclo": "catequmenados_3",
+        "nombre_madre": "Lynna",
+        "apellidos_madre": "Corsham",
+        "email_madre": "adearlf@hexun.com",
+        "dni_madre": "464244640",
+        "nombre_padre": "Auguste",
+        "apellidos_padre": "Dearl",
+        "email_padre": "adearlf@ovh.net",
+        "dni_padre": "265647285",
+        "preferencias": "Polarised background interface",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Theresina",
+        "apellidos": "Emms",
+        "email": "sbedhamg@1und1.de",
+        "dni": "238145807",
+        "ciclo": "posco_4",
+        "nombre_madre": "Aggy",
+        "apellidos_madre": "Adamini",
+        "email_madre": "sbedhamg@woothemes.com",
+        "dni_madre": "618104620",
+        "nombre_padre": "Stephi",
+        "apellidos_padre": "Bedham",
+        "email_padre": "sbedhamg@github.io",
+        "dni_padre": "455802659",
+        "preferencias": "Rightsized executive extranet",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Brianne",
+        "apellidos": "Domerque",
+        "email": "aoakenfordh@vkontakte.ru",
+        "dni": "837769606",
+        "ciclo": "catequmenados_2",
+        "nombre_madre": "Andie",
+        "apellidos_madre": "Dubber",
+        "email_madre": "aoakenfordh@weather.com",
+        "dni_madre": "725201725",
+        "nombre_padre": "Averell",
+        "apellidos_padre": "Oakenford",
+        "email_padre": "aoakenfordh@bizjournals.com",
+        "dni_padre": "490614828",
+        "preferencias": "Selfenabling motivating application",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Gianina",
+        "apellidos": "Burbank",
+        "email": "jhenroti@tinypic.com",
+        "dni": "883968219",
+        "ciclo": "catequmenados_1",
+        "nombre_madre": "Sayre",
+        "apellidos_madre": "Upham",
+        "email_madre": "jhenroti@ucoz.com",
+        "dni_madre": "517865196",
+        "nombre_padre": "Juli",
+        "apellidos_padre": "Henrot",
+        "email_padre": "jhenroti@un.org",
+        "dni_padre": "499290503",
+        "preferencias": "Total incremental groupware",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Lanna",
+        "apellidos": "Russi",
+        "email": "cferraronej@furl.net",
+        "dni": "601583046",
+        "ciclo": "posco_4",
+        "nombre_madre": "Russell",
+        "apellidos_madre": "Pennicard",
+        "email_madre": "cferraronej@soundcloud.com",
+        "dni_madre": "572121648",
+        "nombre_padre": "Cchaddie",
+        "apellidos_padre": "Ferrarone",
+        "email_padre": "cferraronej@stumbleupon.com",
+        "dni_padre": "540583026",
+        "preferencias": "Reengineered solutionoriented emulation",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Deerdre",
+        "apellidos": "Wynne",
+        "email": "mgiovannonik@wordpress.org",
+        "dni": "456976368",
+        "ciclo": "posco_3",
+        "nombre_madre": "Issie",
+        "apellidos_madre": "Enticott",
+        "email_madre": "mgiovannonik@scribd.com",
+        "dni_madre": "831888730",
+        "nombre_padre": "Meggi",
+        "apellidos_padre": "Giovannoni",
+        "email_padre": "mgiovannonik@ftc.gov",
+        "dni_padre": "359902907",
+        "preferencias": "Automated bottomline function",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Massimo",
+        "apellidos": "Kornes",
+        "email": "jpinyonl@fc2.com",
+        "dni": "610707855",
+        "ciclo": "posco_1",
+        "nombre_madre": "Mariejeanne",
+        "apellidos_madre": "Ingerfield",
+        "email_madre": "jpinyonl@ft.com",
+        "dni_madre": "802941690",
+        "nombre_padre": "Janeta",
+        "apellidos_padre": "Pinyon",
+        "email_padre": "jpinyonl@live.com",
+        "dni_padre": "602651052",
+        "preferencias": "Robust 24 hour encoding",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Alphonse",
+        "apellidos": "Mulgrew",
+        "email": "bfuentem@alexa.com",
+        "dni": "841459661",
         "ciclo": "posco_2",
-        "nombre_madre": "Maria",
-        "apellidos_madre": "Perez Perez",
-        "email_madre": "maria@gmail.com",
-        "dni_madre": "12345679A",
-        "nombre_padre": "Jose",
-        "apellidos_padre": "Perez Perez",
-        "email_padre": "jose@gmail.com",
-        "dni_padre": "12345680A",
-        "preferencias": "No tiene ninguna preferencia",
-        "foto": "/media/autorizaciones/plantilla_dafo.jpg",
+        "nombre_madre": "Gnni",
+        "apellidos_madre": "Tutchener",
+        "email_madre": "bfuentem@guardian.co.uk",
+        "dni_madre": "643642448",
+        "nombre_padre": "Brockie",
+        "apellidos_padre": "Fuente",
+        "email_padre": "bfuentem@tmall.com",
+        "dni_padre": "785101095",
+        "preferencias": "Managed optimizing concept",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
         "curso": 1
-
       }
-    },
-    {
+    }, {
       "model": "catecumeno.Catecumeno",
       "fields": {
-        "nombre": "Maria",
-        "apellidos": "Gomez Gomez",
-        "email": "maria2@gmail.com",
-        "dni": "12345679A",
-        "ciclo": "posco_3",
-        "nombre_madre": "Maria",
-        "apellidos_madre": "Gomez Gomez",
-        "email_madre": "madre@gmail.com",
-        "dni_madre": "12345679A",
-        "nombre_padre": "Jose",
-        "apellidos_padre": "Gomez Gomez",
-        "email_padre": "padre@gmail.com",
-        "dni_padre": "12345680A",
-        "preferencias": "No tiene ninguna preferencia",
-        "foto": "/media/autorizaciones/plantilla_dafo.jpg",
+        "nombre": "Yank",
+        "apellidos": "Elldred",
+        "email": "lbeggsn@quantcast.com",
+        "dni": "769263283",
+        "ciclo": "catequmenados_1",
+        "nombre_madre": "Masha",
+        "apellidos_madre": "Harkin",
+        "email_madre": "lbeggsn@dion.ne.jp",
+        "dni_madre": "850763619",
+        "nombre_padre": "Lucretia",
+        "apellidos_padre": "Beggs",
+        "email_padre": "lbeggsn@yahoo.co.jp",
+        "dni_padre": "558577462",
+        "preferencias": "Phased actuating policy",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
         "curso": 1
-        }
-    },
-    {
+      }
+    }, {
       "model": "catecumeno.Catecumeno",
       "fields": {
-        "nombre": "Maria2",
-        "apellidos": "Gomez Gomez",
-        "email": "maria3@gmail.com",
-        "dni": "12345679A",
-        "ciclo": "posco_3",
-        "nombre_madre": "Maria",
-        "apellidos_madre": "Gomez Gomez",
-        "email_madre": "madre@gmail.com",
-        "dni_madre": "12345679A",
-        "nombre_padre": "Jose",
-        "apellidos_padre": "Gomez Gomez",
-        "email_padre": "padre@gmail.com",
-        "dni_padre": "12345680A",
-        "preferencias": "No tiene ninguna preferencia",
-        "foto": "/media/autorizaciones/plantilla_dafo.jpg",
+        "nombre": "Karl",
+        "apellidos": "Whitington",
+        "email": "dcoghillo@scientificamerican.com",
+        "dni": "887115775",
+        "ciclo": "posco_2",
+        "nombre_madre": "Goldina",
+        "apellidos_madre": "McClunaghan",
+        "email_madre": "dcoghillo@mac.com",
+        "dni_madre": "476657899",
+        "nombre_padre": "Dannie",
+        "apellidos_padre": "Coghill",
+        "email_padre": "dcoghillo@reuters.com",
+        "dni_padre": "271174250",
+        "preferencias": "Futureproofed methodical Graphical User Interface",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
         "curso": 1
-        }
-    },
-    {
-        "model": "catecumeno.Catecumeno",
-        "fields": {
-          "nombre": "Laura",
-          "apellidos": "Jimenez Gomez",
-          "email": "laura@gmail.com",
-          "dni": "12345679A",
-          "ciclo": "posco_4",
-          "nombre_madre": "Maria",
-          "apellidos_madre": "Gomez Gomez",
-          "email_madre": "madre@gmail.com",
-          "dni_madre": "12345679A",
-          "nombre_padre": "Jose",
-          "apellidos_padre": "Gomez Gomez",
-          "email_padre": "padre@gmail.com",
-          "dni_padre": "12345680A",
-          "preferencias": "No tiene ninguna preferencia",
-          "foto": "/media/autorizaciones/plantilla_dafo.jpg",
-          "curso": 1
-          }
-      },
-      {
-        "model": "catecumeno.Catecumeno",
-        "fields": {
-          "nombre": "Laura2",
-          "apellidos": "Jimenez Gomez",
-          "email": "laura2@gmail.com",
-          "dni": "12345679A",
-          "ciclo": "posco_4",
-          "nombre_madre": "Maria",
-          "apellidos_madre": "Gomez Gomez",
-          "email_madre": "madre@gmail.com",
-          "dni_madre": "12345679A",
-          "nombre_padre": "Jose",
-          "apellidos_padre": "Gomez Gomez",
-          "email_padre": "padre@gmail.com",
-          "dni_padre": "12345680A",
-          "preferencias": "No tiene ninguna preferencia",
-          "foto": "/media/autorizaciones/plantilla_dafo.jpg",
-          "curso": 1
-          }
-      },
-      {
-        "model": "catecumeno.Catecumeno",
-        "fields": {
-          "nombre": "Jaime",
-          "apellidos": "Lorenzo Gomez",
-          "email": "jaime@gmail.com",
-          "dni": "12345679A",
-          "ciclo": "gr_juv_1",
-          "nombre_madre": "Maria",
-          "apellidos_madre": "Gomez Gomez",
-          "email_madre": "madre@gmail.com",
-          "dni_madre": "12345679A",
-          "nombre_padre": "Jose",
-          "apellidos_padre": "Gomez Gomez",
-          "email_padre": "padre@gmail.com",
-          "dni_padre": "12345680A",
-          "preferencias": "No tiene ninguna preferencia",
-          "foto": "/media/autorizaciones/plantilla_dafo.jpg",
-          "curso": 1
-          }
-      },
-      {
-        "model": "catecumeno.Catecumeno",
-        "fields": {
-          "nombre": "Jaime2",
-          "apellidos": "Lorenzo Gomez",
-          "email": "jaime2@gmail.com",
-          "dni": "12345679A",
-          "ciclo": "gr_juv_1",
-          "nombre_madre": "Maria",
-          "apellidos_madre": "Gomez Gomez",
-          "email_madre": "madre@gmail.com",
-          "dni_madre": "12345679A",
-          "nombre_padre": "Jose",
-          "apellidos_padre": "Gomez Gomez",
-          "email_padre": "padre@gmail.com",
-          "dni_padre": "12345680A",
-          "preferencias": "No tiene ninguna preferencia",
-          "foto": "/media/autorizaciones/plantilla_dafo.jpg",
-          "curso": 1
-          }
-      },
-      {
-        "model": "catecumeno.Catecumeno",
-        "fields": {
-          "nombre": "Álvaro",
-          "apellidos": "Vallejo Gomez",
-          "email": "alvaro@gmail.com",
-          "dni": "12345679A",
-          "ciclo": "gr_juv_2",
-          "nombre_madre": "Maria",
-          "apellidos_madre": "Gomez Gomez",
-          "email_madre": "madre@gmail.com",
-          "dni_madre": "12345679A",
-          "nombre_padre": "Jose",
-          "apellidos_padre": "Gomez Gomez",
-          "email_padre": "padre@gmail.com",
-          "dni_padre": "12345680A",
-          "preferencias": "No tiene ninguna preferencia",
-          "foto": "/media/autorizaciones/plantilla_dafo.jpg",
-          "curso": 1
-          }
-      },
-      {
-        "model": "catecumeno.Catecumeno",
-        "fields": {
-          "nombre": "Álvaro2",
-          "apellidos": "Vallejo Gomez",
-          "email": "alvaro2@gmail.com",
-          "dni": "12345679A",
-          "ciclo": "gr_juv_2",
-          "nombre_madre": "Maria",
-          "apellidos_madre": "Gomez Gomez",
-          "email_madre": "madre@gmail.com",
-          "dni_madre": "12345679A",
-          "nombre_padre": "Jose",
-          "apellidos_padre": "Gomez Gomez",
-          "email_padre": "padre@gmail.com",
-          "dni_padre": "12345680A",
-          "preferencias": "No tiene ninguna preferencia",
-          "foto": "/media/autorizaciones/plantilla_dafo.jpg",
-          "curso": 1
-          }
-      },
-      {
-        "model": "catecumeno.Catecumeno",
-        "fields": {
-          "nombre": "Manuel",
-          "apellidos": "Jerez Gomez",
-          "email": "manuel@gmail.com",
-          "dni": "12345679A",
-          "ciclo": "catequmenados_1",
-          "nombre_madre": "Maria",
-          "apellidos_madre": "Gomez Gomez",
-          "email_madre": "madre@gmail.com",
-          "dni_madre": "12345679A",
-          "nombre_padre": "Jose",
-          "apellidos_padre": "Gomez Gomez",
-          "email_padre": "padre@gmail.com",
-          "dni_padre": "12345680A",
-          "preferencias": "No tiene ninguna preferencia",
-          "foto": "/media/autorizaciones/plantilla_dafo.jpg",
-          "curso": 1
-          }
-      },
-      {
-        "model": "catecumeno.Catecumeno",
-        "fields": {
-          "nombre": "Manuel2",
-          "apellidos": "Jerez Gomez",
-          "email": "manuel2@gmail.com",
-          "dni": "12345679A",
-          "ciclo": "catequmenados_1",
-          "nombre_madre": "Maria",
-          "apellidos_madre": "Gomez Gomez",
-          "email_madre": "madre@gmail.com",
-          "dni_madre": "12345679A",
-          "nombre_padre": "Jose",
-          "apellidos_padre": "Gomez Gomez",
-          "email_padre": "padre@gmail.com",
-          "dni_padre": "12345680A",
-          "preferencias": "Quiero estar con Manuel",
-          "foto": "/media/autorizaciones/plantilla_dafo.jpg",
-          "curso": 1
-          }
-      },
-      {
-        "model": "catecumeno.Catecumeno",
-        "fields": {
-          "nombre": "Fátima",
-          "apellidos": "Peláez Gomez",
-          "email": "fatima@gmail.com",
-          "dni": "12345679A",
-          "ciclo": "catequmenados_2",
-          "nombre_madre": "Maria",
-          "apellidos_madre": "Gomez Gomez",
-          "email_madre": "madre@gmail.com",
-          "dni_madre": "12345679A",
-          "nombre_padre": "Jose",
-          "apellidos_padre": "Gomez Gomez",
-          "email_padre": "padre@gmail.com",
-          "dni_padre": "12345680A",
-          "preferencias": "No tiene ninguna preferencia",
-          "foto": "/media/autorizaciones/plantilla_dafo.jpg",
-          "curso": 1
-          }
-      },
-      {
-        "model": "catecumeno.Catecumeno",
-        "fields": {
-          "nombre": "Fátima2",
-          "apellidos": "Peláez Gomez",
-          "email": "fatima2@gmail.com",
-          "dni": "12345679A",
-          "ciclo": "catequmenados_2",
-          "nombre_madre": "Maria",
-          "apellidos_madre": "Gomez Gomez",
-          "email_madre": "madre@gmail.com",
-          "dni_madre": "12345679A",
-          "nombre_padre": "Jose",
-          "apellidos_padre": "Gomez Gomez",
-          "email_padre": "padre@gmail.com",
-          "dni_padre": "12345680A",
-          "preferencias": "No tiene ninguna preferencia",
-          "foto": "/media/autorizaciones/plantilla_dafo.jpg",
-          "curso": 1
-          }
-      },
-      {
-        "model": "catecumeno.Catecumeno",
-        "fields": {
-          "nombre": "Joaquin",
-          "apellidos": "Barbadillo Gomez",
-          "email": "joaquin@gmail.com",
-          "dni": "12345679A",
-          "ciclo": "catequmenados_3",
-          "nombre_madre": "Maria",
-          "apellidos_madre": "Gomez Gomez",
-          "email_madre": "madre@gmail.com",
-          "dni_madre": "12345679A",
-          "nombre_padre": "Jose",
-          "apellidos_padre": "Gomez Gomez",
-          "email_padre": "padre@gmail.com",
-          "dni_padre": "12345680A",
-          "preferencias": "No tiene ninguna preferencia",
-          "foto": "/media/autorizaciones/plantilla_dafo.jpg",
-          "curso": 1
-          }
-      },
-      {
-        "model": "catecumeno.Catecumeno",
-        "fields": {
-          "nombre": "Joaquin2",
-          "apellidos": "Barbadillo Gomez",
-          "email": "joaquin2@gmail.com",
-          "dni": "12345679A",
-          "ciclo": "catequmenados_3",
-          "nombre_madre": "Maria",
-          "apellidos_madre": "Gomez Gomez",
-          "email_madre": "madre@gmail.com",
-          "dni_madre": "12345679A",
-          "nombre_padre": "Jose",
-          "apellidos_padre": "Gomez Gomez",
-          "email_padre": "padre@gmail.com",
-          "dni_padre": "12345680A",
-          "preferencias": "No tiene ninguna preferencia",
-          "foto": "/media/autorizaciones/plantilla_dafo.jpg",
-          "curso": 1
-          }
-      },
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Vincents",
+        "apellidos": "Fevier",
+        "email": "rskeatesp@bigcartel.com",
+        "dni": "798383709",
+        "ciclo": "posco_1",
+        "nombre_madre": "Siward",
+        "apellidos_madre": "Colgrave",
+        "email_madre": "rskeatesp@dmoz.org",
+        "dni_madre": "641787261",
+        "nombre_padre": "Ray",
+        "apellidos_padre": "Skeates",
+        "email_padre": "rskeatesp@tonline.de",
+        "dni_padre": "247030218",
+        "preferencias": "Integrated holistic projection",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Francene",
+        "apellidos": "Chifney",
+        "email": "bscahillq@usgs.gov",
+        "dni": "609041542",
+        "ciclo": "posco_2",
+        "nombre_madre": "Chickie",
+        "apellidos_madre": "Monck",
+        "email_madre": "bscahillq@jimdo.com",
+        "dni_madre": "501699570",
+        "nombre_padre": "Brittany",
+        "apellidos_padre": "Scahill",
+        "email_padre": "bscahillq@blogger.com",
+        "dni_padre": "753171615",
+        "preferencias": "Usercentric dynamic synergy",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Beaufort",
+        "apellidos": "Iianon",
+        "email": "rhowgater@surveymonkey.com",
+        "dni": "453843211",
+        "ciclo": "catequmenados_1",
+        "nombre_madre": "Morgen",
+        "apellidos_madre": "Showte",
+        "email_madre": "rhowgater@geocities.com",
+        "dni_madre": "350096471",
+        "nombre_padre": "Randa",
+        "apellidos_padre": "Howgate",
+        "email_padre": "rhowgater@merriamwebster.com",
+        "dni_padre": "596851089",
+        "preferencias": "Qualityfocused asymmetric architecture",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Elset",
+        "apellidos": "Duddell",
+        "email": "spalleskes@toplist.cz",
+        "dni": "439079756",
+        "ciclo": "posco_2",
+        "nombre_madre": "Franzen",
+        "apellidos_madre": "Macourek",
+        "email_madre": "spalleskes@github.com",
+        "dni_madre": "620840890",
+        "nombre_padre": "Stella",
+        "apellidos_padre": "Palleske",
+        "email_padre": "spalleskes@blogger.com",
+        "dni_padre": "245051637",
+        "preferencias": "Opensource directional standardization",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Marita",
+        "apellidos": "Dono",
+        "email": "mpickburnt@dion.ne.jp",
+        "dni": "346899700",
+        "ciclo": "catequmenados_3",
+        "nombre_madre": "Georas",
+        "apellidos_madre": "McCreery",
+        "email_madre": "mpickburnt@techcrunch.com",
+        "dni_madre": "395894986",
+        "nombre_padre": "Minne",
+        "apellidos_padre": "Pickburn",
+        "email_padre": "mpickburnt@earthlink.net",
+        "dni_padre": "420524968",
+        "preferencias": "Virtual asymmetric interface",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Trenton",
+        "apellidos": "Benterman",
+        "email": "gdoegu@washingtonpost.com",
+        "dni": "600802892",
+        "ciclo": "catequmenados_1",
+        "nombre_madre": "Lizzy",
+        "apellidos_madre": "Orr",
+        "email_madre": "gdoegu@fc2.com",
+        "dni_madre": "811721645",
+        "nombre_padre": "Grenville",
+        "apellidos_padre": "Doeg",
+        "email_padre": "gdoegu@google.co.uk",
+        "dni_padre": "100109920",
+        "preferencias": "Standalone highlevel infomediaries",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Ariana",
+        "apellidos": "Toynbee",
+        "email": "jtoppv@purevolume.com",
+        "dni": "321912600",
+        "ciclo": "gr_juv_1",
+        "nombre_madre": "Rudy",
+        "apellidos_madre": "Signe",
+        "email_madre": "jtoppv@hp.com",
+        "dni_madre": "537060156",
+        "nombre_padre": "Janith",
+        "apellidos_padre": "Topp",
+        "email_padre": "jtoppv@yolasite.com",
+        "dni_padre": "762217325",
+        "preferencias": "Innovative neutral system engine",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Stanley",
+        "apellidos": "Waye",
+        "email": "jsmallbonew@cmu.edu",
+        "dni": "709151281",
+        "ciclo": "posco_2",
+        "nombre_madre": "Marena",
+        "apellidos_madre": "MacDiarmid",
+        "email_madre": "jsmallbonew@nifty.com",
+        "dni_madre": "349384741",
+        "nombre_padre": "Jameson",
+        "apellidos_padre": "Smallbone",
+        "email_padre": "jsmallbonew@wordpress.org",
+        "dni_padre": "842623852",
+        "preferencias": "Proactive upwardtrending definition",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Timothea",
+        "apellidos": "McCurley",
+        "email": "jjertzx@wikia.com",
+        "dni": "713456176",
+        "ciclo": "posco_4",
+        "nombre_madre": "Sosanna",
+        "apellidos_madre": "Vasiljevic",
+        "email_madre": "jjertzx@bizjournals.com",
+        "dni_madre": "496160650",
+        "nombre_padre": "Jessica",
+        "apellidos_padre": "Jertz",
+        "email_padre": "jjertzx@comsenz.com",
+        "dni_padre": "300292621",
+        "preferencias": "Decentralized missioncritical analyzer",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Rowen",
+        "apellidos": "Pigeram",
+        "email": "iproschy@tiny.cc",
+        "dni": "272535672",
+        "ciclo": "posco_4",
+        "nombre_madre": "Vite",
+        "apellidos_madre": "Dybell",
+        "email_madre": "iproschy@foxnews.com",
+        "dni_madre": "102361626",
+        "nombre_padre": "Ilaire",
+        "apellidos_padre": "Prosch",
+        "email_padre": "iproschy@arizona.edu",
+        "dni_padre": "436302040",
+        "preferencias": "Balanced scalable internet solution",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Lynda",
+        "apellidos": "de Quincey",
+        "email": "jbottingz@amazon.de",
+        "dni": "106223690",
+        "ciclo": "posco_3",
+        "nombre_madre": "Antonia",
+        "apellidos_madre": "Sidon",
+        "email_madre": "jbottingz@bloglovin.com",
+        "dni_madre": "296964828",
+        "nombre_padre": "Jacques",
+        "apellidos_padre": "Botting",
+        "email_padre": "jbottingz@4shared.com",
+        "dni_padre": "614607924",
+        "preferencias": "Qualityfocused zero administration capacity",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Rosita",
+        "apellidos": "Bette",
+        "email": "vfishbourn10@symantec.com",
+        "dni": "408584440",
+        "ciclo": "posco_4",
+        "nombre_madre": "Corabel",
+        "apellidos_madre": "Blaver",
+        "email_madre": "vfishbourn10@flavors.me",
+        "dni_madre": "897881323",
+        "nombre_padre": "Vito",
+        "apellidos_padre": "Fishbourn",
+        "email_padre": "vfishbourn10@netvibes.com",
+        "dni_padre": "665050648",
+        "preferencias": "Futureproofed highlevel algorithm",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Lorne",
+        "apellidos": "Grieves",
+        "email": "dscothern11@google.ca",
+        "dni": "299147291",
+        "ciclo": "posco_1",
+        "nombre_madre": "Shaylynn",
+        "apellidos_madre": "Tixier",
+        "email_madre": "dscothern11@ustream.tv",
+        "dni_madre": "210277260",
+        "nombre_padre": "Durand",
+        "apellidos_padre": "Scothern",
+        "email_padre": "dscothern11@loc.gov",
+        "dni_padre": "483214245",
+        "preferencias": "Reverseengineered freshthinking software",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Melodee",
+        "apellidos": "Chipman",
+        "email": "lweth12@addtoany.com",
+        "dni": "748367205",
+        "ciclo": "posco_1",
+        "nombre_madre": "Elane",
+        "apellidos_madre": "Ledward",
+        "email_madre": "lweth12@chron.com",
+        "dni_madre": "713054547",
+        "nombre_padre": "Lorin",
+        "apellidos_padre": "Weth",
+        "email_padre": "lweth12@free.fr",
+        "dni_padre": "868459483",
+        "preferencias": "Publickey dynamic success",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Rubin",
+        "apellidos": "Dunthorn",
+        "email": "dstinton13@mysql.com",
+        "dni": "449170661",
+        "ciclo": "catequmenados_3",
+        "nombre_madre": "Barbaraanne",
+        "apellidos_madre": "Hiley",
+        "email_madre": "dstinton13@hc360.com",
+        "dni_madre": "168678544",
+        "nombre_padre": "Darlleen",
+        "apellidos_padre": "Stinton",
+        "email_padre": "dstinton13@pen.io",
+        "dni_padre": "354380066",
+        "preferencias": "Focused ecocentric protocol",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Gawen",
+        "apellidos": "Despenser",
+        "email": "mplanke14@overblog.com",
+        "dni": "634076659",
+        "ciclo": "posco_1",
+        "nombre_madre": "Gustavus",
+        "apellidos_madre": "Catling",
+        "email_madre": "mplanke14@nationalgeographic.com",
+        "dni_madre": "598947860",
+        "nombre_padre": "Marge",
+        "apellidos_padre": "Planke",
+        "email_padre": "mplanke14@opera.com",
+        "dni_padre": "658977419",
+        "preferencias": "Secured gridenabled open system",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Katya",
+        "apellidos": "Richard",
+        "email": "gwillarton15@nba.com",
+        "dni": "886366144",
+        "ciclo": "catequmenados_3",
+        "nombre_madre": "Mirabelle",
+        "apellidos_madre": "Gall",
+        "email_madre": "gwillarton15@bigcartel.com",
+        "dni_madre": "625375814",
+        "nombre_padre": "Glennis",
+        "apellidos_padre": "Willarton",
+        "email_padre": "gwillarton15@github.io",
+        "dni_padre": "772698393",
+        "preferencias": "Distributed fullrange core",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Julie",
+        "apellidos": "Rodda",
+        "email": "lhaney16@themeforest.net",
+        "dni": "899597566",
+        "ciclo": "posco_4",
+        "nombre_madre": "Emilie",
+        "apellidos_madre": "Baynard",
+        "email_madre": "lhaney16@examiner.com",
+        "dni_madre": "735680077",
+        "nombre_padre": "Lexy",
+        "apellidos_padre": "Haney`",
+        "email_padre": "lhaney16@bbb.org",
+        "dni_padre": "846922300",
+        "preferencias": "Configurable fullrange artificial intelligence",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Marysa",
+        "apellidos": "Tavner",
+        "email": "hplumbridge17@opera.com",
+        "dni": "717351885",
+        "ciclo": "gr_juv_2",
+        "nombre_madre": "Luther",
+        "apellidos_madre": "Raggett",
+        "email_madre": "hplumbridge17@usatoday.com",
+        "dni_madre": "319173431",
+        "nombre_padre": "Halimeda",
+        "apellidos_padre": "Plumbridge",
+        "email_padre": "hplumbridge17@com.com",
+        "dni_padre": "446375524",
+        "preferencias": "Organized uniform projection",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Tove",
+        "apellidos": "Waterstone",
+        "email": "acarrington18@ow.ly",
+        "dni": "682651534",
+        "ciclo": "posco_1",
+        "nombre_madre": "Nalani",
+        "apellidos_madre": "Handley",
+        "email_madre": "acarrington18@stumbleupon.com",
+        "dni_madre": "155669270",
+        "nombre_padre": "Ave",
+        "apellidos_padre": "Carrington",
+        "email_padre": "acarrington18@msn.com",
+        "dni_padre": "826856235",
+        "preferencias": "Teamoriented bifurcated matrix",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Georgianna",
+        "apellidos": "Jenny",
+        "email": "dregus19@purevolume.com",
+        "dni": "168757590",
+        "ciclo": "posco_2",
+        "nombre_madre": "Scotti",
+        "apellidos_madre": "MacGray",
+        "email_madre": "dregus19@ca.gov",
+        "dni_madre": "304295790",
+        "nombre_padre": "Delano",
+        "apellidos_padre": "Regus",
+        "email_padre": "dregus19@omniture.com",
+        "dni_padre": "353247761",
+        "preferencias": "Preemptive multimedia frame",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Rakel",
+        "apellidos": "Toohey",
+        "email": "zgerrans1a@github.com",
+        "dni": "449556179",
+        "ciclo": "posco_1",
+        "nombre_madre": "Vladamir",
+        "apellidos_madre": "Viger",
+        "email_madre": "zgerrans1a@parallels.com",
+        "dni_madre": "738473898",
+        "nombre_padre": "Zuzana",
+        "apellidos_padre": "Gerrans",
+        "email_padre": "zgerrans1a@slashdot.org",
+        "dni_padre": "112521423",
+        "preferencias": "Profitfocused missioncritical process improvement",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Pierrette",
+        "apellidos": "Moscrop",
+        "email": "sodempsey1b@arizona.edu",
+        "dni": "347369089",
+        "ciclo": "catequmenados_1",
+        "nombre_madre": "Marlene",
+        "apellidos_madre": "Smurfitt",
+        "email_madre": "sodempsey1b@reuters.com",
+        "dni_madre": "792213539",
+        "nombre_padre": "Sadie",
+        "apellidos_padre": "O'Dempsey",
+        "email_padre": "sodempsey1b@networkadvertising.org",
+        "dni_padre": "844608752",
+        "preferencias": "Visionary uniform portal",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Paola",
+        "apellidos": "Girardey",
+        "email": "gsphinxe1c@google.it",
+        "dni": "651224997",
+        "ciclo": "posco_2",
+        "nombre_madre": "Del",
+        "apellidos_madre": "Nash",
+        "email_madre": "gsphinxe1c@sfgate.com",
+        "dni_madre": "226415766",
+        "nombre_padre": "Gris",
+        "apellidos_padre": "Sphinxe",
+        "email_padre": "gsphinxe1c@google.com.au",
+        "dni_padre": "176876693",
+        "preferencias": "Sharable multitasking forecast",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Yanaton",
+        "apellidos": "Heinert",
+        "email": "gscathard1d@upenn.edu",
+        "dni": "896281918",
+        "ciclo": "gr_juv_2",
+        "nombre_madre": "Angele",
+        "apellidos_madre": "Pammenter",
+        "email_madre": "gscathard1d@is.gd",
+        "dni_madre": "521627500",
+        "nombre_padre": "Geoffry",
+        "apellidos_padre": "Scathard",
+        "email_padre": "gscathard1d@seattletimes.com",
+        "dni_padre": "575559328",
+        "preferencias": "Upgradable motivating flexibility",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Carie",
+        "apellidos": "Juett",
+        "email": "wmynett1e@wordpress.org",
+        "dni": "872118528",
+        "ciclo": "gr_juv_2",
+        "nombre_madre": "Bjorn",
+        "apellidos_madre": "De Blasio",
+        "email_madre": "wmynett1e@symantec.com",
+        "dni_madre": "613418408",
+        "nombre_padre": "Wynn",
+        "apellidos_padre": "Mynett",
+        "email_padre": "wmynett1e@symantec.com",
+        "dni_padre": "703606293",
+        "preferencias": "Profitfocused systemic approach",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Ebeneser",
+        "apellidos": "Nosworthy",
+        "email": "dshelly1f@angelfire.com",
+        "dni": "126921841",
+        "ciclo": "posco_1",
+        "nombre_madre": "Dolores",
+        "apellidos_madre": "Rodgier",
+        "email_madre": "dshelly1f@jugem.jp",
+        "dni_madre": "253251887",
+        "nombre_padre": "Dee dee",
+        "apellidos_padre": "Shelly",
+        "email_padre": "dshelly1f@oaic.gov.au",
+        "dni_padre": "279656164",
+        "preferencias": "Synergized highlevel customer loyalty",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Sallyanne",
+        "apellidos": "Leale",
+        "email": "lwilcott1g@narod.ru",
+        "dni": "772817077",
+        "ciclo": "posco_1",
+        "nombre_madre": "Sylvan",
+        "apellidos_madre": "Shemilt",
+        "email_madre": "lwilcott1g@google.com.br",
+        "dni_madre": "820823457",
+        "nombre_padre": "Leesa",
+        "apellidos_padre": "Wilcott",
+        "email_padre": "lwilcott1g@phoca.cz",
+        "dni_padre": "431784063",
+        "preferencias": "Profound background solution",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Freedman",
+        "apellidos": "Kinge",
+        "email": "sswigg1h@gnu.org",
+        "dni": "565836282",
+        "ciclo": "posco_3",
+        "nombre_madre": "Sholom",
+        "apellidos_madre": "Rowden",
+        "email_madre": "sswigg1h@fda.gov",
+        "dni_madre": "720917093",
+        "nombre_padre": "Sallie",
+        "apellidos_padre": "Swigg",
+        "email_padre": "sswigg1h@issuu.com",
+        "dni_padre": "569926866",
+        "preferencias": "Enhanced coherent ability",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Dallis",
+        "apellidos": "Wickham",
+        "email": "sskep1i@ocn.ne.jp",
+        "dni": "575653405",
+        "ciclo": "posco_2",
+        "nombre_madre": "Willie",
+        "apellidos_madre": "Ropartz",
+        "email_madre": "sskep1i@1und1.de",
+        "dni_madre": "412288902",
+        "nombre_padre": "Skippie",
+        "apellidos_padre": "Skep",
+        "email_padre": "sskep1i@cyberchimps.com",
+        "dni_padre": "668949936",
+        "preferencias": "Fullyconfigurable exuding concept",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Elly",
+        "apellidos": "Sandever",
+        "email": "jcomelini1j@storify.com",
+        "dni": "879978208",
+        "ciclo": "posco_3",
+        "nombre_madre": "Rowan",
+        "apellidos_madre": "Baudassi",
+        "email_madre": "jcomelini1j@tamu.edu",
+        "dni_madre": "608858726",
+        "nombre_padre": "Joseito",
+        "apellidos_padre": "Comelini",
+        "email_padre": "jcomelini1j@wix.com",
+        "dni_padre": "671530437",
+        "preferencias": "Enhanced realtime extranet",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Eran",
+        "apellidos": "Brightey",
+        "email": "lcristofvao1k@walmart.com",
+        "dni": "877675066",
+        "ciclo": "posco_1",
+        "nombre_madre": "Calhoun",
+        "apellidos_madre": "Crake",
+        "email_madre": "lcristofvao1k@shinystat.com",
+        "dni_madre": "233975055",
+        "nombre_padre": "Lilias",
+        "apellidos_padre": "Cristofvao",
+        "email_padre": "lcristofvao1k@yahoo.co.jp",
+        "dni_padre": "761060318",
+        "preferencias": "Progressive bandwidthmonitored infomediaries",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Millisent",
+        "apellidos": "Paley",
+        "email": "ktabor1l@behance.net",
+        "dni": "550853843",
+        "ciclo": "posco_2",
+        "nombre_madre": "Kearney",
+        "apellidos_madre": "Trayling",
+        "email_madre": "ktabor1l@pinterest.com",
+        "dni_madre": "470491835",
+        "nombre_padre": "Karissa",
+        "apellidos_padre": "Tabor",
+        "email_padre": "ktabor1l@usnews.com",
+        "dni_padre": "452299301",
+        "preferencias": "Objectbased clearthinking knowledge user",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Didi",
+        "apellidos": "Gratton",
+        "email": "kbeinisch1m@moonfruit.com",
+        "dni": "431393612",
+        "ciclo": "catequmenados_1",
+        "nombre_madre": "Ange",
+        "apellidos_madre": "Dudson",
+        "email_madre": "kbeinisch1m@netscape.com",
+        "dni_madre": "467559685",
+        "nombre_padre": "Kathy",
+        "apellidos_padre": "Beinisch",
+        "email_padre": "kbeinisch1m@reddit.com",
+        "dni_padre": "107261909",
+        "preferencias": "Reactive secondary definition",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Robina",
+        "apellidos": "Parzizek",
+        "email": "pmoston1n@netvibes.com",
+        "dni": "166682337",
+        "ciclo": "posco_3",
+        "nombre_madre": "Jaclyn",
+        "apellidos_madre": "Larchiere",
+        "email_madre": "pmoston1n@ameblo.jp",
+        "dni_madre": "318052967",
+        "nombre_padre": "Petra",
+        "apellidos_padre": "Moston",
+        "email_padre": "pmoston1n@ycombinator.com",
+        "dni_padre": "736071013",
+        "preferencias": "Universal foreground productivity",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Clemmie",
+        "apellidos": "Gonthard",
+        "email": "chorley1o@tiny.cc",
+        "dni": "660191129",
+        "ciclo": "posco_3",
+        "nombre_madre": "Kelbee",
+        "apellidos_madre": "Willment",
+        "email_madre": "chorley1o@cpanel.net",
+        "dni_madre": "428843888",
+        "nombre_padre": "Colby",
+        "apellidos_padre": "Horley",
+        "email_padre": "chorley1o@geocities.com",
+        "dni_padre": "629847143",
+        "preferencias": "Rightsized motivating local area network",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Simonne",
+        "apellidos": "Kloster",
+        "email": "tkyncl1p@cbsnews.com",
+        "dni": "114519616",
+        "ciclo": "catequmenados_1",
+        "nombre_madre": "Teddie",
+        "apellidos_madre": "Bedding",
+        "email_madre": "tkyncl1p@irs.gov",
+        "dni_madre": "573594215",
+        "nombre_padre": "Thadeus",
+        "apellidos_padre": "Kyncl",
+        "email_padre": "tkyncl1p@weebly.com",
+        "dni_padre": "755758942",
+        "preferencias": "Reactive dedicated circuit",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Amaleta",
+        "apellidos": "Bridywater",
+        "email": "ktregale1q@csmonitor.com",
+        "dni": "185750241",
+        "ciclo": "catequmenados_2",
+        "nombre_madre": "Ginger",
+        "apellidos_madre": "Goad",
+        "email_madre": "ktregale1q@facebook.com",
+        "dni_madre": "531974183",
+        "nombre_padre": "Kermie",
+        "apellidos_padre": "Tregale",
+        "email_padre": "ktregale1q@miitbeian.gov.cn",
+        "dni_padre": "436546507",
+        "preferencias": "Total hybrid Graphical User Interface",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Ignace",
+        "apellidos": "Chaim",
+        "email": "jolliff1r@arstechnica.com",
+        "dni": "247855040",
+        "ciclo": "catequmenados_3",
+        "nombre_madre": "Drusy",
+        "apellidos_madre": "Taggart",
+        "email_madre": "jolliff1r@nature.com",
+        "dni_madre": "134245812",
+        "nombre_padre": "Johnath",
+        "apellidos_padre": "Olliff",
+        "email_padre": "jolliff1r@springer.com",
+        "dni_padre": "230257765",
+        "preferencias": "Configurable regional firmware",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Killian",
+        "apellidos": "Spraberry",
+        "email": "rwhitemarsh1s@kickstarter.com",
+        "dni": "352337716",
+        "ciclo": "catequmenados_2",
+        "nombre_madre": "Clay",
+        "apellidos_madre": "Suthren",
+        "email_madre": "rwhitemarsh1s@bluehost.com",
+        "dni_madre": "230305133",
+        "nombre_padre": "Renie",
+        "apellidos_padre": "Whitemarsh",
+        "email_padre": "rwhitemarsh1s@google.com.br",
+        "dni_padre": "284822614",
+        "preferencias": "Sharable nonvolatile secured line",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Humfried",
+        "apellidos": "Aylott",
+        "email": "abredee1t@tmall.com",
+        "dni": "488736020",
+        "ciclo": "gr_juv_1",
+        "nombre_madre": "Krysta",
+        "apellidos_madre": "Habbin",
+        "email_madre": "abredee1t@cargocollective.com",
+        "dni_madre": "859931108",
+        "nombre_padre": "Arthur",
+        "apellidos_padre": "Bredee",
+        "email_padre": "abredee1t@unblog.fr",
+        "dni_padre": "392536197",
+        "preferencias": "Distributed disintermediate product",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Ertha",
+        "apellidos": "Pickaver",
+        "email": "mmaccrackan1u@squarespace.com",
+        "dni": "684229985",
+        "ciclo": "posco_2",
+        "nombre_madre": "Felisha",
+        "apellidos_madre": "felip",
+        "email_madre": "mmaccrackan1u@etsy.com",
+        "dni_madre": "448709319",
+        "nombre_padre": "Marybelle",
+        "apellidos_padre": "MacCrackan",
+        "email_padre": "mmaccrackan1u@cdc.gov",
+        "dni_padre": "759720156",
+        "preferencias": "Integrated homogeneous encoding",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Linette",
+        "apellidos": "Pargeter",
+        "email": "pgeorgius1v@pinterest.com",
+        "dni": "452387417",
+        "ciclo": "posco_2",
+        "nombre_madre": "Idalia",
+        "apellidos_madre": "Yosevitz",
+        "email_madre": "pgeorgius1v@theatlantic.com",
+        "dni_madre": "312421336",
+        "nombre_padre": "Portia",
+        "apellidos_padre": "Georgius",
+        "email_padre": "pgeorgius1v@wufoo.com",
+        "dni_padre": "340210105",
+        "preferencias": "Diverse gridenabled monitoring",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Lorri",
+        "apellidos": "Strewthers",
+        "email": "lbruggen1w@usnews.com",
+        "dni": "148259049",
+        "ciclo": "posco_2",
+        "nombre_madre": "Shelagh",
+        "apellidos_madre": "Chaikovski",
+        "email_madre": "lbruggen1w@homestead.com",
+        "dni_madre": "738726463",
+        "nombre_padre": "Lorita",
+        "apellidos_padre": "Bruggen",
+        "email_padre": "lbruggen1w@ca.gov",
+        "dni_padre": "386235516",
+        "preferencias": "Phased uniform moderator",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Theresa",
+        "apellidos": "Earley",
+        "email": "acomello1x@oaic.gov.au",
+        "dni": "655163646",
+        "ciclo": "posco_3",
+        "nombre_madre": "Daniel",
+        "apellidos_madre": "Sizland",
+        "email_madre": "acomello1x@themeforest.net",
+        "dni_madre": "447669700",
+        "nombre_padre": "Alaine",
+        "apellidos_padre": "Comello",
+        "email_padre": "acomello1x@bbb.org",
+        "dni_padre": "387909664",
+        "preferencias": "Openarchitected interactive matrices",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Archie",
+        "apellidos": "Cornelius",
+        "email": "dwigin1y@businesswire.com",
+        "dni": "214813842",
+        "ciclo": "catequmenados_1",
+        "nombre_madre": "Consuelo",
+        "apellidos_madre": "Stormonth",
+        "email_madre": "dwigin1y@icq.com",
+        "dni_madre": "470990640",
+        "nombre_padre": "Danette",
+        "apellidos_padre": "Wigin",
+        "email_padre": "dwigin1y@dailymail.co.uk",
+        "dni_padre": "602098361",
+        "preferencias": "Upsized systemic analyzer",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Mozelle",
+        "apellidos": "Canet",
+        "email": "ssoutter1z@cornell.edu",
+        "dni": "346291714",
+        "ciclo": "posco_2",
+        "nombre_madre": "Alayne",
+        "apellidos_madre": "Cookney",
+        "email_madre": "ssoutter1z@mozilla.com",
+        "dni_madre": "882495051",
+        "nombre_padre": "Salvador",
+        "apellidos_padre": "Soutter",
+        "email_padre": "ssoutter1z@miitbeian.gov.cn",
+        "dni_padre": "787730058",
+        "preferencias": "Multichannelled holistic website",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Karyn",
+        "apellidos": "Worvell",
+        "email": "phingeley20@arizona.edu",
+        "dni": "866524543",
+        "ciclo": "posco_4",
+        "nombre_madre": "Joyce",
+        "apellidos_madre": "Leglise",
+        "email_madre": "phingeley20@mac.com",
+        "dni_madre": "595237168",
+        "nombre_padre": "Percy",
+        "apellidos_padre": "Hingeley",
+        "email_padre": "phingeley20@ehow.com",
+        "dni_padre": "396660590",
+        "preferencias": "Integrated contextuallybased moratorium",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Rorie",
+        "apellidos": "Canet",
+        "email": "fwaghorne21@flavors.me",
+        "dni": "676620742",
+        "ciclo": "gr_juv_1",
+        "nombre_madre": "Prissie",
+        "apellidos_madre": "Salmond",
+        "email_madre": "fwaghorne21@webeden.co.uk",
+        "dni_madre": "295240746",
+        "nombre_padre": "Federica",
+        "apellidos_padre": "Waghorne",
+        "email_padre": "fwaghorne21@miibeian.gov.cn",
+        "dni_padre": "383657517",
+        "preferencias": "Exclusive wellmodulated circuit",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Barby",
+        "apellidos": "Sobczak",
+        "email": "dkield22@yellowpages.com",
+        "dni": "839171821",
+        "ciclo": "posco_3",
+        "nombre_madre": "Sophia",
+        "apellidos_madre": "MacAlinden",
+        "email_madre": "dkield22@toplist.cz",
+        "dni_madre": "182525267",
+        "nombre_padre": "Derk",
+        "apellidos_padre": "Kield",
+        "email_padre": "dkield22@cbc.ca",
+        "dni_padre": "532773952",
+        "preferencias": "Preemptive coherent Graphical User Interface",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Broddy",
+        "apellidos": "Matityahu",
+        "email": "pmyton23@ed.gov",
+        "dni": "288373241",
+        "ciclo": "catequmenados_2",
+        "nombre_madre": "Mina",
+        "apellidos_madre": "Aizikovitch",
+        "email_madre": "pmyton23@deviantart.com",
+        "dni_madre": "861729430",
+        "nombre_padre": "Pauline",
+        "apellidos_padre": "Myton",
+        "email_padre": "pmyton23@tiny.cc",
+        "dni_padre": "358852365",
+        "preferencias": "Multilateral logistical pricing structure",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Stephenie",
+        "apellidos": "Willimott",
+        "email": "amcsperrin24@macromedia.com",
+        "dni": "436399081",
+        "ciclo": "posco_2",
+        "nombre_madre": "Guntar",
+        "apellidos_madre": "Bunce",
+        "email_madre": "amcsperrin24@miibeian.gov.cn",
+        "dni_madre": "576401708",
+        "nombre_padre": "Abe",
+        "apellidos_padre": "McSperrin",
+        "email_padre": "amcsperrin24@theglobeandmail.com",
+        "dni_padre": "557391493",
+        "preferencias": "Face to face heuristic internet solution",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Austin",
+        "apellidos": "Nabarro",
+        "email": "lcommins25@drupal.org",
+        "dni": "240405528",
+        "ciclo": "posco_4",
+        "nombre_madre": "Bradford",
+        "apellidos_madre": "Fasham",
+        "email_madre": "lcommins25@ocn.ne.jp",
+        "dni_madre": "120556832",
+        "nombre_padre": "Layney",
+        "apellidos_padre": "Commins",
+        "email_padre": "lcommins25@mapy.cz",
+        "dni_padre": "363422258",
+        "preferencias": "Openarchitected attitudeoriented access",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Siouxie",
+        "apellidos": "Wear",
+        "email": "awoodham26@ifeng.com",
+        "dni": "126914692",
+        "ciclo": "posco_1",
+        "nombre_madre": "Aurel",
+        "apellidos_madre": "Chatel",
+        "email_madre": "awoodham26@opensource.org",
+        "dni_madre": "608635899",
+        "nombre_padre": "Arielle",
+        "apellidos_padre": "Woodham",
+        "email_padre": "awoodham26@barnesandnoble.com",
+        "dni_padre": "514013586",
+        "preferencias": "Customizable empowering conglomeration",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Hanna",
+        "apellidos": "Kuhne",
+        "email": "aarmstead27@github.com",
+        "dni": "618911050",
+        "ciclo": "posco_1",
+        "nombre_madre": "Jackqueline",
+        "apellidos_madre": "Collman",
+        "email_madre": "aarmstead27@geocities.com",
+        "dni_madre": "444957822",
+        "nombre_padre": "Aland",
+        "apellidos_padre": "Armstead",
+        "email_padre": "aarmstead27@eventbrite.com",
+        "dni_padre": "711434789",
+        "preferencias": "Enterprisewide national initiative",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Jeramey",
+        "apellidos": "Varty",
+        "email": "msize28@erecht24.de",
+        "dni": "563190040",
+        "ciclo": "gr_juv_2",
+        "nombre_madre": "Gothart",
+        "apellidos_madre": "Bocken",
+        "email_madre": "msize28@gmpg.org",
+        "dni_madre": "195841954",
+        "nombre_padre": "Mendy",
+        "apellidos_padre": "Size",
+        "email_padre": "msize28@fotki.com",
+        "dni_padre": "369769274",
+        "preferencias": "Secured disintermediate knowledge user",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Albie",
+        "apellidos": "De Few",
+        "email": "dassiter29@msn.com",
+        "dni": "327174864",
+        "ciclo": "gr_juv_2",
+        "nombre_madre": "Bron",
+        "apellidos_madre": "Astlatt",
+        "email_madre": "dassiter29@photobucket.com",
+        "dni_madre": "524199834",
+        "nombre_padre": "Dagmar",
+        "apellidos_padre": "Assiter",
+        "email_padre": "dassiter29@ox.ac.uk",
+        "dni_padre": "876623679",
+        "preferencias": "Openarchitected coherent collaboration",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Theodora",
+        "apellidos": "Donoher",
+        "email": "ataunton2a@berkeley.edu",
+        "dni": "899564815",
+        "ciclo": "posco_4",
+        "nombre_madre": "Dacy",
+        "apellidos_madre": "Limb",
+        "email_madre": "ataunton2a@unblog.fr",
+        "dni_madre": "157576494",
+        "nombre_padre": "Ailsun",
+        "apellidos_padre": "Taunton.",
+        "email_padre": "ataunton2a@booking.com",
+        "dni_padre": "301514643",
+        "preferencias": "Reengineered fullrange paradigm",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Somerset",
+        "apellidos": "Demogeot",
+        "email": "nsargood2b@army.mil",
+        "dni": "606956104",
+        "ciclo": "catequmenados_3",
+        "nombre_madre": "Jay",
+        "apellidos_madre": "Zavattiero",
+        "email_madre": "nsargood2b@weebly.com",
+        "dni_madre": "433756151",
+        "nombre_padre": "Noah",
+        "apellidos_padre": "Sargood",
+        "email_padre": "nsargood2b@mashable.com",
+        "dni_padre": "831688023",
+        "preferencias": "Upsized global forecast",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Winnah",
+        "apellidos": "Elward",
+        "email": "mwoollends2c@barnesandnoble.com",
+        "dni": "403871784",
+        "ciclo": "catequmenados_3",
+        "nombre_madre": "Ginnie",
+        "apellidos_madre": "Pattesall",
+        "email_madre": "mwoollends2c@ed.gov",
+        "dni_madre": "538373909",
+        "nombre_padre": "Miguel",
+        "apellidos_padre": "Woollends",
+        "email_padre": "mwoollends2c@state.tx.us",
+        "dni_padre": "266834821",
+        "preferencias": "Ergonomic zero tolerance migration",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Reade",
+        "apellidos": "California",
+        "email": "slevesley2d@reuters.com",
+        "dni": "786967453",
+        "ciclo": "catequmenados_1",
+        "nombre_madre": "Sandi",
+        "apellidos_madre": "Paskell",
+        "email_madre": "slevesley2d@usgs.gov",
+        "dni_madre": "701653832",
+        "nombre_padre": "Stefanie",
+        "apellidos_padre": "Levesley",
+        "email_padre": "slevesley2d@yahoo.co.jp",
+        "dni_padre": "272771204",
+        "preferencias": "Advanced heuristic software",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Stephie",
+        "apellidos": "Bonnett",
+        "email": "btremmel2e@g.co",
+        "dni": "761655377",
+        "ciclo": "catequmenados_1",
+        "nombre_madre": "Hilary",
+        "apellidos_madre": "Nurden",
+        "email_madre": "btremmel2e@fastcompany.com",
+        "dni_madre": "860303694",
+        "nombre_padre": "Benedick",
+        "apellidos_padre": "Tremmel",
+        "email_padre": "btremmel2e@hubpages.com",
+        "dni_padre": "557334093",
+        "preferencias": "Customizable regional throughput",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Marcie",
+        "apellidos": "Rigbye",
+        "email": "ogatsby2f@oracle.com",
+        "dni": "514754810",
+        "ciclo": "posco_3",
+        "nombre_madre": "Janelle",
+        "apellidos_madre": "Winterson",
+        "email_madre": "ogatsby2f@google.com.br",
+        "dni_madre": "391149013",
+        "nombre_padre": "Odelle",
+        "apellidos_padre": "Gatsby",
+        "email_padre": "ogatsby2f@baidu.com",
+        "dni_padre": "777843333",
+        "preferencias": "Persevering local installation",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Rhodia",
+        "apellidos": "Cary",
+        "email": "flangtree2g@joomla.org",
+        "dni": "393239841",
+        "ciclo": "posco_1",
+        "nombre_madre": "Doll",
+        "apellidos_madre": "Benterman",
+        "email_madre": "flangtree2g@walmart.com",
+        "dni_madre": "433751499",
+        "nombre_padre": "Farrah",
+        "apellidos_padre": "Langtree",
+        "email_padre": "flangtree2g@reverbnation.com",
+        "dni_padre": "692822231",
+        "preferencias": "Inverse 24 hour standardization",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Innis",
+        "apellidos": "Fursey",
+        "email": "avanzon2h@washington.edu",
+        "dni": "544109591",
+        "ciclo": "posco_4",
+        "nombre_madre": "Eula",
+        "apellidos_madre": "Kings",
+        "email_madre": "avanzon2h@technorati.com",
+        "dni_madre": "791389250",
+        "nombre_padre": "Ayn",
+        "apellidos_padre": "Van Zon",
+        "email_padre": "avanzon2h@boston.com",
+        "dni_padre": "296390234",
+        "preferencias": "Phased explicit framework",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Burnaby",
+        "apellidos": "Gulc",
+        "email": "pgethin2i@tamu.edu",
+        "dni": "621887560",
+        "ciclo": "posco_1",
+        "nombre_madre": "Bobbye",
+        "apellidos_madre": "Libero",
+        "email_madre": "pgethin2i@theatlantic.com",
+        "dni_madre": "501888782",
+        "nombre_padre": "Pauly",
+        "apellidos_padre": "Gethin",
+        "email_padre": "pgethin2i@utexas.edu",
+        "dni_padre": "281574258",
+        "preferencias": "Balanced local migration",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Adrianne",
+        "apellidos": "Hourahan",
+        "email": "eorsi2j@w3.org",
+        "dni": "513890604",
+        "ciclo": "catequmenados_3",
+        "nombre_madre": "Tiebold",
+        "apellidos_madre": "Sholl",
+        "email_madre": "eorsi2j@hhs.gov",
+        "dni_madre": "842134728",
+        "nombre_padre": "Emlyn",
+        "apellidos_padre": "Orsi",
+        "email_padre": "eorsi2j@cam.ac.uk",
+        "dni_padre": "865311464",
+        "preferencias": "Futureproofed next generation focus group",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Samaria",
+        "apellidos": "Petracco",
+        "email": "wforber2k@webs.com",
+        "dni": "350155923",
+        "ciclo": "catequmenados_3",
+        "nombre_madre": "Skell",
+        "apellidos_madre": "Hinstock",
+        "email_madre": "wforber2k@stanford.edu",
+        "dni_madre": "469388462",
+        "nombre_padre": "Wren",
+        "apellidos_padre": "Forber",
+        "email_padre": "wforber2k@soundcloud.com",
+        "dni_padre": "581188152",
+        "preferencias": "Exclusive nonvolatile approach",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Clari",
+        "apellidos": "Eddison",
+        "email": "gsotworth2l@1688.com",
+        "dni": "349886211",
+        "ciclo": "posco_1",
+        "nombre_madre": "Tanhya",
+        "apellidos_madre": "Caveau",
+        "email_madre": "gsotworth2l@shutterfly.com",
+        "dni_madre": "327128392",
+        "nombre_padre": "Gertrud",
+        "apellidos_padre": "Sotworth",
+        "email_padre": "gsotworth2l@etsy.com",
+        "dni_padre": "361534866",
+        "preferencias": "Monitored upwardtrending orchestration",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Madalena",
+        "apellidos": "Colville",
+        "email": "rsomerton2m@typepad.com",
+        "dni": "633452723",
+        "ciclo": "catequmenados_2",
+        "nombre_madre": "Thomas",
+        "apellidos_madre": "Hallyburton",
+        "email_madre": "rsomerton2m@ucla.edu",
+        "dni_madre": "650730890",
+        "nombre_padre": "Robena",
+        "apellidos_padre": "Somerton",
+        "email_padre": "rsomerton2m@cloudflare.com",
+        "dni_padre": "214579317",
+        "preferencias": "Reactive 24 hour system engine",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Ines",
+        "apellidos": "Verbrugghen",
+        "email": "mcrosskell2n@soundcloud.com",
+        "dni": "572643512",
+        "ciclo": "gr_juv_1",
+        "nombre_madre": "Keri",
+        "apellidos_madre": "Clyde",
+        "email_madre": "mcrosskell2n@epa.gov",
+        "dni_madre": "640776157",
+        "nombre_padre": "Margie",
+        "apellidos_padre": "Crosskell",
+        "email_padre": "mcrosskell2n@dot.gov",
+        "dni_padre": "174208755",
+        "preferencias": "Decentralized nonvolatile leverage",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Layney",
+        "apellidos": "Quenell",
+        "email": "aschimpke2o@buzzfeed.com",
+        "dni": "496120939",
+        "ciclo": "posco_2",
+        "nombre_madre": "Selia",
+        "apellidos_madre": "Hewes",
+        "email_madre": "aschimpke2o@etsy.com",
+        "dni_madre": "573179605",
+        "nombre_padre": "Asia",
+        "apellidos_padre": "Schimpke",
+        "email_padre": "aschimpke2o@topsy.com",
+        "dni_padre": "732091534",
+        "preferencias": "Profitfocused clientdriven firmware",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Cly",
+        "apellidos": "Espinoza",
+        "email": "nwaistall2p@tmall.com",
+        "dni": "870474506",
+        "ciclo": "gr_juv_1",
+        "nombre_madre": "Frasco",
+        "apellidos_madre": "Benardeau",
+        "email_madre": "nwaistall2p@youtu.be",
+        "dni_madre": "872939635",
+        "nombre_padre": "Nico",
+        "apellidos_padre": "Waistall",
+        "email_padre": "nwaistall2p@prlog.org",
+        "dni_padre": "197620685",
+        "preferencias": "Enhanced responsive concept",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Yorgos",
+        "apellidos": "Godard",
+        "email": "bbrauninger2q@sakura.ne.jp",
+        "dni": "604205950",
+        "ciclo": "posco_1",
+        "nombre_madre": "Reinhold",
+        "apellidos_madre": "Lissenden",
+        "email_madre": "bbrauninger2q@mac.com",
+        "dni_madre": "542234471",
+        "nombre_padre": "Binnie",
+        "apellidos_padre": "Brauninger",
+        "email_padre": "bbrauninger2q@jiathis.com",
+        "dni_padre": "653561346",
+        "preferencias": "Reduced analyzing leverage",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Merline",
+        "apellidos": "Brosio",
+        "email": "stribell2r@pagespersoorange.fr",
+        "dni": "579081690",
+        "ciclo": "posco_1",
+        "nombre_madre": "Shayla",
+        "apellidos_madre": "Wegman",
+        "email_madre": "stribell2r@gizmodo.com",
+        "dni_madre": "169581015",
+        "nombre_padre": "Susanetta",
+        "apellidos_padre": "Tribell",
+        "email_padre": "stribell2r@networkadvertising.org",
+        "dni_padre": "138588423",
+        "preferencias": "Face to face holistic adapter",
+        "foto": "/autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }
+    ,
       {
         "model": "custom_user.CustomUser",
         "fields": {
@@ -449,6 +2113,5 @@
           "preferencias": "Grupos Juveniles 1"
         }
       }
-
 
 ]
