@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Pasar lista {% endblock %}
+
+{% block content %}
+<form method="POST">
+    {% csrf_token %}
+    <table>
+        <thead>
+            <tr>
+                <th>Catecumeno</th>
+                <th>Asistente</th>
+                <th>Justificado</th>
+                <th>Ausente</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for catecumeno in catecumenos %}
+                <tr>
+                    <td>{{ catecumeno.nombre }}</td>
+                    <td><input type="checkbox" name="asistentes" value="{{ catecumeno.id }}" ></td>
+                    <td><input type="checkbox" name="justificados" value="{{ catecumeno.id }}"></td>
+                    <td><input type="checkbox" name="ausentes" value="{{ catecumeno.id }}" ></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <button type="submit">Guardar</button>
+</form>
+
+{% endblock %}

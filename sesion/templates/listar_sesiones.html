@@ -12,6 +12,7 @@
                 <th>Título</th>
                 <th>Descripción</th>
                 <th>Fecha</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -20,6 +21,8 @@
                     <td>{{ sesion.titulo }}</td>
                     <td>{{ sesion.descripcion }}</td>
                     <td>{{ sesion.fecha }}</td>
+                    <td>
+                        <a href="{% url 'pasar_lista' sesion.id %}">Pasar Lista</a>
                 </tr>
             {% endfor %}
         </tbody>
