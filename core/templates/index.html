@@ -8,38 +8,55 @@
 
 {% if user.is_authenticated %}
   {% if user.is_coord %}
-  <div>
-    <div class="widget">
-      <a href="{% url 'asociar_preferencias' user.ciclo %}">
-        <h2>Asignar preferencias</h2>
-      </a>
-      <p>This is the content of Widget 1.</p>
+    <div>
+      <div class="widget">
+        <a href="{% url 'asociar_preferencias' user.ciclo %}">
+          <h2>Asignar preferencias</h2>
+        </a>
+        <p>This is the content of Widget 1.</p>
+      </div>
+      <div class="widget">
+        <a href="{% url 'crear_grupo' %}">
+          <h2>Crear Grupo</h2>
+        </a>
+        <p>This is the content of Widget 1.</p>
+      </div>
+      <div class="widget">
+        <a href="{% url 'asignar_catecumenos_a_grupo' %}">
+          <h2>Asignar a Grupo</h2>
+        </a>
+        <p>This is the content of Widget 1.</p>
+      </div>
     </div>
-    <div class="widget">
-      <a href="{% url 'crear_grupo' %}">
-        <h2>Crear Grupo</h2>
-      </a>
-      <p>This is the content of Widget 1.</p>
-    </div>
-    <div class="widget">
-      <a href="{% url 'asignar_catecumenos_a_grupo' %}">
-        <h2>Asignar a Grupo</h2>
-      </a>
-      <p>This is the content of Widget 1.</p>
-    </div>
-  </div>
   {% endif %}
 
   {% if user.is_superuser %}
+    <div>
+      <div class="widget">
+        <a href="{% url 'asignar_catequistas' %}">
+          <h2>Asignar Catequistas</h2>
+        </a>
+        <p>This is the content of Widget 1.</p>
+      </div>
+    </div>
+  {% endif %}
   <div>
     <div class="widget">
-      <a href="{% url 'asignar_catequistas' %}">
-        <h2>Asignar Catequistas</h2>
+      <a href="{% url 'crear_sesion' %}">
+        <h2>Crear Sesión</h2>
       </a>
       <p>This is the content of Widget 1.</p>
     </div>
   </div>
-  {% endif %}
+
+  <div>
+    <div class="widget">
+      <a href="{% url 'listar_sesiones' %}">
+        <h2>Listar Sesiones</h2>
+      </a>
+      <p>This is the content of Widget 1.</p>
+    </div>
+  </div>
 {% else %}
 <div>
   <div class="widget">
