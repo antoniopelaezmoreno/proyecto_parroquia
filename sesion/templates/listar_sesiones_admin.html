@@ -24,6 +24,9 @@
         <h3>{{ sesion.titulo }}</h3>
         <p>{{ sesion.descripcion }}</p>
         <p> - {{ sesion.fecha }} - </p>
+        {% if user.ciclo == sesion.ciclo %}
+            <a href="{% url 'pasar_lista' sesion.id %}">Pasar Lista</a>
+        {% endif %}
     </div>
     {% endfor %}
 </div>
