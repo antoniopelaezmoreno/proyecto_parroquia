@@ -13,9 +13,22 @@
     {% endfor %}
 {% endif %}
 
-<h1>Crear Sesión para {{ ciclo }}</h1>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
+        {% if user.is_superuser%}
+            <label for="ciclo">Ciclo:</label>
+            <select name="ciclo" id="ciclo" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                <option value="posco_1" >Posco 1</option>
+                <option value="posco_2" >Posco 2</option>
+                <option value="posco_3" >Posco 3</option> 
+                <option value="posco_4" >Posco 4</option>
+                <option value="gr_juv_1" >Gruos Juveniles 1</option>  
+                <option value="gr_juv_2" >Gruos Juveniles 2</option>  
+                <option value="catequmenados_1" >Catecumenados 1</option>  
+                <option value="catequmenados_2" >Catecumenados 2</option>  
+                <option value="catequmenados_3" >Catecumenados 3</option>  
+            </select>
+        {% endif %}
         {{ form.as_p }}
         <button type="submit">Guardar</button>
     </form>

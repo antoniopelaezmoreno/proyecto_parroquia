@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import CatecumenoForm
 from .models import Catecumeno
 from grupo.models import Grupo
@@ -81,6 +81,20 @@ def ver_autorizaciones(request):
             ciclo=request.user.ciclo
             catecumenos = Catecumeno.objects.filter(ciclo=ciclo)
             return render(request, 'ver_autorizaciones.html', {'catecumenos': catecumenos})
+        else:
+            return redirect('/403')
+    else:
+        return redirect('/403')
+    
+def eliminar_catecumeno(request, id):
+    if request.user.is_authenticated:
+        catecumeno = get_object_or_404(Catecumeno,id=id)
+        if request.user.is_superuser:
+            catecumeno.delete()
+            return redirect(request.META.get('HTTP_REFERER', '/'))
+        elif request.user.is_coord and catecumeno.ciclo == request.user.ciclo:
+            catecumeno.delete()
+            return redirect(request.META.get('HTTP_REFERER', '/'))
         else:
             return redirect('/403')
     else:

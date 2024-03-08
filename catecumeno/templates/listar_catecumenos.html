@@ -19,6 +19,7 @@
                 <th>Nombre Padre</th>
                 <th>Apellidos Padre</th>
                 <th>Email Padre</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -34,6 +35,7 @@
                     <td>{{ catecumeno.nombre_padre }}</td>
                     <td>{{ catecumeno.apellidos_padre }}</td>
                     <td>{{ catecumeno.email_padre }}</td>
+                    <td><a href="{% url 'eliminar_catecumeno' catecumeno.id %}">Eliminar</a></td>
                 </tr>
             {% endfor %}
         </tbody>
