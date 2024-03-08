@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Autorizaciones {% endblock %}
+
+{% block content %}
+<div class="grid-container">
+    {% for catecumeno in catecumenos %}
+        <div class="grid-item">
+            <div>
+                <p> {{ catecumeno.nombre }} </p>
+                <a href="/media/{{ catecumeno.foto }}" download="autorizacion.jpg">Descargar</a>
+            </div>
+            <a href="/media/{{ catecumeno.foto }}" alt="Autorización de {{ catecumeno.nombre }}" target="_blank">
+                <img src="/media/{{ catecumeno.foto }}" alt="Autorización de {{ catecumeno.nombre }}" class="thumbnail">
+            </a>
+            
+        </div>
+    {% endfor %}
+</div>
+
+<style>
+    .grid-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+
+    .grid-item {
+        flex: 0 1 200px;
+        margin: 10px;
+    }
+
+    .thumbnail {
+        max-width: 250px; 
+        max-height: 250px; 
+    }
+
+</style>
+{% endblock %}
