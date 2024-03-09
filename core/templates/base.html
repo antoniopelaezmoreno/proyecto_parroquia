@@ -35,13 +35,14 @@
             <a href="{% url 'index' %}" class="menu-btn">Inicio</a>
             <a href="{% url 'listar_catecumenos' %}" class="menu-btn">Lista catecúmenos</a>
             <a href="{% url 'ver_autorizaciones' %}" class="menu-btn">Autorizaciones</a>
+            <a href="{% url 'tabla_asistencias_admin' 'posco_1' %}" class="menu-btn">Tabla asistencias</a>
             <button class="menu-btn" onclick="toggleSidebar()">Analytics</button>
         {% else %}
           {% if user.is_coord %}
             <a href="{% url 'index' %}" class="menu-btn">Inicio</a>
             <a href="{% url 'listar_catecumenos' %}" class="menu-btn">Lista catecúmenos</a>
             <a href="{% url 'ver_autorizaciones' %}" class="menu-btn">Autorizaciones</a>
-            <button class="menu-btn" onclick="toggleSidebar()">Analytics</button>
+            <a href="{% url 'tabla_asistencias_coord' %}" class="menu-btn">Tabla asistencias</a>
           {% else %}
             <a href="{% url 'index' %}" class="menu-btn">Inicio</a>
             <button class="menu-btn" onclick="toggleSidebar()">Reports</button>

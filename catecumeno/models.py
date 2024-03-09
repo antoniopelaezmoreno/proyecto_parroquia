@@ -11,9 +11,9 @@ class Catecumeno(models.Model):
         POSCO_4 = 'posco_4', 'Poscomunión 4'
         GRUPOS_JUVENILES_1 = 'gr_juv_1', 'Grupos Juveniles 1'
         GRUPOS_JUVENILES_2 = 'gr_juv_2', 'Grupos Juveniles 2'
-        CATECUMENADOS_1 = 'catequmenados_1', 'Catecumenados 1'
-        CATECUMENADOS_2 = 'catequmenados_2', 'Catecumenados 2'
-        CATECUMENADOS_3 = 'catequmenados_3', 'Catecumenados 3'
+        CATECUMENADOS_1 = 'catecumenados_1', 'Catecumenados 1'
+        CATECUMENADOS_2 = 'catecumenados_2', 'Catecumenados 2'
+        CATECUMENADOS_3 = 'catecumenados_3', 'Catecumenados 3'
 
 
     nombre = models.CharField(max_length=100)
