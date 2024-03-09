@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Tabla asistencias admin {% endblock %}
+
+{% block content %}
+
+<div class="filter-panel">
+    <button class="filter-btn" onclick="filterByCiclo('posco_1')">Poscomunión 1</button>
+    <button class="filter-btn" onclick="filterByCiclo('posco_2')">Poscomunión 2</button>
+    <button class="filter-btn" onclick="filterByCiclo('posco_3')">Poscomunión 3</button>
+    <button class="filter-btn" onclick="filterByCiclo('posco_4')">Poscomunión 4</button>
+    <button class="filter-btn" onclick="filterByCiclo('gr_juv_1')">Grupos Juveniles 1</button>
+    <button class="filter-btn" onclick="filterByCiclo('gr_juv_2')">Grupos Juveniles 2</button>
+    <button class="filter-btn" onclick="filterByCiclo('catecumenados_1')">Catecumenados 1</button>
+    <button class="filter-btn" onclick="filterByCiclo('catecumenados_2')">Catecumenados 2</button>
+    <button class="filter-btn" onclick="filterByCiclo('catecumenados_3')">Catecumenados 3</button>
+</div>
+{% if not grupos %}
+    <p>No hay grupos para mostrar</p>
+{% else %}
+    {% for grupo in grupos %}
+        <h2>{{ grupo }}</h2>
+        <table class="alumnos-table rounded-border">
+            <thead>    
+                <tr>
+                    <th>Nombre</th>
+                    {% for sesion in sesiones %}
+                        <th>{{ sesion.fecha }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for catecumeno in grupo.miembros.all %}
+                    <tr>
+                        <td>{{ catecumeno.nombre }}</td>
+                        {% for sesion in sesiones %}
+                            <td>
+                                <div class="asistencia-box {% if catecumeno in sesion.asistentes.all %}asiste{% endif %}{% if catecumeno in sesion.ausentes.all %}ausente{% endif %}{% if catecumeno in sesion.justificados.all %}justificado{% endif %}"></div>
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
+{% endif %}
+    <style>
+        .asistencia-box {
+            width: 20px; 
+            height: 20px; 
+            border: 1px solid black; 
+            display: inline-block; 
+        }
+        .asiste {
+            background-color: green;
+        }
+
+        .ausente {
+            background-color: red;
+        }
+
+        .justificado {
+            background-color: blue;
+        }
+    </style>
+
+    <script>
+        // Función para filtrar las sesiones por ciclo
+        function filterByCiclo(ciclo) {
+            window.location.href='/sesion/tabla_asistencia_admin/' + ciclo
+        }
+    </script>
+{% endblock %}

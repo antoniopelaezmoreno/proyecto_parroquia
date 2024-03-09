@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.contrib import messages
 from .models import Sesion
 from grupo.models import Grupo
+from curso.models import Curso
 # Create your views here.
 
 def crear_sesion(request):
@@ -65,8 +66,35 @@ def pasar_lista(request, sesionid):
     else:
         return redirect('/403')
 
-
-
 def catecumenos_desde_catequista(catequista):
     grupo = get_object_or_404(Grupo,catequista1=catequista) or get_object_or_404(Grupo,catequista2=catequista)
     return grupo.miembros.all()
+
+def tabla_asistencias_grupo(request):
+    if not request.user.is_authenticated:
+        return redirect('/403')
+    catecumenos = catecumenos_desde_catequista(request.user)
+    sesiones = Sesion.objects.filter(ciclo=request.user.ciclo, curso = Curso.objects.latest('id'))
+    return render(request, 'tabla_asistencias.html', {'catecumenos': catecumenos, 'sesiones': sesiones})
+
+def tabla_asitencias_coord(request):
+    if not request.user.is_authenticated:
+        return redirect('/403')
+    
+    if request.user.is_coord:
+        grupos = Grupo.objects.filter(ciclo=request.user.ciclo)
+        sesiones = Sesion.objects.filter(ciclo=request.user.ciclo, curso=Curso.objects.latest('id'))
+        return render(request, 'tabla_asistencias_coord.html', {'grupos': grupos, 'sesiones': sesiones})
+    elif request.user.is_superuser:
+        redirect('/sesion/tabla_asistencia_admin/posco_1')
+
+def tabla_asistencias_admin(request, ciclo):
+    if not request.user.is_authenticated or not request.user.is_superuser:
+        return redirect('/403')
+    elif ciclo not in [choice[0] for choice in Catecumeno.CicloChoices.choices]:
+        return redirect('/404')
+    else:
+        grupos = Grupo.objects.filter(ciclo=ciclo)
+        sesiones = Sesion.objects.filter(ciclo=ciclo, curso=Curso.objects.latest('id'))
+        return render(request, 'tabla_asistencias_admin.html', {'sesiones': sesiones, 'grupos': grupos})
+    
