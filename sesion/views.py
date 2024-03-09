@@ -36,11 +36,11 @@ def crear_sesion(request):
 def listar_sesiones(request):
     if request.user.is_authenticated:
         if request.user.is_superuser:
-            sesiones = Sesion.objects.all()
+            sesiones = Sesion.objects.all().order_by('fecha')
             return render(request, 'listar_sesiones_admin.html', {'sesiones': sesiones})
         else:
             ciclo=request.user.ciclo
-            sesiones = Sesion.objects.filter(ciclo=ciclo)
+            sesiones = Sesion.objects.filter(ciclo=ciclo).order_by('fecha')
             return render(request, 'listar_sesiones.html', {'sesiones': sesiones})
     else:
         return redirect('/403')
@@ -74,7 +74,7 @@ def tabla_asistencias_grupo(request):
     if not request.user.is_authenticated:
         return redirect('/403')
     catecumenos = catecumenos_desde_catequista(request.user)
-    sesiones = Sesion.objects.filter(ciclo=request.user.ciclo, curso = Curso.objects.latest('id'))
+    sesiones = Sesion.objects.filter(ciclo=request.user.ciclo, curso = Curso.objects.latest('id')).order_by('fecha')
     return render(request, 'tabla_asistencias.html', {'catecumenos': catecumenos, 'sesiones': sesiones})
 
 def tabla_asitencias_coord(request):
@@ -83,7 +83,7 @@ def tabla_asitencias_coord(request):
     
     if request.user.is_coord:
         grupos = Grupo.objects.filter(ciclo=request.user.ciclo)
-        sesiones = Sesion.objects.filter(ciclo=request.user.ciclo, curso=Curso.objects.latest('id'))
+        sesiones = Sesion.objects.filter(ciclo=request.user.ciclo, curso=Curso.objects.latest('id')).order_by('fecha')
         return render(request, 'tabla_asistencias_coord.html', {'grupos': grupos, 'sesiones': sesiones})
     elif request.user.is_superuser:
         redirect('/sesion/tabla_asistencia_admin/posco_1')
@@ -95,6 +95,6 @@ def tabla_asistencias_admin(request, ciclo):
         return redirect('/404')
     else:
         grupos = Grupo.objects.filter(ciclo=ciclo)
-        sesiones = Sesion.objects.filter(ciclo=ciclo, curso=Curso.objects.latest('id'))
+        sesiones = Sesion.objects.filter(ciclo=ciclo, curso=Curso.objects.latest('id')).order_by('fecha')
         return render(request, 'tabla_asistencias_admin.html', {'sesiones': sesiones, 'grupos': grupos})
     
