@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %} Subir archivo {% endblock %}
+
+{% block content %}
+<div class="grid-container">
+    {% for file in files %}
+        <div class="grid-item">
+            <div>
+                <p> {{ file.name }} </p>
+                <a href="/media/{{ file.file }}" download="{{file.name}}">Descargar</a>
+            </div>
+            
+            {% if file.is_image %}
+                <a href="/media/{{ file.file }}" alt="{{ file.name }}" target="_blank">
+                    <img src="/media/{{ file.file }}" alt="{{ file.name }}" class="thumbnail">
+                </a>
+            
+            {% elif file.is_pdf %}
+                <a href="/media/{{ file.file }}" alt="{{ file.name }}" target="_blank">
+                    <img src="/static/icons/pdf_icon3.png" alt="{{ file.name }}" class="thumbnail">
+                </a>
+            {% elif file.is_doc %}
+                <a href="/media/{{ file.file }}" alt="{{ file.name }}" target="_blank">
+                    <img src="/static/icons/doc_icon3.png" alt="{{ file.name }}" class="thumbnail">
+                </a>
+            {% elif file.is_excel %}
+                <a href="/media/{{ file.file }}" alt="{{ file.name }}" target="_blank">
+                    <img src="/static/icons/xls_icon3.png" alt="{{ file.name }}" class="thumbnail">
+                </a>
+            {% elif file.is_ppt %}
+                <a href="/media/{{ file.file }}" alt="{{ file.name }}" target="_blank">
+                    <img src="/static/icons/ppt_icon3.png" alt="{{ file.name }}" class="thumbnail">
+                </a>
+            {% else %}
+                <a href="/media/{{ file.file }}" alt="{{ file.name }}" target="_blank">
+                    <img src="/static/icons/file_icon3.png" alt="{{ file.name }}" class="thumbnail">
+                </a>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
+
+<style>
+    .grid-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+
+    .grid-item {
+        flex: 0 1 200px;
+        margin: 10px;
+    }
+
+    .thumbnail {
+        max-width: 250px; 
+        max-height: 250px; 
+    }
+
+</style>
+{% endblock %}
