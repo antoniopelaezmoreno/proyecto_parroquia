@@ -36,6 +36,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
     curso= models.ForeignKey(Curso, on_delete=models.CASCADE, null=True, blank=True)
+    token_json=models.JSONField(null=True, blank=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []

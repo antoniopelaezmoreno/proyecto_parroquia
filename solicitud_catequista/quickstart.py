@@ -7,12 +7,13 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 import base64
+import json
 
 # If modifying these scopes, delete the file token.json.
 SCOPES = ["https://www.googleapis.com/auth/gmail.readonly", "https://www.googleapis.com/auth/gmail.send"]
 
 
-def enviar_email(sender, to, subject, message_text):
+def enviar_email(sender, to, subject, message_text, user):
   """Shows basic usage of the Gmail API.
   Lists the user's Gmail labels.
   """
@@ -20,20 +21,22 @@ def enviar_email(sender, to, subject, message_text):
   # The file token.json stores the user's access and refresh tokens, and is
   # created automatically when the authorization flow completes for the first
   # time.
-  if os.path.exists("token.json"):
-    creds = Credentials.from_authorized_user_file("token.json", SCOPES)
+
+  if user.token_json:
+    creds = Credentials.from_authorized_user_info(json.loads(user.token_json), SCOPES)
   # If there are no (valid) credentials available, let the user log in.
   if not creds or not creds.valid:
     if creds and creds.expired and creds.refresh_token:
       creds.refresh(Request())
     else:
       flow = InstalledAppFlow.from_client_secrets_file(
-          "credentials.json", SCOPES
+          "credentials.json", SCOPES,
+          redirect_uri="urn:ietf:wg:oauth:2.0:oob"
       )
-      creds = flow.run_local_server(port=8080)
+      creds = flow.run_local_server(port=8081)
     # Save the credentials for the next run
-    with open("token.json", "w") as token:
-      token.write(creds.to_json())
+    user.token_json =creds.to_json()
+    user.save()
 
   try:
     # Call the Gmail API
@@ -74,7 +77,3 @@ def send_message(service, user_id, message):
     print('An error occurred: %s' % e)
     return None
   
-'''
-if __name__ == "__main__":
-  main()
-'''
