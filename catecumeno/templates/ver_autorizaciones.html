@@ -9,10 +9,10 @@
         <div class="grid-item">
             <div>
                 <p> {{ catecumeno.nombre }} </p>
-                <a href="/media/{{ catecumeno.foto }}" download="autorizacion.jpg">Descargar</a>
+                <a href="/media{{ catecumeno.foto }}" download="autorizacion.jpg">Descargar</a>
             </div>
-            <a href="/media/{{ catecumeno.foto }}" alt="Autorización de {{ catecumeno.nombre }}" target="_blank">
-                <img src="/media/{{ catecumeno.foto }}" alt="Autorización de {{ catecumeno.nombre }}" class="thumbnail">
+            <a href="/media{{ catecumeno.foto }}" alt="Autorización de {{ catecumeno.nombre }}" target="_blank">
+                <img src="/media{{ catecumeno.foto }}" alt="Autorización de {{ catecumeno.nombre }}" class="thumbnail">
             </a>
             
         </div>

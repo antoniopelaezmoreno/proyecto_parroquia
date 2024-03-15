@@ -29,6 +29,7 @@ urlpatterns = [
     path('curso/', include('curso.urls')),
     path('grupo/', include('grupo.urls')),
     path('sesion/', include('sesion.urls')),
+    path('drive/', include('drive.urls')),
 ]
 
 if settings.DEBUG:
