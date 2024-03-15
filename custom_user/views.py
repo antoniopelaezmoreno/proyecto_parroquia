@@ -5,6 +5,10 @@ from .models import CustomUser
 from solicitud_catequista.models import SolicitudCatequista
 from .forms import CustomUserForm
 from catecumeno.models import Catecumeno
+from google_auth_oauthlib.flow import InstalledAppFlow
+import json
+
+SCOPES = ["https://www.googleapis.com/auth/gmail.readonly", "https://www.googleapis.com/auth/gmail.send"]
 
 
 def iniciar_sesion(request):
@@ -36,6 +40,8 @@ def listar_catequistas(request):
     
 def crear_usuario_desde_solicitud(request, id, ciclo):
     solicitud = SolicitudCatequista.objects.get(id=id)
+    
+
     if request.method == 'POST':
         # Si se envió un formulario, procesar los datos
         form = CustomUserForm(request.POST)
@@ -46,6 +52,12 @@ def crear_usuario_desde_solicitud(request, id, ciclo):
             custom_user.last_name = solicitud.apellidos
             custom_user.email = solicitud.email
             custom_user.ciclo = ciclo
+                # Save the credentials for the next run
+            flow = InstalledAppFlow.from_client_secrets_file(
+                "credentials.json", SCOPES
+            )
+            creds = flow.run_local_server(port=8081)
+            custom_user.token_json = creds.to_json()
             custom_user.save()
             
             # Eliminar la solicitud de catequista
