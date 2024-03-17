@@ -3,6 +3,13 @@
 {% block title %} Subir archivo {% endblock %}
 
 {% block content %}
+
+<div>
+    <a href="{% url 'listar_archivos' %}">Principal</a>
+    {% for carpeta in ruta %}
+        &gt; <a href="{% url 'listar_archivos_en_carpeta' carpeta.id %}">{{ carpeta.name }}</a>
+    {% endfor %}
+</div>
 {% if not actual_folder is None%}
     <a href="{% url 'subir_archivo_en_carpeta' actual_folder %}">Subir archivo</a>
     <a href="{% url 'crear_carpeta_en_carpeta' actual_folder %}">Nueva carpeta</a>
@@ -10,6 +17,7 @@
     <a href="{% url 'subir_archivo' %}">Subir archivo</a>
     <a href="{% url 'crear_carpeta' %}">Nueva carpeta</a>
 {% endif %}
+
 <div class="grid-container">
     {% for folder in folders %}
         <div class="grid-item">
