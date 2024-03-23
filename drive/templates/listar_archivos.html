@@ -10,7 +10,8 @@
         &gt; <a href="{% url 'listar_archivos_en_carpeta' carpeta.id %}">{{ carpeta.name }}</a>
     {% endfor %}
 </div>
-{% if not actual_folder is None%}
+
+{% if not actual_folder is None %}
     <a href="{% url 'subir_archivo_en_carpeta' actual_folder %}">Subir archivo</a>
     <a href="{% url 'crear_carpeta_en_carpeta' actual_folder %}">Nueva carpeta</a>
 {% else %}
@@ -22,6 +23,8 @@
     {% for folder in folders %}
         <div class="grid-item">
             <p> {{ folder.name }} </p>
+            <a href="{% url 'eliminar_carpeta' folder.id %}">Eliminar</a>
+            <a href="{% url 'mover_carpeta' folder.id %}">Mover</a>
             <a href="{% url 'listar_archivos_en_carpeta' folder.id %}" alt="{{ folder.name }}">
                 <img src="/static/icons/folder_icon3.png" alt="{{ folder.name }}" class="thumbnail">
             </a>
@@ -32,6 +35,8 @@
             <div>
                 <p> {{ file.name }} </p>
                 <a href="/media/{{ file.file }}" download="{{file.name}}">Descargar</a>
+                <a href="{% url 'eliminar_archivo' file.id %}">Eliminar</a>
+                <a href="{% url 'mover_archivo' file.id %}">Mover</a>
             </div>
             
             {% if file.is_image %}

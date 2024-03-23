@@ -8,6 +8,13 @@
 
 {% if user.is_authenticated %}
   {% if user.is_coord %}
+    <div class="flex">
+      {% for grupo in grupos %}
+        <div>
+          <p>Grupo de {{ grupo.catequista1.first_name }} y {{ grupo.catequista2.first_name }}</p>
+        </div>
+      {% endfor %}
+    </div>
     <div>
       <div class="widget">
         <a href="{% url 'asociar_preferencias' user.ciclo %}">
@@ -84,5 +91,23 @@
   </div>
 </div>
 {% endif %}
+
+<style>
+  .flex {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; /* Cambiado para garantizar que haya 4 elementos por fila */
+  }
+  
+  .flex > div {
+    width: calc(25% - 20px); /* Calculado para ajustar 4 elementos por fila */
+    margin: 10px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    background-color: #fff; /* Fondo blanco */
+    border-radius: 10px; /* Bordes redondeados */
+  }
+</style>
 
 {% endblock %}

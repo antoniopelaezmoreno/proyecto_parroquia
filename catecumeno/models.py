@@ -31,7 +31,7 @@ class Catecumeno(models.Model):
     dni_padre = models.CharField(max_length=10)
     preferencias = models.CharField(max_length=200)
     preferencias_procesadas =models.ManyToManyField('self', related_name='preferencias_procesadas_rel', symmetrical=False)
-    foto = models.ImageField(upload_to='autorizaciones/', blank=True, null=True)
+    foto = models.ImageField(upload_to='autorizaciones/')
     curso= models.ForeignKey(Curso, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):

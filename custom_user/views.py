@@ -6,6 +6,7 @@ from solicitud_catequista.models import SolicitudCatequista
 from .forms import CustomUserForm
 from catecumeno.models import Catecumeno
 from google_auth_oauthlib.flow import InstalledAppFlow
+from django.contrib.auth.decorators import login_required
 import json
 
 SCOPES = ["https://www.googleapis.com/auth/gmail.readonly", "https://www.googleapis.com/auth/gmail.send"]
@@ -27,6 +28,7 @@ def cerrar_sesion(request):
     logout(request)
     return redirect('/')
 
+@login_required
 def listar_catequistas(request):
     if request.user.is_superuser:
         catequistas = CustomUser.objects.all()
