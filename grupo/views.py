@@ -1,5 +1,6 @@
+from http.client import HTTPResponse
 from django.shortcuts import render, redirect
-from .forms import GrupoForm
+from .forms import GrupoForm, GrupoAdminForm
 from django.http import JsonResponse
 from custom_user.models import CustomUser
 from catecumeno.models import Catecumeno
@@ -7,6 +8,7 @@ from .models import Grupo
 from curso.models import Curso
 import random
 from django.contrib.auth.decorators import login_required
+from django.core.serializers import serialize
 
 # Create your views here.
 @login_required
@@ -26,51 +28,41 @@ def crear_grupo(request):
                 form = GrupoForm(catequistas=catequistas)
             return render(request, 'crear_grupo.html', {'form': form, 'ciclo': ciclo})
         if request.user.is_superuser:
-            return redirect('/grupo/crear_grupo/posco_1')
+            return redirect('crear_grupo_admin')
         else:
             return redirect('/403')
     else:
         return redirect('/403')
 
 @login_required
-def crear_grupo_admin(request, ciclo):
-    if request.user.is_authenticated:
-        if request.user.is_superuser:
-            valores_ciclo = [choice[0] for choice in Catecumeno.CicloChoices.choices]
-            if ciclo not in valores_ciclo:
-                return redirect('/403')
-            catequistas = CustomUser.objects.filter(ciclo=ciclo)
-            if request.method == 'POST':
-                form = GrupoForm(request.POST, request.FILES, catequistas=catequistas)
-                if form.is_valid():
-                    grupo = form.save(commit=False)
-                    grupo.ciclo = ciclo
-                    grupo.save()
-                    return redirect('/')
-            else:
-                form = GrupoForm(catequistas=catequistas)
-            return render(request, 'crear_grupo.html', {'form': form, 'ciclo': ciclo})
+def crear_grupo_admin(request):
+    if request.user.is_superuser:
+        if request.method == 'POST':
+            ciclo = request.POST.get('ciclo')
+            catequista1_id = request.POST.get('catequista1')
+            catequista2_id = request.POST.get('catequista2')
+
+            catequista1 = CustomUser.objects.get(id=catequista1_id)
+            catequista2 = CustomUser.objects.get(id=catequista2_id)
+
+            grupo = Grupo.objects.create(
+                ciclo=ciclo,
+                catequista1=catequista1,
+                catequista2=catequista2
+            )
+            return redirect('/') 
         else:
-            return redirect('/403')
+            return render(request, 'crear_grupo_admin.html')
     else:
-        return redirect('/403')
+        redirect('/403')
+
+@login_required
+def ajax_obtener_catequistas(request):
+    ciclo_id = request.GET.get('ciclo_id')
+    catequistas = CustomUser.objects.filter(ciclo=ciclo_id)
+    catequistas_data = [{'id': catequista.id, 'first_name': catequista.first_name} for catequista in catequistas]
+    return JsonResponse({'catequistas': catequistas_data})
     
-def obtener_miembros_de_grupos(request):
-    if request.method == 'GET':
-        ciclo = request.user.ciclo
-        curso_actual = Curso.objects.latest('id')
-        
-        grupos = Grupo.objects.filter(ciclo=ciclo, curso=curso_actual).prefetch_related('miembros')
-
-        miembros_de_grupos = {}
-        for grupo in grupos:
-            miembros_de_grupo = [miembro.nombre for miembro in grupo.miembros.all()] 
-            miembros_de_grupos[grupo.id] = miembros_de_grupo
-        
-        return JsonResponse(miembros_de_grupos)
-    else:
-        return JsonResponse({'error': 'Método no permitido'}, status=405) 
-
 def calcular_valor(grupos, lista_catecumenos, num_grupos):
    
     num_miembros_grupo = {}
