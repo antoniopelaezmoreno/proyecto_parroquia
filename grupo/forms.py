@@ -21,32 +21,15 @@ class GrupoForm(forms.ModelForm):
         if catequista1 == catequista2:
             raise forms.ValidationError("Los catequistas deben ser diferentes.")
         
+        # Check if catequista1 and catequista2 are in another group of the same ciclo
+        if catequista1 and catequista2:
+            if Grupo.objects.filter(ciclo=catequista1.ciclo, catequista1=catequista1).exclude(pk=self.instance.pk).exists() or Grupo.objects.filter(ciclo=catequista1.ciclo, catequista2=catequista1).exclude(pk=self.instance.pk).exists():
+                raise forms.ValidationError("El catequista 1 ya está en otro grupo del mismo ciclo.")
+            if Grupo.objects.filter(ciclo=catequista2.ciclo, catequista2=catequista2).exclude(pk=self.instance.pk).exists() or Grupo.objects.filter(ciclo=catequista2.ciclo, catequista1=catequista2).exclude(pk=self.instance.pk).exists():
+                raise forms.ValidationError("El catequista 2 ya está en otro grupo del mismo ciclo.")
+        
         return cleaned_data
 
     class Meta:
         model = Grupo
         fields = ['catequista1', 'catequista2']
-
-class GrupoAdminForm(forms.ModelForm):
-    class Meta:
-        model = Grupo
-        fields = ['catequista1', 'catequista2', 'ciclo']
-
-    def __init__(self, *args, **kwargs):
-        super(GrupoAdminForm, self).__init__(*args, **kwargs)
-        self.fields['catequista1'].queryset = CustomUser.objects.none()
-        self.fields['catequista2'].queryset = CustomUser.objects.none()
-
-        if 'ciclo' in self.data:
-            try:
-                ciclo_id = int(self.data.get('ciclo'))
-                # Filtrar los catequistas basados en el ciclo seleccionado
-                self.fields['catequista1'].queryset = CustomUser.objects.filter(ciclo=ciclo_id)
-                self.fields['catequista2'].queryset = CustomUser.objects.filter(ciclo=ciclo_id)
-            except (ValueError, TypeError):
-                pass
-        elif self.instance.pk:
-            # Si es una instancia existente, filtrar los catequistas basados en el ciclo de la instancia
-            ciclo_id = self.instance.ciclo
-            self.fields['catequista1'].queryset = CustomUser.objects.filter(ciclo=ciclo_id)
-            self.fields['catequista2'].queryset = CustomUser.objects.filter(ciclo=ciclo_id)

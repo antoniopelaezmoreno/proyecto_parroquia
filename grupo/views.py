@@ -1,6 +1,6 @@
 from http.client import HTTPResponse
 from django.shortcuts import render, redirect
-from .forms import GrupoForm, GrupoAdminForm
+from .forms import GrupoForm
 from django.http import JsonResponse
 from custom_user.models import CustomUser
 from catecumeno.models import Catecumeno
@@ -8,7 +8,7 @@ from .models import Grupo
 from curso.models import Curso
 import random
 from django.contrib.auth.decorators import login_required
-from django.core.serializers import serialize
+from django.core.exceptions import ValidationError
 
 # Create your views here.
 @login_required
@@ -26,7 +26,7 @@ def crear_grupo(request):
                     return redirect('/')
             else:
                 form = GrupoForm(catequistas=catequistas)
-            return render(request, 'crear_grupo.html', {'form': form, 'ciclo': ciclo})
+            return render(request, 'crear_grupo.html', {'form': form})
         if request.user.is_superuser:
             return redirect('crear_grupo_admin')
         else:
@@ -45,11 +45,20 @@ def crear_grupo_admin(request):
             catequista1 = CustomUser.objects.get(id=catequista1_id)
             catequista2 = CustomUser.objects.get(id=catequista2_id)
 
+            if Grupo.objects.filter(ciclo=catequista1.ciclo, catequista1=catequista1).exists() or Grupo.objects.filter(ciclo=catequista1.ciclo, catequista2=catequista1).exists():
+                error =  ValidationError("El catequista 1 ya está en otro grupo del mismo ciclo.")
+                return render(request, 'crear_grupo_admin.html', {'error': error.message})
+            if Grupo.objects.filter(ciclo=catequista2.ciclo, catequista2=catequista2).exists() or Grupo.objects.filter(ciclo=catequista2.ciclo, catequista1=catequista2).exists():
+                error =  ValidationError("El catequista 2 ya está en otro grupo del mismo ciclo.")
+                return render(request, 'crear_grupo_admin.html', {'error': error.message})
+            
             grupo = Grupo.objects.create(
                 ciclo=ciclo,
                 catequista1=catequista1,
-                catequista2=catequista2
+                catequista2=catequista2,
+                curso= Curso.objects.latest('id')
             )
+                
             return redirect('/') 
         else:
             return render(request, 'crear_grupo_admin.html')
@@ -60,7 +69,7 @@ def crear_grupo_admin(request):
 def ajax_obtener_catequistas(request):
     ciclo_id = request.GET.get('ciclo_id')
     catequistas = CustomUser.objects.filter(ciclo=ciclo_id)
-    catequistas_data = [{'id': catequista.id, 'first_name': catequista.first_name} for catequista in catequistas]
+    catequistas_data = [{'id': catequista.id, 'first_name': catequista.first_name, 'last_name': catequista.last_name} for catequista in catequistas]
     return JsonResponse({'catequistas': catequistas_data})
     
 def calcular_valor(grupos, lista_catecumenos, num_grupos):

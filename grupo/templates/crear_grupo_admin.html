@@ -4,7 +4,11 @@
 {% block title %} Crear Grupo {% endblock %}
 
 {% block content %}
-
+    {% if error %}
+        <div class="error text-danger" role="alert">
+            {{ error }}
+        </div>
+    {% endif %}
 
 <form id="group-form" method="POST">
     {% csrf_token %}
@@ -52,8 +56,8 @@
                     $('#catequista1').empty();
                     $('#catequista2').empty();
                     $.each(data.catequistas, function(index, catequista){
-                        $('#catequista1').append('<option value="' + catequista.id + '">' + catequista.first_name + '</option>');
-                        $('#catequista2').append('<option value="' + catequista.id + '">' + catequista.first_name + '</option>');
+                        $('#catequista1').append('<option value="' + catequista.id + '">' + catequista.first_name +' '+ catequista.last_name + '</option>');
+                        $('#catequista2').append('<option value="' + catequista.id + '">' + catequista.first_name +' ' +catequista.last_name + '</option>');
                     });
                 }
             });
