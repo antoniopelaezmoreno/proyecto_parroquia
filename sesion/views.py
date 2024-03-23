@@ -72,9 +72,15 @@ def pasar_lista(request, sesionid):
 
 
 def catecumenos_desde_catequista(catequista):
-    grupo = get_object_or_404(Grupo,catequista1=catequista) or get_object_or_404(Grupo,catequista2=catequista)
-    return grupo.miembros.all()
-
+    grupo1 = Grupo.objects.filter(catequista1=catequista).first()
+    grupo2 = Grupo.objects.filter(catequista2=catequista).first()
+    
+    if grupo1:
+        return grupo1.miembros.all()
+    elif grupo2:
+        return grupo2.miembros.all()
+    else:
+        return []
 @login_required
 def tabla_asistencias_grupo(request):
     if not request.user.is_authenticated:

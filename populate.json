@@ -2893,6 +2893,266 @@
           "is_superuser": false,
           "curso": 1
           }
+      },{
+        "model": "custom_user.CustomUser",
+        "fields": {
+          "first_name": "Elladine",
+          "last_name": "Allchorn",
+          "email": "eallchorn0@skyrock.com",
+          "telefono": "9318638024",
+          "password": "pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
+          "ciclo": "catecumenados_2",
+          "is_coord": false,
+          "is_superuser": false,
+          "curso": 1
+        }
+      }, {
+        "model": "custom_user.CustomUser",
+        "fields": {
+          "first_name": "Buffy",
+          "last_name": "Casse",
+          "email": "bcasse1@discovery.com",
+          "telefono": "3081114707",
+          "password": "pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
+          "ciclo": "catecumenados_2",
+          "is_coord": false,
+          "is_superuser": false,
+          "curso": 1
+        }
+      }, {
+        "model": "custom_user.CustomUser",
+        "fields": {
+          "first_name": "Rube",
+          "last_name": "Roberti",
+          "email": "rroberti2@mapy.cz",
+          "telefono": "9958509288",
+          "password": "pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
+          "ciclo": "catecumenados_1",
+          "is_coord": false,
+          "is_superuser": false,
+          "curso": 1
+        }
+      }, {
+        "model": "custom_user.CustomUser",
+        "fields": {
+          "first_name": "Jenni",
+          "last_name": "Pitone",
+          "email": "jpitone3@webs.com",
+          "telefono": "4653488445",
+          "password": "pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
+          "ciclo": "catecumenados_1",
+          "is_coord": false,
+          "is_superuser": false,
+          "curso": 1
+        }
+      }, {
+        "model": "custom_user.CustomUser",
+        "fields": {
+          "first_name": "Opaline",
+          "last_name": "Mengue",
+          "email": "omengue4@dmoz.org",
+          "telefono": "2611634316",
+          "password": "pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
+          "ciclo": "catecumenados_2",
+          "is_coord": false,
+          "is_superuser": false,
+          "curso": 1
+        }
+      }, {
+        "model": "custom_user.CustomUser",
+        "fields": {
+          "first_name": "Bradford",
+          "last_name": "Paulou",
+          "email": "bpaulou5@google.com.br",
+          "telefono": "2974245258",
+          "password": "pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
+          "ciclo": "catecumenados_1",
+          "is_coord": false,
+          "is_superuser": false,
+          "curso": 1
+        }
+      }, {
+        "model": "custom_user.CustomUser",
+        "fields": {
+          "first_name": "Ealasaid",
+          "last_name": "Crosetti",
+          "email": "ecrosetti6@wiley.com",
+          "telefono": "4511197229",
+          "password": "pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
+          "ciclo": "catecumenados_3",
+          "is_coord": false,
+          "is_superuser": false,
+          "curso": 1
+        }
+      }, {
+        "model": "custom_user.CustomUser",
+        "fields": {
+          "first_name": "Arleen",
+          "last_name": "Castella",
+          "email": "acastella7@cnbc.com",
+          "telefono": "6896161122",
+          "password": "pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
+          "ciclo": "catecumenados_1",
+          "is_coord": false,
+          "is_superuser": false,
+          "curso": 1
+        }
+      }, {
+        "model": "custom_user.CustomUser",
+        "fields": {
+          "first_name": "Karoly",
+          "last_name": "McComiskey",
+          "email": "kmccomiskey8@fastcompany.com",
+          "telefono": "2933116321",
+          "password": "pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
+          "ciclo": "catecumenados_2",
+          "is_coord": false,
+          "is_superuser": false,
+          "curso": 1
+        }
+      }, {
+        "model": "custom_user.CustomUser",
+        "fields": {
+          "first_name": "Katalin",
+          "last_name": "Kellegher",
+          "email": "kkellegher9@cbslocal.com",
+          "telefono": "7621494787",
+          "password": "pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
+          "ciclo": "catecumenados_2",
+          "is_coord": false,
+          "is_superuser": false,
+          "curso": 1
+        }
+      }, {
+        "model": "custom_user.CustomUser",
+        "fields": {
+          "first_name": "Dun",
+          "last_name": "Phettiplace",
+          "email": "dphettiplacea@netscape.com",
+          "telefono": "6877932172",
+          "password": "pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
+          "ciclo": "catecumenados_3",
+          "is_coord": false,
+          "is_superuser": false,
+          "curso": 1
+        }
+      }, {
+        "model": "custom_user.CustomUser",
+        "fields": {
+          "first_name": "Kaleena",
+          "last_name": "Inkles",
+          "email": "kinklesb@time.com",
+          "telefono": "6747162139",
+          "password": "pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
+          "ciclo": "catecumenados_3",
+          "is_coord": false,
+          "is_superuser": false,
+          "curso": 1
+        }
+      }, {
+        "model": "custom_user.CustomUser",
+        "fields": {
+          "first_name": "Terra",
+          "last_name": "Fores",
+          "email": "tforesc@woothemes.com",
+          "telefono": "3444238890",
+          "password": "pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
+          "ciclo": "catecumenados_3",
+          "is_coord": false,
+          "is_superuser": false,
+          "curso": 1
+        }
+      }, {
+        "model": "custom_user.CustomUser",
+        "fields": {
+          "first_name": "Denny",
+          "last_name": "Foort",
+          "email": "dfoortd@flickr.com",
+          "telefono": "5845080148",
+          "password": "pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
+          "ciclo": "catecumenados_3",
+          "is_coord": false,
+          "is_superuser": false,
+          "curso": 1
+        }
+      }, {
+        "model": "custom_user.CustomUser",
+        "fields": {
+          "first_name": "Judas",
+          "last_name": "Farndell",
+          "email": "jfarndelle@netlog.com",
+          "telefono": "5895145830",
+          "password": "pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
+          "ciclo": "catecumenados_3",
+          "is_coord": false,
+          "is_superuser": false,
+          "curso": 1
+        }
+      }, {
+        "model": "custom_user.CustomUser",
+        "fields": {
+          "first_name": "Christi",
+          "last_name": "Elnaugh",
+          "email": "celnaughf@un.org",
+          "telefono": "4357151630",
+          "password": "pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
+          "ciclo": "catecumenados_3",
+          "is_coord": false,
+          "is_superuser": false,
+          "curso": 1
+        }
+      }, {
+        "model": "custom_user.CustomUser",
+        "fields": {
+          "first_name": "Goldi",
+          "last_name": "Dowdle",
+          "email": "gdowdleg@edublogs.org",
+          "telefono": "6062663367",
+          "password": "pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
+          "ciclo": "catecumenados_3",
+          "is_coord": false,
+          "is_superuser": false,
+          "curso": 1
+        }
+      }, {
+        "model": "custom_user.CustomUser",
+        "fields": {
+          "first_name": "Asher",
+          "last_name": "Pawlaczyk",
+          "email": "apawlaczykh@t-online.de",
+          "telefono": "1317425137",
+          "password": "pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
+          "ciclo": "catecumenados_3",
+          "is_coord": false,
+          "is_superuser": false,
+          "curso": 1
+        }
+      }, {
+        "model": "custom_user.CustomUser",
+        "fields": {
+          "first_name": "Tanitansy",
+          "last_name": "Soggee",
+          "email": "tsoggeei@sina.com.cn",
+          "telefono": "9858150621",
+          "password": "pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
+          "ciclo": "catecumenados_1",
+          "is_coord": false,
+          "is_superuser": false,
+          "curso": 1
+        }
+      }, {
+        "model": "custom_user.CustomUser",
+        "fields": {
+          "first_name": "Madelaine",
+          "last_name": "Margetts",
+          "email": "mmargettsj@dailymail.co.uk",
+          "telefono": "8548214488",
+          "password": "pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
+          "ciclo": "catecumenados_1",
+          "is_coord": false,
+          "is_superuser": false,
+          "curso": 1
+        }
       },
       
       {
