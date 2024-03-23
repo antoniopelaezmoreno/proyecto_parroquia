@@ -4,18 +4,20 @@ from .models import Catecumeno
 from grupo.models import Grupo
 import json
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 
 def crear_catecumeno(request):
     if request.method == 'POST':
         form = CatecumenoForm(request.POST, request.FILES)
         if form.is_valid():
-            catecumeno = form.save()
+            form.save()
             return redirect('/')
     else:
         form = CatecumenoForm()
     
     return render(request, 'crear_catecumeno.html', {'form': form})
 
+@login_required
 def listar_catecumenos(request):
     if request.user.is_authenticated:
         if request.user.is_superuser:
@@ -30,7 +32,7 @@ def listar_catecumenos(request):
     else:
             return redirect('/403')
     
-
+@login_required
 def asociar_preferencias(request, ciclo):
     if request.user.is_coord and request.user.ciclo == ciclo:
         usuarios_disponibles = Catecumeno.objects.filter(ciclo=ciclo)
@@ -49,6 +51,7 @@ def asociar_preferencias(request, ciclo):
     else:
         return redirect('/403')
 
+@login_required
 @csrf_exempt
 def asignar_catecumenos_a_grupo(request):
     if request.user.is_coord:
@@ -71,7 +74,8 @@ def asignar_catecumenos_a_grupo(request):
         return render(request, 'asignar_catecumenos_a_grupo.html', {'catecumenos': catecumenos, 'grupos': grupos})
     else:
         return redirect('/403')
-    
+
+@login_required
 def ver_autorizaciones(request):
     if request.user.is_authenticated:
         if request.user.is_superuser:
@@ -86,6 +90,7 @@ def ver_autorizaciones(request):
     else:
         return redirect('/403')
     
+@login_required
 def eliminar_catecumeno(request, id):
     if request.user.is_authenticated:
         catecumeno = get_object_or_404(Catecumeno,id=id)

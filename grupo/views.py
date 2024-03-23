@@ -6,8 +6,10 @@ from catecumeno.models import Catecumeno
 from .models import Grupo
 from curso.models import Curso
 import random
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+@login_required
 def crear_grupo(request):
     if request.user.is_authenticated:
         if request.user.is_coord:
@@ -29,7 +31,8 @@ def crear_grupo(request):
             return redirect('/403')
     else:
         return redirect('/403')
-    
+
+@login_required
 def crear_grupo_admin(request, ciclo):
     if request.user.is_authenticated:
         if request.user.is_superuser:

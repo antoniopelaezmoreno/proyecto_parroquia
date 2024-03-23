@@ -3,11 +3,13 @@ from .forms import SesionForm
 from .models import Catecumeno
 from django.utils import timezone
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from .models import Sesion
 from grupo.models import Grupo
 from curso.models import Curso
 # Create your views here.
 
+@login_required
 def crear_sesion(request):
     if request.user.is_authenticated:
         ciclo=request.user.ciclo
@@ -32,7 +34,8 @@ def crear_sesion(request):
         return render(request, 'crear_sesion.html', {'form': form})
     else:
         return redirect('/403')
-    
+
+@login_required
 def listar_sesiones(request):
     if request.user.is_authenticated:
         if request.user.is_superuser:
@@ -44,7 +47,8 @@ def listar_sesiones(request):
             return render(request, 'listar_sesiones.html', {'sesiones': sesiones})
     else:
         return redirect('/403')
-    
+
+@login_required
 def pasar_lista(request, sesionid):
     if request.user.is_authenticated:
         sesion = get_object_or_404(Sesion, pk=sesionid)
@@ -66,10 +70,12 @@ def pasar_lista(request, sesionid):
     else:
         return redirect('/403')
 
+
 def catecumenos_desde_catequista(catequista):
     grupo = get_object_or_404(Grupo,catequista1=catequista) or get_object_or_404(Grupo,catequista2=catequista)
     return grupo.miembros.all()
 
+@login_required
 def tabla_asistencias_grupo(request):
     if not request.user.is_authenticated:
         return redirect('/403')
@@ -77,6 +83,7 @@ def tabla_asistencias_grupo(request):
     sesiones = Sesion.objects.filter(ciclo=request.user.ciclo, curso = Curso.objects.latest('id')).order_by('fecha')
     return render(request, 'tabla_asistencias.html', {'catecumenos': catecumenos, 'sesiones': sesiones})
 
+@login_required
 def tabla_asitencias_coord(request):
     if not request.user.is_authenticated:
         return redirect('/403')
@@ -88,6 +95,7 @@ def tabla_asitencias_coord(request):
     elif request.user.is_superuser:
         redirect('/sesion/tabla_asistencia_admin/posco_1')
 
+@login_required
 def tabla_asistencias_admin(request, ciclo):
     if not request.user.is_authenticated or not request.user.is_superuser:
         return redirect('/403')
