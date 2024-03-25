@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Sesion
 from grupo.models import Grupo
 from curso.models import Curso
+from core.views import error
 # Create your views here.
 
 @login_required
@@ -20,7 +21,7 @@ def crear_sesion(request):
             form = SesionForm(request.POST, request.FILES)
             if form.is_valid():
                 fecha = form.cleaned_data['fecha']
-                if fecha > timezone.now().date():
+                if fecha >= timezone.now().date():
                     sesion = form.save(commit=False)
                     sesion.ciclo = ciclo
                     sesion.save()
@@ -50,7 +51,10 @@ def listar_sesiones(request):
 
 @login_required
 def pasar_lista(request, sesionid):
+
     if request.user.is_authenticated:
+        if timezone.now().date() < Sesion.objects.get(pk=sesionid).fecha:
+            return error(request, "No puedes pasar lista antes de la fecha de la sesión")
         sesion = get_object_or_404(Sesion, pk=sesionid)
         if request.user.ciclo == sesion.ciclo:
             if request.method == 'POST':
