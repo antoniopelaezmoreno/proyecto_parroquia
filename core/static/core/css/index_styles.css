@@ -1,0 +1,81 @@
+.flex-container {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    margin-bottom: 20px;
+    
+}
+
+.flex-vertical {
+    display: flex;
+    flex-flow: column wrap;
+    flex-grow: 1;   
+    margin-right: 10px;
+    justify-content: space-between;
+    
+}
+.caja {
+    background-color: white;
+    color: black;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.5s, box-shadow 0.5s; /* Agregado box-shadow a la transición */
+}
+
+.grupo {
+    flex-basis: 20%;
+    margin: 10px;
+    padding: 20px;
+    text-align: center;
+}
+
+.caja:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(160, 59, 59, 0.5); /* Cambiado el color de la sombra en :hover */
+}
+
+.sesion {
+    background-color: rgba(249, 223, 188, 0.886);
+    flex-grow: 2;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.miembros {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+}
+
+.miembros p {
+    margin:0;
+    font-weight: normal;
+}
+
+.verticales {
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    text-align: center;
+    flex-grow: 1; 
+    margin-bottom: 5px;
+}
+.verticales:last-child{
+    margin-bottom: 0px;
+}
+
+a {
+    text-decoration: none;
+}
+
+.casilla {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 20%;
+    margin: 10px;
+    padding: 20px;
+    text-align: center; 
+    justify-content: space-around;
+}
+
