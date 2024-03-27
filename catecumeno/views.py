@@ -19,18 +19,15 @@ def crear_catecumeno(request):
 
 @login_required
 def listar_catecumenos(request):
-    if request.user.is_authenticated:
-        if request.user.is_superuser:
-            catecumenos = Catecumeno.objects.all()
-            return render(request, 'listar_catecumenos_admin.html', {'catecumenos': catecumenos})
-        elif request.user.is_coord:
-            ciclo=request.user.ciclo
-            catecumenos = Catecumeno.objects.filter(ciclo=ciclo)
-            return render(request, 'listar_catecumenos.html', {'catecumenos': catecumenos})
-        else:
-            return redirect('/403')
+    if request.user.is_superuser:
+        catecumenos = Catecumeno.objects.all()
+        return render(request, 'listar_catecumenos_admin.html', {'catecumenos': catecumenos})
+    elif request.user.is_coord:
+        ciclo=request.user.ciclo
+        catecumenos = Catecumeno.objects.filter(ciclo=ciclo)
+        return render(request, 'listar_catecumenos.html', {'catecumenos': catecumenos})
     else:
-            return redirect('/403')
+        return redirect('/403')
     
 @login_required
 def asociar_preferencias(request, ciclo):
@@ -102,5 +99,15 @@ def eliminar_catecumeno(request, id):
             return redirect(request.META.get('HTTP_REFERER', '/'))
         else:
             return redirect('/403')
+    else:
+        return redirect('/403')
+    
+@login_required
+def mostrar_catecumeno(request, id):
+    catecumeno = get_object_or_404(Catecumeno,id=id)
+    if request.user.is_superuser:
+        return render(request, 'mostrar_catecumeno.html', {'catecumeno': catecumeno})
+    elif request.user.is_coord and catecumeno.ciclo == request.user.ciclo:
+        return render(request, 'mostrar_catecumeno.html', {'catecumeno': catecumeno})
     else:
         return redirect('/403')

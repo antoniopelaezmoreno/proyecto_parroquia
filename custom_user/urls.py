@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import iniciar_sesion, cerrar_sesion, crear_usuario_desde_solicitud, listar_catequistas
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LoginView
 
 
 urlpatterns = [

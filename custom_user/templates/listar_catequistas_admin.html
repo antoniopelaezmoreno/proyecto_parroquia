@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Listar Catequistas {% endblock %}
+
+{% block content %}
+
+<div class="filter-panel">
+    <button class="filter-btn" onclick="filterByCiclo('')">Todos</button>
+    <button class="filter-btn" onclick="filterByCiclo('posco_1')">Poscomunión 1</button>
+    <button class="filter-btn" onclick="filterByCiclo('posco_2')">Poscomunión 2</button>
+    <button class="filter-btn" onclick="filterByCiclo('posco_3')">Poscomunión 3</button>
+    <button class="filter-btn" onclick="filterByCiclo('posco_4')">Poscomunión 4</button>
+    <button class="filter-btn" onclick="filterByCiclo('gr_juv_1')">Grupos Juveniles 1</button>
+    <button class="filter-btn" onclick="filterByCiclo('gr_juv_2')">Grupos Juveniles 2</button>
+    <button class="filter-btn" onclick="filterByCiclo('catecumenados_1')">Catecumenados 1</button>
+    <button class="filter-btn" onclick="filterByCiclo('catecumenados_2')">Catecumenados 2</button>
+    <button class="filter-btn" onclick="filterByCiclo('catecumenados_3')">Catecumenados 3</button>
+</div>
+<div id="alumnos-container">
+    <table class="alumnos-table rounded-border">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Apellidos</th>
+                <th>Email</th>
+                <th>Teléfono</th>
+                <th>Ciclo</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for catequista in catequistas %}
+                <tr class="alumno" data-ciclo="{{ catequista.ciclo }}">
+                    <td>{{ catequista.first_name }}</td>
+                    <td>{{ catequista.last_name }}</td>
+                    <td>{{ catequista.email }}</td>
+                    <td>{{ catequista.telefono }}</td>
+                    <td>{{ catequista.ciclo }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+
+<script>
+    // Función para filtrar los alumnos por ciclo
+    function filterByCiclo(ciclo) {
+        var alumnos = document.getElementsByClassName('alumno');
+
+        for (var i = 0; i < alumnos.length; i++) {
+            var alumno = alumnos[i];
+            var cicloAlumno = alumno.getAttribute('data-ciclo');
+
+            if (ciclo === '' || cicloAlumno === ciclo) {
+                alumno.style.display = 'table-row';
+            } else {
+                alumno.style.display = 'none';
+            }
+        }
+    }
+</script>
+
+
+{% endblock %}

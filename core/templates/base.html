@@ -40,12 +40,10 @@
         {% else %}
           {% if user.is_coord %}
             <a href="{% url 'index' %}" class="menu-btn">Inicio</a>
-            <a href="{% url 'listar_catecumenos' %}" class="menu-btn">Catecúmenos</a>
-            <a href="#" class="menu-btn">Catequistas</a>
+            <a href="#" class="menu-btn">Grupos</a>
+            <a href="#" class="menu-btn">Sesiones</a>
             <a href="{% url 'listar_archivos' %}" class="menu-btn">Materiales</a>
-            <a href="#" class="menu-btn">Mensajería</a>
-            <a href="{% url 'ver_autorizaciones' %}" class="menu-btn">Autorizaciones</a>
-            <a href="{% url 'tabla_asistencias_coord' %}" class="menu-btn">Tabla asistencias</a>
+            <a href="#" class="menu-btn">Correo</a>
           {% else %}
             <a href="{% url 'index' %}" class="menu-btn">Inicio</a>
             <button class="menu-btn" onclick="toggleSidebar()">Reports</button>
