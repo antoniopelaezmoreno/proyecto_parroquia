@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Grupos {% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'core/css/index_styles.css' %}">
+<div class="flex-container">
+    {% for grupo in grupos %}
+        <div class="caja grupo">
+            <h3>{{ grupo.catequista1.first_name }} y {{ grupo.catequista2.first_name }}</h3>
+            <div class="miembros">
+                {% for miembro in grupo.miembros.all %}
+                    <p>{{ miembro.nombre }}</p>
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<div class = "flex-container">
+    <a href="{% url 'crear_grupo' %}" class = "panel">
+        <p>MODIFICAR / CREAR</p>
+    </a>
+    <a href ="{% url 'asignar_catecumenos_a_grupo' %}" class = "panel">
+        <p>ASIGNAR</p>
+    </a>
+    <a href="{% url 'listar_catecumenos' %}" class = "panel">
+        <p>LISTAR DATOS</p>
+    </a>
+</div>
+
+<style>
+    .panel {
+        background-color: lightblue;
+        display: flex;
+        flex-direction: column;
+        flex-basis: auto;
+        margin: 5px;
+        padding-left: 10px;
+        padding-right: 10px;
+        text-align: center; 
+        justify-content: space-around;
+        border-radius: 10px;
+    }
+    .panel:hover {  
+        background-color: lightgreen;
+    }
+</style>
+
+{% endblock %}

@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from .models import CustomUser
 from solicitud_catequista.models import SolicitudCatequista
 from .forms import CustomUserForm
@@ -28,10 +28,11 @@ def cerrar_sesion(request):
     logout(request)
     return redirect('/')
 
+
 @login_required
 def listar_catequistas(request):
     if request.user.is_superuser:
-        catequistas = CustomUser.objects.all()
+        catequistas = CustomUser.objects.all().exclude(is_superuser=True)
         return render(request, 'listar_catequistas_admin.html', {'catequistas': catequistas})
     elif request.user.is_coord:
         ciclo=request.user.ciclo
@@ -39,10 +40,10 @@ def listar_catequistas(request):
         return render(request, 'listar_catequistas.html', {'catequistas': catequistas})
     else:
         return redirect('/403')
+
     
 def crear_usuario_desde_solicitud(request, id, ciclo):
     solicitud = SolicitudCatequista.objects.get(id=id)
-    
 
     if request.method == 'POST':
         # Si se envió un formulario, procesar los datos

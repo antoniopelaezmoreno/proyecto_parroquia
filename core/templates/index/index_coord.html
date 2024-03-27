@@ -6,22 +6,6 @@
 {% block content %}
     <link rel="stylesheet" type="text/css" href="{% static 'core/css/index_styles.css' %}">
 
-    <h4 style="text-align: center;"> GRUPOS </h4>
-    <div class="flex-container">
-        {% for grupo in grupos %}
-            <div class="caja grupo">
-                <h3>{{ grupo.catequista1.first_name }} y {{ grupo.catequista2.first_name }}</h3>
-                <div class="miembros">
-                    {% for miembro in grupo.miembros.all %}
-                        <p>{{ miembro.nombre }}</p>
-                    {% endfor %}
-                </div>
-            </div>
-        {% endfor %}
-    </div>
-
-    <h4 style="text-align: center;"> SESIÓN </h4>
-
 
     <div class="flex-container">
         <div class="caja sesion">
@@ -31,19 +15,56 @@
             <p style="margin-left: 20px;"> Fecha: {{ proxima_sesion.fecha }} </p>
             <p style="margin-left: 20px;"> Descripción: {{ proxima_sesion.descripcion }} </p>
             <p style="margin-left: 20px;"> Archivos asociados:  </p>
+            <a href="{% url 'pasar_lista' proxima_sesion.id %}" class="boton">
+                <p> PASAR LISTA </p>
+            </a>
         </div>
 
         <div class="flex-vertical">
             <a href="{% url 'listar_sesiones' %}" class="caja verticales">
-                <p> LISTARxº     SESIONES </p>
+                <p> NOVEDADES / MENSAJES </p>
+                <p> </p>
+
             </a>
-            <a href="{% url 'pasar_lista' proxima_sesion.id %}" class="caja verticales">
-                <p> PASAR LISTA </p>
-            </a>
+            <div class="estadisticas">
+                <div class = "caja cuadrado">
+                    Nº CATECÚMENOS
+                </div>
+                <div class = "caja cuadrado">
+                    Nº AUSENCIAS
+                </div>
+            </div>
         </div>
     </div>
 
-    <h4 style="text-align: center;"> ESTADÍSTICAS </h4>
+    <div class="flex-container">
+        <div class="caja sesion">
+            <div class="rectangulo-rojo"></div>
+            <h2 style="text-align: center;"> Próximo Evento </h2>
+            <p style="margin-left: 20px;"> Título: {{ proxima_sesion.titulo }} </p>
+            <p style="margin-left: 20px;"> Fecha: {{ proxima_sesion.fecha }} </p>
+            <p style="margin-left: 20px;"> Descripción: {{ proxima_sesion.descripcion }} </p>
+            <p style="margin-left: 20px;"> Archivos asociados:  </p>
+        </div>
+
+        <div class="flex-vertical">
+            <div class="estadisticas2">
+                <div class = "caja cuadrado">
+                    Nº CATECÚMENOS
+                </div>
+                <div class = "caja cuadrado">
+                    Nº AUSENCIAS
+                </div>
+            </div>
+
+            <a href="{% url 'listar_sesiones' %}" class="caja verticales">
+                <p> SALAS RESERVADAS </p>
+                <p> </p>
+            </a>
+            
+        </div>
+    </div>
+
     <div class="flex-container">
         <div style="background-color: lightblue;"  class="caja casilla">
             <h2> CATECÚMENOS </h2>
@@ -58,4 +79,5 @@
             <h2> EVENTOS </h2>
         </div>
     </div>
+
 {% endblock %}

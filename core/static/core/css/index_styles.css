@@ -3,16 +3,15 @@
     flex-flow: row wrap;
     justify-content: center;
     margin-bottom: 20px;
-    
+   
 }
 
 .flex-vertical {
     display: flex;
-    flex-flow: column wrap;
-    flex-grow: 1;   
-    margin-right: 10px;
+    flex-flow: column;
+    flex-basis:40%;
     justify-content: space-between;
-    
+    align-items: stretch;
 }
 .caja {
     background-color: white;
@@ -36,7 +35,7 @@
 
 .sesion {
     background-color: rgba(249, 223, 188, 0.886);
-    flex-grow: 2;
+    flex-basis: 55%;
     margin-left: 10px;
     margin-right: 10px;
 }
@@ -55,15 +54,14 @@
 
 .verticales {
     display: flex; 
+    flex-flow: column wrap;
     justify-content: center; 
-    align-items: center;
+    align-items: stretch;
     text-align: center;
-    flex-grow: 1; 
     margin-bottom: 5px;
+    flex:1;
 }
-.verticales:last-child{
-    margin-bottom: 0px;
-}
+
 
 a {
     text-decoration: none;
@@ -79,3 +77,43 @@ a {
     justify-content: space-around;
 }
 
+
+.cuadrado {
+    background-color: lightblue;
+    margin-left:5px;
+    flex:1;
+    aspect-ratio: 1;   
+    max-width: 220px;
+}
+
+.cuadrado:last-child{
+    margin-left: 20px;
+}
+
+.estadisticas {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.estadisticas2 {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.boton {
+    display: inline-block;
+    background-color: lightblue;
+    color: black;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.boton:hover {
+    background-color: skyblue;
+}

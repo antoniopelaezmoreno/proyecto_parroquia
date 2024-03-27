@@ -63,7 +63,7 @@ def crear_grupo_admin(request):
         else:
             return render(request, 'crear_grupo_admin.html')
     else:
-        redirect('/403')
+       return redirect('/403')
 
 @login_required
 def ajax_obtener_catequistas(request):
@@ -71,6 +71,12 @@ def ajax_obtener_catequistas(request):
     catequistas = CustomUser.objects.filter(ciclo=ciclo_id)
     catequistas_data = [{'id': catequista.id, 'first_name': catequista.first_name, 'last_name': catequista.last_name} for catequista in catequistas]
     return JsonResponse({'catequistas': catequistas_data})
+
+@login_required
+def panel_grupos(request):
+    if request.user.is_coord:
+        grupos = Grupo.objects.filter(ciclo=request.user.ciclo)
+        return render(request, 'panel_grupos_coord.html', {'grupos': grupos})
     
 def calcular_valor(grupos, lista_catecumenos, num_grupos):
    
