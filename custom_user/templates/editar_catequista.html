@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %} Editar Catequista {% endblock %}
+
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <label for="id_new_password">New Password:</label>
+    <input type="password" id="id_new_password" name="new_password">
+    <button type="submit">Editar</button>
+</form>
+{% endblock %}

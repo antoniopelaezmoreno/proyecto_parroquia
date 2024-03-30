@@ -3,26 +3,13 @@ from django.http import HttpResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from .models import CustomUser
 from solicitud_catequista.models import SolicitudCatequista
-from .forms import CustomUserForm
-from catecumeno.models import Catecumeno
+from .forms import CustomUserForm, EditCustomUserForm
 from google_auth_oauthlib.flow import InstalledAppFlow
 from django.contrib.auth.decorators import login_required
 import json
 
 SCOPES = ["https://www.googleapis.com/auth/gmail.readonly", "https://www.googleapis.com/auth/gmail.send"]
 
-
-def iniciar_sesion(request):
-    if request.method == 'POST':
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        user = authenticate(request, email=email, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('/') 
-        else:
-            return HttpResponse('Credenciales inválidas. Inténtalo de nuevo.')
-    return HttpResponse('Método no permitido.')
 
 def cerrar_sesion(request):
     logout(request)
@@ -41,6 +28,20 @@ def listar_catequistas(request):
     else:
         return redirect('/403')
 
+@login_required
+def editar_catequista(request, id):
+    catequista = get_object_or_404(CustomUser, id=id)
+    if request.user.is_superuser or request.user.id == id:
+        if request.method == 'POST':
+            form = EditCustomUserForm(request.POST, instance=catequista)
+            if form.is_valid():
+                form.save()
+                return redirect('listar_catequistas')
+        else:
+            form = EditCustomUserForm(instance=catequista)
+    else:
+        return redirect('/403')
+    return render(request, 'editar_catequista.html', {'form': form})
     
 def crear_usuario_desde_solicitud(request, id, ciclo):
     solicitud = SolicitudCatequista.objects.get(id=id)
