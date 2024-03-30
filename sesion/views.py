@@ -25,6 +25,10 @@ def crear_sesion(request):
                     sesion = form.save(commit=False)
                     sesion.ciclo = ciclo
                     sesion.save()
+
+                    files = form.cleaned_data['files']
+                    for file in files:
+                        sesion.files.add(file)
                     return redirect('/sesion/listar')
                 else:
                     messages.error(request, "La fecha no puede estar en el pasado")
