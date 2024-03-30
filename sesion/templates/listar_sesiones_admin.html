@@ -27,6 +27,8 @@
         {% if user.ciclo == sesion.ciclo %}
             <a href="{% url 'pasar_lista' sesion.id %}">Pasar Lista</a>
         {% endif %}
+        <a href="{% url 'editar_sesion' sesion.id %}">Editar</a>
+        <a href="{% url 'eliminar_sesion' sesion.id %}">Eliminar</a>
     </div>
     {% endfor %}
 </div>

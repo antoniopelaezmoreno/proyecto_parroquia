@@ -9,6 +9,8 @@
 <div class="flex-container">
     {% for grupo in grupos %}
         <div class="caja grupo">
+            <a href="{% url 'editar_grupo' grupo.id %}">Editar</a>
+            <a href="{% url 'eliminar_grupo' grupo.id %}">Eliminar</a>
             <h3>{{ grupo.catequista1.first_name }} y {{ grupo.catequista2.first_name }}</h3>
             <div class="miembros">
                 {% for miembro in grupo.miembros.all %}

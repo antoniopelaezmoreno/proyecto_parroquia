@@ -42,32 +42,36 @@ def crear_sesion(request):
 
 @login_required
 def editar_sesion(request, sesionId):
-    if request.user.is_authenticated:
-        sesion = get_object_or_404(Sesion, pk=sesionId)
-        if request.user.ciclo == sesion.ciclo or request.user.is_superuser:
-            if request.method == 'POST':
-                form = SesionForm(request.POST, request.FILES, instance=sesion)
-                if form.is_valid():
-                    fecha = form.cleaned_data['fecha']
-                    if fecha >= timezone.now().date():
-                        sesion = form.save(commit=False)
-                        sesion.save()
-                        sesion.files.clear()
-                        files = form.cleaned_data['files']
-                        for file in files:
-                            sesion.files.add(file)
-                        return redirect('/sesion/listar')
-                    else:
-                        messages.error(request, "La fecha no puede estar en el pasado")
-                else:
-                    messages.error(request, "Hay algo mal en el formulario, por favor revisa los campos")
+    sesion = get_object_or_404(Sesion, pk=sesionId)
+    if request.user.ciclo == sesion.ciclo or request.user.is_superuser:
+        if request.method == 'POST':
+            form = SesionForm(request.POST, request.FILES, instance=sesion)
+            if form.is_valid():
+                sesion = form.save(commit=False)
+                sesion.save()
+                sesion.files.clear()
+                files = form.cleaned_data['files']
+                for file in files:
+                    sesion.files.add(file)
+                return redirect('/sesion/listar')
             else:
-                form = SesionForm(instance=sesion)
-            return render(request, 'editar_sesion.html', {'form': form, 'sesion': sesion})
+                messages.error(request, "Hay algo mal en el formulario, por favor revisa los campos")
         else:
-            return redirect('/403')
+            form = SesionForm(instance=sesion)
+        return render(request, 'editar_sesion.html', {'form': form, 'sesion': sesion})
     else:
         return redirect('/403')
+    
+
+@login_required
+def eliminar_sesion(request, sesionId):
+    sesion = get_object_or_404(Sesion, pk=sesionId)
+    if request.user.ciclo == sesion.ciclo or request.user.is_superuser:
+        sesion.delete()
+        return redirect('/sesion/listar')
+    else:
+        return redirect('/403')
+ 
 @login_required
 def listar_sesiones(request):
     if request.user.is_authenticated:

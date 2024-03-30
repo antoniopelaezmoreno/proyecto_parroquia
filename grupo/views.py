@@ -1,5 +1,5 @@
 from http.client import HTTPResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import GrupoForm
 from django.http import JsonResponse
 from custom_user.models import CustomUser
@@ -9,6 +9,7 @@ from curso.models import Curso
 import random
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
+from django.contrib import messages
 
 # Create your views here.
 @login_required
@@ -33,7 +34,33 @@ def crear_grupo(request):
             return redirect('/403')
     else:
         return redirect('/403')
-
+    
+@login_required
+def editar_grupo(request, grupo_id):
+    grupo = get_object_or_404(Grupo, pk=grupo_id)
+    if request.user.ciclo == grupo.ciclo or request.user.is_superuser:
+        catequistas = CustomUser.objects.filter(ciclo=grupo.ciclo)
+        if request.method == 'POST':
+            form = GrupoForm(request.POST, request.FILES, instance=grupo, catequistas=catequistas)
+            if form.is_valid():
+                grupo = form.save(commit=False)
+                grupo.save()
+                return redirect('/grupo')
+        else:
+            form = GrupoForm(instance=grupo, catequistas=catequistas)
+        return render(request, 'editar_grupo.html', {'form': form})
+    else:
+        return redirect('/403')
+    
+@login_required
+def eliminar_grupo(request, grupo_id):
+    grupo = get_object_or_404(Grupo, pk=grupo_id)
+    if request.user.ciclo == grupo.ciclo or request.user.is_superuser:
+        grupo.delete()
+        return redirect('/grupo')
+    else:
+        return redirect('/403')
+    
 @login_required
 def crear_grupo_admin(request):
     if request.user.is_superuser:
