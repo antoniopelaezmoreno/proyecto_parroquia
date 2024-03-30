@@ -13,7 +13,6 @@ class Sesion(models.Model):
     asistentes = models.ManyToManyField(Catecumeno, related_name='sesiones_asistentes')
     justificados = models.ManyToManyField(Catecumeno, related_name='sesiones_justificados')
     ausentes = models.ManyToManyField(Catecumeno, related_name='sesiones_ausentes') 
-    comentario = models.TextField(null=True, blank=True)
     files = models.ManyToManyField(File, related_name='sesiones', blank=True)
 
     def __str__(self):
