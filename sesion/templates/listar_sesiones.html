@@ -13,6 +13,7 @@
                 <th>Descripción</th>
                 <th>Fecha</th>
                 <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -23,6 +24,13 @@
                     <td>{{ sesion.fecha }}</td>
                     <td>
                         <a href="{% url 'pasar_lista' sesion.id %}">Pasar Lista</a>
+                    </td>
+                    <td>
+                        <a href="{% url 'editar_sesion' sesion.id %}">Editar</a>
+                    </td>
+                    <td>
+                        <a href="{% url 'eliminar_sesion' sesion.id %}">Eliminar</a>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>
