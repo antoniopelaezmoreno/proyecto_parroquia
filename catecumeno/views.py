@@ -105,9 +105,32 @@ def eliminar_catecumeno(request, id):
 @login_required
 def mostrar_catecumeno(request, id):
     catecumeno = get_object_or_404(Catecumeno,id=id)
-    if request.user.is_superuser:
-        return render(request, 'mostrar_catecumeno.html', {'catecumeno': catecumeno})
-    elif request.user.is_coord and catecumeno.ciclo == request.user.ciclo:
-        return render(request, 'mostrar_catecumeno.html', {'catecumeno': catecumeno})
+    catequistas = obtener_catequistas_de_catecumeno(catecumeno)
+    if request.user.is_superuser or (request.user.is_coord and catecumeno.ciclo == request.user.ciclo):
+        return render(request, 'mostrar_catecumeno.html', {'catecumeno': catecumeno, 'catequistas': catequistas})
     else:
         return redirect('/403')
+    
+@login_required
+def editar_catecumeno(request, id):
+    catecumeno = get_object_or_404(Catecumeno,id=id)
+    if request.user.is_superuser or (request.user.is_coord and catecumeno.ciclo == request.user.ciclo):
+        if request.method == 'POST':
+            form = CatecumenoForm(request.POST, request.FILES, instance=catecumeno)
+            if form.is_valid():
+                form.save()
+                return redirect('mostrar_catecumeno', id=id)
+        else:
+            form = CatecumenoForm(instance=catecumeno)
+        return render(request, 'editar_catecumeno.html', {'form': form})
+    else:
+        return redirect('/403')
+    
+def obtener_catequistas_de_catecumeno(catecumeno):
+    grupos = Grupo.objects.filter(ciclo=catecumeno.ciclo)
+    catequistas = []
+    for grupo in grupos:
+        if catecumeno in grupo.miembros.all():
+            catequistas.append(grupo.catequista1.first_name)
+            catequistas.append(grupo.catequista2.first_name)
+    return catequistas
