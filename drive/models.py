@@ -52,6 +52,13 @@ class File(models.Model):
             return True
         except ValidationError as e:
             return False
+    
+    def is_video(self):
+        try:
+            FileExtensionValidator(allowed_extensions=['mp4','mov','avi','mkv'])(self)
+            return True
+        except ValidationError as e:
+            return False
         
     def str(self):
         return self.name
@@ -59,7 +66,7 @@ class File(models.Model):
     def clean(self):
         if self.file:
             try:
-                FileExtensionValidator(allowed_extensions=['pdf','jpeg','jpg','png','doc','docx','dot','dotx','docm','dotm','xls','xlsx','xlsm','xlsb','xltx','xltm','ppt','pptx','pot','potx','pptm','potm','txt'])(self.file)
+                FileExtensionValidator(allowed_extensions=['pdf','jpeg','jpg','png','doc','docx','dot','dotx','docm','dotm','xls','xlsx','xlsm','xlsb','xltx','xltm','ppt','pptx','pot','potx','pptm','potm','mp4','mov','avi','mkv','txt'])(self.file)
             except ValidationError as e:
                 raise ValidationError({'file': ('Este tipo de archivo no está permitido')}) 
         else:
