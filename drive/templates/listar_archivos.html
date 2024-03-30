@@ -43,6 +43,10 @@
                 <a href="/media/{{ file.file }}" alt="{{ file.name }}" target="_blank">
                     <img src="/media/{{ file.file }}" alt="{{ file.name }}" class="thumbnail">
                 </a>
+            {% elif file.is_video %}
+                <a href="/media/{{ file.file }}" alt="{{ file.name }}" target="_blank">
+                    <img src="/static/icons/video_icon3.png" alt="{{ file.name }}" class="thumbnail">
+                </a>
             
             {% elif file.is_pdf %}
                 <a href="/media/{{ file.file }}" alt="{{ file.name }}" target="_blank">
