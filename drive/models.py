@@ -55,4 +55,13 @@ class File(models.Model):
         
     def str(self):
         return self.name
+    
+    def clean(self):
+        if self.file:
+            try:
+                FileExtensionValidator(allowed_extensions=['pdf','jpeg','jpg','png','doc','docx','dot','dotx','docm','dotm','xls','xlsx','xlsm','xlsb','xltx','xltm','ppt','pptx','pot','potx','pptm','potm','txt'])(self.file)
+            except ValidationError as e:
+                raise ValidationError({'file': ('Este tipo de archivo no está permitido')}) 
+        else:
+            raise ValidationError({'file': ('Debe subir un archivo.')})
         
