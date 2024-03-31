@@ -12,6 +12,7 @@ from django.core.exceptions import ValidationError
 from django.contrib import messages
 
 # Create your views here.
+'''
 @login_required
 def crear_grupo(request):
     if request.user.is_authenticated:
@@ -34,7 +35,37 @@ def crear_grupo(request):
             return redirect('/403')
     else:
         return redirect('/403')
+'''
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@login_required
+def crear_grupo(request):
+    if request.user.is_authenticated:
+        if request.user.is_coord:
+            ciclo = request.user.ciclo
+            grupo = Grupo.objects.create(ciclo=ciclo)
+            grupo.save()
+            return redirect('/grupo')
+        if request.user.is_superuser:
+            return redirect('crear_grupo_admin')
+        else:
+            return redirect('/403')
+    else:
+        return redirect('/403')
     
+        
 @login_required
 def editar_grupo(request, grupo_id):
     grupo = get_object_or_404(Grupo, pk=grupo_id)
@@ -46,6 +77,11 @@ def editar_grupo(request, grupo_id):
                 grupo = form.save(commit=False)
                 grupo.save()
                 return redirect('/grupo')
+            else:
+                errores = form.errors['__all__'][0]
+                request.session['errores'] = [grupo.id,errores]
+                return redirect('/grupo')
+                
         else:
             form = GrupoForm(instance=grupo, catequistas=catequistas)
         return render(request, 'editar_grupo.html', {'form': form})
@@ -102,8 +138,10 @@ def ajax_obtener_catequistas(request):
 @login_required
 def panel_grupos(request):
     if request.user.is_coord:
+        error = request.session.pop('errores', "")
+        catequistas = CustomUser.objects.filter(ciclo=request.user.ciclo)
         grupos = Grupo.objects.filter(ciclo=request.user.ciclo)
-        return render(request, 'panel_grupos_coord.html', {'grupos': grupos})
+        return render(request, 'panel_grupos_coord.html', {'grupos': grupos, 'catequistas': catequistas, 'error': error})
     
 def calcular_valor(grupos, lista_catecumenos, num_grupos):
    

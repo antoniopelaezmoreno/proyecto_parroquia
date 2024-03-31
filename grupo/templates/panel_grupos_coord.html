@@ -9,9 +9,46 @@
 <div class="flex-container">
     {% for grupo in grupos %}
         <div class="caja grupo">
-            <a href="{% url 'editar_grupo' grupo.id %}">Editar</a>
             <a href="{% url 'eliminar_grupo' grupo.id %}">Eliminar</a>
-            <h3>{{ grupo.catequista1.first_name }} y {{ grupo.catequista2.first_name }}</h3>
+            <button onclick="changeToEdit(this)">Editar</button>
+            <!-- Nombre de catequistas -->
+            <h3 class="catequistas-info" style="display: block;">
+                {% if grupo.catequista1 %}
+                    {{ grupo.catequista1.first_name }} y
+                {% else %}
+                    Catequista 1 y 
+                {% endif %}
+                {% if grupo.catequista2 %}
+                    {{ grupo.catequista2.first_name }}
+                {% else %}
+                    Catequista 2
+                {% endif %}
+            </h3>
+
+            <!-- Formulario para editar catequistas -->
+            <form class="editar-form" style="display: none;" action="{% url 'editar_grupo' grupo.id %}" method="POST">
+                {% csrf_token %}
+                <select id="catequista1" name="catequista1">
+                    {% for catequista in catequistas %}
+                        <option value="{{ catequista.id }}" {% if grupo.catequista1.id == catequista.id %}selected{% endif %}>
+                            {{ catequista.first_name }}
+                        </option>
+                    {% endfor %}
+                </select>
+                y
+                <select id="catequista2" name="catequista2">
+                    {% for catequista in catequistas %}
+                        <option value="{{ catequista.id }}" {% if grupo.catequista2.id == catequista.id %}selected{% endif %}>
+                            {{ catequista.first_name }}
+                        </option>
+                    {% endfor %}
+                </select>
+                
+                <button type="submit">Guardar Cambios</button>
+            </form>
+            {% if error.0 == grupo.id %}
+                <span style="color:red;">{{ error.1 }} </span>
+            {% endif %}
             <div class="miembros">
                 {% for miembro in grupo.miembros.all %}
                     <p>{{ miembro.nombre }}</p>
@@ -23,7 +60,7 @@
 
 <div class = "flex-container">
     <a href="{% url 'crear_grupo' %}" class = "panel">
-        <p>MODIFICAR / CREAR</p>
+        <p>NUEVO GRUPO</p>
     </a>
     <a href ="{% url 'asignar_catecumenos_a_grupo' %}" class = "panel">
         <p>ASIGNAR</p>
@@ -50,5 +87,16 @@
         background-color: lightgreen;
     }
 </style>
+
+<script>
+    function changeToEdit(btn) {
+        const cajaGrupo = btn.closest('.grupo');
+        const catequistasInfo = cajaGrupo.querySelector('.catequistas-info');
+        const editarForm = cajaGrupo.querySelector('.editar-form');
+        catequistasInfo.style.display = 'none';
+        editarForm.style.display = 'block'; 
+    }
+
+</script>
 
 {% endblock %}
