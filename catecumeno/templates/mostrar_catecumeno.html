@@ -16,9 +16,13 @@
 <p>Nombre del padre: {{ catecumeno.nombre_padre }} {{ catecumeno.apellidos_padre }}</p>
 <p>Email del padre: {{ catecumeno.email_padre }}</p>
 <p>DNI del padre: {{ catecumeno.dni_padre }}</p>
-<p> Catequistas: 
-    {{ catequistas.0 }} y 
-    {{ catequistas.1 }}
+<p> Catequistas:
+    {% if catequistas %}
+        {{ catequistas.0 }} y 
+        {{ catequistas.1 }}
+    {% else %}
+        No hay catequistas asignados
+    {% endif %}
 </p>
 
 {% endblock %}

@@ -30,6 +30,7 @@ urlpatterns = [
     path('grupo/', include('grupo.urls')),
     path('sesion/', include('sesion.urls')),
     path('drive/', include('drive.urls')),
+    path('notificacion/', include('notificacion.urls')),
 ]
 
 if settings.DEBUG:

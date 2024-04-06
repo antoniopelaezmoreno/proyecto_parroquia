@@ -6,11 +6,17 @@
 {% block content %}
 
 <link rel="stylesheet" type="text/css" href="{% static 'core/css/index_styles.css' %}">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
 <div class="flex-container">
     {% for grupo in grupos %}
         <div class="caja grupo">
-            <a href="{% url 'eliminar_grupo' grupo.id %}">Eliminar</a>
-            <button onclick="changeToEdit(this)">Editar</button>
+            <a href="{% url 'eliminar_grupo' grupo.id %}"><span class="material-icons">
+                delete
+                </span></a>
+            <a href="#" style="text-decoration: none;" onclick="changeToEdit(this)"><span class="material-icons">
+                edit
+                </span></a>
             <!-- Nombre de catequistas -->
             <h3 class="catequistas-info" style="display: block;">
                 {% if grupo.catequista1 %}
@@ -93,8 +99,14 @@
         const cajaGrupo = btn.closest('.grupo');
         const catequistasInfo = cajaGrupo.querySelector('.catequistas-info');
         const editarForm = cajaGrupo.querySelector('.editar-form');
-        catequistasInfo.style.display = 'none';
-        editarForm.style.display = 'block'; 
+        
+        if (catequistasInfo.style.display === 'none') {
+            catequistasInfo.style.display = 'block';
+            editarForm.style.display = 'none';
+        } else {
+            catequistasInfo.style.display = 'none';
+            editarForm.style.display = 'block';
+        }
     }
 
 </script>

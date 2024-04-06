@@ -4,4 +4,4 @@ from .models import SolicitudCatequista
 class SolicitudCatequistaForm(forms.ModelForm):
     class Meta:
         model = SolicitudCatequista
-        fields = '__all__'
+        fields = ['nombre','apellidos','email','disponibilidad','preferencias']
