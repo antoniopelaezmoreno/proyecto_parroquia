@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %} Solicitudes de Catequistas {% endblock %}
+
+{% block content %}
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="date" name="fecha" id="fecha">
+
+    <select id="hora_inicio" name="hora_inicio"></select>
+    <select id="hora_fin" name="hora_fin"></select>
+
+    <button type="submit">Guardar</button>
+</form>
+
+{% for sala in salas_disponibles %}
+    <p>{{ sala }}</p>
+{% endfor %}
+<script>
+    var selectInicio = document.getElementById("hora_inicio");
+    var selectFin = document.getElementById("hora_fin");
+    for (var hora = 0; hora < 24; hora++) {
+        for (var minuto = 0; minuto < 60; minuto += 30) {
+            var hora_str = (hora < 10 ? "0" : "") + hora;
+            var minuto_str = (minuto === 0 ? "00" : minuto);
+            var opcion = document.createElement("option");
+            opcion.text = hora_str + ":" + minuto_str;
+            opcion.value = hora_str + ":" + minuto_str;
+            selectInicio.add(opcion);
+            selectFin.add(opcion.cloneNode(true)); // Clonamos la opción para el selector de fin
+        }
+    }
+</script>
+{% endblock %}
+
+
