@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %} Solicitudes de Catequistas {% endblock %}
+
+{% block content %}
+
+<form method="post" action="{% url 'crear_reservas' %}">
+    {% csrf_token %}
+    <label for="usuario">Usuario:</label>
+    <select name="usuario" id="usuario">
+        {% for user in usuarios %}
+        <option value="{{ user.id }}">{{ user.username }}</option>
+        {% endfor %}
+    </select>
+    <br>
+    <label for="sala">Sala:</label>
+    <select name="sala" id="sala">
+        {% for sala in salas %}
+        <option value="{{ sala.id }}">{{ sala.nombre }}</option>
+        {% endfor %}
+    </select>
+    <br>
+    <label for="hora_inicio">Hora de inicio:</label>
+    <input type="time" name="hora_inicio" id="hora_inicio">
+    <br>
+    <label for="hora_fin">Hora de fin:</label>
+    <input type="time" name="hora_fin" id="hora_fin">
+    <br>
+    <label for="dia_semana">Día de la semana:</label>
+    <select name="dia_semana" id="dia_semana">
+        <option value="0">Lunes</option>
+        <option value="1">Martes</option>
+        <option value="2">Miércoles</option>
+        <option value="3">Jueves</option>
+        <option value="4">Viernes</option>
+        <option value="5">Sábado</option>
+        <option value="6">Domingo</option>
+    </select>
+    <br>
+    <button type="submit">Crear Reservas</button>
+</form>
+{% endblock %}
+
+
