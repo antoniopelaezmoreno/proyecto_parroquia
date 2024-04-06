@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'grupo',
     'sesion',
     'drive',
+    'notificacion',
 ]
 
 MIDDLEWARE = [

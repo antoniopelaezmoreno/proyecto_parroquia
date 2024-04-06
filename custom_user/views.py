@@ -31,7 +31,7 @@ def listar_catequistas(request):
 @login_required
 def editar_catequista(request, id):
     catequista = get_object_or_404(CustomUser, id=id)
-    if request.user.is_superuser or request.user.id == id:
+    if request.user.id == id:
         if request.method == 'POST':
             form = EditCustomUserForm(request.POST, instance=catequista)
             if form.is_valid():
@@ -68,8 +68,7 @@ def crear_usuario_desde_solicitud(request, id, ciclo):
             solicitud.delete()
             
             # Redirigir a una página de éxito o a donde sea apropiado
-            return redirect('/')  # Cambia 'exito' por el nombre de la URL de la página de éxito
-            
+            return redirect('/')
     else:
         # Si es una solicitud GET, mostrar el formulario
         form = CustomUserForm()
