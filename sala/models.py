@@ -16,5 +16,5 @@ class Reserva(models.Model):
     hora_fin = models.TimeField()
 
     def __str__(self):
-        return f'{self.sala} reservada por {self.usuario} el {self.fecha} de {self.hora_inicio} a {self.hora_fin}'
+        return f'{self.sala} reservada por {self.usuario} para el {self.fecha} de {self.hora_inicio} a {self.hora_fin}'
     
