@@ -4,14 +4,14 @@
 
 {% block content %}
 
-<form method="post" enctype="multipart/form-data">
+<form method="post" enctype="multipart/form-data" id="solicitudForm">
     {% csrf_token %}
-    <input type="date" name="fecha" id="fecha">
+    <input type="date" name="fecha" id="fecha" min="{{ fecha_hoy }}">
 
     <select id="hora_inicio" name="hora_inicio"></select>
     <select id="hora_fin" name="hora_fin"></select>
 
-    <button type="submit">Guardar</button>
+    <button type="submit" id="guardarBtn">Guardar</button>
 </form>
 
 {% for sala in todas_salas %}
@@ -25,26 +25,19 @@
         {% endfor %}
     {% else %}
         <div class="sala libre">
-            <p>{{ sala }}</p>
+            <button class="openModalBtn" data-sala-id="{{ sala.id }}" data-sala-nombre="{{ sala.nombre }}"><p>{{ sala }}</p></button>
         </div>
     {% endif %}
 {% endfor %}
 
-<script>
-    var selectInicio = document.getElementById("hora_inicio");
-    var selectFin = document.getElementById("hora_fin");
-    for (var hora = 8; hora < 24; hora++) {
-        for (var minuto = 0; minuto < 60; minuto += 30) {
-            var hora_str = (hora < 10 ? "0" : "") + hora;
-            var minuto_str = (minuto === 0 ? "00" : minuto);
-            var opcion = document.createElement("option");
-            opcion.text = hora_str + ":" + minuto_str;
-            opcion.value = hora_str + ":" + minuto_str;
-            selectInicio.add(opcion);
-            selectFin.add(opcion.cloneNode(true)); // Clonamos la opción para el selector de fin
-        }
-    }
-</script>
+<div id="myModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Reservar la sala</h2>
+    <p id="mensajeConfirmacion"></p>
+    <button id="reservarBtn">Reservar</button>
+  </div>
+</div>
 
 <style>
     .sala {
@@ -69,6 +62,16 @@
         cursor: pointer;
     }
 
+    .libre button {
+        cursor: pointer;
+        background-color: transparent;
+        border: none;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
     .libre:hover {
         background-color: rgb(137, 151, 156);
     }
@@ -85,6 +88,183 @@
         white-space: nowrap; /* evitar que el texto se envuelva */
         z-index: 1; /* asegura que esté por encima de otras capas */
     }
+
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
 </style>
 
+<script>
+    var selectInicio = document.getElementById("hora_inicio");
+    var selectFin = document.getElementById("hora_fin");
+    var fechaInput = document.getElementById('fecha');
+    var horaInicioSelect = document.getElementById('hora_inicio');
+    var horaFinSelect = document.getElementById('hora_fin');
+    var guardarBtn = document.getElementById('guardarBtn');
+
+    // Rellenar los selectores de hora
+    for (var hora = 8; hora < 24; hora++) {
+        for (var minuto = 0; minuto < 60; minuto += 30) {
+            var hora_str = (hora < 10 ? "0" : "") + hora;
+            var minuto_str = (minuto === 0 ? "00" : minuto);
+            var opcion = document.createElement("option");
+            opcion.text = hora_str + ":" + minuto_str;
+            opcion.value = hora_str + ":" + minuto_str;
+            selectInicio.add(opcion);
+            selectFin.add(opcion.cloneNode(true)); // Clonamos la opción para el selector de fin
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const openModalBtns = document.querySelectorAll('.openModalBtn');
+        const modal = document.getElementById('myModal');
+        const closeModal = document.querySelector('.close');
+        const mensajeConfirmacionElement = document.getElementById('mensajeConfirmacion');
+        const reservarBtn = document.getElementById('reservarBtn');
+
+        const fechaActual = new Date().toISOString().split('T')[0];
+        fechaInput.min = fechaActual;
+
+
+
+        openModalBtns.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                const sala = btn.getAttribute('data-sala-nombre');
+                const salaId = btn.getAttribute('data-sala-id');
+
+                var fecha = sessionStorage.getItem('fechaSeleccionada');
+                var inicio = sessionStorage.getItem('horaInicioSeleccionada');
+                var fin = sessionStorage.getItem('horaFinSeleccionada');
+
+                mensajeConfirmacionElement.textContent = "Va a reservar la sala " + sala + " para el día " + fecha + " desde las " + inicio + " hasta las " + fin;
+                modal.style.display = 'block';
+                reservarBtn.addEventListener('click', function() {
+                    reservarSala(salaId, fecha, inicio, fin);
+                });
+            });
+        });
+
+        closeModal.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // Al cargar la página, establecer los valores seleccionados en los selectores de hora y fecha
+        fechaInput.value = sessionStorage.getItem('fechaSeleccionada') || '';
+        horaInicioSelect.value = sessionStorage.getItem('horaInicioSeleccionada') || '';
+        horaFinSelect.value = sessionStorage.getItem('horaFinSeleccionada') || '';
+
+        // Guardar los valores seleccionados en sessionStorage cuando se cambian
+        fechaInput.addEventListener('change', function() {
+            const fechaSeleccionada = this.value;
+            if (fechaSeleccionada < fechaActual) {
+                alert("No se puede seleccionar una fecha anterior a la actual");
+                guardarBtn.disabled = true;
+                this.value = fechaActual;
+            } else {
+                sessionStorage.setItem('fechaSeleccionada', fechaSeleccionada);
+                guardarBtn.disabled = false;
+            }
+        });
+
+        horaInicioSelect.addEventListener('change', function() {
+            horaFin=horaFinSelect.value;
+            horaInicio=this.value;
+            if (horaFin && horaInicio){
+                if (horaInicio >= horaFin){
+                    alert("La hora de inicio debe ser anterior a la hora de fin");
+                    guardarBtn.disabled = true;
+                } else {
+                    sessionStorage.setItem('horaInicioSeleccionada', this.value);
+                    guardarBtn.disabled = false;
+                }
+            }
+        });
+
+        horaFinSelect.addEventListener('change', function() {
+            horaFin=this.value;
+            horaInicio=horaInicioSelect.value;
+            if (horaFin && horaInicio){
+                if (horaInicio >= horaFin){
+                    alert("La hora de inicio debe ser anterior a la hora de fin");
+                    guardarBtn.disabled = true;
+                } else {
+                    sessionStorage.setItem('horaFinSeleccionada', this.value);
+                    guardarBtn.disabled = false;
+                }
+            }
+            
+        });
+
+        
+    });
+
+    function reservarSala(salaId, fecha, horaInicio, horaFin) {
+        var formData = new FormData();
+        formData.append('sala_id', salaId);
+        formData.append('fecha', fecha);
+        formData.append('hora_inicio', horaInicio);
+        formData.append('hora_fin', horaFin);
+
+        // Enviar la solicitud POST utilizando fetch
+        fetch('/sala/reservar/', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken')  // Obtener el token CSRF de las cookies
+            },
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log("Reserva creada correctamente");
+            } else {
+                console.error("Error al crear la reserva");
+            }
+        })
+        .catch(error => {
+            console.error("Error al crear la reserva:", error);
+        });
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+    }
+
+</script>
 {% endblock %}

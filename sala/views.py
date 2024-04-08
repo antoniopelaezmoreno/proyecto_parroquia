@@ -1,9 +1,11 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Sala, Reserva
 from custom_user.models import CustomUser
 from datetime import timedelta, date
 from django.http import HttpResponse
+from datetime import datetime
+import json
 
 @login_required
 def obtener_salas_disponibles(request):
@@ -24,10 +26,10 @@ def obtener_salas_disponibles(request):
             hora_inicio__lt=hora_fin,
             hora_fin__gt=hora_inicio
         )
-        print(reservas_salas_ocupadas)
-        return render(request, 'salas_disponibles.html', {'todas_salas':todas_salas,'salas_ocupadas': salas_ocupadas, 'reservas_salas_ocupadas':reservas_salas_ocupadas})
+        
+        return render(request, 'salas_disponibles.html', {'todas_salas':todas_salas,'salas_ocupadas': salas_ocupadas, 'reservas_salas_ocupadas':reservas_salas_ocupadas, 'fecha':fecha, 'fecha_hoy':date.today})
 
-    return render(request, 'salas_disponibles.html')
+    return render(request, 'salas_disponibles.html', {'fecha_hoy':date.today})
 
 
 
@@ -78,3 +80,35 @@ def crear_reservas_por_defecto(request):
         return render(request, 'crear_reservas.html', {'salas': salas, 'usuarios': usuarios})
     else:
         return redirect('/403')
+    
+@login_required
+def reservar_sala(request):
+    print("---------------------------------------------helloawadfsfasdfasdfasfdasf")
+    if request.user.is_coord or request.user.is_superuser:
+        print("fura del post")
+        if request.method == 'POST':
+            sala_id = request.POST.get('sala_id')
+            fecha = request.POST.get('fecha')
+            hora_inicio = request.POST.get('hora_inicio')
+            hora_fin = request.POST.get('hora_fin')
+
+            if fecha < str(datetime.now().date()):
+                print('No se puede reservar una sala para una fecha pasada.')
+                return HttpResponse('No se puede reservar una sala para una fecha pasada.')
+            elif hora_inicio >= hora_fin:
+                print('La hora de inicio debe ser menor a la hora de fin.')
+                return HttpResponse('La hora de inicio debe ser menor a la hora de fin.')
+
+            sala = get_object_or_404(Sala, pk=sala_id)
+
+            reservas_exist = Reserva.objects.filter(sala=sala, fecha=fecha, hora_inicio__lt=hora_fin, hora_fin__gt=hora_inicio)
+            if reservas_exist.exists():
+                print('Ya existe una reserva en el plazo seleccionado. La fecha ocupada es: ', reservas_exist.first().fecha)
+                return HttpResponse('Ya existe una reserva en el plazo seleccionado. La fecha ocupada es: ', reservas_exist.first().fecha)
+            else:
+                reserva = Reserva(usuario=request.user, sala=sala, fecha=fecha, hora_inicio=hora_inicio, hora_fin=hora_fin)
+                reserva.save()
+                return redirect('obtener_libres')
+    else:
+        return redirect('/403')
+
