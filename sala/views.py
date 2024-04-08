@@ -9,29 +9,30 @@ import json
 
 @login_required
 def obtener_salas_disponibles(request):
-    if request.method == 'POST':
-        fecha = request.POST.get('fecha')
-        hora_inicio = request.POST.get('hora_inicio')
-        hora_fin = request.POST.get('hora_fin')
+    if request.user.is_coord or request.user.is_superuser:
+        if request.method == 'POST':
+            fecha = request.POST.get('fecha')
+            hora_inicio = request.POST.get('hora_inicio')
+            hora_fin = request.POST.get('hora_fin')
 
-        todas_salas = Sala.objects.all()
-        salas_ocupadas = todas_salas.filter(
-            reserva__fecha=fecha,
-            reserva__hora_inicio__lt=hora_fin,
-            reserva__hora_fin__gt=hora_inicio
-        )
-        reservas_salas_ocupadas = Reserva.objects.filter(
-            sala__in=salas_ocupadas,
-            fecha=fecha,
-            hora_inicio__lt=hora_fin,
-            hora_fin__gt=hora_inicio
-        )
-        
-        return render(request, 'salas_disponibles.html', {'todas_salas':todas_salas,'salas_ocupadas': salas_ocupadas, 'reservas_salas_ocupadas':reservas_salas_ocupadas, 'fecha':fecha, 'fecha_hoy':date.today})
+            todas_salas = Sala.objects.all()
+            salas_ocupadas = todas_salas.filter(
+                reserva__fecha=fecha,
+                reserva__hora_inicio__lt=hora_fin,
+                reserva__hora_fin__gt=hora_inicio
+            )
+            reservas_salas_ocupadas = Reserva.objects.filter(
+                sala__in=salas_ocupadas,
+                fecha=fecha,
+                hora_inicio__lt=hora_fin,
+                hora_fin__gt=hora_inicio
+            )
+            
+            return render(request, 'salas_disponibles.html', {'todas_salas':todas_salas,'salas_ocupadas': salas_ocupadas, 'reservas_salas_ocupadas':reservas_salas_ocupadas, 'fecha':fecha, 'fecha_hoy':date.today})
 
-    return render(request, 'salas_disponibles.html', {'fecha_hoy':date.today})
-
-
+        return render(request, 'salas_disponibles.html', {'fecha_hoy':date.today})
+    else:
+        return redirect('/403')
 
 @login_required
 def crear_reservas_por_defecto(request):
@@ -83,9 +84,7 @@ def crear_reservas_por_defecto(request):
     
 @login_required
 def reservar_sala(request):
-    print("---------------------------------------------helloawadfsfasdfasdfasfdasf")
     if request.user.is_coord or request.user.is_superuser:
-        print("fura del post")
         if request.method == 'POST':
             sala_id = request.POST.get('sala_id')
             fecha = request.POST.get('fecha')
@@ -106,9 +105,20 @@ def reservar_sala(request):
                 print('Ya existe una reserva en el plazo seleccionado. La fecha ocupada es: ', reservas_exist.first().fecha)
                 return HttpResponse('Ya existe una reserva en el plazo seleccionado. La fecha ocupada es: ', reservas_exist.first().fecha)
             else:
+                print('Reserva creada exitosamente.')
                 reserva = Reserva(usuario=request.user, sala=sala, fecha=fecha, hora_inicio=hora_inicio, hora_fin=hora_fin)
                 reserva.save()
-                return redirect('obtener_libres')
+                return redirect('mis_reservas')
+    else:
+        return redirect('/403')
+    
+@login_required
+def mis_reservas(request):
+    if request.user.is_coord:
+        fecha_hoy = date.today()
+        reservas_pasadas = Reserva.objects.filter(usuario=request.user, fecha__lt=fecha_hoy)
+        reservas_futuras = Reserva.objects.filter(usuario=request.user, fecha__gte=fecha_hoy)
+        return render(request, 'mis_reservas.html', {'reservas_pasadas': reservas_pasadas, 'reservas_futuras':reservas_futuras})
     else:
         return redirect('/403')
 
