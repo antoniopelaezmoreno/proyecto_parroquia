@@ -3,7 +3,7 @@ from custom_user.models import CustomUser
 
 # Create your models here.
 class Sala(models.Model):
-    nombre = models.CharField(max_length=100)
+    nombre = models.CharField(max_length=100, unique=True, error_messages={'unique': 'Ya existe una sala con este nombre.'})
     requiere_aprobacion = models.BooleanField(default=False)
 
     def __str__(self):
@@ -22,7 +22,7 @@ class Reserva(models.Model):
 class SolicitudReserva(models.Model):
     class EstadoChoices(models.TextChoices):
         ACEPTADA = 'aceptada', 'Aceptada'
-        RECHAZADA = 'rechazada', 'Rechaza'
+        RECHAZADA = 'rechazada', 'Rechazada'
         PENDIENTE = 'pendiente', 'Pendiente'
 
     usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE)

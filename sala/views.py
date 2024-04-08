@@ -5,7 +5,23 @@ from custom_user.models import CustomUser
 from datetime import timedelta, date
 from django.http import HttpResponse
 from datetime import datetime
+from .forms import SalaForm
 import json
+
+@login_required
+def crear_sala(request):
+    if request.user.is_superuser:
+        if request.method == 'POST':
+            form = SalaForm(request.POST, request.FILES)
+            if form.is_valid():
+                form.save()
+                return redirect('/')
+        else:
+            form = SalaForm()
+        
+        return render(request, 'crear_sala.html', {'form': form})
+    else:
+        return redirect('/403')
 
 @login_required
 def obtener_salas_disponibles(request):
