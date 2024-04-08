@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %} Mis Salas {% endblock %}
+
+{% block content %}
+
+<h2 style="text-align: center; border-bottom: 1px solid #ccc;"> Reservas futuras</h2>
+<a href="{% url 'lista_salas' %}"> Reservar sala</a>
+<div class="reservas-container">
+    {% for reserva in reservas_futuras %}
+        <div class = "reserva">
+            <h3> {{ reserva.sala }}</h3>
+            <p> Fecha: {{ reserva.fecha }}</p>
+            <p> {{ reserva.hora_inicio }} - {{ reserva.hora_fin }}</p>
+        </div>
+    {% endfor %}
+</div>
+
+<h2 style="text-align: center; border-bottom: 1px solid #ccc;"> Reservas pasadas</h2>
+<div class="reservas-container">
+    {% for reserva in reservas_pasadas %}
+        <div class = "reserva">
+            <h3> {{ reserva.sala }}</h3>
+            <p> Fecha: {{ reserva.fecha }}</p>
+            <p> {{ reserva.hora_inicio }} - {{ reserva.hora_fin }}</p>
+        </div>
+    {% endfor %}
+</div>
+
+<style>
+    .reservas-container{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: row;
+    }
+
+    .reserva{
+        background-color: #fff;
+        margin: 10px;
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .reserva h3{
+        text-align: center;
+        border-bottom: 1px solid #ccc;
+    }
+
+</style>
+
+{% endblock %}

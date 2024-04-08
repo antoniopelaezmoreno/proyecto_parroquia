@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %} Solicitudes de Catequistas {% endblock %}
+{% block title %} Reserva una sala {% endblock %}
 
 {% block content %}
 
@@ -252,6 +252,7 @@
         .then(response => {
             if (response.ok) {
                 console.log("Reserva creada correctamente");
+                window.location.href = '/sala/mis_reservas/';
             } else {
                 console.error("Error al crear la reserva");
             }
