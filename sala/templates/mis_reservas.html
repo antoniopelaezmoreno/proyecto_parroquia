@@ -16,6 +16,17 @@
     {% endfor %}
 </div>
 
+<h2 style="text-align: center; border-bottom: 1px solid #ccc;"> Solicitudes de reserva pendientes</h2>
+<div class="reservas-container">
+    {% for solicitud in solicitudes_de_reserva %}
+        <div class = "reserva">
+            <h3> {{ solicitud.sala }}</h3>
+            <p> Fecha: {{ solicitud.fecha }}</p>
+            <p> {{ solicitud.hora_inicio }} - {{ solicitud.hora_fin }}</p>
+        </div>
+    {% endfor %}
+</div>
+
 <h2 style="text-align: center; border-bottom: 1px solid #ccc;"> Reservas pasadas</h2>
 <div class="reservas-container">
     {% for reserva in reservas_pasadas %}

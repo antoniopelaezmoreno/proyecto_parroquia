@@ -24,8 +24,8 @@
             {% endif %}
         {% endfor %}
     {% else %}
-        <div class="sala libre">
-            <button class="openModalBtn" data-sala-id="{{ sala.id }}" data-sala-nombre="{{ sala.nombre }}"><p>{{ sala }}</p></button>
+        <div class="sala {% if sala.requiere_aprobacion %} aprobacion {% else %} libre {% endif %}">
+            <button class="openModalBtn" data-sala-id="{{ sala.id }}" data-sala-nombre="{{ sala.nombre }}" data-sala-aprobacion="{{ sala.requiere_aprobacion }}"><p>{{ sala }}</p></button>
         </div>
     {% endif %}
 {% endfor %}
@@ -34,6 +34,7 @@
   <div class="modal-content">
     <span class="close">&times;</span>
     <h2>Reservar la sala</h2>
+    <p id="avisoAprobacion"></p>
     <p id="mensajeConfirmacion"></p>
     <button id="reservarBtn">Reservar</button>
   </div>
@@ -50,8 +51,10 @@
         float: left;
         position: relative; /* Añadido para posición absoluta del título */
     }
+    .aprobacion {
+        background-color: lightblue;
+    }
 
-    
     .ocupada {
         background-color: lightcoral;
         color: white;
@@ -62,7 +65,7 @@
         cursor: pointer;
     }
 
-    .libre button {
+    .sala button {
         cursor: pointer;
         background-color: transparent;
         border: none;
@@ -72,7 +75,8 @@
         margin: 0;
     }
 
-    .libre:hover {
+    .libre:hover,
+    .aprobacion:hover{
         background-color: rgb(137, 151, 156);
     }
 
@@ -149,6 +153,7 @@
         const openModalBtns = document.querySelectorAll('.openModalBtn');
         const modal = document.getElementById('myModal');
         const closeModal = document.querySelector('.close');
+        const avisoAprobacion = document.getElementById('avisoAprobacion');
         const mensajeConfirmacionElement = document.getElementById('mensajeConfirmacion');
         const reservarBtn = document.getElementById('reservarBtn');
 
@@ -161,13 +166,20 @@
             btn.addEventListener('click', function() {
                 const sala = btn.getAttribute('data-sala-nombre');
                 const salaId = btn.getAttribute('data-sala-id');
-
+                const requiereAprobacion = btn.getAttribute('data-sala-aprobacion');
+                console.log(requiereAprobacion);
                 var fecha = sessionStorage.getItem('fechaSeleccionada');
                 var inicio = sessionStorage.getItem('horaInicioSeleccionada');
                 var fin = sessionStorage.getItem('horaFinSeleccionada');
-
                 mensajeConfirmacionElement.textContent = "Va a reservar la sala " + sala + " para el día " + fecha + " desde las " + inicio + " hasta las " + fin;
                 modal.style.display = 'block';
+
+                if (requiereAprobacion == 'True'){
+                    avisoAprobacion.textContent = "Esta sala requiere aprobación";
+                }else{
+                    avisoAprobacion.textContent = "";
+                }
+                
                 reservarBtn.addEventListener('click', function() {
                     reservarSala(salaId, fecha, inicio, fin);
                 });

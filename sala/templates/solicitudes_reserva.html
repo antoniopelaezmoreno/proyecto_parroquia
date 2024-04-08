@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %} Solicitudes de reserva de salas {% endblock %}
+
+{% block content %}
+
+<h2 style="text-align: center; border-bottom: 1px solid #ccc;"> Solicitudes de reserva pendientes</h2>
+<div class="solicitudes-container">
+    {% for solicitud in solicitudes_pendientes %}
+        <div class = "solicitud">
+            <h3> {{ solicitud.sala }}</h3>
+            <p> Usuario: {{ solicitud.usuario }}</p>
+            <p> Fecha: {{ solicitud.fecha }}</p>
+            <p> {{ solicitud.hora_inicio }} - {{ solicitud.hora_fin }}</p>
+            <a class="boton aceptar" href="{% url 'aprobar_solicitud' solicitud.id %}">Aceptar</a>
+            <a class="boton rechazar" href="{% url 'rechazar_solicitud' solicitud.id %}">Rechazar</a>
+        </div>
+    {% endfor %}
+</div>
+
+<h2 style="text-align: center; border-bottom: 1px solid #ccc;"> Solicitudes de reserva aceptadas</h2>
+<div class="solicitudes-container">
+    {% for solicitud in solicitudes_aceptadas %}
+        <div class = "solicitud">
+            <h3> {{ solicitud.sala }}</h3>
+            <p> Usuario: {{ solicitud.usuario }}</p>
+            <p> Fecha: {{ solicitud.fecha }}</p>
+            <p> {{ solicitud.hora_inicio }} - {{ solicitud.hora_fin }}</p>
+        </div>
+    {% endfor %}
+</div>
+
+<h2 style="text-align: center; border-bottom: 1px solid #ccc;"> Solicitudes de reserva rechazadas</h2>
+<div class="solicitudes-container">
+    {% for solicitud in solicitudes_rechazadas %}
+        <div class = "solicitud">
+            <h3> {{ solicitud.sala }}</h3>
+            <p> Usuario: {{ solicitud.usuario }}</p>
+            <p> Fecha: {{ solicitud.fecha }}</p>
+            <p> {{ solicitud.hora_inicio }} - {{ solicitud.hora_fin }}</p>
+        </div>
+    {% endfor %}
+</div>
+
+<style>
+    .solicitudes-container{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: row;
+    }
+
+    .solicitud{
+        background-color: #fff;
+        margin: 10px;
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .solicitud h3{
+        text-align: center;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .boton{
+        display: inline-block;
+        margin: 10px;
+        padding: 5px 10px;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+    .aceptar{
+        background-color: green;
+    }
+
+    .rechazar{
+        background-color: red;
+    }
+
+</style>
+{% endblock %}
