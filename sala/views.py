@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Sala, Reserva
+from .models import Sala, Reserva, SolicitudReserva
 from custom_user.models import CustomUser
 from datetime import timedelta, date
 from django.http import HttpResponse
@@ -105,9 +105,14 @@ def reservar_sala(request):
                 print('Ya existe una reserva en el plazo seleccionado. La fecha ocupada es: ', reservas_exist.first().fecha)
                 return HttpResponse('Ya existe una reserva en el plazo seleccionado. La fecha ocupada es: ', reservas_exist.first().fecha)
             else:
-                print('Reserva creada exitosamente.')
-                reserva = Reserva(usuario=request.user, sala=sala, fecha=fecha, hora_inicio=hora_inicio, hora_fin=hora_fin)
-                reserva.save()
+                if sala.requiere_aprobacion:
+                    print('La sala requiere aprobación. Se ha enviado una solicitud de reserva.')
+                    solicitud = SolicitudReserva(usuario=request.user, sala=sala, fecha=fecha, hora_inicio=hora_inicio, hora_fin=hora_fin)
+                    solicitud.save()
+                else:
+                    print('Reserva creada exitosamente.')
+                    reserva = Reserva(usuario=request.user, sala=sala, fecha=fecha, hora_inicio=hora_inicio, hora_fin=hora_fin)
+                    reserva.save()
                 return redirect('mis_reservas')
     else:
         return redirect('/403')
@@ -118,7 +123,42 @@ def mis_reservas(request):
         fecha_hoy = date.today()
         reservas_pasadas = Reserva.objects.filter(usuario=request.user, fecha__lt=fecha_hoy)
         reservas_futuras = Reserva.objects.filter(usuario=request.user, fecha__gte=fecha_hoy)
-        return render(request, 'mis_reservas.html', {'reservas_pasadas': reservas_pasadas, 'reservas_futuras':reservas_futuras})
+        solicitudes_de_reserva = SolicitudReserva.objects.filter(usuario=request.user, estado='pendiente')
+        return render(request, 'mis_reservas.html', {'reservas_pasadas': reservas_pasadas, 'reservas_futuras':reservas_futuras, 'solicitudes_de_reserva':solicitudes_de_reserva, 'fecha_hoy':fecha_hoy})
+    else:
+        return redirect('/403')
+    
+
+@login_required
+def listar_solicitudes_reserva(request):
+    if request.user.is_superuser:
+        solicitudes_pendientes = SolicitudReserva.objects.filter(estado = SolicitudReserva.EstadoChoices.PENDIENTE, fecha__gte=date.today())
+        solicitudes_aceptadas = SolicitudReserva.objects.filter(estado = SolicitudReserva.EstadoChoices.ACEPTADA, fecha__gte=date.today())
+        solicitudes_rechazadas = SolicitudReserva.objects.filter(estado = SolicitudReserva.EstadoChoices.RECHAZADA, fecha__gte=date.today())
+        return render(request, 'solicitudes_reserva.html', {'solicitudes_pendientes': solicitudes_pendientes, 'solicitudes_aceptadas':solicitudes_aceptadas, 'solicitudes_rechazadas':solicitudes_rechazadas})
+    else:
+        return redirect('/403')
+
+@login_required
+def aprobar_solicitud_reserva(request, solicitud_id):
+    if request.user.is_superuser:
+        solicitud = get_object_or_404(SolicitudReserva, pk=solicitud_id)
+        solicitud.estado = SolicitudReserva.EstadoChoices.ACEPTADA
+        solicitud.save()
+
+        reserva = Reserva(usuario=solicitud.usuario, sala=solicitud.sala, fecha=solicitud.fecha, hora_inicio=solicitud.hora_inicio, hora_fin=solicitud.hora_fin)
+        reserva.save()
+        return redirect('solicitudes_reserva')
+    else:
+        return redirect('/403')
+    
+@login_required
+def rechazar_solicitud_reserva(request, solicitud_id):
+    if request.user.is_superuser:
+        solicitud = get_object_or_404(SolicitudReserva, pk=solicitud_id)
+        solicitud.estado = SolicitudReserva.EstadoChoices.RECHAZADA
+        solicitud.save()
+        return redirect('solicitudes_reserva')
     else:
         return redirect('/403')
 
