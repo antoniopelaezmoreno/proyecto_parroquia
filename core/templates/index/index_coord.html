@@ -11,19 +11,19 @@
         <div class="columna">
             <h2> Dashboard</h2>
             <div class="estaditicas">
-                <div class="estadistica">
+                <a class="estadistica" href="{% url 'listar_catecumenos' %}">
                     <span class="material-icons icono catecumenos">groups</span>
                     <div class="info-estadisticas">
                         <p style="margin-bottom: 0px;"> Catecúmenos </p>
                         <p style="font-size: 40px; text-align: center; margin-top: 0px;"> <b>{{ num_catecumenos }}</b></p> 
                     </div>
 
-                </div>
+                </a>
                 <div class="estadistica">
                     <span class="material-icons icono ausencias">warning</span>
                     <div class="info-estadisticas">
                         <p style="margin-bottom: 0px;"> Ausencias </p>
-                        <p style="font-size: 40px; text-align: center; margin-top: 0px;"> <b>{{ num_catecumenos }}</b></p> 
+                        <p style="font-size: 40px; text-align: center; margin-top: 0px;"> <b>{{ num_ausencias }}</b></p> 
                     </div>
                     
                 </div>
@@ -31,7 +31,7 @@
                     <span class="material-icons icono ausencias-ultimas">info_outline</span>
                     <div class="info-estadisticas">
                         <p style="margin-bottom: 0px;"> Faltas </p>
-                        <p style="font-size: 40px; text-align: center; margin-top: 0px;"> <b>{{ num_catecumenos }}</b></p> 
+                        <p style="font-size: 40px; text-align: center; margin-top: 0px;"> <b>{{ num_ausencias_ultima_sesion }}</b></p> 
                     </div>
                     
                 </div>
