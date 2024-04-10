@@ -7,7 +7,8 @@ from django.contrib.auth.decorators import login_required
 from .models import Sesion
 from grupo.models import Grupo
 from curso.models import Curso
-from core.views import error
+
+from django.db.models import Count
 # Create your views here.
 
 @login_required
@@ -87,10 +88,12 @@ def listar_sesiones(request):
 
 @login_required
 def pasar_lista(request, sesionid):
+    from core.views import error
 
     if request.user.is_authenticated:
         if timezone.now().date() < Sesion.objects.get(pk=sesionid).fecha:
             return error(request, "No puedes pasar lista antes de la fecha de la sesión")
+            return None
         sesion = get_object_or_404(Sesion, pk=sesionid)
         if request.user.ciclo == sesion.ciclo:
             if request.method == 'POST':
@@ -152,3 +155,24 @@ def tabla_asistencias_admin(request, ciclo):
         sesiones = Sesion.objects.filter(ciclo=ciclo, curso=Curso.objects.latest('id')).order_by('fecha')
         return render(request, 'tabla_asistencias_admin.html', {'sesiones': sesiones, 'grupos': grupos})
     
+@login_required
+def contar_ausencias(request):
+    if request.user.is_coord:
+        sesiones_ausentes = Sesion.objects.filter(ciclo = request.user.ciclo, ausentes__isnull=False)
+
+        # Anotar el número de ausencias de cada catecúmeno
+        catecumenos_con_ausencias = Catecumeno.objects.annotate(num_ausencias=Count('sesiones_ausentes')).filter(num_ausencias__gte=3)
+
+        # Contar el número de catecúmenos resultantes
+        return catecumenos_con_ausencias
+    else:
+        return redirect('/403')
+    
+@login_required
+def contar_ausencias_ultima_sesion(request):
+    if request.user.is_coord:
+        sesion = Sesion.objects.filter(ciclo=request.user.ciclo, fecha__lte=timezone.now().date()).latest('fecha')
+        ausentes = sesion.ausentes.all()
+        return ausentes
+    else:
+        return redirect('/403')

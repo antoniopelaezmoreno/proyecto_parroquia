@@ -11,10 +11,10 @@
 <div class="flex-container">
     {% for grupo in grupos %}
         <div class="caja grupo">
-            <a href="{% url 'eliminar_grupo' grupo.id %}"><span class="material-icons">
+            <a href="{% url 'eliminar_grupo' grupo.id %}" style="color:red;"><span class="material-icons">
                 delete
                 </span></a>
-            <a href="#" style="text-decoration: none;" onclick="changeToEdit(this)"><span class="material-icons">
+            <a href="#" style="color:blue;" onclick="changeToEdit(this)"><span class="material-icons">
                 edit
                 </span></a>
             <!-- Nombre de catequistas -->

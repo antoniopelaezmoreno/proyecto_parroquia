@@ -130,3 +130,48 @@
 .ausencias-ultimas {
     background: #2c36bd;
 }
+
+.flex-container {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    margin-bottom: 20px;
+   
+}
+
+.caja {
+    background-color: white;
+    color: black;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.5s, box-shadow 0.5s; /* Agregado box-shadow a la transición */
+}
+
+.grupo {
+    flex-basis: 20%;
+    margin: 10px;
+    padding: 20px;
+    text-align: center;
+}
+
+.caja:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(160, 59, 59, 0.5); /* Cambiado el color de la sombra en :hover */
+}
+
+.miembros {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+}
+
+.miembros p {
+    margin:0;
+    font-weight: normal;
+}
+
+a{
+    text-decoration: none;
+    color: black;
+}
