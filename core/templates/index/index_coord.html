@@ -4,19 +4,35 @@
 {% block title %} Inicio {% endblock %}
 
 {% block content %}
-    <!--<link rel="stylesheet" type="text/css" href="{% static 'core/css/index_styles.css' %}">-->
+
+    <link rel="stylesheet" type="text/css" href="{% static 'core/css/index_styles.css' %}">
     <div class="container">
         <!--Panel central-->
         <div class="columna">
             <h2> Dashboard</h2>
             <div class="estaditicas">
                 <div class="estadistica">
+                    <span class="material-icons icono catecumenos">groups</span>
+                    <div class="info-estadisticas">
+                        <p style="margin-bottom: 0px;"> Catecúmenos </p>
+                        <p style="font-size: 40px; text-align: center; margin-top: 0px;"> <b>{{ num_catecumenos }}</b></p> 
+                    </div>
 
                 </div>
                 <div class="estadistica">
+                    <span class="material-icons icono ausencias">warning</span>
+                    <div class="info-estadisticas">
+                        <p style="margin-bottom: 0px;"> Ausencias </p>
+                        <p style="font-size: 40px; text-align: center; margin-top: 0px;"> <b>{{ num_catecumenos }}</b></p> 
+                    </div>
                     
                 </div>
                 <div class="estadistica">
+                    <span class="material-icons icono ausencias-ultimas">info_outline</span>
+                    <div class="info-estadisticas">
+                        <p style="margin-bottom: 0px;"> Faltas </p>
+                        <p style="font-size: 40px; text-align: center; margin-top: 0px;"> <b>{{ num_catecumenos }}</b></p> 
+                    </div>
                     
                 </div>
             </div>
@@ -116,110 +132,13 @@
                 {% endif %}
 
             </div>
+            <h3>Calendario</h3>
+            <div class="notificaciones">
+
+            </div>
         </div>
     </div>
-
-    <style>
-        .container {
-            display: grid;
-            grid-template-columns: 0.7fr 0.3fr;
-        }
-
-        .columna {
-            padding: 20px;
-            border-radius: 10px;
-        }
-
-        .estaditicas {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            grid-gap: 20px;
-        }
-
-        .estadistica {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            aspect-ratio: 1.5;
-            margin: 0px 10px;
-            box-shadow: 10px 10px 40px rgba(190, 192, 244, 0.34);
-        }
-        .notificaciones {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: left;
-            aspect-ratio: 1;
-            box-shadow: 10px 10px 40px rgba(190, 192, 244, 0.34);
-        }
-
-        .sesion{
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: start;
-            align-items: left;
-            aspect-ratio: 2.5;
-            box-shadow: 10px 10px 40px rgba(190, 192, 244, 0.34);
-        }
-
-        .sesion-info{
-            display: grid;
-            grid-template-columns: 0.6fr 0.4fr;
-        }
-        .notificacion{
-            display: flex;
-            flex-direction: row;
-            border: 1px solid black;
-            width: stretch;
-            margin-bottom: 5px;
-            
-        }
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            grid-gap: 20px;
-        }
-
-        .grid-item {
-            text-align: center;
-        }
-
-        .thumbnail {
-            max-width: 100px;
-        }
-
-        .boton {
-            display: inline-block;
-            background-color: lightblue;
-            color: black;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            transition: background-color 0.3s ease;
-        }
-
-        .boton:hover {
-            background-color: skyblue;
-        }
-
-        .leido-btn {
-            text-align: center;
-            color: green; /* Color del icono */
-            font-size: 24px; /* Tamaño del icono */
-            margin-top: 5px; /* Espaciado superior */
-            display: inline-block; /* Asegura que el botón se ajuste al icono */
-        }
-    </style>
+    
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     $(document).ready(function() {
