@@ -11,8 +11,8 @@ def crear_notificacion_nueva_solicitud(sender, instance, created, **kwargs):
         if admin:
             mensaje = f"Hay una nueva solicitud de reserva para la sala {instance.sala} por {instance.usuario}"
             notificacion = Notificacion(mensaje=mensaje)
+            notificacion.destinatario=admin
             notificacion.save()
-            notificacion.destinatarios.set([admin])
     else:
         if instance.estado == SolicitudReserva.EstadoChoices.ACEPTADA:
             mensaje = f"Tu solicitud de reserva para la sala {instance.sala} ha sido aceptada."
@@ -21,7 +21,7 @@ def crear_notificacion_nueva_solicitud(sender, instance, created, **kwargs):
             mensaje = f"Tu solicitud de reserva para la sala {instance.sala} ha sido rechazada."
 
         notificacion = Notificacion(mensaje=mensaje)
+        notificacion.destinatario=admin
         notificacion.save()
-        notificacion.destinatarios.set([instance.usuario])
 
 
