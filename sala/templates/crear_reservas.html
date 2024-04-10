@@ -39,6 +39,39 @@
     <br>
     <button type="submit">Crear Reservas</button>
 </form>
+
+<script>
+    var horaInicioSelect = document.getElementById("hora_inicio");
+    var horaFinSelect = document.getElementById("hora_fin");
+    var guardarBtn = document.querySelector('button[type="submit"]');
+
+    horaInicioSelect.addEventListener('change', function() {
+        horaFin=horaFinSelect.value;
+        horaInicio=this.value;
+        if (horaFin && horaInicio){
+            if (horaInicio >= horaFin){
+                alert("La hora de inicio debe ser anterior a la hora de fin");
+                guardarBtn.disabled = true;
+            } else {
+                guardarBtn.disabled = false;
+            }
+        }
+    });
+
+    horaFinSelect.addEventListener('change', function() {
+        horaFin=this.value;
+        horaInicio=horaInicioSelect.value;
+        if (horaFin && horaInicio){
+            if (horaInicio >= horaFin){
+                alert("La hora de inicio debe ser anterior a la hora de fin");
+                guardarBtn.disabled = true;
+            } else {
+                guardarBtn.disabled = false;
+            }
+        }
+        
+    });
+</script>
 {% endblock %}
 
 

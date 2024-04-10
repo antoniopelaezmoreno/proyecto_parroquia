@@ -59,6 +59,9 @@ def crear_reservas_por_defecto(request):
             dia_semana = int(request.POST.get('dia_semana'))
             hora_inicio = request.POST.get('hora_inicio')
             hora_fin = request.POST.get('hora_fin')
+            if hora_inicio >= hora_fin:
+                print('La hora de inicio debe ser menor a la hora de fin.')
+                return HttpResponse('La hora de inicio debe ser menor a la hora de fin.')
             
             # Obtener usuario y sala
             usuario = CustomUser.objects.get(pk=usuario_id)
@@ -135,7 +138,7 @@ def reservar_sala(request):
     
 @login_required
 def mis_reservas(request):
-    if request.user.is_coord:
+    if request.user.is_coord or request.user.is_superuser:
         fecha_hoy = date.today()
         reservas_pasadas = Reserva.objects.filter(usuario=request.user, fecha__lt=fecha_hoy)
         reservas_futuras = Reserva.objects.filter(usuario=request.user, fecha__gte=fecha_hoy)
