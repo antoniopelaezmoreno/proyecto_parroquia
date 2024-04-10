@@ -11,5 +11,5 @@ def crear_notificacion_nueva_solicitud_catequista(sender, instance, created, **k
         if admin:
             mensaje = f"Hay una nueva solicitud de catequista: {instance.nombre} {instance.apellidos}"
             notificacion = Notificacion(mensaje=mensaje)
+            notificacion.destinatario=admin
             notificacion.save()
-            notificacion.destinatarios.set([admin])

@@ -4,84 +4,244 @@
 {% block title %} Inicio {% endblock %}
 
 {% block content %}
-    <link rel="stylesheet" type="text/css" href="{% static 'core/css/index_styles.css' %}">
+    <!--<link rel="stylesheet" type="text/css" href="{% static 'core/css/index_styles.css' %}">-->
+    <div class="container">
+        <!--Panel central-->
+        <div class="columna">
+            <h2> Dashboard</h2>
+            <div class="estaditicas">
+                <div class="estadistica">
 
+                </div>
+                <div class="estadistica">
+                    
+                </div>
+                <div class="estadistica">
+                    
+                </div>
+            </div>
 
-    <div class="flex-container">
-        <div class="caja sesion">
-            {% if proxima_sesion %}
-                <h2 style="text-align: center;"> Sesión de hoy </h2>
-                <p style="margin-left: 20px;"> Título: {{ proxima_sesion.titulo }} </p>
-                <p style="margin-left: 20px;"> Fecha: {{ proxima_sesion.fecha }} </p>
-                <p style="margin-left: 20px;"> Descripción: {{ proxima_sesion.descripcion }} </p>
-                <p style="margin-left: 20px;"> Archivos asociados:  </p>
-                
-                <a href="{% url 'pasar_lista' proxima_sesion.id %}" class="boton">
-                    <p> PASAR LISTA </p>
-                </a>
-            {% else %}
-                <h2 style="text-align: center;"> No hay más sesiones programadas </h2>
-            {% endif %}
+            <h3 style="margin-top: 30px;"> Próxima Sesión</h3>
+            <div class="sesion">
+                {% if proxima_sesion %}
+                    <h2 style="margin-bottom: 20px; border-bottom: 1px solid black; text-align: center; padding-bottom: 10px;"> {{ proxima_sesion.titulo }} - {{ proxima_sesion.fecha }} </h2>
+                    <div class="sesion-info">
+                        <div>
+                            <p style="text-align: center;"><b>Descripción:  </b></p> </br>
+                            {{ proxima_sesion.descripcion }}
+                            
+                            <div style="display: flex; flex-flow: row; justify-content: space-between;">
+                                <a href="{% url 'pasar_lista' proxima_sesion.id %}" class="boton" style="margin-top: 20px;">
+                                    <p> PASAR LISTA </p>
+                                </a>
+
+                                <a href="{% url 'listar_sesiones' %}" class="boton" style="margin-top: 20px;">
+                                    <p> TODAS LAS SESIONES </p>
+                                </a>
+
+                            </div>
+                            
+                        </div>
+                        <div>
+                            <p style="text-align: center;"><b>Archivos:  </b></p> </br>
+                            {% if archivos_sesion %}
+                                <div class="grid-container">
+                                
+                                    {% for file in archivos_sesion %}
+                                        <div class="grid-item">
+                                            <p>{{ file.name }}</p>
+                                            {% if file.is_image %}
+                                                <a href="/media/{{ file.file }}" alt="{{ file.name }}" target="_blank">
+                                                    <img src="/media/{{ file.file }}" alt="{{ file.name }}" class="thumbnail">
+                                                </a>
+                                            {% elif file.is_video %}
+                                                <a href="/media/{{ file.file }}" alt="{{ file.name }}" target="_blank">
+                                                    <img src="/static/icons/video_icon3.png" alt="{{ file.name }}" class="thumbnail">
+                                                </a>
+                                            {% elif file.is_pdf %}
+                                                <a href="/media/{{ file.file }}" alt="{{ file.name }}" target="_blank">
+                                                    <img src="/static/icons/pdf_icon3.png" alt="{{ file.name }}" class="thumbnail">
+                                                </a>
+                                            {% elif file.is_doc %}
+                                                <a href="/media/{{ file.file }}" alt="{{ file.name }}" target="_blank">
+                                                    <img src="/static/icons/doc_icon3.png" alt="{{ file.name }}" class="thumbnail">
+                                                </a>
+                                            {% elif file.is_excel %}
+                                                <a href="/media/{{ file.file }}" alt="{{ file.name }}" target="_blank">
+                                                    <img src="/static/icons/xls_icon3.png" alt="{{ file.name }}" class="thumbnail">
+                                                </a>
+                                            {% elif file.is_ppt %}
+                                                <a href="/media/{{ file.file }}" alt="{{ file.name }}" target="_blank">
+                                                    <img src="/static/icons/ppt_icon3.png" alt="{{ file.name }}" class="thumbnail">
+                                                </a>
+                                            {% else %}
+                                                <a href="/media/{{ file.file }}" alt="{{ file.name }}" target="_blank">
+                                                    <img src="/static/icons/file_icon3.png" alt="{{ file.name }}" class="thumbnail">
+                                                </a>
+                                            {% endif %}
+                                        </div>
+                                    {% endfor %}
+                                
+                                </div>
+                            {% else %}
+                                    <p style="text-align: center;"> No hay archivos</p>
+                            {% endif %}
+                        </div>
+                        
+                    </div>
+
+                {% else %}
+                    <p> No hay próxima sesión</p>
+                {% endif %}
+            </div>
         </div>
 
-        <div class="flex-vertical">
-            <a href="{% url 'listar_sesiones' %}" class="caja verticales">
-                <p> NOVEDADES / MENSAJES </p>
-                <p> </p>
+        <!--Panel derecho-->
+        <div class="columna">
+            <h3> Notificaciones</h3>
+            <div class="notificaciones">
+                {% if notificaciones %}
+                    {% for notificacion in notificaciones %}
+                        <div class="notificacion">
+                            <div>
+                                <p>{{ notificacion.mensaje }}</p>
+                                <p>{{ notificacion.fecha }}</p>
+                            </div>
+                            <input type="radio" class="form-check-input" name="notificacion" value="{{ notificacion.id }}">
+                        </div>
+                    {% endfor %}
+                    
+                {% else %}
+                    <p style="text-align: center;">No hay notificaciones nuevas</p>
+                {% endif %}
 
-            </a>
-            <div class="estadisticas">
-                <div class = "caja cuadrado">
-                    Nº CATECÚMENOS
-                </div>
-                <div class = "caja cuadrado">
-                    Nº AUSENCIAS
-                </div>
             </div>
         </div>
     </div>
 
-    <div class="flex-container">
-        <div class="caja sesion">
-            <div class="rectangulo-rojo"></div>
-            <h2 style="text-align: center;"> Próximo Evento </h2>
-            <p style="margin-left: 20px;"> Título: {{ proxima_sesion.titulo }} </p>
-            <p style="margin-left: 20px;"> Fecha: {{ proxima_sesion.fecha }} </p>
-            <p style="margin-left: 20px;"> Descripción: {{ proxima_sesion.descripcion }} </p>
-            <p style="margin-left: 20px;"> Archivos asociados:  </p>
-        </div>
+    <style>
+        .container {
+            display: grid;
+            grid-template-columns: 0.7fr 0.3fr;
+        }
 
-        <div class="flex-vertical">
-            <div class="estadisticas2">
-                <div class = "caja cuadrado">
-                    Nº CATECÚMENOS
-                </div>
-                <div class = "caja cuadrado">
-                    Nº AUSENCIAS
-                </div>
-            </div>
+        .columna {
+            padding: 20px;
+            border-radius: 10px;
+        }
 
-            <a href="{% url 'mis_reservas' %}" class="caja verticales">
-                <p> SALAS RESERVADAS </p>
-                <p> </p>
-            </a>
+        .estaditicas {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-gap: 20px;
+        }
+
+        .estadistica {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            aspect-ratio: 1.5;
+            margin: 0px 10px;
+            box-shadow: 10px 10px 40px rgba(190, 192, 244, 0.34);
+        }
+        .notificaciones {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: left;
+            aspect-ratio: 1;
+            box-shadow: 10px 10px 40px rgba(190, 192, 244, 0.34);
+        }
+
+        .sesion{
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: start;
+            align-items: left;
+            aspect-ratio: 2.5;
+            box-shadow: 10px 10px 40px rgba(190, 192, 244, 0.34);
+        }
+
+        .sesion-info{
+            display: grid;
+            grid-template-columns: 0.6fr 0.4fr;
+        }
+        .notificacion{
+            display: flex;
+            flex-direction: row;
+            border: 1px solid black;
+            width: stretch;
+            margin-bottom: 5px;
             
-        </div>
-    </div>
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-gap: 20px;
+        }
 
-    <div class="flex-container">
-        <div style="background-color: lightblue;"  class="caja casilla">
-            <h2> CATECÚMENOS </h2>
-        </div>
-        <div style="background-color: lightgreen;" class="caja casilla">
-            <h2> CATEQUISTAS </h2>
-        </div>
-        <div style="background-color: lightpink;" class="caja casilla">
-            <h2> SALAS RESERVADAS </h2>
-        </div>
-        <div style="background-color: lightyellow;" class="caja casilla">
-            <h2> EVENTOS </h2>
-        </div>
-    </div>
+        .grid-item {
+            text-align: center;
+        }
+
+        .thumbnail {
+            max-width: 100px;
+        }
+
+        .boton {
+            display: inline-block;
+            background-color: lightblue;
+            color: black;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .boton:hover {
+            background-color: skyblue;
+        }
+
+        .leido-btn {
+            text-align: center;
+            color: green; /* Color del icono */
+            font-size: 24px; /* Tamaño del icono */
+            margin-top: 5px; /* Espaciado superior */
+            display: inline-block; /* Asegura que el botón se ajuste al icono */
+        }
+    </style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('input[name="notificacion"]').change(function() {
+            var notificacionId = $(this).val();
+            var url = "{% url 'marcar_notificacion_vista' 0 %}".replace('0', notificacionId);
+            $.ajax({
+                url: url,
+                type: "GET",
+                success: function(data) {
+                    console.log("buen")
+                    window.location.reload();
+                    
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                    window.location.reload();
+                }
+            });
+        });
+    });
+</script>
+
 
 {% endblock %}

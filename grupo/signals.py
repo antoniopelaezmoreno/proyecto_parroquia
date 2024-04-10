@@ -11,6 +11,9 @@ def crear_notificacion_nuevo_grupo(sender, instance, created, **kwargs):
         catequista2 = instance.catequista2
         if catequista1 and catequista2:
             mensaje = "Se te ha asignado a un grupo"
-            notificacion = Notificacion(mensaje=mensaje)
-            notificacion.save()
-            notificacion.destinatarios.set([catequista1, catequista2])
+            notificacion1 = Notificacion(mensaje=mensaje)
+            notificacion1.destinatario=catequista1
+            notificacion1.save()
+            notificacion2 = Notificacion(mensaje=mensaje)
+            notificacion2.destinatario=catequista2
+            notificacion2.save()

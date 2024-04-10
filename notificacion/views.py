@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Notificacion
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
 
 @login_required
 def ver_notificaciones(request):
@@ -13,7 +14,8 @@ def marcar_notificacion_vista(request, notificacion_id):
     if notificacion.destinatario == request.user:
         notificacion.visto = True
         notificacion.save()
-        return redirect('ver_notificaciones')
+        return redirect('/')
     else:
         return redirect('/403')
+
     

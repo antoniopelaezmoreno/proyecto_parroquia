@@ -12,6 +12,6 @@ def crear_notificacion_nuevo_catecumeno(sender, instance, created, **kwargs):
         if coordinador:
             mensaje = f"Se ha creado un nuevo catecúmeno: {instance.nombre} {instance.apellidos}"
             notificacion = Notificacion(mensaje=mensaje)
+            notificacion.destinatario = coordinador
             notificacion.save()
-            notificacion.destinatarios.set([coordinador])
 
