@@ -9,7 +9,7 @@
     <label for="usuario">Usuario:</label>
     <select name="usuario" id="usuario">
         {% for user in usuarios %}
-        <option value="{{ user.id }}">{{ user.username }}</option>
+        <option value="{{ user.id }}">{{ user.first_name }} {{ user.last_name }} | {{ user.ciclo }}</option>
         {% endfor %}
     </select>
     <br>

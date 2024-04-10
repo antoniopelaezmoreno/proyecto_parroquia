@@ -4,13 +4,14 @@
 
 {% block content %}
 
-<h2 style="text-align: center; border-bottom: 1px solid #ccc;"> Reservas futuras</h2>
 <a href="{% url 'lista_salas' %}"> Reservar sala</a>
+<h2 style="text-align: center; border-bottom: 1px solid #ccc;"> Reservas futuras</h2>
+
 <div class="reservas-container">
     {% for reserva in reservas_futuras %}
         <div class = "reserva">
-            <h3> {{ reserva.sala }}</h3>
-            <p> Fecha: {{ reserva.fecha }}</p>
+            <h3> {{ reserva.fecha }}</h3>
+            <p> {{ reserva.sala }}</p>
             <p> {{ reserva.hora_inicio }} - {{ reserva.hora_fin }}</p>
         </div>
     {% endfor %}

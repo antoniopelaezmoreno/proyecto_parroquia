@@ -140,9 +140,9 @@ def reservar_sala(request):
 def mis_reservas(request):
     if request.user.is_coord or request.user.is_superuser:
         fecha_hoy = date.today()
-        reservas_pasadas = Reserva.objects.filter(usuario=request.user, fecha__lt=fecha_hoy)
-        reservas_futuras = Reserva.objects.filter(usuario=request.user, fecha__gte=fecha_hoy)
-        solicitudes_de_reserva = SolicitudReserva.objects.filter(usuario=request.user, estado='pendiente')
+        reservas_pasadas = Reserva.objects.filter(usuario=request.user, fecha__lt=fecha_hoy).order_by('fecha')
+        reservas_futuras = Reserva.objects.filter(usuario=request.user, fecha__gte=fecha_hoy).order_by('fecha')
+        solicitudes_de_reserva = SolicitudReserva.objects.filter(usuario=request.user, estado='pendiente').order_by('fecha')
         return render(request, 'mis_reservas.html', {'reservas_pasadas': reservas_pasadas, 'reservas_futuras':reservas_futuras, 'solicitudes_de_reserva':solicitudes_de_reserva, 'fecha_hoy':fecha_hoy})
     else:
         return redirect('/403')
