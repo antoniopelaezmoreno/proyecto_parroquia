@@ -1,0 +1,62 @@
+
+<form method="post" action="{% url 'enviar_correo' %}" enctype="multipart/form-data" id="correoForm">
+    {% csrf_token %}
+    <label for="destinatario">Para:</label>
+    <input type="email" name="destinatario" id="destinatario" placeholder="Destinatario">
+
+    <label for="asunto">Asunto:</label>
+    <input type="text" name="asunto" id="asunto" placeholder="Asunto">
+
+    <label for="mensaje">Mensaje:</label>
+    <textarea name="mensaje" id="mensaje" placeholder="Mensaje"></textarea>
+
+    <button type="submit" id="guardarBtn">Enviar</button>
+</form>
+
+<style>
+    #correoForm {
+        width: 500px;
+    }
+
+    label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    input[type="email"],
+    input[type="text"],
+    textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    textarea {
+        height: 400px;
+    }
+
+    input[type="email"]:focus,
+    input[type="text"]:focus,
+    textarea:focus {
+        border-color: #007bff;
+        outline: none;
+    }
+
+    button[type="submit"] {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        padding: 10px 20px;
+        cursor: pointer;
+    }
+
+    button[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+</style>
+

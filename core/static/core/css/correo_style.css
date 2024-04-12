@@ -1,0 +1,116 @@
+.container {
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.cabecera {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.h1 {
+    color: #333;
+}
+
+.botones-derecha {
+    display: flex;
+    gap: 10px;
+}
+
+.boton {
+    padding: 10px 20px;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    text-decoration: none;
+    color: #333;
+    cursor: pointer;
+}
+
+.cerrar-btn {
+    background-color: transparent;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #999;
+}
+
+.cerrar-btn:hover {
+    color: #333;
+}
+
+.formulario-enviar-mensaje {
+    display: none; 
+    position: absolute;
+    bottom: 20px; 
+    right: 20px; 
+    width: auto;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+}
+
+.mensaje {
+    margin-bottom: 40px; 
+    padding: 15px; 
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+.mensaje.leido {
+    background-color: #ffffff;
+    color : #999;
+}
+
+.mensaje.no_leido {
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+.mensaje td {
+    padding: 10px; 
+}
+
+table {
+    width: 100%;
+}
+
+.pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.pagination a {
+    padding: 5px 10px;
+    margin: 0 5px;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    text-decoration: none;
+    color: #333;
+}
+
+.pagination .current {
+    font-weight: bold;
+}
+.mensaje-exito {
+    display: none; 
+    position: fixed; 
+    bottom: 20px; 
+    right: 20px; 
+    background-color: #4caf50; 
+    color: white; 
+    padding: 15px; 
+    border-radius: 5px; 
+    z-index: 9999; 
+}

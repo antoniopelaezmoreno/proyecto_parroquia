@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.db.models import Q
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
@@ -6,11 +6,14 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 import json
+import base64
 from django.contrib.auth.decorators import login_required
 from catecumeno.models import Catecumeno
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from datetime import datetime
 from custom_user.models import CustomUser
+from email.mime.text import MIMEText
+from django.http import JsonResponse
 
 # Create your views here.
 @login_required
@@ -32,19 +35,19 @@ def bandeja_entrada_familias(request):
     
 
     remitentes = [email for tupla in remitentes for email in tupla if email]
+    remitentes.append("mailer-daemon@googlemail.com")
     query = ' OR '.join([f"from:{remitente}" for remitente in remitentes])
 
     return bandeja_de_entrada(request, query)
 
 @login_required
 def bandeja_entrada_catequistas(request):
-    catequistas = CustomUser.objects.all().values_list('email', flat=True)
+    catequistas = list(CustomUser.objects.all().values_list('email', flat=True))
+    catequistas.append("mailer-daemon@googlemail.com")
     query = ' OR '.join([f"from:{catequista}" for catequista in catequistas])
     return bandeja_de_entrada(request, query)
 
-
-@login_required
-def bandeja_de_entrada(request, query):
+def conseguir_credenciales(request):
     SCOPES = ["https://www.googleapis.com/auth/gmail.readonly", "https://www.googleapis.com/auth/gmail.send"]
 
     creds = None
@@ -64,7 +67,13 @@ def bandeja_de_entrada(request, query):
             creds = flow.run_local_server(port=8081, login_hint=user.email)
             user.token_json = creds.to_json()
             user.save()
+    return creds
 
+
+@login_required
+def bandeja_de_entrada(request, query):
+    
+    creds=conseguir_credenciales(request)
     try:
         service = build("gmail", "v1", credentials=creds)
         results = service.users().messages().list(userId="me",q=query, labelIds=["INBOX"]).execute()
@@ -87,15 +96,22 @@ def bandeja_de_entrada(request, query):
         mensajes = []
         for message in mensajes_pagina:
             msg = service.users().messages().get(userId="me", id=message["id"]).execute()
+            print('------------')
+            print(msg)
             headers = msg['payload']['headers']
             subject = next((header['value'] for header in headers if header['name'] == 'Subject'), None)
             emisor = next((header['value'] for header in headers if header['name'] == 'From'), None)
+            if emisor is None:
+                emisor = next((header['value'] for header in headers if header['name'] == 'from'),None)
             body = msg['snippet']
 
             # Recibimos y transformamos la fecha al formato dd/mm/YYYY
             fecha = next((header['value'] for header in headers if header['name'] == 'Date'), None)
-            fecha_sin_utc = fecha.split(" (")[0]
-            fecha_recibido = datetime.strptime(fecha_sin_utc, '%a, %d %b %Y %H:%M:%S %z')
+            if "+" in fecha:
+                fecha_sin_utc = fecha.split(" +")[0]
+            elif "-" in fecha:
+                fecha_sin_utc = fecha.split(" -")[0]
+            fecha_recibido = datetime.strptime(fecha_sin_utc, '%a, %d %b %Y %H:%M:%S')
             fecha_formateada = fecha_recibido.strftime('%d/%m/%Y')
         
             if 'UNREAD' in msg['labelIds']:
@@ -108,6 +124,50 @@ def bandeja_de_entrada(request, query):
     except HttpError as err:
         from core.views import error
         return error(request, err)
+    
+
+@login_required
+def enviar_correo(request):
+    creds = conseguir_credenciales(request)
+
+    try:
+        service = build("gmail", "v1", credentials=creds)
+        if request.method == 'POST':
+            sender = request.user.email
+            to = request.POST.get('destinatario')
+            subject = request.POST.get('asunto')
+            message_text = request.POST.get('mensaje')
+
+            message = create_message(sender, to, subject, message_text)
+            send_message(service, "me", message)
+            
+            # Devolver una respuesta JSON
+            return JsonResponse({'success': True})
+        
+        # En caso de que no sea una solicitud POST
+        return JsonResponse({'success': False, 'error': 'No es una solicitud POST'})
+    
+    except HttpError as err:
+        from core.views import error
+        return error(request, err)
+    
+def create_message(sender, to, subject, message_text):
+  message = MIMEText(message_text)
+  message['to'] = to
+  message['from'] = sender
+  message['subject'] = subject
+  raw_message = base64.urlsafe_b64encode(message.as_string().encode("utf-8"))
+  return {
+    'raw': raw_message.decode("utf-8")
+  }
+  
+def send_message(service, user_id, message):
+  try:
+    message = service.users().messages().send(userId=user_id, body=message).execute()
+    return message
+  except Exception as e:
+    print('An error occurred: %s' % e)
+    return None
     
 
 
