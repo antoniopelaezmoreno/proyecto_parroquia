@@ -1,130 +1,105 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %} Bandeja de entrada {% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="cabecera">
-        <h1>Bandeja de Entrada</h1>
-        <div class="botones-derecha">
-            <a href="#" class="boton">Enviar mensaje</a>
-            <a href="{% url 'bandeja_de_entrada_familias' %}" class="boton">Familias</a>
-            <a href="{% url 'bandeja_de_entrada_catequistas' %}" class="boton">Catequistas</a>
+    <link rel="stylesheet" type="text/css" href="{% static 'core/css/correo_style.css' %}">
+    <div class="container">
+        
+        <div class="cabecera">
+            <h1>Bandeja de Entrada</h1>
+            <div class="botones-derecha">
+                <button id="mostrarFormulario" class="boton">Enviar mensaje</button>
+                <a href="{% url 'bandeja_de_entrada_familias' %}" class="boton">Familias</a>
+                <a href="{% url 'bandeja_de_entrada_catequistas' %}" class="boton">Catequistas</a>
+            </div>
         </div>
+        <table>
+            <tbody>
+                {% for mensaje in mensajes %}
+                    <tr class="mensaje {% if mensaje.seen %} leido {% else %} no_leido {% endif %}">
+                        <td><strong>{{ mensaje.sender }}</strong></td>
+                        <td><strong>{{ mensaje.subject }}</strong> | {{ mensaje.body }}</td>
+                        <td>{{ mensaje.date }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-    <table>
-        <tbody>
-            {% for mensaje in mensajes %}
-                <tr class="mensaje {% if mensaje.seen %} leido {% else %} no_leido {% endif %}">
-                    <td><strong>{{ mensaje.sender }}</strong></td>
-                    <td><strong>{{ mensaje.subject }}</strong> | {{ mensaje.body }}</td>
-                    <td>{{ mensaje.date }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
 
+    <!-- Contenedor del formulario para enviar mensaje -->
+    <div id="formularioEnviarMensaje" class="formulario-enviar-mensaje">
+        <button id="cerrarFormulario" class="cerrar-btn">x</button>
+        {% include 'enviar_correo.html' %}
+    </div>
 
-<div class="pagination">
-    <span class="step-links">
-        {% if mensajes_pagina.has_previous %}
-            <a href="?page=1">&laquo; Primera</a>
-            <a href="?page={{ mensajes_pagina.previous_page_number }}">Anterior</a>
-        {% endif %}
+    <div id="mensajeExito" class="mensaje-exito">
+        El correo electrónico se ha enviado con éxito.
+    </div>
 
-        <span class="current">
-            Página {{ mensajes_pagina.number }} de {{ mensajes_pagina.paginator.num_pages }}.
+    <div class="pagination">
+        <span class="step-links">
+            {% if mensajes_pagina.has_previous %}
+                <a href="?page=1">&laquo; Primera</a>
+                <a href="?page={{ mensajes_pagina.previous_page_number }}">Anterior</a>
+            {% endif %}
+
+            <span class="current">
+                Página {{ mensajes_pagina.number }} de {{ mensajes_pagina.paginator.num_pages }}.
+            </span>
+
+            {% if mensajes_pagina.has_next %}
+                <a href="?page={{ mensajes_pagina.next_page_number }}">Siguiente</a>
+                <a href="?page={{ mensajes_pagina.paginator.num_pages }}">Última &raquo;</a>
+            {% endif %}
         </span>
+    </div>
 
-        {% if mensajes_pagina.has_next %}
-            <a href="?page={{ mensajes_pagina.next_page_number }}">Siguiente</a>
-            <a href="?page={{ mensajes_pagina.paginator.num_pages }}">Última &raquo;</a>
-        {% endif %}
-    </span>
-</div>
+    <script>
+        
+        document.getElementById("mostrarFormulario").addEventListener("click", function() {
+            document.getElementById("correoForm").reset();
+            document.getElementById("formularioEnviarMensaje").style.display = "block";
+        });
 
-<style>
-    .container {
-        margin: 20px auto;
-        padding: 20px;
-        background-color: #fff;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
+        document.getElementById("cerrarFormulario").addEventListener("click", function() {
+            document.getElementById("formularioEnviarMensaje").style.display = "none";
+        });
 
-    .cabecera {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
+        document.getElementById("correoForm").addEventListener("submit", function(event) {
+            event.preventDefault(); 
+            var form_data = new FormData(this);
 
-    .h1 {
-        color: #333;
-    }
+            fetch("{% url 'enviar_correo' %}", {
+                method: "POST",
+                body: form_data,
+                headers: {
+                    "X-CSRFToken": getCookie("csrftoken")
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById("formularioEnviarMensaje").style.display = "none";
+                    document.getElementById("mensajeExito").style.display = "block";
 
-    .botones-derecha {
-        display: flex;
-        gap: 10px;
-    }
+                    setTimeout(() => {
+                        document.getElementById("mensajeExito").style.display = "none";
+                    }, 5000); 
+                } else {
+                    alert("Error al enviar el correo electrónico: " + data.error);
+                }
+            })
+            .catch(error => {
+                console.error("Error al enviar el formulario:", error);
+            });
 
-    .boton {
-        padding: 10px 20px;
-        background-color: #f0f0f0;
-        border: 1px solid #ddd;
-        border-radius: 3px;
-        text-decoration: none;
-        color: #333;
-    }
-
-    .enviar-mensaje {
-        position: absolute;
-        bottom: 20px; /* Ajusta la distancia desde la parte inferior de la pantalla */
-        right: 20px; /* Ajusta la distancia desde el lado derecho de la pantalla */
-    }
-
-    .mensaje {
-        margin-bottom: 40px; /* Aumenta el espacio entre los mensajes */
-        padding: 15px; /* Aumenta el espacio interno de cada mensaje */
-        background-color: #f9f9f9;
-        border-radius: 5px;
-    }
-
-    .mensaje.leido {
-        background-color: #ffffff;
-        color : #999;
-    }
-
-    .mensaje.no_leido {
-        background-color: #f9f9f9;
-        color: #333;
-    }
-
-    .mensaje td {
-        padding: 10px; /* Aumenta el espacio interno de las celdas */
-    }
-
-    table {
-        width: 100%;
-    }
-
-    .pagination {
-        margin-top: 20px;
-        text-align: center;
-    }
-
-    .pagination a {
-        padding: 5px 10px;
-        margin: 0 5px;
-        background-color: #f0f0f0;
-        border: 1px solid #ddd;
-        border-radius: 3px;
-        text-decoration: none;
-        color: #333;
-    }
-
-    .pagination .current {
-        font-weight: bold;
-    }
-</style>
+            function getCookie(name) {
+                const value = `; ${document.cookie}`;
+                const parts = value.split(`; ${name}=`);
+                if (parts.length === 2) return parts.pop().split(';').shift();
+            }
+        });
+    </script>
 {% endblock %}
