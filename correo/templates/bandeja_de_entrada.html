@@ -18,7 +18,7 @@
         <table>
             <tbody>
                 {% for mensaje in mensajes %}
-                    <tr class="mensaje {% if mensaje.seen %} leido {% else %} no_leido {% endif %}">
+                    <tr class="mensaje {% if mensaje.seen %} leido {% else %} no_leido {% endif %}" data-id="{{ mensaje.id }}">
                         <td><strong>{{ mensaje.sender }}</strong></td>
                         <td><strong>{{ mensaje.subject }}</strong> | {{ mensaje.body }}</td>
                         <td>{{ mensaje.date }}</td>
@@ -68,6 +68,7 @@
         });
 
         document.getElementById("correoForm").addEventListener("submit", function(event) {
+
             event.preventDefault(); 
             var form_data = new FormData(this);
 
@@ -101,5 +102,22 @@
                 if (parts.length === 2) return parts.pop().split(';').shift();
             }
         });
+
+        const rows = document.querySelectorAll("table tbody tr");
+        rows.forEach(row => {
+            row.addEventListener("click", () => {
+                const id = row.getAttribute("data-id");
+                if (id) {
+                    var url = "{% url 'detalles_mensaje' 0 %}".replace("0", id);
+                    window.location.href = url;
+                }
+            });
+        });
     </script>
+
+    <style>
+        tr {
+            cursor: pointer;
+        }
+    </style>
 {% endblock %}

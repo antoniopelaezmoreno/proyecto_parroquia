@@ -96,8 +96,6 @@ def bandeja_de_entrada(request, query):
         mensajes = []
         for message in mensajes_pagina:
             msg = service.users().messages().get(userId="me", id=message["id"]).execute()
-            print('------------')
-            print(msg)
             headers = msg['payload']['headers']
             subject = next((header['value'] for header in headers if header['name'] == 'Subject'), None)
             emisor = next((header['value'] for header in headers if header['name'] == 'From'), None)
@@ -105,26 +103,87 @@ def bandeja_de_entrada(request, query):
                 emisor = next((header['value'] for header in headers if header['name'] == 'from'),None)
             body = msg['snippet']
 
-            # Recibimos y transformamos la fecha al formato dd/mm/YYYY
-            fecha = next((header['value'] for header in headers if header['name'] == 'Date'), None)
-            if "+" in fecha:
-                fecha_sin_utc = fecha.split(" +")[0]
-            elif "-" in fecha:
-                fecha_sin_utc = fecha.split(" -")[0]
-            fecha_recibido = datetime.strptime(fecha_sin_utc, '%a, %d %b %Y %H:%M:%S')
-            fecha_formateada = fecha_recibido.strftime('%d/%m/%Y')
-        
+            fecha=formatear_fecha(headers)
+            
             if 'UNREAD' in msg['labelIds']:
                 leido = False
             else:
                 leido = True
-            mensajes.append({'subject': subject, 'body': body, 'sender': emisor, 'seen': leido, 'date': fecha_formateada})
+            mensajes.append({'subject': subject, 'body': body, 'sender': emisor, 'seen': leido, 'date': fecha, 'id': message['id']})
 
         return render(request, 'bandeja_de_entrada.html', {'mensajes_pagina': mensajes_pagina, 'mensajes': mensajes})
     except HttpError as err:
         from core.views import error
         return error(request, err)
     
+@login_required
+def marcar_mensaje_visto(request, message_id):
+    creds = conseguir_credenciales(request)
+
+    try:
+        service = build("gmail", "v1", credentials=creds)
+        # Marcar el mensaje como visto
+        service.users().messages().modify(userId="me", id=message_id, body={"removeLabelIds": ["UNREAD"]}).execute()
+
+        # Devolver una respuesta JSON
+        return JsonResponse({'success': True})
+
+    except HttpError as err:
+        from core.views import error
+        return error(request, err)
+    
+@login_required
+def obtener_detalles_mensaje(request, mensaje_id):
+    # Obtener credenciales del usuario
+    creds = conseguir_credenciales(request)
+
+    # Construir el servicio de Gmail
+    try:
+        service = build("gmail", "v1", credentials=creds)
+
+        # Obtener detalles del mensaje
+        message = service.users().messages().get(userId="me", id=mensaje_id, format='full').execute()
+
+        # Extraer los detalles relevantes del mensaje
+        headers = message['payload']['headers']
+        subject = next((header['value'] for header in headers if header['name'] == 'Subject'), None)
+        emisor = next((header['value'] for header in headers if header['name'] == 'From'), None)
+        if emisor is None:
+            emisor = next((header['value'] for header in headers if header['name'] == 'from'),None)
+        body = message['snippet']
+        formatted_date = formatear_fecha(headers)
+
+        # Verificar si el mensaje tiene archivos adjuntos
+        attachments = []
+        if 'parts' in message['payload']:
+            for part in message['payload']['parts']:
+                if 'filename' in part:
+                    attachments.append(part['filename'])
+
+        # Construir el objeto de respuesta JSON
+        response_data = {
+            'subject': subject,
+            'sender': emisor,
+            'body': body,
+            'date': formatted_date,
+            'attachments': attachments
+        }
+
+        return render(request, 'detalles_mensaje.html', {'mensaje': response_data})
+
+    except Exception as err:
+        from core.views import error
+        return error(request, err)
+
+def formatear_fecha(headers):
+    fecha = next((header['value'] for header in headers if header['name'] == 'Date'), None)
+    if "+" in fecha:
+        fecha_sin_utc = fecha.split(" +")[0]
+    elif "-" in fecha:
+        fecha_sin_utc = fecha.split(" -")[0]
+    fecha_recibido = datetime.strptime(fecha_sin_utc, '%a, %d %b %Y %H:%M:%S')
+    fecha_formateada = fecha_recibido.strftime('%d/%m/%Y')
+    return fecha_formateada
 
 @login_required
 def enviar_correo(request):
@@ -151,23 +210,26 @@ def enviar_correo(request):
         from core.views import error
         return error(request, err)
     
+@login_required
 def create_message(sender, to, subject, message_text):
-  message = MIMEText(message_text)
-  message['to'] = to
-  message['from'] = sender
-  message['subject'] = subject
-  raw_message = base64.urlsafe_b64encode(message.as_string().encode("utf-8"))
-  return {
-    'raw': raw_message.decode("utf-8")
-  }
+    message = MIMEText(message_text)
+    message['to'] = to
+    message['from'] = sender
+    message['subject'] = subject
+    raw_message = base64.urlsafe_b64encode(message.as_string().encode("utf-8"))
+    return {
+        'raw': raw_message.decode("utf-8")
+    }
   
+@login_required
 def send_message(service, user_id, message):
-  try:
-    message = service.users().messages().send(userId=user_id, body=message).execute()
-    return message
-  except Exception as e:
-    print('An error occurred: %s' % e)
-    return None
+    try:
+        message = service.users().messages().send(userId=user_id, body=message).execute()
+        return message
+    except Exception as e:
+        print('An error occurred: %s' % e)
+        return None
+    
     
 
 

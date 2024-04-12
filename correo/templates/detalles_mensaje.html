@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Mensaje {% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <h1>Detalles del mensaje</h1>
+        <div class="mensaje">
+            <p><strong>De:</strong> {{ mensaje.sender }}</p>
+            <p><strong>Asunto:</strong> {{ mensaje.subject }}</p>
+            <p><strong>Fecha:</strong> {{ mensaje.date }}</p>
+            <p><strong>Mensaje:</strong> {{ mensaje.body }}</p>
+            {% if mensaje.attachments %}
+                <p><strong>Archivos Adjuntos:</strong></p>
+                <ul>
+                    {% for attachment in mensaje.attachments %}
+                        <li>{{ attachment }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+
+    <style>
+        .container {
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            width: 80%;
+        }
+
+        .mensaje {
+            margin-top: 20px;
+        }
+
+        .mensaje p {
+            margin-bottom: 10px;
+        }
+
+        .mensaje p strong {
+            font-weight: bold;
+        }
+
+        .mensaje ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+    </style>
+
+{% endblock %}
