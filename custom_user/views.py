@@ -64,7 +64,7 @@ def crear_usuario_desde_solicitud(request, id, ciclo):
             flow = InstalledAppFlow.from_client_secrets_file(
                 "credentials.json", SCOPES
             )
-            creds = flow.run_local_server(port=8081)
+            creds = flow.run_local_server(port=8081, login_hint=solicitud.email)
             custom_user.token_json = creds.to_json()
             custom_user.save()
             
