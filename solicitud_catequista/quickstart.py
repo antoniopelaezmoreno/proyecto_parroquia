@@ -33,7 +33,7 @@ def enviar_email(sender, to, subject, message_text, user):
           "credentials.json", SCOPES,
           redirect_uri="urn:ietf:wg:oauth:2.0:oob"
       )
-      creds = flow.run_local_server(port=8081)
+      creds = flow.run_local_server(port=8081, login_hint=user.email)
     # Save the credentials for the next run
     user.token_json =creds.to_json()
     user.save()
