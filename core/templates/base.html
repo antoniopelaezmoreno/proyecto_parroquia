@@ -40,7 +40,7 @@
             <a href="{% url 'ver_autorizaciones' %}" class="menu-btn">Autorizaciones</a>
             <a href="{% url 'tabla_asistencias_admin' 'posco_1' %}" class="menu-btn">Tabla asistencias</a>
             <a href="{% url 'solicitudes_reserva' %}" class="menu-btn">Solicitudes Sala</a>
-            <button class="menu-btn" onclick="toggleSidebar()">Analytics</button>
+            <a href="{% url 'bandeja_de_entrada_familias' %}" class="menu-btn">Correo</a>
         {% else %}
           {% if user.is_coord %}
             <a href="{% url 'index' %}" class="menu-btn">Inicio</a>
