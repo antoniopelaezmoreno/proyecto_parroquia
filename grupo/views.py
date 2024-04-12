@@ -4,6 +4,7 @@ from .forms import GrupoForm
 from django.http import JsonResponse
 from custom_user.models import CustomUser
 from catecumeno.models import Catecumeno
+from sesion.models import Sesion
 from .models import Grupo
 from curso.models import Curso
 import random
@@ -12,43 +13,6 @@ from django.core.exceptions import ValidationError
 from django.contrib import messages
 
 # Create your views here.
-'''
-@login_required
-def crear_grupo(request):
-    if request.user.is_authenticated:
-        if request.user.is_coord:
-            ciclo = request.user.ciclo
-            catequistas = CustomUser.objects.filter(ciclo=ciclo)
-            if request.method == 'POST':
-                form = GrupoForm(request.POST, request.FILES, catequistas=catequistas)
-                if form.is_valid():
-                    grupo = form.save(commit=False)
-                    grupo.ciclo = ciclo
-                    grupo.save()
-                    return redirect('/')
-            else:
-                form = GrupoForm(catequistas=catequistas)
-            return render(request, 'crear_grupo.html', {'form': form})
-        if request.user.is_superuser:
-            return redirect('crear_grupo_admin')
-        else:
-            return redirect('/403')
-    else:
-        return redirect('/403')
-'''
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 @login_required
 def crear_grupo(request):
@@ -141,7 +105,8 @@ def panel_grupos(request):
         error = request.session.pop('errores', "")
         catequistas = CustomUser.objects.filter(ciclo=request.user.ciclo)
         grupos = Grupo.objects.filter(ciclo=request.user.ciclo)
-        return render(request, 'panel_grupos_coord.html', {'grupos': grupos, 'catequistas': catequistas, 'error': error})
+        sesiones = Sesion.objects.filter(ciclo=request.user.ciclo, curso=Curso.objects.latest('id')).order_by('fecha')
+        return render(request, 'panel_grupos_coord.html', {'grupos': grupos, 'catequistas': catequistas, 'error': error, 'sesiones': sesiones})
     
 def calcular_valor(grupos, lista_catecumenos, num_grupos):
    

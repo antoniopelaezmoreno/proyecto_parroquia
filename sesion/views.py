@@ -86,23 +86,25 @@ def listar_sesiones(request):
     else:
         return redirect('/403')
 
+
 @login_required
 def pasar_lista(request, sesionid):
     from core.views import error
-
     if request.user.is_authenticated:
-        if timezone.now().date() < Sesion.objects.get(pk=sesionid).fecha:
-            return error(request, "No puedes pasar lista antes de la fecha de la sesión")
-            return None
         sesion = get_object_or_404(Sesion, pk=sesionid)
         if request.user.ciclo == sesion.ciclo:
             if request.method == 'POST':
-                asistentes = request.POST.getlist('asistentes')
-                justificados = request.POST.getlist('justificados')
-                ausentes = request.POST.getlist('ausentes')
-                sesion.asistentes.set(asistentes)
-                sesion.justificados.set(justificados)
-                sesion.ausentes.set(ausentes)
+                for catecumeno in catecumenos_desde_catequista(request.user):
+                    categoria = request.POST.get(f'categoria_{catecumeno.id}')
+                    if categoria in ['asistente', 'justificado', 'ausente']:
+                        if categoria == 'asistente':
+                            sesion.asistentes.add(catecumeno)
+                        elif categoria == 'justificado':
+                            sesion.justificados.add(catecumeno)
+                        elif categoria == 'ausente':
+                            sesion.ausentes.add(catecumeno)
+                    else:
+                        return error(request, "Categoría no válida")
                 sesion.save()
                 return redirect('/sesion/listar')
             else:
@@ -112,6 +114,8 @@ def pasar_lista(request, sesionid):
             return redirect('/403')
     else:
         return redirect('/403')
+
+
 
 
 def catecumenos_desde_catequista(catequista):

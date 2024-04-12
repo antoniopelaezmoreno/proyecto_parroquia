@@ -7,6 +7,7 @@ from .forms import CustomUserForm, EditCustomUserForm
 from google_auth_oauthlib.flow import InstalledAppFlow
 from django.contrib.auth.decorators import login_required
 import json
+from catecumeno.models import Catecumeno
 
 SCOPES = ["https://www.googleapis.com/auth/gmail.readonly", "https://www.googleapis.com/auth/gmail.send"]
 
@@ -51,11 +52,14 @@ def crear_usuario_desde_solicitud(request, id, ciclo):
         form = CustomUserForm(request.POST)
         if form.is_valid():
             # Crear un nuevo CustomUser a partir de los datos del formulario
+            opcion_ciclo = Catecumeno.CicloChoices(ciclo)
+            if opcion_ciclo is None:
+                return redirect('/404')
             custom_user = form.save(commit=False)
             custom_user.first_name = solicitud.nombre
             custom_user.last_name = solicitud.apellidos
             custom_user.email = solicitud.email
-            custom_user.ciclo = ciclo
+            custom_user.ciclo = opcion_ciclo
                 # Save the credentials for the next run
             flow = InstalledAppFlow.from_client_secrets_file(
                 "credentials.json", SCOPES
@@ -75,3 +79,38 @@ def crear_usuario_desde_solicitud(request, id, ciclo):
     
     # Renderizar el formulario para la creación de un CustomUser
     return render(request, 'crear_usuario_desde_solicitud.html', {'form': form})
+
+@login_required
+def convertir_a_coordinador(request):
+    if request.method == 'POST':
+        # Procesar los datos enviados por el formulario
+        for ciclo in request.POST:
+            # Verificar si el campo corresponde a un ciclo
+            if ciclo.startswith('cycle_'):
+                # Obtener el ciclo y el ID del usuario seleccionado
+                cic = ciclo.split('cycle_')[1]
+                user_id = request.POST[ciclo]
+
+                # Marcar al usuario seleccionado como coordinador
+                if user_id:
+                    todos_users = CustomUser.objects.filter(ciclo=cic)
+                    todos_users.update(is_coord=False)
+                    user = get_object_or_404(CustomUser, pk=user_id)
+                    user.is_coord = True
+                    user.save()
+
+        # Redirigir a alguna página de éxito
+        return redirect('/')
+
+    # Obtener todos los ciclos únicos
+    ciclos = [('posco_1','Posco 1'),('posco_2','Posco 2'),('posco_3','Posco 3'),('posco_4','Posco 4'),('gr_juv_1','Grupos Juveniles 1'),('gr_juv_2','Grupos Juveniles 2'),('catecumenados_1','Catecumenados 1'),('catecumenados_2','Catecumenados 2'),('catecumenados_3','Catecumenados 3')]
+
+
+    # Crear un diccionario para almacenar los usuarios por ciclo
+    usuarios_por_ciclo = {}
+    for cycle in ciclos:
+        usuarios_de_ciclo = CustomUser.objects.filter(ciclo=cycle[0])
+        usuarios_por_ciclo[cycle] = usuarios_de_ciclo
+
+
+    return render(request, 'crear_coordinadores.html', {'users_by_cycle': usuarios_por_ciclo})

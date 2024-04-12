@@ -1,52 +1,45 @@
-{% extends 'base.html' %}
-{% load static %}
-
-{% block title %} Tabla asistencias {% endblock %}
-
-{% block content %}
-{% for grupo in grupos %}
-<h2>{{ grupo }}</h2>
-<table class="alumnos-table rounded-border">
-    <thead>    
-        <tr>
-            <th>Nombre</th>
-            {% for sesion in sesiones %}
-                <th>{{ sesion.fecha }}</th>
-            {% endfor %}
-        </tr>
-    </thead>
-    <tbody>
-        {% for catecumeno in grupo.miembros.all %}
-            <tr>
-                <td>{{ catecumeno.nombre }}</td>
-                {% for sesion in sesiones %}
-                    <td>
-                        <div class="asistencia-box {% if catecumeno in sesion.asistentes.all %}asiste{% endif %}{% if catecumeno in sesion.ausentes.all %}ausente{% endif %}{% if catecumeno in sesion.justificados.all %}justificado{% endif %}"></div>
-                    </td>
+    {% for grupo in grupos %}
+        <h2>{{ grupo }}</h2>
+        <table class="alumnos-table rounded-border">
+            <thead>    
+                <tr>
+                    <th>Nombre</th>
+                    {% for sesion in sesiones %}
+                        <th>{{ sesion.fecha }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for catecumeno in grupo.miembros.all %}
+                    <tr>
+                        <td>{{ catecumeno.nombre }}</td>
+                        {% for sesion in sesiones %}
+                            <td>
+                                <div class="asistencia-box {% if catecumeno in sesion.asistentes.all %}asiste{% endif %}{% if catecumeno in sesion.ausentes.all %}ausente{% endif %}{% if catecumeno in sesion.justificados.all %}justificado{% endif %}"></div>
+                            </td>
+                        {% endfor %}
+                    </tr>
                 {% endfor %}
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
-{% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
 
-<style>
-    .asistencia-box {
-        width: 20px; 
-        height: 20px; 
-        border: 1px solid black; 
-        display: inline-block; 
-    }
-    .asiste {
-        background-color: green;
-    }
+    <style>
+        .asistencia-box {
+            width: 20px; 
+            height: 20px; 
+            border: 1px solid black; 
+            display: inline-block; 
+        }
+        .asiste {
+            background-color: green;
+        }
 
-    .ausente {
-        background-color: red;
-    }
+        .ausente {
+            background-color: red;
+        }
 
-    .justificado {
-        background-color: blue;
-    }
-</style>
-{% endblock %}
+        .justificado {
+            background-color: blue;
+        }
+    </style>

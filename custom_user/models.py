@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 from django.db import models
 from django.utils import timezone
 from curso.models import Curso
+from catecumeno.models import Catecumeno
 
 
 class CustomUserManager(BaseUserManager):
@@ -29,7 +30,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     telefono = models.CharField(max_length=10, null=True, blank=True)
     is_coord = models.BooleanField(default=False)
-    ciclo = models.CharField(max_length=20, null=True)
+    ciclo = models.CharField(max_length=20, choices=Catecumeno.CicloChoices.choices, default=Catecumeno.CicloChoices.POSCO_1)
     first_name = models.CharField(max_length=30, blank=True)
     last_name = models.CharField(max_length=150, blank=True)
     is_staff = models.BooleanField(default=False)

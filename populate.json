@@ -2861,7 +2861,7 @@
           "telefono": "628963214",
           "password":"pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
           "ciclo": "catecumenados_1",
-          "is_coord": true,
+          "is_coord": false,
           "is_superuser": false,
           "curso": 1
           }
