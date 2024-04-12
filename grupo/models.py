@@ -14,4 +14,12 @@ class Grupo(models.Model):
     miembros = models.ManyToManyField(Catecumeno, related_name='miembros')
 
     def __str__(self):
-        return "Grupo de " +self.catequista1.first_name +" y " + self.catequista2.first_name
+        if self.catequista1 and self.catequista2:
+            return "Grupo de " +self.catequista1.first_name +" y " + self.catequista2.first_name
+        elif self.catequista1 and not self.catequista2:
+            return "Grupo de " + self.catequista1.first_name + " y Catequista 2"
+        elif not self.catequista1 and self.catequista2:
+            return "Grupo de Catequista 1 y " + self.catequista2.first_name
+        else:
+            return "Grupo de Catequista 1 y Catequista 2"
+        

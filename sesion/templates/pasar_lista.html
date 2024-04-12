@@ -10,7 +10,7 @@
         <thead>
             <tr>
                 <th>Catecumeno</th>
-                <th>Asistente</th>
+                <th>Asistencia</th>
                 <th>Justificado</th>
                 <th>Ausente</th>
             </tr>
@@ -19,14 +19,13 @@
             {% for catecumeno in catecumenos %}
                 <tr>
                     <td>{{ catecumeno.nombre }}</td>
-                    <td><input type="checkbox" name="asistentes" value="{{ catecumeno.id }}" ></td>
-                    <td><input type="checkbox" name="justificados" value="{{ catecumeno.id }}"></td>
-                    <td><input type="checkbox" name="ausentes" value="{{ catecumeno.id }}" ></td>
+                    <td><input type="radio" name="categoria_{{ catecumeno.id }}" value="asistente" {% if catecumeno in sesion.asistentes.all %}checked{% endif %}></td>
+                    <td><input type="radio" name="categoria_{{ catecumeno.id }}" value="justificado" {% if catecumeno in sesion.justificados.all %}checked{% endif %}></td>
+                    <td><input type="radio" name="categoria_{{ catecumeno.id }}" value="ausente" {% if catecumeno in sesion.ausentes.all %}checked{% endif %}></td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
     <button type="submit">Guardar</button>
 </form>
-
 {% endblock %}
