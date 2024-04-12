@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block title %} Bandeja de entrada {% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Bandeja de Entrada</h1>
+    <table>
+        <tbody>
+            {% for mensaje in mensajes %}
+                <tr class="mensaje {% if mensaje.seen %} leido {% else %} no_leido {% endif %}">
+                    <td><strong>{{ mensaje.sender }}</strong></td>
+                    <td><strong>{{ mensaje.subject }}</strong> | {{ mensaje.body }}</td>
+                    <td>{{ mensaje.date }}</td>
+
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if mensajes_pagina.has_previous %}
+            <a href="?page=1">&laquo; Primera</a>
+            <a href="?page={{ mensajes_pagina.previous_page_number }}">Anterior</a>
+        {% endif %}
+
+        <span class="current">
+            Página {{ mensajes_pagina.number }} de {{ mensajes_pagina.paginator.num_pages }}.
+        </span>
+
+        {% if mensajes_pagina.has_next %}
+            <a href="?page={{ mensajes_pagina.next_page_number }}">Siguiente</a>
+            <a href="?page={{ mensajes_pagina.paginator.num_pages }}">Última &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+<style>
+    .container {
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+        text-align: center;
+        color: #333;
+    }
+
+    .mensaje {
+        margin-bottom: 40px; /* Aumenta el espacio entre los mensajes */
+        padding: 15px; /* Aumenta el espacio interno de cada mensaje */
+        background-color: #f9f9f9;
+        border-radius: 5px;
+    }
+
+    .mensaje.leido {
+        background-color: #ffffff;
+        color : #999;
+    }
+
+    .mensaje.no_leido {
+        background-color: #f9f9f9;
+        color: #333;
+    }
+
+    .mensaje td {
+        padding: 10px; /* Aumenta el espacio interno de las celdas */
+    }
+
+    table {
+        width: 100%;
+    }
+
+    .pagination {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .pagination a {
+        padding: 5px 10px;
+        margin: 0 5px;
+        background-color: #f0f0f0;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+        text-decoration: none;
+        color: #333;
+    }
+
+    .pagination .current {
+        font-weight: bold;
+    }
+</style>
+{% endblock %}
