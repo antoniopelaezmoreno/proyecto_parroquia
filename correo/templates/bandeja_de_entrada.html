@@ -4,7 +4,14 @@
 
 {% block content %}
 <div class="container">
-    <h1>Bandeja de Entrada</h1>
+    <div class="cabecera">
+        <h1>Bandeja de Entrada</h1>
+        <div class="botones-derecha">
+            <a href="#" class="boton">Enviar mensaje</a>
+            <a href="{% url 'bandeja_de_entrada_familias' %}" class="boton">Familias</a>
+            <a href="{% url 'bandeja_de_entrada_catequistas' %}" class="boton">Catequistas</a>
+        </div>
+    </div>
     <table>
         <tbody>
             {% for mensaje in mensajes %}
@@ -12,12 +19,12 @@
                     <td><strong>{{ mensaje.sender }}</strong></td>
                     <td><strong>{{ mensaje.subject }}</strong> | {{ mensaje.body }}</td>
                     <td>{{ mensaje.date }}</td>
-
                 </tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
+
 
 <div class="pagination">
     <span class="step-links">
@@ -45,9 +52,35 @@
         border-radius: 5px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
-    h1 {
-        text-align: center;
+
+    .cabecera {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .h1 {
         color: #333;
+    }
+
+    .botones-derecha {
+        display: flex;
+        gap: 10px;
+    }
+
+    .boton {
+        padding: 10px 20px;
+        background-color: #f0f0f0;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+        text-decoration: none;
+        color: #333;
+    }
+
+    .enviar-mensaje {
+        position: absolute;
+        bottom: 20px; /* Ajusta la distancia desde la parte inferior de la pantalla */
+        right: 20px; /* Ajusta la distancia desde el lado derecho de la pantalla */
     }
 
     .mensaje {
