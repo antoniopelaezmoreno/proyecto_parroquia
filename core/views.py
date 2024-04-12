@@ -14,7 +14,7 @@ def index(request):
             proxima_sesion = Sesion.objects.filter(ciclo = request.user.ciclo).filter(fecha__gte=date.today()).order_by('fecha').first()
             num_catecumenos = Catecumeno.objects.filter(ciclo=request.user.ciclo).count()
             num_ausencias= contar_ausencias(request).count()
-            num_ausencias_ultima_sesion = contar_ausencias_ultima_sesion(request).count()
+            num_ausencias_ultima_sesion = len(contar_ausencias_ultima_sesion(request))
             if proxima_sesion:
                 archivos_sesion = proxima_sesion.files.all()
             else:

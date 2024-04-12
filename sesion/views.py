@@ -115,9 +115,6 @@ def pasar_lista(request, sesionid):
     else:
         return redirect('/403')
 
-
-
-
 def catecumenos_desde_catequista(catequista):
     grupo1 = Grupo.objects.filter(catequista1=catequista).first()
     grupo2 = Grupo.objects.filter(catequista2=catequista).first()
@@ -175,8 +172,13 @@ def contar_ausencias(request):
 @login_required
 def contar_ausencias_ultima_sesion(request):
     if request.user.is_coord:
-        sesion = Sesion.objects.filter(ciclo=request.user.ciclo, fecha__lte=timezone.now().date()).latest('fecha')
-        ausentes = sesion.ausentes.all()
-        return ausentes
+        sesion = Sesion.objects.filter(ciclo=request.user.ciclo, fecha__lte=timezone.now().date())
+        if sesion.exists():
+            sesion = sesion.latest('fecha')
+            ausentes = sesion.ausentes.all()
+            return ausentes
+        else:
+            ausentes=[]
+            return ausentes
     else:
         return redirect('/403')
