@@ -11,8 +11,10 @@
             <p><strong>De:</strong> {{ mensaje.sender }}</p>
             <p><strong>Asunto:</strong> {{ mensaje.subject }}</p>
             <p><strong>Fecha:</strong> {{ mensaje.date }}</p>
-            <p><strong>Mensaje:</strong> {{ mensaje.body }}</p>
-            {% if mensaje.attachments %}
+            {% if mensaje.body %}
+                <p><strong>Mensaje:</strong> {{ mensaje.body }}</p>
+            {% endif %}
+            {% if mensaje.attachments|length > 0 %}
                 <p><strong>Archivos Adjuntos:</strong></p>
                 <ul>
                     {% for attachment in mensaje.attachments %}
