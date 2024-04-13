@@ -176,7 +176,7 @@
         "ciclo": "catecumenados_1",
         "nombre_madre": "Celinka",
         "apellidos_madre": "Braga",
-        "email_madre": "cborne8@cam.ac.uk",
+        "email_madre": "antoniopemore@gmail.com",
         "dni_madre": "589549255",
         "nombre_padre": "Cooper",
         "apellidos_padre": "Borne",
@@ -2815,7 +2815,7 @@
         "fields": {
           "first_name": "Adminsitrador",
           "last_name": "Administrador",
-          "email": "admin@gmail.com",
+          "email": "antoniopelaez2002@gmail.com",
           "telefono": "625412589",
           "password":"pbkdf2_sha256$600000$3coKQXrrjNeNeMDHvbAtT9$mfRrvsFtmKBvxtT1CngLYwKQgTorvJqiBKC3yrxlYVA=",
           "is_coord": false,

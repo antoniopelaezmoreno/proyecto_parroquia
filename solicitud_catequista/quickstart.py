@@ -10,7 +10,7 @@ import base64
 import json
 
 # If modifying these scopes, delete the file token.json.
-SCOPES = ["https://www.googleapis.com/auth/gmail.readonly", "https://www.googleapis.com/auth/gmail.send"]
+SCOPES = ["https://www.googleapis.com/auth/gmail.readonly", "https://www.googleapis.com/auth/gmail.send", "https://www.googleapis.com/auth/gmail.modify"]
 
 
 def enviar_email(sender, to, subject, message_text, user):
@@ -33,7 +33,7 @@ def enviar_email(sender, to, subject, message_text, user):
           "credentials.json", SCOPES,
           redirect_uri="urn:ietf:wg:oauth:2.0:oob"
       )
-      creds = flow.run_local_server(port=8081, login_hint=user.email)
+      creds = flow.run_local_server(port=8081, login_hint=user.email, prompt='consent', access_type='offline')
     # Save the credentials for the next run
     user.token_json =creds.to_json()
     user.save()

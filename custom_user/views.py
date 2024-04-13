@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 import json
 from catecumeno.models import Catecumeno
 
-SCOPES = ["https://www.googleapis.com/auth/gmail.readonly", "https://www.googleapis.com/auth/gmail.send"]
+SCOPES = ["https://www.googleapis.com/auth/gmail.readonly", "https://www.googleapis.com/auth/gmail.send", "https://www.googleapis.com/auth/gmail.modify"]
 
 
 def cerrar_sesion(request):
@@ -64,7 +64,7 @@ def crear_usuario_desde_solicitud(request, id, ciclo):
             flow = InstalledAppFlow.from_client_secrets_file(
                 "credentials.json", SCOPES
             )
-            creds = flow.run_local_server(port=8081, login_hint=solicitud.email)
+            creds = flow.run_local_server(port=8081, login_hint=solicitud.email, prompt='consent', access_type='offline')
             custom_user.token_json = creds.to_json()
             custom_user.save()
             

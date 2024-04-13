@@ -47,11 +47,10 @@ def bandeja_entrada_catequistas(request):
     query = ' OR '.join([f"from:{catequista}" for catequista in catequistas])
     return bandeja_de_entrada(request, query)
 
-def conseguir_credenciales(request):
-    SCOPES = ["https://www.googleapis.com/auth/gmail.readonly", "https://www.googleapis.com/auth/gmail.send"]
+def conseguir_credenciales(user):
+    SCOPES = ["https://www.googleapis.com/auth/gmail.readonly", "https://www.googleapis.com/auth/gmail.send", "https://www.googleapis.com/auth/gmail.modify"]
 
     creds = None
-    user = request.user
 
     if user.token_json:
         creds = Credentials.from_authorized_user_info(json.loads(user.token_json), SCOPES)
@@ -64,7 +63,7 @@ def conseguir_credenciales(request):
                 "credentials.json", SCOPES,
                 redirect_uri="urn:ietf:wg:oauth:2.0:oob"
             )
-            creds = flow.run_local_server(port=8081, login_hint=user.email)
+            creds = flow.run_local_server(port=8081, login_hint=user.email, prompt='consent', access_type='offline')
             user.token_json = creds.to_json()
             user.save()
     return creds
@@ -73,7 +72,7 @@ def conseguir_credenciales(request):
 @login_required
 def bandeja_de_entrada(request, query):
     
-    creds=conseguir_credenciales(request)
+    creds=conseguir_credenciales(request.user)
     try:
         service = build("gmail", "v1", credentials=creds)
         results = service.users().messages().list(userId="me",q=query, labelIds=["INBOX"]).execute()
@@ -118,15 +117,13 @@ def bandeja_de_entrada(request, query):
     
 @login_required
 def marcar_mensaje_visto(request, message_id):
-    creds = conseguir_credenciales(request)
+    creds = conseguir_credenciales(request.user)
 
     try:
         service = build("gmail", "v1", credentials=creds)
+        print("he llegado dentro de marcar mensaje visto")
         # Marcar el mensaje como visto
-        service.users().messages().modify(userId="me", id=message_id, body={"removeLabelIds": ["UNREAD"]}).execute()
-
-        # Devolver una respuesta JSON
-        return JsonResponse({'success': True})
+        return service.users().messages().modify(userId="me", id=message_id, body={"removeLabelIds": ["UNREAD"]}).execute()
 
     except HttpError as err:
         from core.views import error
@@ -135,12 +132,13 @@ def marcar_mensaje_visto(request, message_id):
 @login_required
 def obtener_detalles_mensaje(request, mensaje_id):
     # Obtener credenciales del usuario
-    creds = conseguir_credenciales(request)
+    creds = conseguir_credenciales(request.user)
 
     # Construir el servicio de Gmail
     try:
         service = build("gmail", "v1", credentials=creds)
 
+        marcar_mensaje_visto(request, mensaje_id)
         # Obtener detalles del mensaje
         message = service.users().messages().get(userId="me", id=mensaje_id, format='full').execute()
 
@@ -157,7 +155,7 @@ def obtener_detalles_mensaje(request, mensaje_id):
         attachments = []
         if 'parts' in message['payload']:
             for part in message['payload']['parts']:
-                if 'filename' in part:
+                if 'filename' in part and not part['filename']:
                     attachments.append(part['filename'])
 
         # Construir el objeto de respuesta JSON
@@ -187,12 +185,14 @@ def formatear_fecha(headers):
 
 @login_required
 def enviar_correo(request):
-    creds = conseguir_credenciales(request)
-
     try:
+        user=request.user
+        creds = conseguir_credenciales(user)
         service = build("gmail", "v1", credentials=creds)
+
         if request.method == 'POST':
             sender = request.user.email
+            
             to = request.POST.get('destinatario')
             subject = request.POST.get('asunto')
             message_text = request.POST.get('mensaje')
@@ -207,10 +207,13 @@ def enviar_correo(request):
         return JsonResponse({'success': False, 'error': 'No es una solicitud POST'})
     
     except HttpError as err:
-        from core.views import error
-        return error(request, err)
+        # Manejar la excepción HttpError
+        return JsonResponse({'success': False, 'error': str(err)})
+
+    except Exception as e:
+        # Manejar otras excepciones
+        return JsonResponse({'success': False, 'error': str(e)})
     
-@login_required
 def create_message(sender, to, subject, message_text):
     message = MIMEText(message_text)
     message['to'] = to
@@ -221,7 +224,6 @@ def create_message(sender, to, subject, message_text):
         'raw': raw_message.decode("utf-8")
     }
   
-@login_required
 def send_message(service, user_id, message):
     try:
         message = service.users().messages().send(userId=user_id, body=message).execute()
