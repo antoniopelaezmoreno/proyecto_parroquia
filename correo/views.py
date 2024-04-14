@@ -137,7 +137,9 @@ def obtener_detalles_mensaje(request, mensaje_id):
     try:
         service = build("gmail", "v1", credentials=creds)
 
+        # Marcar el mensaje como visto
         marcar_mensaje_visto(request, mensaje_id)
+
         # Obtener detalles del mensaje
         message = service.users().messages().get(userId="me", id=mensaje_id, format='full').execute()
         
@@ -145,11 +147,12 @@ def obtener_detalles_mensaje(request, mensaje_id):
         headers = message['payload']['headers']
         subject = next((header['value'] for header in headers if header['name'] == 'Subject'), None)
         emisor = next((header['value'] for header in headers if header['name'] == 'From'), None)
-        
         if emisor is None:
             emisor = next((header['value'] for header in headers if header['name'] == 'from'),None)
         body = ""
         attachments = []
+
+        # Procesar los partes del mensaje
         if 'parts' in message['payload']:
             for part in message['payload']['parts']:
                 if part['mimeType'] == 'text/html':  # Tomar solo el primer cuerpo de texto
@@ -171,11 +174,39 @@ def obtener_detalles_mensaje(request, mensaje_id):
             'attachments': attachments
         }
 
+        # Si es una solicitud POST, procesar el formulario de respuesta
+        if request.method == 'POST':
+            form_data = request.POST
+            destinatario = emisor.split('<')[1].split('>')[0]
+            print("destinatario: ", destinatario)
+            emisor = request.user.email
+            print("emisor: ", emisor)
+            asunto = "Re: " + subject
+            print("asunto: ", asunto)
+            mensaje = form_data.get('mensaje')
+            print("mensaje: ", mensaje)
+            
+            # Llamar al método existente para enviar el correo de respuesta
+            try:
+                mensaje = create_message(emisor, destinatario, asunto, mensaje)
+                send_message(service, "me", mensaje)
+                return redirect('bandeja_de_entrada_familias')
+            except HttpError as err:
+            # Manejar la excepción HttpError
+                return JsonResponse({'success': False, 'error': str(err)})
+
+            except Exception as e:  
+                # Manejar otras excepciones
+                return JsonResponse({'success': False, 'error': str(e)})
+
+        # Si es una solicitud GET, renderizar la página de detalles del mensaje
         return render(request, 'detalles_mensaje.html', {'mensaje': response_data})
 
     except Exception as err:
         from core.views import error
         return error(request, err)
+    
+
 
 def formatear_fecha(headers):
     fecha = next((header['value'] for header in headers if header['name'] == 'Date'), None)
