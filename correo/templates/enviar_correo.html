@@ -2,13 +2,13 @@
 <form method="post" action="{% url 'enviar_correo' %}" enctype="multipart/form-data" id="correoForm">
     {% csrf_token %}
     <label for="destinatario">Para:</label>
-    <input type="email" name="destinatario" id="destinatario" placeholder="Destinatario">
+    <textarea name="destinatario" id="destinatario" placeholder="Destinatarios separados por comas"></textarea>
 
     <label for="asunto">Asunto:</label>
     <input type="text" name="asunto" id="asunto" placeholder="Asunto">
 
     <label for="mensaje">Mensaje:</label>
-    <textarea name="mensaje" id="mensaje" placeholder="Mensaje"></textarea>
+    <textarea class="texto-mensaje" name="mensaje" id="mensaje" placeholder="Mensaje"></textarea>
 
     <button type="submit" id="guardarBtn">Enviar</button>
 </form>
@@ -35,7 +35,7 @@
         box-sizing: border-box;
     }
 
-    textarea {
+    .texto-mensaje{
         height: 400px;
     }
 

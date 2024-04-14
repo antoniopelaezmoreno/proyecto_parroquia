@@ -121,7 +121,6 @@ def marcar_mensaje_visto(request, message_id):
 
     try:
         service = build("gmail", "v1", credentials=creds)
-        print("he llegado dentro de marcar mensaje visto")
         # Marcar el mensaje como visto
         return service.users().messages().modify(userId="me", id=message_id, body={"removeLabelIds": ["UNREAD"]}).execute()
 
@@ -141,22 +140,27 @@ def obtener_detalles_mensaje(request, mensaje_id):
         marcar_mensaje_visto(request, mensaje_id)
         # Obtener detalles del mensaje
         message = service.users().messages().get(userId="me", id=mensaje_id, format='full').execute()
-
+        
         # Extraer los detalles relevantes del mensaje
         headers = message['payload']['headers']
         subject = next((header['value'] for header in headers if header['name'] == 'Subject'), None)
         emisor = next((header['value'] for header in headers if header['name'] == 'From'), None)
+        
         if emisor is None:
             emisor = next((header['value'] for header in headers if header['name'] == 'from'),None)
-        body = message['snippet']
-        formatted_date = formatear_fecha(headers)
-
-        # Verificar si el mensaje tiene archivos adjuntos
+        body = ""
         attachments = []
         if 'parts' in message['payload']:
             for part in message['payload']['parts']:
-                if 'filename' in part and not part['filename']:
+                if part['mimeType'] == 'text/html':  # Tomar solo el primer cuerpo de texto
+                    body += base64.urlsafe_b64decode(part['body']['data']).decode('utf-8')
+                elif part['mimeType'] == 'multipart/report' or part['mimeType'] == 'message/delivery-status':
+                    receptor = next((header['value'] for header in headers if header['name'] == 'X-Failed-Recipients'), None)
+                    body = 'El correo no se ha podido entregar a '+ receptor
+                elif 'filename' in part and not part['filename'] == '':
                     attachments.append(part['filename'])
+
+        formatted_date = formatear_fecha(headers)
 
         # Construir el objeto de respuesta JSON
         response_data = {
@@ -193,12 +197,14 @@ def enviar_correo(request):
         if request.method == 'POST':
             sender = request.user.email
             
-            to = request.POST.get('destinatario')
+            destinatarios = request.POST.get('destinatario')
+            lista_destinatarios = destinatarios.split(',')  # Dividir las direcciones por comas
             subject = request.POST.get('asunto')
             message_text = request.POST.get('mensaje')
 
-            message = create_message(sender, to, subject, message_text)
-            send_message(service, "me", message)
+            for destinatario in lista_destinatarios:
+                message = create_message(sender, destinatario.strip(), subject, message_text)  # strip() para eliminar espacios en blanco
+                send_message(service, "me", message)
             
             # Devolver una respuesta JSON
             return JsonResponse({'success': True})

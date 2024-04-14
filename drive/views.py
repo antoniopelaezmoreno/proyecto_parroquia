@@ -36,13 +36,11 @@ def listar_archivos(request, folder_id=None):
         files = File.objects.filter(parent_folder=folder)
         folders = Folder.objects.filter(parent_folder=folder)
         ruta = obtener_ruta_carpeta(folder) 
-        print(ruta)
     return render(request, 'listar_archivos.html', {'files': files, 'folders':folders, 'actual_folder':folder_id, 'ruta':ruta})
 
 
 @login_required
 def crear_carpeta(request, folder_id=None):
-    print(request.method)
     if request.method == 'POST':
 
         form = FolderForm(request.POST)
