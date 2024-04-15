@@ -16,36 +16,76 @@ from email.mime.text import MIMEText
 from django.http import JsonResponse
 
 # Create your views here.
+
 @login_required
-def bandeja_entrada_familias(request):
+def bandeja_salida(request):
+    creds = conseguir_credenciales(request.user)
+    try:
+        service = build("gmail", "v1", credentials=creds)
+        remitentes = obtener_remitentes_interesados(request)
+        query = ' OR '.join([f"to:{remitente}  OR  To:{remitente}" for remitente in remitentes])
+        results = service.users().messages().list(userId="me",q=query, labelIds=["SENT"]).execute()
+        messages = results.get("messages", [])
+
+        paginator = Paginator(messages, 10)  # 10 mensajes por página
+        page = request.GET.get('page')
+        try:
+            mensajes_pagina = paginator.page(page)
+        except PageNotAnInteger:
+            mensajes_pagina = paginator.page(1)
+        except EmptyPage:
+            mensajes_pagina = paginator.page(paginator.num_pages)
+
+        mensajes = []
+        for message in mensajes_pagina:
+            msg = service.users().messages().get(userId="me", id=message["id"]).execute()
+            headers = msg['payload']['headers']
+            subject = next((header['value'] for header in headers if header['name'] == 'subject'), None)
+            if subject is None:
+                subject = next((header['value'] for header in headers if header['name'] == 'Subject'), None)
+            
+            body = msg['snippet']
+            if subject == "":
+                subject = "(sin asunto)"
+            if body == "":
+                body = "(sin contenido)"
+            receptor = next((header['value'] for header in headers if header['name'] == 'to'), None)
+            if receptor is None:
+                receptor = next((header['value'] for header in headers if header['name'] == 'To'), None)
+
+            fecha = formatear_fecha(headers)
+
+            mensajes.append({'subject': subject, 'body': body, 'receiver': receptor, 'date': fecha, 'id': message['id']})
+
+        return render(request, 'bandeja_salida.html', {'mensajes_pagina': mensajes_pagina, 'mensajes': mensajes})
+    except HttpError as err:
+        from core.views import error
+        return error(request, err)
+
+@login_required
+def obtener_remitentes_interesados(request):
     if request.user.is_superuser:
         query = Q()
         query |= Q(email__isnull=False)
         query |= Q(email_madre__isnull=False)
         query |= Q(email_padre__isnull=False)
-        remitentes = Catecumeno.objects.filter(query).values_list('email', 'email_madre', 'email_padre')
+        familias = Catecumeno.objects.filter(query).values_list('email', 'email_madre', 'email_padre')
     elif request.user.is_coord:
         query = Q()
         query |= Q(email__isnull=False)
         query |= Q(email_madre__isnull=False)
         query |= Q(email_padre__isnull=False)
-        remitentes = Catecumeno.objects.filter(query, ciclo=request.user.ciclo).values_list('email', 'email_madre', 'email_padre')
+        familias = Catecumeno.objects.filter(query, ciclo=request.user.ciclo).values_list('email', 'email_madre', 'email_padre')
     else:
-        remitentes=[]
+        familias=[]
     
-
-    remitentes = [email for tupla in remitentes for email in tupla if email]
-    remitentes.append("mailer-daemon@googlemail.com")
-    query = ' OR '.join([f"from:{remitente}" for remitente in remitentes])
-
-    return bandeja_de_entrada(request, query)
-
-@login_required
-def bandeja_entrada_catequistas(request):
+    
+    familias = [email for tupla in familias for email in tupla if email]
+    familias.append("mailer-daemon@googlemail.com")
     catequistas = list(CustomUser.objects.all().values_list('email', flat=True))
-    catequistas.append("mailer-daemon@googlemail.com")
-    query = ' OR '.join([f"from:{catequista}" for catequista in catequistas])
-    return bandeja_de_entrada(request, query)
+    remitentes = familias + catequistas
+
+    return remitentes
 
 def conseguir_credenciales(user):
     SCOPES = ["https://www.googleapis.com/auth/gmail.readonly", "https://www.googleapis.com/auth/gmail.send", "https://www.googleapis.com/auth/gmail.modify"]
@@ -68,13 +108,14 @@ def conseguir_credenciales(user):
             user.save()
     return creds
 
-
 @login_required
-def bandeja_de_entrada(request, query):
+def bandeja_de_entrada(request):
     
     creds=conseguir_credenciales(request.user)
     try:
         service = build("gmail", "v1", credentials=creds)
+        remitentes = obtener_remitentes_interesados(request)
+        query = ' OR '.join([f"from:{remitente}" for remitente in remitentes])
         results = service.users().messages().list(userId="me",q=query, labelIds=["INBOX"]).execute()
         messages = results.get("messages", [])
 
@@ -130,22 +171,20 @@ def marcar_mensaje_visto(request, message_id):
     
 @login_required
 def obtener_detalles_mensaje(request, mensaje_id):
-    # Obtener credenciales del usuario
     creds = conseguir_credenciales(request.user)
 
-    # Construir el servicio de Gmail
     try:
         service = build("gmail", "v1", credentials=creds)
 
-        # Marcar el mensaje como visto
         marcar_mensaje_visto(request, mensaje_id)
 
-        # Obtener detalles del mensaje
         message = service.users().messages().get(userId="me", id=mensaje_id, format='full').execute()
         
         # Extraer los detalles relevantes del mensaje
         headers = message['payload']['headers']
         subject = next((header['value'] for header in headers if header['name'] == 'Subject'), None)
+        if subject is None:
+                subject = next((header['value'] for header in headers if header['name'] == 'subject'), None)
         emisor = next((header['value'] for header in headers if header['name'] == 'From'), None)
         if emisor is None:
             emisor = next((header['value'] for header in headers if header['name'] == 'from'),None)
@@ -155,13 +194,32 @@ def obtener_detalles_mensaje(request, mensaje_id):
         # Procesar los partes del mensaje
         if 'parts' in message['payload']:
             for part in message['payload']['parts']:
-                if part['mimeType'] == 'text/html':  # Tomar solo el primer cuerpo de texto
+                # Si es multipart/alternative, buscar el cuerpo en texto plano o HTML
+                if part['mimeType'] == 'multipart/alternative':
+                    for subpart in part['parts']:
+                        if subpart['mimeType'] == 'text/html':
+                            # Decodificar y agregar el cuerpo HTML
+                            body += base64.urlsafe_b64decode(subpart['body']['data']).decode('utf-8')
+                # Si es una parte independiente de texto/html, agregarla
+                elif part['mimeType'] == 'text/html':
                     body += base64.urlsafe_b64decode(part['body']['data']).decode('utf-8')
-                elif part['mimeType'] == 'multipart/report' or part['mimeType'] == 'message/delivery-status':
-                    receptor = next((header['value'] for header in headers if header['name'] == 'X-Failed-Recipients'), None)
-                    body = 'El correo no se ha podido entregar a '+ receptor
-                elif 'filename' in part and not part['filename'] == '':
+                # Si tiene nombre de archivo, agregarlo a los archivos adjuntos
+                elif 'filename' in part and part['filename']:
                     attachments.append(part['filename'])
+        else:
+            if 'payload' in message:
+                payload = message['payload']
+                if 'body' in payload:
+                    # Si hay un cuerpo directo, usarlo
+                    body_data = payload['body']['data']
+                    body = base64.urlsafe_b64decode(body_data).decode('utf-8')
+                elif 'parts' in payload:
+                    # Si hay partes en el payload, procesarlas
+                    for part in payload['parts']:
+                        if part['mimeType'] == 'text/html':
+                            # Si es texto plano, agregar al cuerpo
+                            body_data = part['body']['data']
+                            body += base64.urlsafe_b64decode(body_data).decode('utf-8')
 
         formatted_date = formatear_fecha(headers)
 
@@ -178,19 +236,15 @@ def obtener_detalles_mensaje(request, mensaje_id):
         if request.method == 'POST':
             form_data = request.POST
             destinatario = emisor.split('<')[1].split('>')[0]
-            print("destinatario: ", destinatario)
             emisor = request.user.email
-            print("emisor: ", emisor)
             asunto = "Re: " + subject
-            print("asunto: ", asunto)
             mensaje = form_data.get('mensaje')
-            print("mensaje: ", mensaje)
             
             # Llamar al método existente para enviar el correo de respuesta
             try:
                 mensaje = create_message(emisor, destinatario, asunto, mensaje)
                 send_message(service, "me", mensaje)
-                return redirect('bandeja_de_entrada_familias')
+                return redirect('inbox')
             except HttpError as err:
             # Manejar la excepción HttpError
                 return JsonResponse({'success': False, 'error': str(err)})
@@ -206,8 +260,74 @@ def obtener_detalles_mensaje(request, mensaje_id):
         from core.views import error
         return error(request, err)
     
+@login_required
+def obtener_detalles_mensaje_enviado(request, mensaje_id):
+    creds = conseguir_credenciales(request.user)
 
+    try:
+        service = build("gmail", "v1", credentials=creds)
 
+        marcar_mensaje_visto(request, mensaje_id)
+
+        message = service.users().messages().get(userId="me", id=mensaje_id, format='full').execute()
+        
+        # Extraer los detalles relevantes del mensaje
+        headers = message['payload']['headers']
+        subject = next((header['value'] for header in headers if header['name'] == 'Subject'), None)
+        if subject is None:
+                subject = next((header['value'] for header in headers if header['name'] == 'subject'), None)
+        receptor = next((header['value'] for header in headers if header['name'] == 'to'), None)
+        if receptor is None:
+            receptor = next((header['value'] for header in headers if header['name'] == 'To'),None)
+        body = ""
+        attachments = []
+
+        if 'parts' in message['payload']:
+            for part in message['payload']['parts']:
+                # Si es multipart/alternative, buscar el cuerpo en texto plano o HTML
+                if part['mimeType'] == 'multipart/alternative':
+                    for subpart in part['parts']:
+                        if subpart['mimeType'] == 'text/html':
+                            # Decodificar y agregar el cuerpo HTML
+                            body += base64.urlsafe_b64decode(subpart['body']['data']).decode('utf-8')
+                # Si es una parte independiente de texto/html, agregarla
+                elif part['mimeType'] == 'text/html':
+                    body += base64.urlsafe_b64decode(part['body']['data']).decode('utf-8')
+                # Si tiene nombre de archivo, agregarlo a los archivos adjuntos
+                elif 'filename' in part and part['filename']:
+                    attachments.append(part['filename'])
+        else:
+            if 'payload' in message:
+                payload = message['payload']
+                if 'body' in payload:
+                    # Si hay un cuerpo directo, usarlo
+                    body_data = payload['body']['data']
+                    body = base64.urlsafe_b64decode(body_data).decode('utf-8')
+                elif 'parts' in payload:
+                    # Si hay partes en el payload, procesarlas
+                    for part in payload['parts']:
+                        if part['mimeType'] == 'text/html':
+                            # Si es texto plano, agregar al cuerpo
+                            body_data = part['body']['data']
+                            body += base64.urlsafe_b64decode(body_data).decode('utf-8')
+            
+        formatted_date = formatear_fecha(headers)
+
+        # Construir el objeto de respuesta JSON
+        response_data = {
+            'subject': subject,
+            'receiver': receptor,
+            'body': body,
+            'date': formatted_date,
+            'attachments': attachments
+        }
+
+        return render(request, 'detalles_mensaje_enviado.html', {'mensaje': response_data})
+
+    except Exception as err:
+        from core.views import error
+        return error(request, err)
+    
 def formatear_fecha(headers):
     fecha = next((header['value'] for header in headers if header['name'] == 'Date'), None)
     if "+" in fecha:
