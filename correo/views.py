@@ -14,6 +14,7 @@ from datetime import datetime
 from custom_user.models import CustomUser
 from email.mime.text import MIMEText
 from django.http import JsonResponse
+import re
 
 # Create your views here.
 
@@ -138,10 +139,17 @@ def bandeja_de_entrada(request):
             msg = service.users().messages().get(userId="me", id=message["id"]).execute()
             headers = msg['payload']['headers']
             subject = next((header['value'] for header in headers if header['name'] == 'Subject'), None)
+            if subject is None:
+                subject = next((header['value'] for header in headers if header['name'] == 'subject'), None)
             emisor = next((header['value'] for header in headers if header['name'] == 'From'), None)
             if emisor is None:
                 emisor = next((header['value'] for header in headers if header['name'] == 'from'),None)
             body = msg['snippet']
+
+            if subject == "":
+                subject = "(sin asunto)"
+            if body == "":
+                body = "(sin contenido)"
 
             fecha=formatear_fecha(headers)
             
@@ -231,22 +239,26 @@ def obtener_detalles_mensaje(request, mensaje_id):
             'date': formatted_date,
             'attachments': attachments
         }
+        print(emisor)
 
         # Si es una solicitud POST, procesar el formulario de respuesta
         if request.method == 'POST':
             form_data = request.POST
-            destinatario = emisor.split('<')[1].split('>')[0]
+            if "<" in emisor:
+                destinatario = emisor.split('<')[1].split('>')[0]
+            else:
+                destinatario = emisor
             emisor = request.user.email
             asunto = "Re: " + subject
             mensaje = form_data.get('mensaje')
-            
+                
             # Llamar al método existente para enviar el correo de respuesta
             try:
                 mensaje = create_message(emisor, destinatario, asunto, mensaje)
                 send_message(service, "me", mensaje)
                 return redirect('inbox')
             except HttpError as err:
-            # Manejar la excepción HttpError
+                # Manejar la excepción HttpError
                 return JsonResponse({'success': False, 'error': str(err)})
 
             except Exception as e:  
@@ -349,7 +361,12 @@ def enviar_correo(request):
             sender = request.user.email
             
             destinatarios = request.POST.get('destinatario')
-            lista_destinatarios = destinatarios.split(',')  # Dividir las direcciones por comas
+            if destinatarios == "":
+                return JsonResponse({'success': False, 'error': 'No se ha especificado ningún destinatario'})
+            lista_destinatarios = [email.strip() for email in destinatarios.split(',') if re.match(r'^[\w\.-]+@[\w\.-]+(?:\.[\w]+)+$', email.strip())]
+            
+            if not lista_destinatarios:
+                return JsonResponse({'success': False, 'error': 'Las direcciones de correo electrónico no son válidas'})
             subject = request.POST.get('asunto')
             message_text = request.POST.get('mensaje')
 
