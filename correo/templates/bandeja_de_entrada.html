@@ -88,7 +88,14 @@
                         document.getElementById("mensajeExito").style.display = "none";
                     }, 5000); 
                 } else {
-                    alert("Ha ocurrido un error al enviar el correo electrónico.");
+                    if (data.error == 'No se ha especificado ningún destinatario'){
+                        alert("No se ha especificado ningún destinatario");
+                    }else if(data.error == 'Las direcciones de correo electrónico no son válidas'){
+                        alert("Las direcciones de correo electrónico no son válidas");
+                    }else{
+                        alert("Ha ocurrido un error al enviar el correo electrónico.");
+                    }
+                    
                 }
             })
             .catch(error => {
