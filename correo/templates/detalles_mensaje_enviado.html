@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Detalles del Mensaje {% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Detalles del mensaje</h1>
+        <div class="mensaje">
+            <p><strong>Para:</strong> {{ mensaje.receiver }}</p>
+            <p><strong>Asunto:</strong> {{ mensaje.subject }}</p>
+            <p><strong>Fecha:</strong> {{ mensaje.date }}</p>
+            {% if mensaje.body %}
+                {% autoescape off %}
+                    <div class="mensaje-body">{{ mensaje.body }}</div>
+                {% endautoescape %}
+            {% endif %}
+            {% if mensaje.attachments|length > 0 %}
+                <p><strong>Archivos Adjuntos:</strong></p>
+                <ul>
+                    {% for attachment in mensaje.attachments %}
+                        <li>{{ attachment }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+
+    </div>
+
+    <style>
+        .container {
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            width: 80%;
+            font-family: Arial, sans-serif; /* Cambia la fuente */
+        }
+
+        .mensaje {
+            border-top: 1px solid #ccc; /* Línea divisoria */
+            
+        }
+
+        .mensaje p {
+            margin-bottom: 10px;
+        }
+
+        .mensaje p strong {
+            font-weight: bold;
+        }
+
+        .mensaje ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .mensaje-body {
+            overflow: auto; /* Ajusta el contenido con desbordamiento */
+            word-wrap: break-word; /* Rompe las palabras largas */
+            border-top: 1px solid #ccc; /* Línea divisoria */
+            padding-top: 15px;
+        }
+
+    </style>
+
+{% endblock %}
