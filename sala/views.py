@@ -147,11 +147,12 @@ def reservar_sala(request):
 @login_required
 def mis_reservas(request):
     if request.user.is_coord or request.user.is_superuser:
+        error_reserva_pasada = request.session.pop('reserva_pasada', None)
         fecha_hoy = date.today()
         reservas_pasadas = Reserva.objects.filter(usuario=request.user, fecha__lt=fecha_hoy).order_by('fecha')
         reservas_futuras = Reserva.objects.filter(usuario=request.user, fecha__gte=fecha_hoy).order_by('fecha')
         solicitudes_de_reserva = SolicitudReserva.objects.filter(usuario=request.user, estado='pendiente').order_by('fecha')
-        return render(request, 'mis_reservas.html', {'reservas_pasadas': reservas_pasadas, 'reservas_futuras':reservas_futuras, 'solicitudes_de_reserva':solicitudes_de_reserva, 'fecha_hoy':fecha_hoy})
+        return render(request, 'mis_reservas.html', {'reservas_pasadas': reservas_pasadas, 'reservas_futuras':reservas_futuras, 'solicitudes_de_reserva':solicitudes_de_reserva, 'fecha_hoy':fecha_hoy, 'error_reserva_pasada':error_reserva_pasada})
     else:
         return redirect('/403')
     
@@ -197,6 +198,19 @@ def rechazar_solicitud_reserva(request, solicitud_id):
         solicitud.estado = SolicitudReserva.EstadoChoices.RECHAZADA
         solicitud.save()
         return redirect('solicitudes_reserva')
+    else:
+        return redirect('/403')
+    
+
+@login_required
+def cancelar_reserva(request, reserva_id):
+    reserva = get_object_or_404(Reserva, pk=reserva_id)
+    if (request.user.is_coord and reserva.usuario == request.user) or request.user.is_superuser:
+        if reserva.fecha < date.today():
+            request.session['reserva_pasada'] = "No se puede cancelar una reserva pasada"
+            return redirect('mis_reservas')
+        reserva.delete()
+        return redirect('mis_reservas')
     else:
         return redirect('/403')
 
