@@ -3,10 +3,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Sala, Reserva, SolicitudReserva
 from custom_user.models import CustomUser
 from datetime import timedelta, date
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from datetime import datetime
 from .forms import SalaForm
 import json
+import re
+from django.urls import reverse
 
 @login_required
 def crear_sala(request):
@@ -28,9 +30,12 @@ def obtener_salas_disponibles(request):
     if request.user.is_coord or request.user.is_superuser:
         if request.method == 'POST':
             fecha = request.POST.get('fecha')
+            
             hora_inicio = request.POST.get('hora_inicio')
             hora_fin = request.POST.get('hora_fin')
 
+            if not re.match(r'^\d{4}-\d{2}-\d{2}$', fecha) or hora_inicio is None or hora_fin is None:
+                return render(request, 'salas_disponibles.html', {'fecha_hoy':date.today, 'error': 'Por favor, introduzca todos los campos'})
             todas_salas = Sala.objects.all()
             salas_ocupadas = todas_salas.filter(
                 reserva__fecha=fecha,
@@ -126,7 +131,10 @@ def reservar_sala(request):
             else:
                 if sala.requiere_aprobacion:
                     print('La sala requiere aprobación. Se ha enviado una solicitud de reserva.')
-                    solicitud = SolicitudReserva(usuario=request.user, sala=sala, fecha=fecha, hora_inicio=hora_inicio, hora_fin=hora_fin)
+                    motivo = request.POST.get('motivo')
+                    if len(motivo) > 250:
+                        return HttpResponse('El motivo no puede tener más de 250 caracteres.')
+                    solicitud = SolicitudReserva(usuario=request.user, sala=sala, fecha=fecha, hora_inicio=hora_inicio, hora_fin=hora_fin, motivo=motivo)
                     solicitud.save()
                 else:
                     print('Reserva creada exitosamente.')
@@ -151,10 +159,11 @@ def mis_reservas(request):
 @login_required
 def listar_solicitudes_reserva(request):
     if request.user.is_superuser:
+        error = request.session.pop('error', None)
         solicitudes_pendientes = SolicitudReserva.objects.filter(estado = SolicitudReserva.EstadoChoices.PENDIENTE, fecha__gte=date.today())
         solicitudes_aceptadas = SolicitudReserva.objects.filter(estado = SolicitudReserva.EstadoChoices.ACEPTADA, fecha__gte=date.today())
         solicitudes_rechazadas = SolicitudReserva.objects.filter(estado = SolicitudReserva.EstadoChoices.RECHAZADA, fecha__gte=date.today())
-        return render(request, 'solicitudes_reserva.html', {'solicitudes_pendientes': solicitudes_pendientes, 'solicitudes_aceptadas':solicitudes_aceptadas, 'solicitudes_rechazadas':solicitudes_rechazadas})
+        return render(request, 'solicitudes_reserva.html', {'solicitudes_pendientes': solicitudes_pendientes, 'solicitudes_aceptadas':solicitudes_aceptadas, 'solicitudes_rechazadas':solicitudes_rechazadas, 'error':error})
     else:
         return redirect('/403')
 
@@ -162,11 +171,21 @@ def listar_solicitudes_reserva(request):
 def aprobar_solicitud_reserva(request, solicitud_id):
     if request.user.is_superuser:
         solicitud = get_object_or_404(SolicitudReserva, pk=solicitud_id)
+        
+        reservas_exist = Reserva.objects.filter(sala=solicitud.sala, fecha=solicitud.fecha, hora_inicio__lt=solicitud.hora_fin, hora_fin__gt=solicitud.hora_inicio)
+                
+        if reservas_exist.exists():
+            solicitud.estado = SolicitudReserva.EstadoChoices.RECHAZADA
+            solicitud.save()
+            request.session['error'] = "Ya hay una reserva para esa sala en ese horario."
+            return redirect('/sala/solicitudes/')
+        
+        SolicitudReserva.objects.filter(sala=solicitud.sala, fecha=solicitud.fecha, hora_inicio__lt=solicitud.hora_fin, hora_fin__gt=solicitud.hora_inicio).exclude(pk=solicitud_id).update(estado=SolicitudReserva.EstadoChoices.RECHAZADA)
         solicitud.estado = SolicitudReserva.EstadoChoices.ACEPTADA
         solicitud.save()
-
         reserva = Reserva(usuario=solicitud.usuario, sala=solicitud.sala, fecha=solicitud.fecha, hora_inicio=solicitud.hora_inicio, hora_fin=solicitud.hora_fin)
         reserva.save()
+
         return redirect('solicitudes_reserva')
     else:
         return redirect('/403')

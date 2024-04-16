@@ -5,9 +5,14 @@
 {% block content %}
 
 <h2 style="text-align: center; border-bottom: 1px solid #ccc;"> Solicitudes de reserva pendientes</h2>
+
+{% if error %}
+    <p style="color: red; text-align: center;">{{ error }}</p>
+{% endif %}
+
 <div class="solicitudes-container">
     {% for solicitud in solicitudes_pendientes %}
-        <div class = "solicitud">
+        <div class="solicitud pendiente" motivo-solicitud="{{ solicitud.motivo }}" data-sala="{{ solicitud.sala }}" data-hora-inicio="{{ solicitud.hora_inicio }}" data-hora-fin="{{ solicitud.hora_fin }}" data-fecha="{{ solicitud.fecha }}">
             <h3> {{ solicitud.sala }}</h3>
             <p> Usuario: {{ solicitud.usuario }}</p>
             <p> Fecha: {{ solicitud.fecha }}</p>
@@ -21,7 +26,7 @@
 <h2 style="text-align: center; border-bottom: 1px solid #ccc;"> Solicitudes de reserva aceptadas</h2>
 <div class="solicitudes-container">
     {% for solicitud in solicitudes_aceptadas %}
-        <div class = "solicitud">
+        <div class="solicitud">
             <h3> {{ solicitud.sala }}</h3>
             <p> Usuario: {{ solicitud.usuario }}</p>
             <p> Fecha: {{ solicitud.fecha }}</p>
@@ -33,7 +38,7 @@
 <h2 style="text-align: center; border-bottom: 1px solid #ccc;"> Solicitudes de reserva rechazadas</h2>
 <div class="solicitudes-container">
     {% for solicitud in solicitudes_rechazadas %}
-        <div class = "solicitud">
+        <div class="solicitud">
             <h3> {{ solicitud.sala }}</h3>
             <p> Usuario: {{ solicitud.usuario }}</p>
             <p> Fecha: {{ solicitud.fecha }}</p>
@@ -55,6 +60,7 @@
         padding: 10px;
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        position: relative;
     }
 
     .solicitud h3{
@@ -79,5 +85,60 @@
         background-color: red;
     }
 
+    /* Estilo para el título emergente */
+    .pendiente:hover:after {
+        content: attr(motivo-solicitud);
+        background-color: rgb(174, 162, 162);
+        color: white;
+        padding: 5px;
+        position: absolute;
+        left: 0;
+        bottom: 100%; /* Cambia la posición para que aparezca encima del contenedor */
+        white-space: normal; /* Permite que el texto se ajuste a varias líneas */
+        z-index: 1;
+        width: max-content; /* Ajusta el ancho al contenido */
+        max-width: 700px; /* Limita el ancho máximo del cuadro emergente */
+        word-wrap: break-word; /* Permite que las palabras largas se dividan en varias líneas */
+    }
+
+    /* Estilo para resaltar solicitudes pendientes al hacer hover */
+    .solicitud.pendiente.hovered {
+        box-shadow: 0 0 10px rgba(216, 35, 35, 0.737);
+    }
+
 </style>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const pendientes = document.querySelectorAll('.solicitud.pendiente');
+
+        pendientes.forEach(pendiente => {
+            pendiente.addEventListener('mouseenter', function() {
+                const sala = pendiente.dataset.sala;
+                const fecha = pendiente.dataset.fecha;
+                const horaInicio = pendiente.dataset.horaInicio;
+                const horaFin = pendiente.dataset.horaFin;
+
+                pendientes.forEach(p => {
+                    if (p.dataset.sala === sala && p.dataset.fecha === fecha &&
+                        p.dataset.horaInicio < horaFin && p.dataset.horaFin > horaInicio) {
+                        p.classList.add('hovered');
+                    }
+                });
+            });
+
+            pendiente.addEventListener('mouseleave', function() {
+                pendientes.forEach(p => {
+                    p.classList.remove('hovered');
+                });
+            });
+        });
+    });
+</script>
+
+
+
+
+
 {% endblock %}

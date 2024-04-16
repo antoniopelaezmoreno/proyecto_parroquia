@@ -6,8 +6,8 @@ from custom_user.models import CustomUser
 
 @receiver(post_save, sender=SolicitudReserva)
 def crear_notificacion_nueva_solicitud(sender, instance, created, **kwargs):
+    admin = CustomUser.objects.filter(is_superuser=True).first()
     if created:
-        admin = CustomUser.objects.filter(is_superuser=True).first()
         if admin:
             mensaje = f"Hay una nueva solicitud de reserva para la sala {instance.sala} por {instance.usuario}"
             notificacion = Notificacion(mensaje=mensaje)

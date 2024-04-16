@@ -31,6 +31,7 @@ class SolicitudReserva(models.Model):
     hora_inicio = models.TimeField()
     hora_fin = models.TimeField()
     estado = models.CharField(max_length=100, choices= EstadoChoices.choices ,default=EstadoChoices.PENDIENTE)
+    motivo = models.TextField(max_length=250, blank=True, null=True)
 
     def __str__(self):
         return f'Solicitud de reserva de {self.sala} por {self.usuario} para el {self.fecha} de {self.hora_inicio} a {self.hora_fin}'
