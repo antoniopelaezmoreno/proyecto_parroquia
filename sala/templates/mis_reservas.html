@@ -7,12 +7,19 @@
 <a href="{% url 'lista_salas' %}"> Reservar sala</a>
 <h2 style="text-align: center; border-bottom: 1px solid #ccc;"> Reservas futuras</h2>
 
+{% if error_reserva_pasada %}
+    <p style="color: red; text-align: center;">{{ error_reserva_pasada }}</p>
+{% endif %}
+
 <div class="reservas-container">
     {% for reserva in reservas_futuras %}
         <div class = "reserva">
-            <h3> {{ reserva.fecha }}</h3>
-            <p> {{ reserva.sala }}</p>
+            <h3> {{ reserva.sala }}</h3>
+            <p> {{ reserva.fecha }}</p>
             <p> {{ reserva.hora_inicio }} - {{ reserva.hora_fin }}</p>
+            <div style="text-align: center;">
+                <a class="boton cancelar" href="{% url 'cancelar_reserva' reserva.id %}">Cancelar</a>
+            </div>
         </div>
     {% endfor %}
 </div>
@@ -74,6 +81,19 @@
         width: max-content; /* Ajusta el ancho al contenido */
         max-width: 700px; /* Limita el ancho máximo del cuadro emergente */
         word-wrap: break-word; /* Permite que las palabras largas se dividan en varias líneas */
+    }
+
+    .boton{
+        display: inline-block;
+        margin: 10px;
+        padding: 5px 10px;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+    .cancelar{
+        background-color: red;
     }
 
 </style>
