@@ -20,7 +20,7 @@
 <h2 style="text-align: center; border-bottom: 1px solid #ccc;"> Solicitudes de reserva pendientes</h2>
 <div class="reservas-container">
     {% for solicitud in solicitudes_de_reserva %}
-        <div class = "reserva">
+        <div class = "reserva solicitud" motivo-solicitud="Motivo: {{ solicitud.motivo }}">
             <h3> {{ solicitud.sala }}</h3>
             <p> Fecha: {{ solicitud.fecha }}</p>
             <p> {{ solicitud.hora_inicio }} - {{ solicitud.hora_fin }}</p>
@@ -47,6 +47,7 @@
     }
 
     .reserva{
+        position: relative;
         background-color: #fff;
         margin: 10px;
         padding: 10px;
@@ -57,6 +58,22 @@
     .reserva h3{
         text-align: center;
         border-bottom: 1px solid #ccc;
+    }
+
+    /* Estilo para el título emergente */
+    .solicitud:hover:after {
+        content: attr(motivo-solicitud);
+        background-color: rgb(174, 162, 162);
+        color: white;
+        padding: 5px;
+        position: absolute;
+        left: 0;
+        bottom: 100%; /* Cambia la posición para que aparezca encima del contenedor */
+        white-space: normal; /* Permite que el texto se ajuste a varias líneas */
+        z-index: 1;
+        width: max-content; /* Ajusta el ancho al contenido */
+        max-width: 700px; /* Limita el ancho máximo del cuadro emergente */
+        word-wrap: break-word; /* Permite que las palabras largas se dividan en varias líneas */
     }
 
 </style>

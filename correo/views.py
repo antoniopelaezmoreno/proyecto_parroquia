@@ -12,6 +12,7 @@ from catecumeno.models import Catecumeno
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from datetime import datetime
 from custom_user.models import CustomUser
+from solicitud_catequista.models import SolicitudCatequista
 from email.mime.text import MIMEText
 from django.http import JsonResponse
 import re
@@ -65,12 +66,14 @@ def bandeja_salida(request):
 
 @login_required
 def obtener_remitentes_interesados(request):
+    correos_solicitudes=[]
     if request.user.is_superuser:
         query = Q()
         query |= Q(email__isnull=False)
         query |= Q(email_madre__isnull=False)
         query |= Q(email_padre__isnull=False)
         familias = Catecumeno.objects.filter(query).values_list('email', 'email_madre', 'email_padre')
+        correos_solicitudes = list(SolicitudCatequista.objects.all().values_list('email', flat=True))
     elif request.user.is_coord:
         query = Q()
         query |= Q(email__isnull=False)
@@ -83,8 +86,9 @@ def obtener_remitentes_interesados(request):
     
     familias = [email for tupla in familias for email in tupla if email]
     familias.append("mailer-daemon@googlemail.com")
+
     catequistas = list(CustomUser.objects.all().values_list('email', flat=True))
-    remitentes = familias + catequistas
+    remitentes = familias + catequistas + correos_solicitudes
 
     return remitentes
 

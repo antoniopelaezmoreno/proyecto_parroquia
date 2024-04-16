@@ -4,6 +4,12 @@
 
 {% block content %}
 
+{% if error %}
+    <div class="error">
+        <p>{{ error }}</p>
+    </div>
+{% endif %}
+
 <form method="post" enctype="multipart/form-data" id="solicitudForm">
     {% csrf_token %}
     <input type="date" name="fecha" id="fecha" min="{{ fecha_hoy }}">
@@ -36,6 +42,8 @@
     <h2>Reservar la sala</h2>
     <p id="avisoAprobacion"></p>
     <p id="mensajeConfirmacion"></p>
+    <input type="text" id="motivo" name="motivo">
+    <div id="motivoError" style="color: red;"></div>
     <button id="reservarBtn">Reservar</button>
   </div>
 </div>
@@ -126,6 +134,16 @@
         cursor: pointer;
     }
 
+    .error {
+        display: flex;
+        width: auto;
+        justify-content: center;
+        background-color: #d31d1d; 
+        color: white; 
+        border-radius: 5px; 
+        margin-bottom: 15px;
+    }
+
 </style>
 
 <script>
@@ -156,6 +174,7 @@
         const avisoAprobacion = document.getElementById('avisoAprobacion');
         const mensajeConfirmacionElement = document.getElementById('mensajeConfirmacion');
         const reservarBtn = document.getElementById('reservarBtn');
+        
 
         const fechaActual = new Date().toISOString().split('T')[0];
         fechaInput.min = fechaActual;
@@ -167,7 +186,6 @@
                 const sala = btn.getAttribute('data-sala-nombre');
                 const salaId = btn.getAttribute('data-sala-id');
                 const requiereAprobacion = btn.getAttribute('data-sala-aprobacion');
-                console.log(requiereAprobacion);
                 var fecha = sessionStorage.getItem('fechaSeleccionada');
                 var inicio = sessionStorage.getItem('horaInicioSeleccionada');
                 var fin = sessionStorage.getItem('horaFinSeleccionada');
@@ -176,12 +194,17 @@
 
                 if (requiereAprobacion == 'True'){
                     avisoAprobacion.textContent = "Esta sala requiere aprobación";
+                    document.getElementById('motivo').style.display = 'block'; 
+                    document.getElementById('motivoError').style.display = 'block'; 
                 }else{
                     avisoAprobacion.textContent = "";
+                    document.getElementById('motivo').style.display = 'none'; 
+                    document.getElementById('motivoError').style.display = 'none';
                 }
                 
                 reservarBtn.addEventListener('click', function() {
-                    reservarSala(salaId, fecha, inicio, fin);
+                    const motivo = document.getElementById('motivo').value;
+                    reservarSala(salaId, fecha, inicio, fin, motivo);
                 });
             });
         });
@@ -246,12 +269,32 @@
         
     });
 
-    function reservarSala(salaId, fecha, horaInicio, horaFin) {
+    function reservarSala(salaId, fecha, horaInicio, horaFin, motivo) {
         var formData = new FormData();
         formData.append('sala_id', salaId);
         formData.append('fecha', fecha);
         formData.append('hora_inicio', horaInicio);
         formData.append('hora_fin', horaFin);
+        formData.append('motivo', motivo);
+
+        const motivoError = document.getElementById('motivoError');
+        const motivoInput = document.getElementById('motivo');
+        
+        if (motivo.length === 0 && motivoInput.style.display !== 'none') {
+            motivoError.textContent = "Debe ingresar un motivo para la reserva";
+            motivoError.style.display = 'block';
+            motivoInput.style.borderColor = 'red';
+            return;
+        } else if (motivo.length > 250 && motivoInput.style.display !== 'none') {
+            motivoError.textContent = "El motivo no puede tener más de 250 caracteres";
+            motivoError.style.display = 'block';
+            motivoInput.style.borderColor = 'red';
+            return;
+        } else {
+            motivoError.textContent = ""; // Limpiar el mensaje de error si no hay problemas
+            motivoError.style.display = 'none';
+            motivoInput.style.borderColor = ''; // Restaurar el color del borde
+        }
 
         // Enviar la solicitud POST utilizando fetch
         fetch('/sala/reservar/', {
