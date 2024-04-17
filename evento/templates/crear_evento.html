@@ -26,6 +26,18 @@
     <label for="sala_necesaria">¿Sala necesaria?</label>
     <input type="checkbox" id="sala_necesaria" name="sala_necesaria">
 
+    {% if usuarios %}
+        <select name="participantes" id="participantes" multiple>
+            {% for usuario in usuarios %}
+                {% if usuario.id in participantes_seleccionados %}
+                    <option value="{{ usuario.id }}" selected>{{ usuario.first_name }} {{ usuario.last_name }}</option>
+                {% else %}
+                    <option value="{{ usuario.id }}">{{ usuario.first_name }} {{ usuario.last_name }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+    {% endif %}
+
     <button type="submit" id="guardarBtn">Guardar</button>
 </form>
 
@@ -69,6 +81,26 @@
         const nombre_input = document.getElementById("nombre");
         const checkbox_sala = document.getElementById("sala_necesaria");
         const descripcion_input = document.getElementById("descripcion");
+        const participantes_select = document.getElementById("participantes");
+        const guardarBtn = document.getElementById("guardarBtn");
+
+        guardarBtn.addEventListener("click", function () {
+            if (checkbox_sala.checked) {
+                localStorage.setItem("participantes_seleccionados", JSON.stringify(Array.from(participantes_select.selectedOptions).map(option => option.value)));
+            } else {
+                localStorage.removeItem("participantes_seleccionados");
+            }
+        });
+
+        const participantes_seleccionados = localStorage.getItem("participantes_seleccionados");
+        if (participantes_seleccionados) {
+            const participantes_seleccionados_array = JSON.parse(participantes_seleccionados);
+            for (const option of participantes_select.options) {
+                if (participantes_seleccionados_array.includes(option.value)) {
+                    option.selected = true;
+                }
+            }
+        }
 
         var tipoGuardado = sessionStorage.getItem("tipoSeleccionado");
         var nombreGuardado = sessionStorage.getItem("nombreEvento");
@@ -99,6 +131,7 @@
         var tipo = sessionStorage.getItem("tipoSeleccionado");
         var nombre = sessionStorage.getItem("nombreEvento");
         var descripcion = sessionStorage.getItem("descripcionEvento");
+        var participantes = document.getElementById("participantes").selectedOptions;
 
         var formData = new FormData();
         formData.append("sala_id", salaId);
@@ -137,7 +170,7 @@
             .then((response) => {
                 if (response.ok) {
                     console.log("Reserva creada correctamente");
-                    crearEvento(salaId, fecha, horaInicio, horaFin, tipo, nombre, descripcion);
+                    crearEvento(salaId, fecha, horaInicio, horaFin, tipo, nombre, descripcion, participantes);
                 } else {
                     console.error("Error al crear la reserva");
                 }
@@ -153,7 +186,7 @@
         if (parts.length === 2) return parts.pop().split(";").shift();
     }
 
-    function crearEvento(salaId, fecha, horaInicio, horaFin, tipo, nombre, descripcion) {
+    function crearEvento(salaId, fecha, horaInicio, horaFin, tipo, nombre, descripcion, participantes) {
 
         var formData = new FormData();
         formData.append("sala_id", salaId);
@@ -163,6 +196,7 @@
         formData.append("tipo", tipo);
         formData.append("nombre", nombre);
         formData.append("descripcion", descripcion);
+        formData.append("participantes", Array.from(participantes).map(p => p.value));
         
 
         fetch("/evento/nuevo/", {
