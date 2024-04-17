@@ -20,14 +20,13 @@ def crear_evento(request):
             hora_fin = request.POST.get('hora_fin')
             sala_necesaria = request.POST.get('sala_necesaria')
             participantes_seleccionados = request.POST.getlist('participantes')
-            print(participantes_seleccionados)
             nombre = request.POST.get('nombre')
             tipo = request.POST.get('tipo')
             descripcion = request.POST.get('descripcion')
 
             if not re.match(r'^\d{4}-\d{2}-\d{2}$', fecha) or hora_inicio is None or hora_fin is None:
                 return render(request, 'salas_disponibles.html', {'fecha_hoy':date.today, 'error': 'Por favor, introduzca todos los campos'})
-            todas_salas = Sala.objects.all()
+            todas_salas = Sala.objects.filter(requiere_aprobacion=False)
             salas_ocupadas = todas_salas.filter(
                 reserva__fecha=fecha,
                 reserva__hora_inicio__lt=hora_fin,
@@ -67,7 +66,6 @@ def nuevo_evento(request):
             participantes = request.POST.get('participantes')
             participantes = map(int, participantes.split(','))  # Convertir los IDs de participantes a números enteros
             participantes = list(participantes)
-            print(participantes)
 
             if fecha < str(datetime.now().date()):
                 print('No se puede crear una evento para una fecha pasada.')
@@ -77,6 +75,9 @@ def nuevo_evento(request):
                 return HttpResponse('La hora de inicio debe ser menor a la hora de fin.')
 
             sala = get_object_or_404(Sala, pk=sala_id)
+
+            if sala.requiere_aprobacion:
+                return HttpResponse('No se puede crear un evento en una sala que requiere aprobación.')
 
             evento = Evento(sala_reservada=sala, fecha=fecha, hora_inicio=hora_inicio, hora_fin=hora_fin, tipo = tipo, nombre=nombre, descripcion=descripcion)
             evento.save()

@@ -104,6 +104,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 sessionStorage.setItem("horaInicioSeleccionada", this.value);
                 guardarBtn.disabled = false;
             }
+        } else if (horaInicio) {
+            sessionStorage.setItem("horaInicioSeleccionada", this.value);
         }
     });
 
@@ -118,6 +120,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 sessionStorage.setItem("horaFinSeleccionada", this.value);
                 guardarBtn.disabled = false;
             }
+        } else if (horaFin) {
+            sessionStorage.setItem("horaFinSeleccionada", this.value);
         }
     });
 });

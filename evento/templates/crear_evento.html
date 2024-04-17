@@ -5,28 +5,44 @@
 
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'core/css/sala_styles.css' %}">
-<form method="post" enctype="multipart/form-data" id="eventoForm">
+
+<form method="post" enctype="multipart/form-data" id="eventoForm" class="container">
     {% csrf_token %}
 
+    <label for="nombre">Nombre del evento</label>
     <input type="text" name="nombre" id="nombre" placeholder="Nombre del evento" required>
-    <input type="date" name="fecha" id="fecha" required>
-    
-    <select type="time" name="hora_inicio" id="hora_inicio"></select>
-    <select type="time" name="hora_fin" id="hora_fin"></select>
 
+    <div class="label-group">
+        <label for="tipo">Tipo del evento</label>
+        <label for="fecha">Fecha del evento</label>
+    </div>
+
+
+    <div class="form-group">
+        <select name="tipo" id="tipo" required>
+            <option value="" disabled selected>Seleccione un tipo de evento</option>
+            {% for tipo in tipo_choices %}
+                <option value="{{ tipo.0 }}">{{ tipo.1 }}</option>
+            {% endfor %}
+        </select>
+        <input type="date" name="fecha" id="fecha" required>
+    </div>
+
+    <div class="label-group">
+        <label for="hora_inicio">Hora de inicio</label>
+        <label for="hora_fin">Hora de fin</label>
+    </div>
+
+    <div class="form-group">
+        <select name="hora_inicio" id="hora_inicio"></select>
+        <select name="hora_fin" id="hora_fin"></select>
+    </div>
+
+    <label for="descripcion">Descripción del evento</label>
     <textarea name="descripcion" id="descripcion" placeholder="Descripción del evento"></textarea>
-    
-    <select name="tipo" id="tipo" required>
-        <option value="" disabled selected>Seleccione un tipo de evento</option>
-        {% for tipo in tipo_choices %}
-            <option value="{{ tipo.0 }}">{{ tipo.1 }}</option>
-        {% endfor %}
-    </select>
-
-    <label for="sala_necesaria">¿Sala necesaria?</label>
-    <input type="checkbox" id="sala_necesaria" name="sala_necesaria">
 
     {% if usuarios %}
+        <label for="participantes">Participantes</label>
         <select name="participantes" id="participantes" multiple>
             {% for usuario in usuarios %}
                 {% if usuario.id in participantes_seleccionados %}
@@ -38,27 +54,38 @@
         </select>
     {% endif %}
 
-    <button type="submit" id="guardarBtn">Guardar</button>
+    <label for="sala_necesaria">¿Sala necesaria?</label>
+    <input type="checkbox" id="sala_necesaria" name="sala_necesaria">
+
+    <div id="boton-container">
+        <button type="submit" id="guardarBtn">Buscar</button>
+    </div>
+    
 </form>
 
-{% for sala in todas_salas %}
-    {% if sala in salas_ocupadas %}
-        {% for reserva in reservas_salas_ocupadas %}
-            {% if reserva.sala == sala %}
-                <div class="sala ocupada" data-reserva="{{ reserva }}">
-                    <p>{{ sala }}</p>
+{% if todas_salas %}
+    <div class="container" style="justify-content: center;">
+        <h2 style="margin-left: 10px;">Reserva tu sala</h2>
+        {% for sala in todas_salas %}
+            {% if sala in salas_ocupadas %}
+                {% for reserva in reservas_salas_ocupadas %}
+                    {% if reserva.sala == sala %}
+                        <div class="sala ocupada" data-reserva="{{ reserva }}">
+                            <p>{{ sala }}</p>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <div class="sala libre">
+                    <button class="openModalBtn" data-sala-id="{{ sala.id }}" data-sala-nombre="{{ sala.nombre }}">
+                        <p>{{ sala }}</p>
+                    </button>
                 </div>
             {% endif %}
         {% endfor %}
-    {% else %}
-        <div class="sala {% if sala.requiere_aprobacion %} aprobacion {% else %} libre {% endif %}">
-            <button class="openModalBtn" data-sala-id="{{ sala.id }}" data-sala-nombre="{{ sala.nombre }}"
-                data-sala-aprobacion="{{ sala.requiere_aprobacion }}">
-                <p>{{ sala }}</p>
-            </button>
-        </div>
-    {% endif %}
-{% endfor %}
+   
+    </div>
+{% endif %}
 
 <div id="myModal" class="modal">
     <div class="modal-content">
@@ -71,6 +98,96 @@
       <button id="reservarBtn">Reservar</button>
     </div>
 </div>
+
+<style>
+/* Estilo para el contenedor de grupos de formulario */
+.form-group {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.label-group {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.label-group > *:first-child {
+    width: 100%;
+    max-width: 50%;
+}
+
+
+/* Estilo para los elementos dentro del contenedor */
+.form-group input,
+.form-group select,
+.form-group textarea {
+    flex: 1;
+    margin-right: 10px;
+}
+
+/* Estilo para el formulario */
+.container {
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 50%;
+    height: auto; /* Cambiado a auto */
+    overflow: auto; /* Añadido para habilitar el desplazamiento vertical si es necesario */
+}
+
+
+/* Estilo para los campos de entrada */
+#eventoForm input[type="text"],
+#eventoForm input[type="date"],
+#eventoForm textarea,
+#eventoForm select {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+#eventoForm textarea {
+    height: 200px;
+}
+
+/* Estilo para los botones */
+#eventoForm button {
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Estilo para el botón de submit */
+#eventoForm button[type="submit"] {
+    background-color: #28a745; /* Color verde */
+}
+
+/* Estilo para el checkbox */
+#eventoForm input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+/* Estilo para los errores */
+#error_message {
+    color: red;
+    margin-bottom: 10px;
+}
+
+#boton-container {
+    margin-top: 20px; /* Ajusta la distancia entre el formulario y el botón */
+}
+
+
+</style>
+
+
 
 <script src="{% static 'core/js/sala.js' %}"></script>
 
