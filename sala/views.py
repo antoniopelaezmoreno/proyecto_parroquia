@@ -141,6 +141,8 @@ def reservar_sala(request):
                     reserva = Reserva(usuario=request.user, sala=sala, fecha=fecha, hora_inicio=hora_inicio, hora_fin=hora_fin)
                     reserva.save()
                 return redirect('mis_reservas')
+        else:
+            return redirect('/404')
     else:
         return redirect('/403')
     

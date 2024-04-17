@@ -7,18 +7,23 @@ import re
 from datetime import  date
 from datetime import datetime
 from django.http import HttpResponse
+from custom_user.models import CustomUser
 
 @login_required
 def crear_evento(request):
     if request.user.is_coord or request.user.is_superuser:
         tipo_choices = Evento.TIPO_CHOICES.choices
+        usuarios = CustomUser.objects.all()
         if request.method == 'POST':
-            nombre = request.POST.get('nombre')
             fecha = request.POST.get('fecha')
             hora_inicio = request.POST.get('hora_inicio')
             hora_fin = request.POST.get('hora_fin')
-            tipo = request.POST.get('tipo')
             sala_necesaria = request.POST.get('sala_necesaria')
+            participantes_seleccionados = request.POST.getlist('participantes')
+            print(participantes_seleccionados)
+            nombre = request.POST.get('nombre')
+            tipo = request.POST.get('tipo')
+            descripcion = request.POST.get('descripcion')
 
             if not re.match(r'^\d{4}-\d{2}-\d{2}$', fecha) or hora_inicio is None or hora_fin is None:
                 return render(request, 'salas_disponibles.html', {'fecha_hoy':date.today, 'error': 'Por favor, introduzca todos los campos'})
@@ -34,10 +39,17 @@ def crear_evento(request):
                 hora_inicio__lt=hora_fin,
                 hora_fin__gt=hora_inicio
             )
+            
             if sala_necesaria:         
-                return render(request, 'crear_evento.html', {'tipo_choices': tipo_choices, 'todas_salas':todas_salas,'salas_ocupadas': salas_ocupadas, 'reservas_salas_ocupadas':reservas_salas_ocupadas})  # Devolver una respuesta JSON indicando que se creó el evento correctamente
+                return render(request, 'crear_evento.html', {'tipo_choices': tipo_choices, 'usuarios':usuarios, 'todas_salas':todas_salas,'salas_ocupadas': salas_ocupadas, 'reservas_salas_ocupadas':reservas_salas_ocupadas, 'participantes_seleccionados':participantes_seleccionados})
+            else:
+                evento = Evento(fecha=fecha, hora_inicio=hora_inicio, hora_fin=hora_fin, tipo = tipo, nombre=nombre, descripcion=descripcion)
+                evento.save()
+                evento.participantes.set(participantes_seleccionados)
+                evento.save()
+                return redirect('/')
 
-        return render(request, 'crear_evento.html', {'tipo_choices': tipo_choices})
+        return render(request, 'crear_evento.html', {'tipo_choices': tipo_choices, 'usuarios':usuarios})
     else:
         return redirect('/403')
     
@@ -52,6 +64,10 @@ def nuevo_evento(request):
             nombre = request.POST.get('nombre')
             tipo = request.POST.get('tipo')
             descripcion = request.POST.get('descripcion')
+            participantes = request.POST.get('participantes')
+            participantes = map(int, participantes.split(','))  # Convertir los IDs de participantes a números enteros
+            participantes = list(participantes)
+            print(participantes)
 
             if fecha < str(datetime.now().date()):
                 print('No se puede crear una evento para una fecha pasada.')
@@ -64,7 +80,11 @@ def nuevo_evento(request):
 
             evento = Evento(sala_reservada=sala, fecha=fecha, hora_inicio=hora_inicio, hora_fin=hora_fin, tipo = tipo, nombre=nombre, descripcion=descripcion)
             evento.save()
+            evento.participantes.set(participantes)
+            evento.save()
             return redirect('/')
+        else:
+            return redirect('/404')
     else:
         return redirect('/403')
 
