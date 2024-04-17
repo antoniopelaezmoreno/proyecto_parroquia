@@ -51,7 +51,8 @@ INSTALLED_APPS = [
     'drive',
     'notificacion',
     'sala',
-    'correo'
+    'correo',
+    'evento'
 ]
 
 MIDDLEWARE = [

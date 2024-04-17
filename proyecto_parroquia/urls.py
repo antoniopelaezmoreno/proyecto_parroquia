@@ -33,6 +33,7 @@ urlpatterns = [
     path('notificacion/', include('notificacion.urls')),
     path('sala/', include('sala.urls')),
     path('correo/', include('correo.urls')),
+    path('evento/', include('evento.urls')),
 ]
 
 if settings.DEBUG:

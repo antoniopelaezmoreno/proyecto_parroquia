@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Crear Evento{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'core/css/sala_styles.css' %}">
+<form method="post" enctype="multipart/form-data" id="eventoForm">
+    {% csrf_token %}
+
+    <input type="text" name="nombre" id="nombre" placeholder="Nombre del evento" required>
+    <input type="date" name="fecha" id="fecha" required>
+    
+    <select type="time" name="hora_inicio" id="hora_inicio"></select>
+    <select type="time" name="hora_fin" id="hora_fin"></select>
+
+    <textarea name="descripcion" id="descripcion" placeholder="Descripción del evento"></textarea>
+    
+    <select name="tipo" id="tipo" required>
+        <option value="" disabled selected>Seleccione un tipo de evento</option>
+        {% for tipo in tipo_choices %}
+            <option value="{{ tipo.0 }}">{{ tipo.1 }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="sala_necesaria">¿Sala necesaria?</label>
+    <input type="checkbox" id="sala_necesaria" name="sala_necesaria">
+
+    <button type="submit" id="guardarBtn">Guardar</button>
+</form>
+
+{% for sala in todas_salas %}
+    {% if sala in salas_ocupadas %}
+        {% for reserva in reservas_salas_ocupadas %}
+            {% if reserva.sala == sala %}
+                <div class="sala ocupada" data-reserva="{{ reserva }}">
+                    <p>{{ sala }}</p>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <div class="sala {% if sala.requiere_aprobacion %} aprobacion {% else %} libre {% endif %}">
+            <button class="openModalBtn" data-sala-id="{{ sala.id }}" data-sala-nombre="{{ sala.nombre }}"
+                data-sala-aprobacion="{{ sala.requiere_aprobacion }}">
+                <p>{{ sala }}</p>
+            </button>
+        </div>
+    {% endif %}
+{% endfor %}
+
+<div id="myModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Reservar la sala</h2>
+      <p id="avisoAprobacion"></p>
+      <p id="mensajeConfirmacion"></p>
+      <input type="text" id="motivo" name="motivo">
+      <div id="motivoError" style="color: red;"></div>
+      <button id="reservarBtn">Reservar</button>
+    </div>
+</div>
+
+<script src="{% static 'core/js/sala.js' %}"></script>
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const tipo_input = document.getElementById("tipo");
+        const nombre_input = document.getElementById("nombre");
+        const checkbox_sala = document.getElementById("sala_necesaria");
+        const descripcion_input = document.getElementById("descripcion");
+
+        var tipoGuardado = sessionStorage.getItem("tipoSeleccionado");
+        var nombreGuardado = sessionStorage.getItem("nombreEvento");
+        var checkboxGuardada = sessionStorage.getItem("salaNecesaria");
+        var descripcionGuardada = sessionStorage.getItem("descripcionEvento");
+
+        tipo_input.value = sessionStorage.getItem("tipoSeleccionado") || "";
+        nombre_input.value = sessionStorage.getItem("nombreEvento") || "";
+        checkbox_sala.checked = sessionStorage.getItem("salaNecesaria") ==="true" || false;
+        descripcion_input.value = sessionStorage.getItem("descripcionEvento") || "";
+
+        tipo_input.addEventListener("change", function () {
+            sessionStorage.setItem("tipoSeleccionado", this.value);
+        });
+        nombre_input.addEventListener("change", function () {
+            sessionStorage.setItem("nombreEvento", this.value);
+        });
+        checkbox_sala.addEventListener("change", function () {
+            sessionStorage.setItem("salaNecesaria", this.checked.toString()); // Convertir a cadena
+        });
+        descripcion_input.addEventListener("change", function () {
+            sessionStorage.setItem("descripcionEvento", this.value);
+        });
+    });
+
+    function reservarSala(salaId, fecha, horaInicio, horaFin, motivo) {
+        
+        var tipo = sessionStorage.getItem("tipoSeleccionado");
+        var nombre = sessionStorage.getItem("nombreEvento");
+        var descripcion = sessionStorage.getItem("descripcionEvento");
+
+        var formData = new FormData();
+        formData.append("sala_id", salaId);
+        formData.append("fecha", fecha);
+        formData.append("hora_inicio", horaInicio);
+        formData.append("hora_fin", horaFin);
+        formData.append("motivo", motivo);
+
+        const motivoError = document.getElementById("motivoError");
+        const motivoInput = document.getElementById("motivo");
+
+        if (motivo.length === 0 && motivoInput.style.display !== "none") {
+            motivoError.textContent = "Debe ingresar un motivo para la reserva";
+            motivoError.style.display = "block";
+            motivoInput.style.borderColor = "red";
+            return;
+        } else if (motivo.length > 250 && motivoInput.style.display !== "none") {
+            motivoError.textContent = "El motivo no puede tener más de 250 caracteres";
+            motivoError.style.display = "block";
+            motivoInput.style.borderColor = "red";
+            return;
+        } else {
+            motivoError.textContent = ""; // Limpiar el mensaje de error si no hay problemas
+            motivoError.style.display = "none";
+            motivoInput.style.borderColor = ""; // Restaurar el color del borde
+        }
+
+        // Enviar la solicitud POST utilizando fetch
+        fetch("/sala/reservar/", {
+            method: "POST",
+            body: formData,
+            headers: {
+                "X-CSRFToken": getCookie("csrftoken"), // Obtener el token CSRF de las cookies
+            },
+        })
+            .then((response) => {
+                if (response.ok) {
+                    console.log("Reserva creada correctamente");
+                    crearEvento(salaId, fecha, horaInicio, horaFin, tipo, nombre, descripcion);
+                } else {
+                    console.error("Error al crear la reserva");
+                }
+            })
+            .catch((error) => {
+                console.error("Error al crear la reserva:", error);
+            });
+    }
+
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(";").shift();
+    }
+
+    function crearEvento(salaId, fecha, horaInicio, horaFin, tipo, nombre, descripcion) {
+
+        var formData = new FormData();
+        formData.append("sala_id", salaId);
+        formData.append("fecha", fecha);
+        formData.append("hora_inicio", horaInicio);
+        formData.append("hora_fin", horaFin);
+        formData.append("tipo", tipo);
+        formData.append("nombre", nombre);
+        formData.append("descripcion", descripcion);
+        
+
+        fetch("/evento/nuevo/", {
+            method: "POST",
+            body: formData,
+            headers: {
+                "X-CSRFToken": getCookie("csrftoken"), // Obtener el token CSRF de las cookies
+            },
+        })
+            .then((response) => {
+                if (response.ok) {
+                    console.log("Evento creado correctamente");
+                    window.location.href = "/";
+                } else {
+                    console.error("Error al crear el evento");
+                }
+            })
+            .catch((error) => {
+                console.error("Error al crear el evento:", error);
+            });
+    }
+    
+
+</script>
+
+{% endblock %}
