@@ -7,8 +7,11 @@ from django.contrib.auth.decorators import login_required
 from .models import Sesion
 from grupo.models import Grupo
 from curso.models import Curso
-
+from custom_user.models import CustomUser
+from evento.views import asociar_a_google_calendar
 from django.db.models import Count
+from correo.views import conseguir_credenciales
+from googleapiclient.discovery import build
 # Create your views here.
 
 @login_required
@@ -25,11 +28,32 @@ def crear_sesion(request):
                 if fecha >= timezone.now().date():
                     sesion = form.save(commit=False)
                     sesion.ciclo = ciclo
+
+                    if ciclo == 'posco_1' or ciclo == 'posco_2' or ciclo == 'gr_juv_1' or ciclo == 'gr_juv_2':
+                        print("Estoy en 1", ciclo)
+                        sesion.hora_inicio = '16:30'
+                        sesion.hora_fin = '17:30'
+                    elif ciclo == 'posco_3' or ciclo == 'posco_4':
+                        print("Estoy en 2", ciclo)
+                        sesion.hora_inicio = '17:30'
+                        sesion.hora_fin = '18:30'
+                    elif ciclo == 'catecumenados_3':
+                        print("Estoy en 3", ciclo)
+                        sesion.hora_inicio = '19:00'
+                        sesion.hora_fin = '20:30'
+                    else:
+                        print("Estoy en 4", ciclo)
+                        sesion.hora_inicio = '17:00'
+                        sesion.hora_fin = '18:30'
+
+
                     sesion.save()
 
                     files = form.cleaned_data['files']
                     for file in files:
                         sesion.files.add(file)
+                    
+                    crear_sesion_en_calendar(request,sesion, request.user)
                     return redirect('/sesion/listar')
                 else:
                     messages.error(request, "La fecha no puede estar en el pasado")
@@ -40,6 +64,35 @@ def crear_sesion(request):
         return render(request, 'crear_sesion.html', {'form': form})
     else:
         return redirect('/403')
+    
+
+@login_required
+def crear_sesion_en_calendar(request,sesion, user):
+
+    creds = conseguir_credenciales(user)
+    catequistas = CustomUser.objects.filter(ciclo = user.ciclo)
+    
+    event={
+        'summary': sesion.titulo,
+        'description': sesion.descripcion,
+        'start': {
+            'dateTime': str(sesion.fecha) + 'T' + str(sesion.hora_inicio) + ':00',
+            'timeZone': 'UTC',
+        },
+        'end': {
+            'dateTime': str(sesion.fecha) + 'T' + str(sesion.hora_fin) + ':00',
+            'timeZone': 'UTC',
+        }
+    }
+    if catequistas:
+        event['attendees']=[{'email': usuario.email} for usuario in catequistas]
+    
+    try:
+        service = build("calendar", "v3", credentials=creds)
+        event=service.events().insert(calendarId='primary', body=event).execute()
+        print('Event created: %s' % (event.get('htmlLink')))
+    except Exception as e:
+        print('Error creating event: %s' % (e))
 
 @login_required
 def editar_sesion(request, sesionId):
