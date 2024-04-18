@@ -84,8 +84,10 @@ def nuevo_evento(request):
             tipo = request.POST.get('tipo')
             descripcion = request.POST.get('descripcion')
             participantes = request.POST.get('participantes')
-            participantes = map(int, participantes.split(','))  # Convertir los IDs de participantes a números enteros
-            participantes = list(participantes)
+            print(participantes)
+            if not participantes == "":
+                participantes = map(int, participantes.split(','))  # Convertir los IDs de participantes a números enteros
+                participantes = list(participantes)
 
             if fecha < str(datetime.now().date()):
                 print('No se puede crear una evento para una fecha pasada.')
