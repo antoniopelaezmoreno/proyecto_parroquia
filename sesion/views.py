@@ -93,6 +93,8 @@ def pasar_lista(request, sesionid):
     if request.user.is_authenticated:
         sesion = get_object_or_404(Sesion, pk=sesionid)
         if request.user.ciclo == sesion.ciclo:
+            if sesion.fecha > timezone.now().date():
+                return error(request, "No puedes pasar lista de una sesión futura")
             if request.method == 'POST':
                 for catecumeno in catecumenos_desde_catequista(request.user):
                     categoria = request.POST.get(f'categoria_{catecumeno.id}')

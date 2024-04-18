@@ -62,10 +62,11 @@ def asignar_catecumenos_a_grupo(request):
             for asignacion in data:
                 catecumeno_id = asignacion.get('userId')
                 grupo_asignado = asignacion.get('grupoAsignado')
-                catecumeno = Catecumeno.objects.get(id=catecumeno_id)
-                grupo = Grupo.objects.get(id=grupo_asignado)
-                grupo.miembros.add(catecumeno)
-                grupo.save()
+                if grupo_asignado:
+                    catecumeno = Catecumeno.objects.get(id=catecumeno_id)
+                    grupo = Grupo.objects.get(id=grupo_asignado)
+                    grupo.miembros.add(catecumeno)
+                    grupo.save()
             return redirect('index')
         catecumenos = Catecumeno.objects.filter(ciclo=ciclo)
         return render(request, 'asignar_catecumenos_a_grupo.html', {'catecumenos': catecumenos, 'grupos': grupos})
