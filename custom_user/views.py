@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 import json
 from catecumeno.models import Catecumeno
 
-SCOPES = ["https://www.googleapis.com/auth/gmail.readonly", "https://www.googleapis.com/auth/gmail.send", "https://www.googleapis.com/auth/gmail.modify"]
+SCOPES = ["https://www.googleapis.com/auth/gmail.readonly", "https://www.googleapis.com/auth/gmail.send", "https://www.googleapis.com/auth/gmail.modify", "https://www.googleapis.com/auth/calendar"]
 
 
 def cerrar_sesion(request):
