@@ -6,37 +6,17 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
+from correo.views import conseguir_credenciales
 import base64
 import json
 
 # If modifying these scopes, delete the file token.json.
-SCOPES = ["https://www.googleapis.com/auth/gmail.readonly", "https://www.googleapis.com/auth/gmail.send", "https://www.googleapis.com/auth/gmail.modify"]
-
 
 def enviar_email(sender, to, subject, message_text, user):
   """Shows basic usage of the Gmail API.
   Lists the user's Gmail labels.
   """
-  creds = None
-  # The file token.json stores the user's access and refresh tokens, and is
-  # created automatically when the authorization flow completes for the first
-  # time.
-
-  if user.token_json:
-    creds = Credentials.from_authorized_user_info(json.loads(user.token_json), SCOPES)
-  # If there are no (valid) credentials available, let the user log in.
-  if not creds or not creds.valid:
-    if creds and creds.expired and creds.refresh_token:
-      creds.refresh(Request())
-    else:
-      flow = InstalledAppFlow.from_client_secrets_file(
-          "credentials.json", SCOPES,
-          redirect_uri="urn:ietf:wg:oauth:2.0:oob"
-      )
-      creds = flow.run_local_server(port=8081, login_hint=user.email, prompt='consent', access_type='offline')
-    # Save the credentials for the next run
-    user.token_json =creds.to_json()
-    user.save()
+  creds = conseguir_credenciales(user)
 
   try:
     # Call the Gmail API

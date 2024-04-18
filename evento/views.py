@@ -8,6 +8,8 @@ from datetime import  date
 from datetime import datetime
 from django.http import HttpResponse
 from custom_user.models import CustomUser
+from correo.views import conseguir_credenciales
+from googleapiclient.discovery import build
 
 @login_required
 def crear_evento(request):
@@ -47,6 +49,8 @@ def crear_evento(request):
                 evento.save()
                 evento.participantes.set(participantes_seleccionados)
                 evento.save()
+
+                asociar_a_google_calendar(evento, request.user)
                 return redirect('/')
 
         if request.GET.get('reunion_comision') and request.user.is_superuser:
@@ -84,7 +88,6 @@ def nuevo_evento(request):
             tipo = request.POST.get('tipo')
             descripcion = request.POST.get('descripcion')
             participantes = request.POST.get('participantes')
-            print(participantes)
             if not participantes == "":
                 participantes = map(int, participantes.split(','))  # Convertir los IDs de participantes a números enteros
                 participantes = list(participantes)
@@ -105,9 +108,40 @@ def nuevo_evento(request):
             evento.save()
             evento.participantes.set(participantes)
             evento.save()
+
+            asociar_a_google_calendar(evento, request.user)
+
             return redirect('/')
         else:
             return redirect('/404')
     else:
         return redirect('/403')
 
+
+def asociar_a_google_calendar(evento, user):
+    print('Asociando evento a Google Calendar')
+    creds = conseguir_credenciales(user)
+    event={
+        'summary': evento.nombre,
+        'description': evento.descripcion,
+        'start': {
+            'dateTime': str(evento.fecha) + 'T' + str(evento.hora_inicio) + ':00',
+            'timeZone': 'Europe/Madrid',
+        },
+        'end': {
+            'dateTime': str(evento.fecha) + 'T' + str(evento.hora_fin) + ':00',
+            'timeZone': 'Europe/Madrid',
+        }
+    }
+    if evento.participantes:
+        event['attendees']=[{'email': usuario.email} for usuario in evento.participantes.all()]
+    
+    if evento.sala_reservada:
+        event['location']=evento.sala_reservada.nombre
+
+    try:
+        service = build("calendar", "v3", credentials=creds)
+        event=service.events().insert(calendarId='primary', body=event).execute()
+        print('Event created: %s' % (event.get('htmlLink')))
+    except Exception as e:
+        print('Error creating event: %s' % (e))
