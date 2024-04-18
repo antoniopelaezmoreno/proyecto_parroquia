@@ -4,7 +4,6 @@
 {% block title %} Inicio {% endblock %}
 
 {% block content %}
-
     <link rel="stylesheet" type="text/css" href="{% static 'core/css/index_styles.css' %}">
     <div class="container">
         <!--Panel central-->
@@ -17,7 +16,6 @@
                         <p style="margin-bottom: 0px;"> Catecúmenos </p>
                         <p style="font-size: 40px; text-align: center; margin-top: 0px;"> <b>{{ num_catecumenos }}</b></p> 
                     </div>
-
                 </a>
                 <div class="estadistica">
                     <span class="material-icons icono ausencias">warning</span>
@@ -25,7 +23,6 @@
                         <p style="margin-bottom: 0px;"> Ausencias </p>
                         <p style="font-size: 40px; text-align: center; margin-top: 0px;"> <b>{{ num_ausencias }}</b></p> 
                     </div>
-                    
                 </div>
                 <div class="estadistica">
                     <span class="material-icons icono ausencias-ultimas">info_outline</span>
@@ -33,10 +30,8 @@
                         <p style="margin-bottom: 0px;"> Faltas </p>
                         <p style="font-size: 40px; text-align: center; margin-top: 0px;"> <b>{{ num_ausencias_ultima_sesion }}</b></p> 
                     </div>
-                    
                 </div>
             </div>
-
             <h3 style="margin-top: 30px;"> Próxima Sesión</h3>
             <div class="sesion">
                 {% if proxima_sesion %}
@@ -45,24 +40,19 @@
                         <div>
                             <p style="text-align: center;"><b>Descripción:  </b></p> </br>
                             {{ proxima_sesion.descripcion }}
-                            
                             <div style="display: flex; flex-flow: row; justify-content: space-between;">
                                 <a href="{% url 'pasar_lista' proxima_sesion.id %}" class="boton" style="margin-top: 20px;">
                                     <p> PASAR LISTA </p>
                                 </a>
-
                                 <a href="{% url 'listar_sesiones' %}" class="boton" style="margin-top: 20px;">
                                     <p> TODAS LAS SESIONES </p>
                                 </a>
-
                             </div>
-                            
                         </div>
                         <div>
                             <p style="text-align: center;"><b>Archivos:  </b></p> </br>
                             {% if archivos_sesion %}
                                 <div class="grid-container">
-                                
                                     {% for file in archivos_sesion %}
                                         <div class="grid-item">
                                             <p>{{ file.name }}</p>
@@ -97,20 +87,16 @@
                                             {% endif %}
                                         </div>
                                     {% endfor %}
-                                
                                 </div>
                             {% else %}
-                                    <p style="text-align: center;"> No hay archivos</p>
+                                <p style="text-align: center;"> No hay archivos</p>
                             {% endif %}
                         </div>
-                        
                     </div>
-
                 {% else %}
                     <p> No hay próxima sesión</p>
                 {% endif %}
             </div>
-
             <h3 style="margin-top: 30px;"> Próximo Evento</h3>
             <div class="sesion">
                 {% if proximo_evento %}
@@ -126,7 +112,6 @@
                 {% endif %}
             </div>
         </div>
-
         <!--Panel derecho-->
         <div class="columna">
             <h3> Notificaciones</h3>
@@ -141,41 +126,108 @@
                             <input type="radio" class="form-check-input" name="notificacion" value="{{ notificacion.id }}">
                         </div>
                     {% endfor %}
-                    
                 {% else %}
                     <p style="text-align: center;">No hay notificaciones nuevas</p>
                 {% endif %}
-
             </div>
             <h3>Calendario</h3>
             <div class="notificaciones">
+                <div id='calendario'></div>
+                <a class="btnCrearEvento" href="{% url 'crear_evento' %}" id="crearEventoBtn" style="margin-top: 10px;">Crear Evento</a>
+                <a class="btnCrearEvento predeterminado" href="{% url 'crear_evento' %}?reunion_ciclo=true" id="crearEventoBtn" style="margin-top: 10px;">Reunión Ciclo</a>
 
-            </div>
-        </div>
-    </div>
-    
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $('input[name="notificacion"]').change(function() {
-            var notificacionId = $(this).val();
-            var url = "{% url 'marcar_notificacion_vista' 0 %}".replace('0', notificacionId);
-            $.ajax({
-                url: url,
-                type: "GET",
-                success: function(data) {
-                    console.log("buen")
-                    window.location.reload();
-                    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.0/main.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.0/main.min.css" rel="stylesheet" />
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@3.10.2/dist/locale/es.js'></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendario');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                events: "{% url 'obtener_eventos' %}", // URL para obtener los eventos
+                initialView: 'dayGridMonth', // Vista predeterminada del calendario
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
-                error: function(xhr, status, error) {
-                    console.error(xhr.responseText);
-                    window.location.reload();
-                }
+                locale: 'es',
+                eventContent: function(info) {
+                    return { html: '<b>' + info.event.title + '</b>' };
+                },
+                eventDisplay: 'block',  // Muestra el evento como un bloque
+                eventBackgroundColor: '#FF5733',
+                scrollTime: '16:00:00',
             });
+            calendar.render();
         });
-    });
-</script>
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('input[name="notificacion"]').change(function() {
+                var notificacionId = $(this).val();
+                var url = "{% url 'marcar_notificacion_vista' 0 %}".replace('0', notificacionId);
+                $.ajax({
+                    url: url,
+                    type: "GET",
+                    success: function(data) {
+                        console.log("buen")
+                        window.location.reload();
+                        
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                        window.location.reload();
+                    }
+                });
+            });
+
+            
+        });
+    </script>
+
+<style>
+    /* Estilos para los botones del encabezado */
+    .fc-header-toolbar button {
+        padding: 4px 8px; /* Ajusta el padding según sea necesario */
+        font-size: 12px; /* Tamaño de fuente */
+    }
+
+    /* Estilos para el texto del título del calendario */
+    .fc-toolbar-title {
+        font-size: 16px; /* Tamaño de fuente del título */
+    }
+
+    /* Estilos para los botones de cambio de vista */
+    .fc-header-toolbar .fc-button-group button {
+        padding: 4px 8px; /* Ajusta el padding según sea necesario */
+        font-size: 12px; /* Tamaño de fuente */
+    }
+
+    .fc-header-toolbar .fc-today-button {
+        padding: 4px 8px; /* Ajusta el padding según sea necesario */
+        font-size: 12px; /* Tamaño de fuente */
+    }
+
+    .btnCrearEvento{
+        text-decoration: none;
+        background-color: #2C3E50;
+        color: white;
+        padding: 5px;
+        border-radius: .25em;
+        text-align: center;
+    }
+
+    .predeterminado{
+        background-color: #4a77a4;
+    }
+
+    .btnCrearEvento:hover{
+        background-color: #7493b2;
+    }
+</style>
 
 
 {% endblock %}

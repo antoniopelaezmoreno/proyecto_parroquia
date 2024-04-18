@@ -4,10 +4,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Evento
 from sala.models import Sala, Reserva
 import re
-from datetime import  date
 from datetime import datetime
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from custom_user.models import CustomUser
+from sesion.models import Sesion
 from correo.views import conseguir_credenciales
 from googleapiclient.discovery import build
 
@@ -120,6 +120,8 @@ def nuevo_evento(request):
 
 def asociar_a_google_calendar(evento, user):
     print('Asociando evento a Google Calendar')
+    print(evento)
+    print(evento['nombre'])
     creds = conseguir_credenciales(user)
     event={
         'summary': evento.nombre,
@@ -145,3 +147,26 @@ def asociar_a_google_calendar(evento, user):
         print('Event created: %s' % (event.get('htmlLink')))
     except Exception as e:
         print('Error creating event: %s' % (e))
+
+
+@login_required
+def obtener_eventos(request):
+    eventos = Evento.objects.all()
+    eventos_data = [{
+        'title': evento.nombre,
+        'start': evento.fecha.strftime('%Y-%m-%dT'+evento.hora_inicio.strftime('%H:%M:%S')),  # Formatea la fecha y hora de inicio
+        'end': evento.fecha.strftime('%Y-%m-%dT'+evento.hora_fin.strftime('%H:%M:%S')),    # Formatea la fecha y hora de fin
+        'color': '#2c36bd' if evento.tipo == Evento.TIPO_CHOICES.REUNION else ('green' if evento.tipo ==  Evento.TIPO_CHOICES.CONVIVENCIA else '#c02424')  # Asigna un color diferente a las reuniones
+    } for evento in eventos]
+
+    sesiones = Sesion.objects.filter(ciclo=request.user.ciclo)
+    sesiones_data = [{
+        'title': sesion.titulo,
+        'start': sesion.fecha.strftime('%Y-%m-%dT'+sesion.hora_inicio.strftime('%H:%M:%S')),
+        'end': sesion.fecha.strftime('%Y-%m-%dT'+sesion.hora_fin.strftime('%H:%M:%S')),
+        'color': '#e8ca13'
+    } for sesion in sesiones]
+
+    eventos_data.extend(sesiones_data)
+
+    return JsonResponse(eventos_data, safe=False)

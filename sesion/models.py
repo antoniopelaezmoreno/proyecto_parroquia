@@ -8,6 +8,8 @@ class Sesion(models.Model):
     titulo = models.CharField(max_length=100)
     descripcion = models.TextField()
     fecha = models.DateField()
+    hora_inicio = models.TimeField(default='00:00:00')
+    hora_fin = models.TimeField(default='00:00:00')
     ciclo = models.CharField(max_length=20, choices=Catecumeno.CicloChoices.choices, null=True )
     curso= models.ForeignKey(Curso, on_delete=models.CASCADE, null=True, blank=True)
     asistentes = models.ManyToManyField(Catecumeno, related_name='sesiones_asistentes')
