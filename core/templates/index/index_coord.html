@@ -110,6 +110,21 @@
                     <p> No hay próxima sesión</p>
                 {% endif %}
             </div>
+
+            <h3 style="margin-top: 30px;"> Próximo Evento</h3>
+            <div class="sesion">
+                {% if proximo_evento %}
+                    <h2 style="margin-bottom: 10px; border-bottom: 1px solid black; text-align: center; padding-bottom: 10px;"> {{ proximo_evento.nombre }} - {{ proximo_evento.fecha }} </h2>
+                    <p><b>Descripción:  </b></p>
+                    {{ proximo_evento.descripcion }}    
+                    <p><b>Horario:  </b></p> {{ proximo_evento.hora_inicio}} - {{ proximo_evento.hora_fin}}
+                    {% if proximo_evento.sala_reservada %}
+                        <p><b>Sala:  </b></p> {{ proximo_evento.sala_reservada }}
+                    {% endif %}
+                {% else %}
+                    <p> No hay próximo evento</p>
+                {% endif %}
+            </div>
         </div>
 
         <!--Panel derecho-->
