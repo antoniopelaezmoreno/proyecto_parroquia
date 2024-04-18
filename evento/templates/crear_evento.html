@@ -6,11 +6,18 @@
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'core/css/sala_styles.css' %}">
 
+{% if error %}
+    <div class="error">
+        <p>{{ error }}</p>
+    </div>
+{% endif %}
+
+
 <form method="post" enctype="multipart/form-data" id="eventoForm" class="container">
     {% csrf_token %}
 
     <label for="nombre">Nombre del evento</label>
-    <input type="text" name="nombre" id="nombre" placeholder="Nombre del evento" required>
+    <input type="text" name="nombre" id="nombre" placeholder="Nombre del evento" value="{{ nombre }}" required>
 
     <div class="label-group">
         <label for="tipo">Tipo del evento</label>
@@ -22,7 +29,7 @@
         <select name="tipo" id="tipo" required>
             <option value="" disabled selected>Seleccione un tipo de evento</option>
             {% for tipo in tipo_choices %}
-                <option value="{{ tipo.0 }}">{{ tipo.1 }}</option>
+                <option value="{{ tipo.0 }}" {% if tipo == tipo_seleccionado %} selected {% endif %}>{{ tipo.1 }}</option>
             {% endfor %}
         </select>
         <input type="date" name="fecha" id="fecha" required>
@@ -39,7 +46,7 @@
     </div>
 
     <label for="descripcion">Descripción del evento</label>
-    <textarea name="descripcion" id="descripcion" placeholder="Descripción del evento"></textarea>
+    <textarea name="descripcion" id="descripcion" placeholder="Descripción del evento" required></textarea>
 
     {% if usuarios %}
         <label for="participantes">Participantes</label>
@@ -58,7 +65,9 @@
     <input type="checkbox" id="sala_necesaria" name="sala_necesaria">
 
     <div id="boton-container">
-        <button type="submit" id="guardarBtn">Buscar</button>
+        <button type="submit" id="guardarBtn"><span class="material-icons">
+            done
+            </span></button>
     </div>
     
 </form>
@@ -203,13 +212,13 @@
 
         guardarBtn.addEventListener("click", function () {
             if (checkbox_sala.checked) {
-                localStorage.setItem("participantes_seleccionados", JSON.stringify(Array.from(participantes_select.selectedOptions).map(option => option.value)));
+                sessionStorage.setItem("participantes_seleccionados", JSON.stringify(Array.from(participantes_select.selectedOptions).map(option => option.value)));
             } else {
-                localStorage.removeItem("participantes_seleccionados");
+                sessionStorage.removeItem("participantes_seleccionados");
             }
         });
 
-        const participantes_seleccionados = localStorage.getItem("participantes_seleccionados");
+        const participantes_seleccionados = sessionStorage.getItem("participantes_seleccionados");
         if (participantes_seleccionados) {
             const participantes_seleccionados_array = JSON.parse(participantes_seleccionados);
             for (const option of participantes_select.options) {
@@ -219,10 +228,16 @@
             }
         }
 
-        var tipoGuardado = sessionStorage.getItem("tipoSeleccionado");
-        var nombreGuardado = sessionStorage.getItem("nombreEvento");
-        var checkboxGuardada = sessionStorage.getItem("salaNecesaria");
-        var descripcionGuardada = sessionStorage.getItem("descripcionEvento");
+        const tipoPredefinido = "{{ tipo_seleccionado }}";
+        const nombrePredefinido = "{{ nombre }}";
+        
+        if (tipoPredefinido) {
+            sessionStorage.setItem("tipoSeleccionado", tipoPredefinido);
+        }
+
+        if (nombrePredefinido) {
+            sessionStorage.setItem("nombreEvento", nombrePredefinido);
+        }
 
         tipo_input.value = sessionStorage.getItem("tipoSeleccionado") || "";
         nombre_input.value = sessionStorage.getItem("nombreEvento") || "";
@@ -325,6 +340,7 @@
         })
             .then((response) => {
                 if (response.ok) {
+                    sessionStorage.clear();
                     console.log("Evento creado correctamente");
                     window.location.href = "/";
                 } else {

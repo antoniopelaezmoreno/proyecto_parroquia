@@ -14,6 +14,7 @@ def crear_evento(request):
     if request.user.is_coord or request.user.is_superuser:
         tipo_choices = Evento.TIPO_CHOICES.choices
         usuarios = CustomUser.objects.all()
+        participantes_seleccionados=[]
         if request.method == 'POST':
             fecha = request.POST.get('fecha')
             hora_inicio = request.POST.get('hora_inicio')
@@ -25,7 +26,7 @@ def crear_evento(request):
             descripcion = request.POST.get('descripcion')
 
             if not re.match(r'^\d{4}-\d{2}-\d{2}$', fecha) or hora_inicio is None or hora_fin is None:
-                return render(request, 'salas_disponibles.html', {'fecha_hoy':date.today, 'error': 'Por favor, introduzca todos los campos'})
+                return render(request, 'crear_evento.html', {'tipo_choices': tipo_choices,'error': 'Por favor, introduzca todos los campos', 'usuarios':usuarios, 'participantes_seleccionados':participantes_seleccionados})
             todas_salas = Sala.objects.filter(requiere_aprobacion=False)
             salas_ocupadas = todas_salas.filter(
                 reserva__fecha=fecha,
@@ -48,7 +49,26 @@ def crear_evento(request):
                 evento.save()
                 return redirect('/')
 
-        return render(request, 'crear_evento.html', {'tipo_choices': tipo_choices, 'usuarios':usuarios})
+        if request.GET.get('reunion_comision') and request.user.is_superuser:
+            # Crear el evento automáticamente con los detalles predefinidos
+            nombre = "Reunión de Comisión"
+            tipo = Evento.TIPO_CHOICES.REUNION
+            coordinadores = CustomUser.objects.filter(is_coord=True)
+            participantes_seleccionados = list(coordinadores.values_list('id', flat=True))
+            
+            return render(request, 'crear_evento.html', {'tipo_choices': tipo_choices, 'usuarios':usuarios, 'participantes_seleccionados':participantes_seleccionados, 'tipo_seleccionado': tipo, 'nombre': nombre})
+        
+        if request.GET.get('reunion_ciclo') and request.user.is_coord:
+            print("Creando evento de reunión de ciclo")
+            # Crear el evento automáticamente con los detalles predefinidos
+            ciclo = request.user.ciclo
+            nombre = "Reunión de " + ciclo
+            tipo = Evento.TIPO_CHOICES.REUNION
+            catequistas = CustomUser.objects.filter(ciclo=ciclo)
+            participantes_seleccionados = list(catequistas.values_list('id', flat=True))
+            
+            return render(request, 'crear_evento.html', {'tipo_choices': tipo_choices, 'usuarios':usuarios, 'participantes_seleccionados':participantes_seleccionados, 'tipo_seleccionado': tipo, 'nombre': nombre})
+        return render(request, 'crear_evento.html', {'tipo_choices': tipo_choices, 'usuarios':usuarios, 'participantes_seleccionados':participantes_seleccionados})
     else:
         return redirect('/403')
     
