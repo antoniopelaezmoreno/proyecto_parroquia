@@ -21,6 +21,9 @@ class EditCustomUserForm(forms.ModelForm):
     class Meta:
         model = CustomUser
         fields = ['first_name', 'last_name', 'email', 'telefono']
+        widgets = {
+            'email': forms.TextInput(attrs={'readonly': 'readonly', 'style': 'background-color: #c3c3c3;'})
+        }
 
     def save(self, commit=True):
         user = super(EditCustomUserForm, self).save(commit=False)

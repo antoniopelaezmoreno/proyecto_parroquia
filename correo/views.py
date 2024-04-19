@@ -14,7 +14,7 @@ from datetime import datetime
 from custom_user.models import CustomUser
 from solicitud_catequista.models import SolicitudCatequista
 from email.mime.text import MIMEText
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseServerError
 import re
 
 # Create your views here.
@@ -97,20 +97,25 @@ def conseguir_credenciales(user):
 
     creds = None
 
-    if user.token_json:
-        creds = Credentials.from_authorized_user_info(json.loads(user.token_json), SCOPES)
+    try:
 
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                "credentials.json", SCOPES,
-                redirect_uri="urn:ietf:wg:oauth:2.0:oob"
-            )
-            creds = flow.run_local_server(port=8081, login_hint=user.email, prompt='consent', access_type='offline')
-            user.token_json = creds.to_json()
-            user.save()
+        if user.token_json:
+            creds = Credentials.from_authorized_user_info(json.loads(user.token_json), SCOPES)
+
+        if not creds or not creds.valid:
+            if creds and creds.expired and creds.refresh_token:
+                creds.refresh(Request())
+            else:
+                flow = InstalledAppFlow.from_client_secrets_file(
+                    "credentials.json", SCOPES,
+                    redirect_uri="urn:ietf:wg:oauth:2.0:oob"
+                )
+                creds = flow.run_local_server(port=8081, login_hint=user.email, prompt='consent', access_type='offline')
+                user.token_json = creds.to_json()
+                user.save()
+
+    except OSError as e:
+        return HttpResponseServerError("Error: Ha habido un error. Por favor, inténtalo de nuevo más tarde.")
     return creds
 
 @login_required

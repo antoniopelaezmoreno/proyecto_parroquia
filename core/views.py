@@ -31,10 +31,13 @@ def index(request):
         return render(request, 'index/index.html')
 
 def c403(request):
-    return render(request, '403.html')
+    return render(request, '403.html', status=403)
 
 def c404(request):
-    return render(request, '404.html')
+    return render(request, '404.html', status=404)
+
+def c500(request):
+    return render(request, '500.html', status=500)
 
 def error(request, mensaje):
     return render(request, 'error.html', {'mensaje': mensaje})
