@@ -119,9 +119,6 @@ def nuevo_evento(request):
 
 
 def asociar_a_google_calendar(evento, user):
-    print('Asociando evento a Google Calendar')
-    print(evento)
-    print(evento['nombre'])
     creds = conseguir_credenciales(user)
     event={
         'summary': evento.nombre,
@@ -151,12 +148,14 @@ def asociar_a_google_calendar(evento, user):
 
 @login_required
 def obtener_eventos(request):
-    eventos = Evento.objects.all()
+    eventos = Evento.objects.filter(participantes=request.user)
     eventos_data = [{
+        'id': evento.id,
         'title': evento.nombre,
         'start': evento.fecha.strftime('%Y-%m-%dT'+evento.hora_inicio.strftime('%H:%M:%S')),  # Formatea la fecha y hora de inicio
         'end': evento.fecha.strftime('%Y-%m-%dT'+evento.hora_fin.strftime('%H:%M:%S')),    # Formatea la fecha y hora de fin
-        'color': '#2c36bd' if evento.tipo == Evento.TIPO_CHOICES.REUNION else ('green' if evento.tipo ==  Evento.TIPO_CHOICES.CONVIVENCIA else '#c02424')  # Asigna un color diferente a las reuniones
+        'color': '#2c36bd' if evento.tipo == Evento.TIPO_CHOICES.REUNION else ('green' if evento.tipo ==  Evento.TIPO_CHOICES.CONVIVENCIA else '#c02424'),
+        'tipo': 'Evento'
     } for evento in eventos]
 
     sesiones = Sesion.objects.filter(ciclo=request.user.ciclo)
@@ -164,9 +163,29 @@ def obtener_eventos(request):
         'title': sesion.titulo,
         'start': sesion.fecha.strftime('%Y-%m-%dT'+sesion.hora_inicio.strftime('%H:%M:%S')),
         'end': sesion.fecha.strftime('%Y-%m-%dT'+sesion.hora_fin.strftime('%H:%M:%S')),
-        'color': '#e8ca13'
+        'color': '#e8ca13',
+        'tipo': 'Sesión'
     } for sesion in sesiones]
 
     eventos_data.extend(sesiones_data)
 
     return JsonResponse(eventos_data, safe=False)
+
+@login_required
+def mostrar_eventos(request):
+    if request.user.is_authenticated:
+        if request.user.is_superuser:
+            eventos = Evento.objects.all()
+        else:
+            eventos=Evento.objects.filter(participantes=request.user)
+        return render(request, 'mostrar_eventos.html', {'eventos': eventos})
+    else:
+        return redirect('/403')
+    
+@login_required
+def detalles_evento(request, evento_id):
+    evento = get_object_or_404(Evento, pk=evento_id)
+    if request.user.is_superuser or request.user in evento.participantes.all():
+        return render(request, 'detalles_evento.html', {'evento': evento})
+    else:
+        return redirect('/403')

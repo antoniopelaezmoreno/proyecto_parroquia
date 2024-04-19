@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Detalles del Evento: {{ evento.nombre }}{% endblock %}
+
+{% block content %}
+    <div class="evento-details">
+        <h2>{{ evento.nombre }}</h2>
+        <p><strong>Fecha:</strong> {{ evento.fecha }}</p>
+        <p><strong>Hora:</strong> {{ evento.hora_inicio }} - {{ evento.hora_fin }}</p>
+        <p><strong>Descripción:</strong> {{ evento.descripcion }}</p>
+        <p><strong>Tipo:</strong> {{ evento.tipo }}</p>
+        {% if evento.participantes %}
+            <p><strong>Participantes:</strong></p>
+            <ul>
+                {% for participante in evento.participantes.all %}
+                    <li>{{ participante }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% if evento.sala_reservada %}
+            <p><strong>Sala:</strong> {{ evento.sala }}</p>
+        {% endif %}
+    </div>
+
+    <style>
+
+        .evento-details h2 {
+            color: #343a40;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .evento-details p {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .evento-details ul {
+            list-style-type: none;
+            padding-left: 20px;
+            margin-top: 5px;
+        }
+
+        .evento-details ul li {
+            margin-bottom: 5px;
+        }
+    </style>
+{% endblock %}

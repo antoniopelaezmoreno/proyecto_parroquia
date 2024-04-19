@@ -30,19 +30,15 @@ def crear_sesion(request):
                     sesion.ciclo = ciclo
 
                     if ciclo == 'posco_1' or ciclo == 'posco_2' or ciclo == 'gr_juv_1' or ciclo == 'gr_juv_2':
-                        print("Estoy en 1", ciclo)
                         sesion.hora_inicio = '16:30'
                         sesion.hora_fin = '17:30'
                     elif ciclo == 'posco_3' or ciclo == 'posco_4':
-                        print("Estoy en 2", ciclo)
                         sesion.hora_inicio = '17:30'
                         sesion.hora_fin = '18:30'
                     elif ciclo == 'catecumenados_3':
-                        print("Estoy en 3", ciclo)
                         sesion.hora_inicio = '19:00'
                         sesion.hora_fin = '20:30'
                     else:
-                        print("Estoy en 4", ciclo)
                         sesion.hora_inicio = '17:00'
                         sesion.hora_fin = '18:30'
 
