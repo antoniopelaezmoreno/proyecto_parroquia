@@ -7,33 +7,96 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.0/fullcalendar.min.css" rel="stylesheet" />
-
   <title>Dashboard</title>
   {% load static %}
   <link rel="stylesheet" href="{% static 'core/css/styles.css' %}">
-  
+  <style>
+    .dropdown {
+      position: relative;
+      display: inline-block;
+      margin-left: auto; 
+      margin-right: 20px; /* Espacio entre el menú y el borde del header */
+    }
+
+    .dropbtn{
+      background-color: transparent;
+      border: none;
+      color:#f1f1f1;
+      font-weight: bold; /* Negrita */
+      display: flex;
+      align-items: center; /* Centrado vertical */
+    }
+
+    .dropbtn i {
+      margin-right: 5px; /* Espacio entre el icono y el texto */
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f1f1f1;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+    }
+
+    .dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+
+    .dropdown-content a:hover {background-color: #ddd;}
+
+    .dropdown:hover .dropdown-content {display: block;}
+
+    .welcome-box {
+      padding: 10px;
+      text-align: center;
+      color: black;
+      border-bottom: 2px solid #147a2f;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .welcome-box img {
+      max-width: 80%;
+      max-height: 100%;
+    }
+  </style>
 </head>
 <body>
   <header class="content-shift" id="header">
     <div class="header-content">
-        <button class="sidebar-btn" onclick="toggleSidebar()"><i class="bi bi-list"></i></button>
-        <div class="texte-center">
+        <div style="margin-left: 10px;" class="text-center">
           <p>{% block title %} {% endblock %}</p>
         </div>
         {% if user.is_authenticated %}
-            <a class= "login-btn" href="{% url 'cerrar_sesion' %}" >Cerrar sesión</a>
+          
+          <div class="dropdown">
+            <button class="dropbtn"> 
+              <i class="bi bi-person-circle" style="font-size: 30px; margin-right: 10px;"></i> 
+              {{ user.first_name }} {{ user.last_name }}
+              <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+              <a href="{% url 'editar_catequista' user.id %}">Editar Perfil</a>
+              <a href="{% url 'cerrar_sesion' %}">Cerrar sesión</a>
+            </div>
+          </div>
         {% else %}
-            <a class = "login-btn" href="{% url 'iniciar_sesion' %}" >Iniciar sesión</a>
+          <a class="login-btn" href="{% url 'iniciar_sesion' %}">Iniciar sesión</a>
         {% endif %}
     </div>
   </header>
   <div class="dashboard content-shift" id="dashboard">
     <div class="sidebar" id="sidebar">
+      <button class="sidebar-btn" onclick="toggleSidebar()"><i class="bi bi-list"></i></button>
       {% if user.is_authenticated %}
-        <i class="bi bi-person-circle avatar"></i>
-        <div class="user-details">
-            <p class="user-name"> {{ user.first_name }} </p>
-            <p class="user-email">{{ user.last_name }}</p>
+        <div class="welcome-box">
+          <img src="/static/icons/pjv_verde.png" alt="Welcome Image" style="margin-bottom: 10px;">
         </div>
         {% if user.is_superuser %}
             <a href="{% url 'index' %}" class="menu-btn">Inicio</a>
@@ -56,9 +119,6 @@
             <button class="menu-btn" onclick="toggleSidebar()">Analytics</button>
           {% endif %}
         {% endif %}
-        
-        <a href="{% url 'editar_catequista' user.id %} " class="menu-btn">Editar Perfil</a>
-        
       {% else %}
         <p>Inicia sesión para acceder</p>
       {% endif %}

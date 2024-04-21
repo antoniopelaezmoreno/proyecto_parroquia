@@ -18,12 +18,26 @@
 }
 
 .estadistica {
-    background-color: #ffffff;
+    position: relative;
     padding: 20px;
     border-radius: 10px;
     display: flex;
     aspect-ratio: 2.5;
     box-shadow: 10px 10px 40px rgba(190, 192, 244, 0.34);
+    overflow: hidden;
+    z-index: -2;
+}
+
+.catecumenos {
+    background-color: #00acee;
+}
+
+.ausencias {
+    background-color: #ef5734;
+}
+
+.ausencias-ultimas {
+    background-color: #ffcc2f;
 }
 
 .info-estadisticas {
@@ -32,22 +46,20 @@
     justify-content: space-between;
     align-items: center;
     flex-grow: 1;
+    position: relative; /* Añadido para que el contenido esté sobre el ícono */
+    margin-left: 100px; /* Ajusta el margen izquierdo para mover el contenido hacia la derecha */
 }
 
 .icono {
-    border-radius: 10%;
-    display: flex; 
-    justify-content: center;
-    align-items: center;
-    float: left;
-    height: auto;
-    aspect-ratio: 1;
-    text-align: center;
-    font-size: 75px;
-    color: white;
+    position: absolute;
+    bottom: 0px;
+    left: 0;
+    margin: 0;
+    font-size: 130px;
+    z-index: -1;
 }
 
-.notificaciones {
+.calendario {
     background-color: #ffffff;
     padding: 20px;
     border-radius: 20px;
@@ -57,6 +69,20 @@
     align-items: left;
     aspect-ratio: 1;
     box-shadow: 10px 10px 40px rgba(190, 192, 244, 0.34);
+    
+}
+
+.notificaciones {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: left;
+    box-shadow: 10px 10px 40px rgba(190, 192, 244, 0.34);
+    max-height: 400px;
+    overflow-y: auto;
 }
 
 .sesion {
@@ -67,8 +93,8 @@
     flex-direction: column;
     justify-content: start;
     align-items: left;
-    aspect-ratio: 2.5;
     box-shadow: 10px 10px 40px rgba(190, 192, 244, 0.34);
+    height: auto;
 }
 
 .sesion-info {
@@ -114,30 +140,23 @@
 
 .leido-btn {
     text-align: center;
-    color: green; /* Color del icono */
-    font-size: 24px; /* Tamaño del icono */
-    margin-top: 5px; /* Espaciado superior */
-    display: inline-block; /* Asegura que el botón se ajuste al icono */
+    color: green;
+    /* Color del icono */
+    font-size: 24px;
+    /* Tamaño del icono */
+    margin-top: 5px;
+    /* Espaciado superior */
+    display: inline-block;
+    /* Asegura que el botón se ajuste al icono */
 }
 
-.catecumenos {
-    background: #31c024;    
-}
-
-.ausencias {
-    background: #c02424;
-}
-
-.ausencias-ultimas {
-    background: #2c36bd;
-}
 
 .flex-container {
     display: flex;
     flex-flow: row wrap;
     justify-content: center;
     margin-bottom: 20px;
-   
+
 }
 
 .caja {
@@ -145,7 +164,8 @@
     color: black;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.5s, box-shadow 0.5s; /* Agregado box-shadow a la transición */
+    transition: transform 0.5s, box-shadow 0.5s;
+    /* Agregado box-shadow a la transición */
 }
 
 .grupo {
@@ -157,22 +177,23 @@
 
 .caja:hover {
     transform: scale(1.05);
-    box-shadow: 0 0 10px rgba(160, 59, 59, 0.5); /* Cambiado el color de la sombra en :hover */
+    box-shadow: 0 0 10px rgba(160, 59, 59, 0.5);
+    /* Cambiado el color de la sombra en :hover */
 }
 
 .miembros {
     display: flex;
     flex-direction: column;
     align-items: center;
-    
+
 }
 
 .miembros p {
-    margin:0;
+    margin: 0;
     font-weight: normal;
 }
 
-a{
+a {
     text-decoration: none;
     color: black;
 }
