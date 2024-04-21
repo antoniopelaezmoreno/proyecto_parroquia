@@ -155,7 +155,9 @@ def obtener_eventos(request):
         'start': evento.fecha.strftime('%Y-%m-%dT'+evento.hora_inicio.strftime('%H:%M:%S')),  # Formatea la fecha y hora de inicio
         'end': evento.fecha.strftime('%Y-%m-%dT'+evento.hora_fin.strftime('%H:%M:%S')),    # Formatea la fecha y hora de fin
         'color': '#2c36bd' if evento.tipo == Evento.TIPO_CHOICES.REUNION else ('green' if evento.tipo ==  Evento.TIPO_CHOICES.CONVIVENCIA else '#c02424'),
-        'tipo': 'Evento'
+        'tipo': 'Evento',
+        'description': evento.descripcion,
+        'sala_reservada': evento.sala_reservada.nombre if evento.sala_reservada else None
     } for evento in eventos]
 
     sesiones = Sesion.objects.filter(ciclo=request.user.ciclo)
@@ -164,7 +166,8 @@ def obtener_eventos(request):
         'start': sesion.fecha.strftime('%Y-%m-%dT'+sesion.hora_inicio.strftime('%H:%M:%S')),
         'end': sesion.fecha.strftime('%Y-%m-%dT'+sesion.hora_fin.strftime('%H:%M:%S')),
         'color': '#e8ca13',
-        'tipo': 'Sesión'
+        'tipo': 'Sesión',
+        'description': sesion.descripcion
     } for sesion in sesiones]
 
     eventos_data.extend(sesiones_data)
