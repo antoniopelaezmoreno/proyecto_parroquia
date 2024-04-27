@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Inicio {% endblock %}
+
+{% block content %}
+
+
+{% if user.is_authenticated %}
+  {% if user.is_coord %}
+    <div class="flex">
+      {% for grupo in grupos %}
+        <div>
+          <p>Grupo de {{ grupo.catequista1.first_name }} y {{ grupo.catequista2.first_name }}</p>
+        </div>
+      {% endfor %}
+    </div>
+    <div>
+      <div class="widget">
+        <a href="{% url 'asociar_preferencias' user.ciclo %}">
+          <h2>Asignar preferencias</h2>
+        </a>
+        <p>This is the content of Widget 1.</p>
+      </div>
+      <div class="widget">
+        <a href="{% url 'crear_grupo' %}">
+          <h2>Crear Grupo</h2>
+        </a>
+        <p>This is the content of Widget 1.</p>
+      </div>
+      <div class="widget">
+        <a href="{% url 'asignar_catecumenos_a_grupo' %}">
+          <h2>Asignar a Grupo</h2>
+        </a>
+        <p>This is the content of Widget 1.</p>
+      </div>
+    </div>
+  {% endif %}
+
+  {% if user.is_superuser %}
+    <div>
+      <div class="widget">
+        <a href="{% url 'asignar_catequistas' %}">
+          <h2>Asignar Catequistas</h2>
+        </a>
+        <p>This is the content of Widget 1.</p>
+      </div>
+
+      <div class="widget">
+        <a href="{% url 'crear_grupo_admin' %}">
+          <h2>Crear Grupo</h2>
+        </a>
+        <p>Crea grupo de cualquier ciclo</p>
+      </div>
+    </div>
+  {% endif %}
+  <div>
+    <div class="widget">
+      <a href="{% url 'crear_sesion' %}">
+        <h2>Crear Sesión</h2>
+      </a>
+      <p>This is the content of Widget 1.</p>
+    </div>
+
+    <div class="widget">
+      <a href="{% url 'listar_sesiones' %}">
+        <h2>Listar Sesiones</h2>
+      </a>
+      <p>This is the content of Widget 1.</p>
+    </div>
+
+    <div class="widget">
+      <a href="{% url 'tabla_asistencias_grupo' %}">
+        <h2>Tabla asistencias</h2>
+      </a>
+      <p>This is the content of Widget 1.</p>
+    </div>
+    <div class="widget">
+      <a href="{% url 'listar_archivos' %}">
+        <h2>Drive</h2>
+      </a>
+      <p>This is the content of Widget 1.</p>
+    </div>
+  </div>
+{% else %}
+<div>
+  <div class="widget">
+    <a href="{% url 'crear_catecumeno' %}">
+      <h2>Registrate a catequesis</h2>
+    </a>
+    <p>This is the content of Widget 1.</p>
+  </div>
+  <div class="widget">
+    <a href="{% url 'crear_solicitud_catequista' %}">
+      <h2>Solicitud Catequista</h2>
+    </a>
+    <p>This is the content of Widget 1.</p>
+  </div>
+</div>
+{% endif %}
+
+<style>
+  .flex {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; /* Cambiado para garantizar que haya 4 elementos por fila */
+  }
+  
+  .flex > div {
+    width: calc(25% - 20px); /* Calculado para ajustar 4 elementos por fila */
+    margin: 10px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    background-color: #fff; /* Fondo blanco */
+    border-radius: 10px; /* Bordes redondeados */
+  }
+</style>
+
+{% endblock %}
