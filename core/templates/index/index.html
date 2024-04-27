@@ -1,120 +1,154 @@
-{% extends 'base.html' %}
-{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Catequesis</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'core/css/inicio_style.css' %}">
 
-{% block title %} Inicio {% endblock %}
-
-{% block content %}
-
-
-{% if user.is_authenticated %}
-  {% if user.is_coord %}
-    <div class="flex">
-      {% for grupo in grupos %}
-        <div>
-          <p>Grupo de {{ grupo.catequista1.first_name }} y {{ grupo.catequista2.first_name }}</p>
+</head>
+<body class="font-sans" data-font-pack="dynamic">
+  <div id="app" data-v-app="">
+     <div class="modals-container"></div>
+     <div class="bg-canvas dark:bg-slate-950 overflow-hidden" data-testid="site-content">
+        <div class="section-spacing">
+           <div class="border-b border-slate-100 dark:border-slate-800 overflow-hidden relative" sectionname="hero" id="hero" sectionlabel="Hero" sortorder="0">
+              <div class="absolute inset-x-0 top-0 z-10" text-color="auto" client:load="">
+                 <div class="px-6 py-6 md:px-8 relative z-10 preview-menu-wrapper">
+                    <nav class="flex items-center justify-between gap-x-4 md:gap-x-6" aria-label="Global">
+                       <a href="" class="flex items-center gap-x-2 shrink-0">
+                          <img class="w-auto h-8" src="https://storage.googleapis.com/mixo-files/logos/1714242146314-catequesis-31bm.svg" alt="Catequesis logo">
+                          <p class="font-sans font-bold !leading-none text-xl md:text-2xl text-type-900 dark:text-white">Catequesis</p>
+                       </a>
+                       <div class="shrink-0 gap-x-4 md:gap-x-8 flex mx-auto"><a href="/service" class="nav-item text-sm shrink-0 font-sans font-semibold leading-6 capitalize text-type-900 dark:text-white">Nuestros Recursos</a><a href="/about-us" class="nav-item text-sm shrink-0 font-sans font-semibold leading-6 capitalize text-type-900 dark:text-white">About Us</a></div>
+                       <div class="flex font-sans items-center space-x-2">
+                          <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 hidden text-type-900 dark:text-white">
+                             <span class="sr-only">Open main menu</span>
+                             <svg viewBox="0 0 20 20" width="1.2em" height="1.2em" class="h-6 w-6" aria-hidden="true">
+                                <path fill="currentColor" fill-rule="evenodd" d="M2 4.75A.75.75 0 0 1 2.75 4h14.5a.75.75 0 0 1 0 1.5H2.75A.75.75 0 0 1 2 4.75ZM2 10a.75.75 0 0 1 .75-.75h14.5a.75.75 0 0 1 0 1.5H2.75A.75.75 0 0 1 2 10Zm0 5.25a.75.75 0 0 1 .75-.75h14.5a.75.75 0 0 1 0 1.5H2.75a.75.75 0 0 1-.75-.75Z" clip-rule="evenodd"></path>
+                             </svg>
+                          </button>
+                       </div>
+                    </nav>
+                    <div style="position: fixed; height: 0px; padding: 0px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px; display: none;"></div>
+                 </div>
+              </div>
+              <div class="relative isolate px-6 pt-14 lg:px-8">
+                 <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">
+                    <div class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr to-primary from-secondary opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%);"></div>
+                 </div>
+                 <div class="py-32">
+                    <div class="mx-auto">
+                       <div class="text-center">
+                          <div class="mx-auto">
+                             <h1 class="text-4xl font-black font-sans text-balance tracking-tight sm:text-6xl xl:text-7xl text-type-950 dark:text-white preview-menu-wrapper relative">
+                                Fortalece tu fe con Catequesis
+                             </h1>
+                             <h2 class="prose prose-user mt-6 text-balance sm:text-xl font-serif mx-auto text-type-800 dark:text-slate-300 preview-menu-wrapper relative" style="">
+                                Descubre recursos para enriquecer tu conocimiento religioso y fortalecer tu fe en nuestro Portal Web de Catequesis.
+                             </h2>
+                          </div>
+                          <div class="mt-4 md:mt-10 space-y-4">
+                             <div class="preview-menu-wrapper relative">
+                                <a to="" class="ui-button ui-button-base ui-button-primary" href="#" disabled="false">Agendar Cita</a>
+                             </div>
+                          </div>
+                       </div>
+                    </div>
+                    <div class="flex mt-16 justify-center">
+                       <div class="w-full -m-2 rounded-xl sm:rounded-3xl bg-gray-900/5 p-2 ring-1 ring-inset ring-gray-900/10 lg:-m-4 lg:p-4 max-w-6xl preview-menu-wrapper relative">
+                          <img class="w-full rounded-xl sm:rounded-3xl shadow-2xl ring-1 ring-gray-900/10" src="https://images.unsplash.com/photo-1512319414435-3f03d562e631?crop=entropy&amp;cs=tinysrgb&amp;fit=max&amp;fm=jpg&amp;ixid=M3wzMzczODV8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTQyNDIxNDV8&amp;ixlib=rb-4.0.3&amp;q=80&amp;w=1080" alt="Catequesis">
+                       </div>
+                    </div>
+                 </div>
+                 <div class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]" aria-hidden="true">
+                    <div class="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr to-primary from-secondary opacity-30 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%);"></div>
+                 </div>
+              </div>
+           </div>
+           <section class="space-y-12 md:space-y-20 lg:space-y-10 2xl:space-y-32" sectionname="features" id="features" sectioncomponent="Features" sectionlabel="Features" sortorder="1" section-component="Features" site-name="Catequesis" site-id="MTFG4UK0kilyUHHcDBM0" site-logo-url="https://storage.googleapis.com/mixo-files/logos/1714242146314-catequesis-31bm.svg" site-config="[object Object]" header-visible="true" header="[object Object]">
+              <div class="max-w-3xl mx-auto lg:max-w-4xl text-center">
+                 <h2 class="text-4xl font-black font-sans text-center text-type-950 dark:text-white sm:text-4xl lg:text-5xl preview-menu-wrapper relative">
+                    Recursos para tu fe
+                 </h2>
+                 <div class="mt-4 sm:mt-6 text-lg sm:text-xl leading-8 font-serif text-type-800 dark:text-slate-300 text-balance px-4 lg:px-0 preview-menu-wrapper relative">
+                    Descubre materiales para enriquecer tu fe y conocimiento religioso.
+                 </div>
+              </div>
+              <div class="relative overflow-hidden space-y-24">
+                 <div class="lg:mx-auto lg:grid lg:grid-cols-2 lg:grid-flow-col-dense lg:gap-6 xl:gap-12 2xl:gap-24">
+                    <div class="max-w-xl px-4 mx-auto space-y-6 sm:px-6 lg:py-28 xl:py-32 2xl:mx-0 lg:col-start-2 lg:mx-0 lg:px-0 lg:pr-8">
+                       <div>
+                          <h2 class="text-3xl sm:text-4xl font-black font-sans tracking-tight text-type-900 dark:text-white preview-menu-wrapper relative">
+                             Encuentra guías de estudio
+                          </h2>
+                          <div class="mt-4 prose prose-user font-serif leading-relaxed text-type-700 dark:text-slate-200 text-base sm:text-lg preview-menu-wrapper relative">
+                             Accede a materiales de catequesis que te ayudarán a profundizar en tu fe y conocimiento religioso.
+                          </div>
+                       </div>
+                    </div>
+                    <div class="mt-12 sm:mt-16 lg:mt-0 lg:col-start-1 preview-menu-wrapper relative">
+                       <div class="lg:px-0 lg:m-0 lg:relative lg:h-full lg:flex lg:items-center pr-4 -sm:ml-48 sm:pr-6 md:-ml-16">
+                          <img src="https://images.unsplash.com/photo-1528437457702-ec66df48de3f?crop=entropy&amp;cs=tinysrgb&amp;fit=max&amp;fm=jpg&amp;ixid=M3wzMzczODV8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTQyNDIxNDV8&amp;ixlib=rb-4.0.3&amp;q=80&amp;w=1080" class="lg:right-0 rounded-r-2xl max-h-screen w-auto  2xl:max-w-2xl 3xl:max-w-3xl object-contain ml-auto 2xl:rounded-2xl w-full 2xl:max-h-[44rem]" alt="Encuentra guías de estudio"><!---->
+                       </div>
+                    </div>
+                 </div>
+              </div>
+              <div class="relative overflow-hidden space-y-24">
+                 <div class="lg:mx-auto lg:grid lg:grid-cols-2 lg:grid-flow-col-dense lg:gap-6 xl:gap-12 2xl:gap-24">
+                    <div class="max-w-xl px-4 mx-auto space-y-6 sm:px-6 lg:py-28 xl:py-32 2xl:mx-0 lg:mx-auto lg:max-w-3xl xl:pl-12 2xl:pl-20 2xl:justify-self-end">
+                       <div>
+                          <h2 class="text-3xl sm:text-4xl font-black font-sans tracking-tight text-type-900 dark:text-white preview-menu-wrapper relative">
+                             Participa en actividades religiosas
+                          </h2>
+                          <div class="mt-4 prose prose-user font-serif leading-relaxed text-type-700 dark:text-slate-200 text-base sm:text-lg preview-menu-wrapper relative">
+                             Únete a eventos y actividades que fortalecerán tu fe y te conectarán con la comunidad religiosa.
+                          </div>
+                       </div>
+                    </div>
+                    <div class="mt-12 sm:mt-16 lg:mt-0 preview-menu-wrapper relative">
+                       <div class="lg:px-0 lg:m-0 lg:relative lg:h-full lg:flex lg:items-center pl-4 sm:-mr-48 sm:-mr-6 sm:pl-6 md:-mr-16">
+                          <img src="https://images.unsplash.com/photo-1520342231070-dd98320f8cf3?crop=entropy&amp;cs=tinysrgb&amp;fit=max&amp;fm=jpg&amp;ixid=M3wzMzczODV8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTQyNDIxNDV8&amp;ixlib=rb-4.0.3&amp;q=80&amp;w=1080" class="rounded-l-2xl lg:left-0 max-h-screen w-auto  2xl:max-w-2xl 3xl:max-w-3xl object-contain mr-auto 2xl:rounded-2xl w-full 2xl:max-h-[44rem]" alt="Participa en actividades religiosas"><!---->
+                       </div>
+                    </div>
+                 </div>
+              </div>
+              <div class="relative overflow-hidden space-y-24">
+                 <div class="lg:mx-auto lg:grid lg:grid-cols-2 lg:grid-flow-col-dense lg:gap-6 xl:gap-12 2xl:gap-24">
+                    <div class="max-w-xl px-4 mx-auto space-y-6 sm:px-6 lg:py-28 xl:py-32 2xl:mx-0 lg:col-start-2 lg:mx-0 lg:px-0 lg:pr-8">
+                       <div>
+                          <h2 class="text-3xl sm:text-4xl font-black font-sans tracking-tight text-type-900 dark:text-white preview-menu-wrapper relative">
+                             Comparte reflexiones
+                          </h2>
+                          <div class="mt-4 prose prose-user font-serif leading-relaxed text-type-700 dark:text-slate-200 text-base sm:text-lg preview-menu-wrapper relative">
+                             Publica tus reflexiones y comparte tu experiencia de fe con otros usuarios en nuestra plataforma interactiva.
+                          </div>
+                       </div>
+                    </div>
+                    <div class="mt-12 sm:mt-16 lg:mt-0 lg:col-start-1 preview-menu-wrapper relative">
+                       <div class="lg:px-0 lg:m-0 lg:relative lg:h-full lg:flex lg:items-center pr-4 -sm:ml-48 sm:pr-6 md:-ml-16">
+                          <img src="https://images.unsplash.com/photo-1569143071832-67bd72a9b27f?crop=entropy&amp;cs=tinysrgb&amp;fit=max&amp;fm=jpg&amp;ixid=M3wzMzczODV8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTQyNDIxNDV8&amp;ixlib=rb-4.0.3&amp;q=80&amp;w=1080" class="lg:right-0 rounded-r-2xl max-h-screen w-auto  2xl:max-w-2xl 3xl:max-w-3xl object-contain ml-auto 2xl:rounded-2xl w-full 2xl:max-h-[44rem]" alt="Comparte reflexiones"><!---->
+                       </div>
+                    </div>
+                 </div>
+              </div>
+           </section>
+           <footer class="border-t dark:border-0 dark:bg-slate-900">
+              <div class="mx-auto max-w-7xl overflow-hidden py-16 px-6 sm:py-24 lg:px-8 space-y-8">
+                 <nav class="columns-2 sm:flex sm:justify-center sm:space-x-12" aria-label="Footer">
+                    <div class="pb-2"><a href="/index" class="text-sm leading-6 footer-link font-sans">Homepage</a></div>
+                    <div class="pb-2"><a href="/service" class="text-sm leading-6 footer-link font-sans">Nuestros Recursos</a></div>
+                    <div class="pb-2"><a href="/about-us" class="text-sm leading-6 footer-link font-sans">About Us</a></div>
+                 </nav>
+                 <p class="sm:text-center text-xs leading-5 text-type-500 font-serif">© All rights reserved.</p>
+              </div>
+           </footer>
         </div>
-      {% endfor %}
-    </div>
-    <div>
-      <div class="widget">
-        <a href="{% url 'asociar_preferencias' user.ciclo %}">
-          <h2>Asignar preferencias</h2>
-        </a>
-        <p>This is the content of Widget 1.</p>
-      </div>
-      <div class="widget">
-        <a href="{% url 'crear_grupo' %}">
-          <h2>Crear Grupo</h2>
-        </a>
-        <p>This is the content of Widget 1.</p>
-      </div>
-      <div class="widget">
-        <a href="{% url 'asignar_catecumenos_a_grupo' %}">
-          <h2>Asignar a Grupo</h2>
-        </a>
-        <p>This is the content of Widget 1.</p>
-      </div>
-    </div>
-  {% endif %}
-
-  {% if user.is_superuser %}
-    <div>
-      <div class="widget">
-        <a href="{% url 'asignar_catequistas' %}">
-          <h2>Asignar Catequistas</h2>
-        </a>
-        <p>This is the content of Widget 1.</p>
-      </div>
-
-      <div class="widget">
-        <a href="{% url 'crear_grupo_admin' %}">
-          <h2>Crear Grupo</h2>
-        </a>
-        <p>Crea grupo de cualquier ciclo</p>
-      </div>
-    </div>
-  {% endif %}
-  <div>
-    <div class="widget">
-      <a href="{% url 'crear_sesion' %}">
-        <h2>Crear Sesión</h2>
-      </a>
-      <p>This is the content of Widget 1.</p>
-    </div>
-
-    <div class="widget">
-      <a href="{% url 'listar_sesiones' %}">
-        <h2>Listar Sesiones</h2>
-      </a>
-      <p>This is the content of Widget 1.</p>
-    </div>
-
-    <div class="widget">
-      <a href="{% url 'tabla_asistencias_grupo' %}">
-        <h2>Tabla asistencias</h2>
-      </a>
-      <p>This is the content of Widget 1.</p>
-    </div>
-    <div class="widget">
-      <a href="{% url 'listar_archivos' %}">
-        <h2>Drive</h2>
-      </a>
-      <p>This is the content of Widget 1.</p>
-    </div>
+     </div>
+     <div class="p-3 text-right border-t">
+        <p class="text-sm text-gray-300"><a href="https://unsplash.com/" rel="nofollow">Photos by Unsplash</a></p>
+     </div>
   </div>
-{% else %}
-<div>
-  <div class="widget">
-    <a href="{% url 'crear_catecumeno' %}">
-      <h2>Registrate a catequesis</h2>
-    </a>
-    <p>This is the content of Widget 1.</p>
-  </div>
-  <div class="widget">
-    <a href="{% url 'crear_solicitud_catequista' %}">
-      <h2>Solicitud Catequista</h2>
-    </a>
-    <p>This is the content of Widget 1.</p>
-  </div>
-</div>
-{% endif %}
-
-<style>
-  .flex {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between; /* Cambiado para garantizar que haya 4 elementos por fila */
-  }
-  
-  .flex > div {
-    width: calc(25% - 20px); /* Calculado para ajustar 4 elementos por fila */
-    margin: 10px;
-    padding: 15px;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-    background-color: #fff; /* Fondo blanco */
-    border-radius: 10px; /* Bordes redondeados */
-  }
-</style>
-
-{% endblock %}
+</body>
+</html>
