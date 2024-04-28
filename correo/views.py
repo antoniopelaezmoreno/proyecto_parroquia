@@ -21,7 +21,7 @@ import re
 
 @login_required
 def bandeja_salida(request):
-    creds = conseguir_credenciales(request, request.user)
+    creds = conseguir_credenciales(request.user)
     try:
         service = build("gmail", "v1", credentials=creds)
         remitentes = obtener_remitentes_interesados(request)
@@ -120,7 +120,7 @@ def conseguir_credenciales(user):
     return creds
 '''
 
-def conseguir_credenciales(request,user):
+def conseguir_credenciales(user):
     SCOPES = ["https://www.googleapis.com/auth/gmail.readonly", 
               "https://www.googleapis.com/auth/gmail.send", 
               "https://www.googleapis.com/auth/gmail.modify", 
@@ -157,7 +157,7 @@ def conseguir_credenciales(request,user):
 @login_required
 def bandeja_de_entrada(request):
     
-    creds=conseguir_credenciales(request, request.user)
+    creds=conseguir_credenciales(request.user)
     try:
         service = build("gmail", "v1", credentials=creds)
         remitentes = obtener_remitentes_interesados(request)
@@ -211,7 +211,7 @@ def bandeja_de_entrada(request):
     
 @login_required
 def marcar_mensaje_visto(request, message_id):
-    creds = conseguir_credenciales(request, request.user)
+    creds = conseguir_credenciales(request.user)
 
     try:
         service = build("gmail", "v1", credentials=creds)
@@ -224,7 +224,7 @@ def marcar_mensaje_visto(request, message_id):
     
 @login_required
 def obtener_detalles_mensaje(request, mensaje_id):
-    creds = conseguir_credenciales(request, request.user)
+    creds = conseguir_credenciales(request.user)
 
     try:
         service = build("gmail", "v1", credentials=creds)
@@ -319,7 +319,7 @@ def obtener_detalles_mensaje(request, mensaje_id):
     
 @login_required
 def obtener_detalles_mensaje_enviado(request, mensaje_id):
-    creds = conseguir_credenciales(request, request.user)
+    creds = conseguir_credenciales(request.user)
 
     try:
         service = build("gmail", "v1", credentials=creds)
@@ -399,7 +399,7 @@ def formatear_fecha(headers):
 def enviar_correo(request):
     try:
         user=request.user
-        creds = conseguir_credenciales(request, user)
+        creds = conseguir_credenciales(user)
         service = build("gmail", "v1", credentials=creds)
 
         if request.method == 'POST':
