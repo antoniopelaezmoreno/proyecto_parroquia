@@ -136,9 +136,8 @@ def conseguir_credenciales(user):
             if creds and creds.expired and creds.refresh_token:
                 creds.refresh(Request())
             else:
-                flow = Flow.from_client_secrets_file(
-                    "credentials.json", 
-                    scopes=SCOPES,
+                flow = InstalledAppFlow.from_client_secrets_file(
+                    "credentials.json", SCOPES,
                     redirect_uri="https://proyecto-parroquia.onrender.com/auth/google/callback"
                 )
                 authorization_url, state = flow.authorization_url(
