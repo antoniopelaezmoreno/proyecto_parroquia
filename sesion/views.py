@@ -65,7 +65,7 @@ def crear_sesion(request):
 @login_required
 def crear_sesion_en_calendar(request,sesion, user):
 
-    creds = conseguir_credenciales(user)
+    creds = conseguir_credenciales(request, user)
     catequistas = CustomUser.objects.filter(ciclo = user.ciclo)
     
     event={
