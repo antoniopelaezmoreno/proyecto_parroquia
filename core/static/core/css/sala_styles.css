@@ -1,0 +1,94 @@
+.sala {
+    width: 100px;
+    height: 100px;
+    border: 1px solid #000;
+    text-align: center;
+    line-height: 100px;
+    margin: 10px;
+    float: left;
+    position: relative; /* Añadido para posición absoluta del título */
+}
+.aprobacion {
+    background-color: lightblue;
+}
+
+.ocupada {
+    background-color: lightcoral;
+    color: white;
+}
+
+.libre {
+    background-color: lightgreen;
+    cursor: pointer;
+}
+
+.sala button {
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.libre:hover,
+.aprobacion:hover{
+    background-color: rgb(137, 151, 156);
+}
+
+/* Estilo para el título emergente */
+.ocupada[data-reserva]:hover:after {
+    content: attr(data-reserva);
+    background-color: rgb(174, 162, 162);
+    color: white;
+    padding: 5px;
+    position: absolute;
+    left: 0;
+    bottom: -100%; /* muestra el cuadro encima de la sala */
+    white-space: nowrap; /* evitar que el texto se envuelva */
+    z-index: 1; /* asegura que esté por encima de otras capas */
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.error {
+    display: flex;
+    width: auto;
+    justify-content: center;
+    background-color: #d31d1d; 
+    color: white; 
+    border-radius: 5px; 
+    margin-bottom: 15px;
+}

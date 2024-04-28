@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Listar Catequistas {% endblock %}
+
+{% block content %}
+
+<div id="alumnos-container">
+    <table class="alumnos-table rounded-border">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Apellidos</th>
+                <th>Email</th>
+                <th>Teléfono</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for catequista in catequistas %}
+                <tr class="alumno">
+                    <td>{{ catequista.first_name }}</td>
+                    <td>{{ catequista.last_name }}</td>
+                    <td>{{ catequista.email }}</td>
+                    <td>{{ catequista.telefono }}</td>
+
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock %}

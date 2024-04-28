@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Pasar lista {% endblock %}
+
+{% block content %}
+<form method="POST">
+    {% csrf_token %}
+    <table>
+        <thead>
+            <tr>
+                <th>Catecumeno</th>
+                <th>Asistencia</th>
+                <th>Justificado</th>
+                <th>Ausente</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for catecumeno in catecumenos %}
+                <tr>
+                    <td>{{ catecumeno.nombre }}</td>
+                    <td><input type="radio" name="categoria_{{ catecumeno.id }}" value="asistente" {% if catecumeno in sesion.asistentes.all %}checked{% endif %}></td>
+                    <td><input type="radio" name="categoria_{{ catecumeno.id }}" value="justificado" {% if catecumeno in sesion.justificados.all %}checked{% endif %}></td>
+                    <td><input type="radio" name="categoria_{{ catecumeno.id }}" value="ausente" {% if catecumeno in sesion.ausentes.all %}checked{% endif %}></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <button type="submit">Guardar</button>
+</form>
+{% endblock %}

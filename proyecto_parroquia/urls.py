@@ -18,6 +18,9 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
+from django.conf.urls import handler500
+
+handler500 = 'core.views.c500'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,6 +32,11 @@ urlpatterns = [
     path('curso/', include('curso.urls')),
     path('grupo/', include('grupo.urls')),
     path('sesion/', include('sesion.urls')),
+    path('drive/', include('drive.urls')),
+    path('notificacion/', include('notificacion.urls')),
+    path('sala/', include('sala.urls')),
+    path('correo/', include('correo.urls')),
+    path('evento/', include('evento.urls')),
 ]
 
 if settings.DEBUG:

@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Reserva una sala {% endblock %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'core/css/sala_styles.css' %}">
+
+{% if error %}
+    <div class="error">
+        <p>{{ error }}</p>
+    </div>
+{% endif %}
+
+<form method="post" enctype="multipart/form-data" id="solicitudForm">
+    {% csrf_token %}
+    <input type="date" name="fecha" id="fecha" min="{{ fecha_hoy }}">
+
+    <select id="hora_inicio" name="hora_inicio"></select>
+    <select id="hora_fin" name="hora_fin"></select>
+
+    <button type="submit" id="guardarBtn">Buscar</button>
+</form>
+
+{% for sala in todas_salas %}
+    {% if sala in salas_ocupadas %}
+        {% for reserva in reservas_salas_ocupadas %}
+            {% if reserva.sala == sala %}
+                <div class="sala ocupada" data-reserva="{{ reserva }}">
+                    <p>{{ sala }}</p>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <div class="sala {% if sala.requiere_aprobacion %} aprobacion {% else %} libre {% endif %}">
+            <button class="openModalBtn" data-sala-id="{{ sala.id }}" data-sala-nombre="{{ sala.nombre }}" data-sala-aprobacion="{{ sala.requiere_aprobacion }}"><p>{{ sala }}</p></button>
+        </div>
+    {% endif %}
+{% endfor %}
+
+<div id="myModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Reservar la sala</h2>
+    <p id="avisoAprobacion"></p>
+    <p id="mensajeConfirmacion"></p>
+    <input type="text" id="motivo" name="motivo">
+    <div id="motivoError" style="color: red;"></div>
+    <button id="reservarBtn">Reservar</button>
+  </div>
+</div>
+
+<script src="{% static 'core/js/sala.js' %}"></script>
+{% endblock %}

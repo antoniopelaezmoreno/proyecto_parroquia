@@ -6,11 +6,13 @@ from catecumeno.models import Catecumeno
 from custom_user.models import CustomUser
 from grupo.models import Grupo
 from sesion.models import Sesion
+from solicitud_catequista.models import SolicitudCatequista
 
 @receiver(post_save, sender=Catecumeno)
 @receiver(post_save, sender=Grupo)
 @receiver(post_save, sender=CustomUser)
 @receiver(post_save, sender=Sesion)
+@receiver(post_save, sender=SolicitudCatequista)
 def asignar_curso(sender, instance, created, **kwargs):
     if created and hasattr(instance, 'curso'):
         curso_actual = Curso.objects.latest('id')

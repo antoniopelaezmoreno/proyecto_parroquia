@@ -10,6 +10,7 @@
 <div class="grid grid-cols-2 gap-4">
   <form method="post" action="{% url 'asociar_preferencias' curso %}">
     {% csrf_token %}
+    <button class="p-6 bg-white rounded-b-xl text-center text-xl" type="submit">Guardar Asociaciones</button>
     {% for alumno in alumnos_con_preferencias %}
       <div class="mb-3">
         <p><strong>{{ alumno.nombre }} {{ alumno.apellidos }}</strong>: {{ alumno.preferencias }}</p>
@@ -28,7 +29,7 @@
       </div>
       <hr>
     {% endfor %}
-    <button class="p-6 bg-white rounded-b-xl text-center text-xl" type="submit">Guardar Asociaciones</button>
+    
   </form>
 
 

@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Bandeja de Salida {% endblock %}
+
+{% block content %}
+    <link rel="stylesheet" type="text/css" href="{% static 'core/css/correo_style.css' %}">
+    <div class="container">
+        
+        <div class="cabecera">
+            <h1>Bandeja de Salida</h1>
+            <div class="botones-derecha">
+                <a href="{% url 'inbox' %}" class="boton">Bandeja de Entrada</a>
+            </div>
+        </div>
+        <table>
+            <tbody>
+                {% for mensaje in mensajes %}
+                    <tr class="mensaje {% if mensaje.seen %} leido {% else %} no_leido {% endif %}" data-id="{{ mensaje.id }}">
+                        <td><strong>Para: {{ mensaje.receiver }}</strong></td>
+                        <td><strong>{{ mensaje.subject }}</strong> | {{ mensaje.body }}</td>
+                        <td>{{ mensaje.date }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if mensajes_pagina.has_previous %}
+                <a href="?page=1">&laquo; Primera</a>
+                <a href="?page={{ mensajes_pagina.previous_page_number }}">Anterior</a>
+            {% endif %}
+
+            <span class="current">
+                Página {{ mensajes_pagina.number }} de {{ mensajes_pagina.paginator.num_pages }}.
+            </span>
+
+            {% if mensajes_pagina.has_next %}
+                <a href="?page={{ mensajes_pagina.next_page_number }}">Siguiente</a>
+                <a href="?page={{ mensajes_pagina.paginator.num_pages }}">Última &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+
+    <script>
+
+        const rows = document.querySelectorAll("table tbody tr");
+        rows.forEach(row => {
+            row.addEventListener("click", () => {
+                const id = row.getAttribute("data-id");
+                if (id) {
+                    var url = "{% url 'detalles_mensaje_enviado' 0 %}".replace("0", id);
+                    window.location.href = url;
+                }
+            });
+        });
+
+    </script>
+
+    <style>
+        tr {
+            cursor: pointer;
+        }
+    </style>
+{% endblock %}

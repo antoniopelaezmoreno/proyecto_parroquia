@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Bandeja de entrada {% endblock %}
+
+{% block content %}
+    <link rel="stylesheet" type="text/css" href="{% static 'core/css/correo_style.css' %}">
+    <div class="container">
+        
+        <div class="cabecera">
+            <h1>Bandeja de Entrada</h1>
+            <div class="botones-derecha">
+                <button id="mostrarFormulario" class="boton"><span class="material-icons">
+                    edit
+                    </span></button>
+                <a href="{% url 'outbox' %}" class="boton">Bandeja de Salida</a>
+            </div>
+        </div>
+        <table>
+            <tbody>
+                {% for mensaje in mensajes %}
+                    <tr class="mensaje {% if mensaje.seen %} leido {% else %} no_leido {% endif %}" data-id="{{ mensaje.id }}">
+                        <td><strong>{{ mensaje.sender }}</strong></td>
+                        <td><strong>{{ mensaje.subject }}</strong> | {{ mensaje.body }}</td>
+                        <td>{{ mensaje.date }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Contenedor del formulario para enviar mensaje -->
+    <div id="formularioEnviarMensaje" class="formulario-enviar-mensaje">
+        <button id="cerrarFormulario" class="cerrar-btn">x</button>
+        {% include 'enviar_correo.html' %}
+    </div>
+
+    <div id="mensajeExito" class="mensaje-exito">
+        El correo electrónico se ha enviado con éxito.
+    </div>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if mensajes_pagina.has_previous %}
+                <a href="?page=1">&laquo; Primera</a>
+                <a href="?page={{ mensajes_pagina.previous_page_number }}">Anterior</a>
+            {% endif %}
+
+            <span class="current">
+                Página {{ mensajes_pagina.number }} de {{ mensajes_pagina.paginator.num_pages }}.
+            </span>
+
+            {% if mensajes_pagina.has_next %}
+                <a href="?page={{ mensajes_pagina.next_page_number }}">Siguiente</a>
+                <a href="?page={{ mensajes_pagina.paginator.num_pages }}">Última &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+
+    <script>
+        
+        document.getElementById("mostrarFormulario").addEventListener("click", function() {
+            document.getElementById("correoForm").reset();
+            document.getElementById("formularioEnviarMensaje").style.display = "block";
+        });
+
+        document.getElementById("cerrarFormulario").addEventListener("click", function() {
+            document.getElementById("formularioEnviarMensaje").style.display = "none";
+        });
+
+        document.getElementById("correoForm").addEventListener("submit", function(event) {
+
+            event.preventDefault(); 
+            var form_data = new FormData(this);
+            console.log(form_data);
+            fetch("{% url 'enviar_correo' %}", {
+                method: "POST",
+                body: form_data,
+                headers: {
+                    "X-CSRFToken": getCookie("csrftoken")
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById("formularioEnviarMensaje").style.display = "none";
+                    document.getElementById("mensajeExito").style.display = "block";
+
+                    setTimeout(() => {
+                        document.getElementById("mensajeExito").style.display = "none";
+                    }, 5000); 
+                } else {
+                    if (data.error == 'No se ha especificado ningún destinatario'){
+                        alert("No se ha especificado ningún destinatario");
+                    }else if(data.error == 'Las direcciones de correo electrónico no son válidas'){
+                        alert("Las direcciones de correo electrónico no son válidas");
+                    }else{
+                        alert("Ha ocurrido un error al enviar el correo electrónico.");
+                    }
+                    
+                }
+            })
+            .catch(error => {
+                console.error("Ha ocurrido un error al enviar el correo electrónico.");
+            });
+
+            function getCookie(name) {
+                const value = `; ${document.cookie}`;
+                const parts = value.split(`; ${name}=`);
+                if (parts.length === 2) return parts.pop().split(';').shift();
+            }
+        });
+
+        const rows = document.querySelectorAll("table tbody tr");
+        rows.forEach(row => {
+            row.addEventListener("click", () => {
+                const id = row.getAttribute("data-id");
+                if (id) {
+                    var url = "{% url 'detalles_mensaje' 0 %}".replace("0", id);
+                    window.location.href = url;
+                }
+            });
+        });
+    </script>
+
+    <style>
+        tr {
+            cursor: pointer;
+        }
+    </style>
+{% endblock %}

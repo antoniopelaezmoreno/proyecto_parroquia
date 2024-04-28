@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Perfil {% endblock %}
+
+{% block content %}
+
+<h1>Perfil del Catecumeno</h1>
+<p>Nombre: {{ catecumeno.nombre }} {{ catecumeno.apellidos }}</p>
+<p>Email: {{ catecumeno.email }}</p>
+<p>DNI: {{ catecumeno.dni }}</p>
+<p>Ciclo: {{ catecumeno.get_ciclo_display }}</p>
+<p>Nombre de la madre: {{ catecumeno.nombre_madre }} {{ catecumeno.apellidos_madre }}</p>
+<p>Email de la madre: {{ catecumeno.email_madre }}</p>
+<p>DNI de la madre: {{ catecumeno.dni_madre }}</p>
+<p>Nombre del padre: {{ catecumeno.nombre_padre }} {{ catecumeno.apellidos_padre }}</p>
+<p>Email del padre: {{ catecumeno.email_padre }}</p>
+<p>DNI del padre: {{ catecumeno.dni_padre }}</p>
+<p> Catequistas:
+    {% if catequistas %}
+        {{ catequistas.0 }} y 
+        {{ catequistas.1 }}
+    {% else %}
+        No hay catequistas asignados
+    {% endif %}
+</p>
+
+<a href="{% url 'editar_catecumeno' catecumeno.id %}">Editar</a>
+
+{% endblock %}

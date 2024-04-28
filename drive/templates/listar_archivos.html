@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block title %} Subir archivo {% endblock %}
+
+{% block content %}
+
+<div>
+    <a href="{% url 'listar_archivos' %}">Principal</a>
+    {% for carpeta in ruta %}
+        &gt; <a href="{% url 'listar_archivos_en_carpeta' carpeta.id %}">{{ carpeta.name }}</a>
+    {% endfor %}
+</div>
+
+{% if not actual_folder is None %}
+    <a href="{% url 'subir_archivo_en_carpeta' actual_folder %}">Subir archivo</a>
+    <a href="{% url 'crear_carpeta_en_carpeta' actual_folder %}">Nueva carpeta</a>
+{% else %}
+    <a href="{% url 'subir_archivo' %}">Subir archivo</a>
+    <a href="{% url 'crear_carpeta' %}">Nueva carpeta</a>
+{% endif %}
+
+<div class="grid-container">
+    {% for folder in folders %}
+        <div class="grid-item">
+            <p> {{ folder.name }} </p>
+            <a href="{% url 'eliminar_carpeta' folder.id %}">Eliminar</a>
+            <a href="{% url 'mover_carpeta' folder.id %}">Mover</a>
+            <a href="{% url 'listar_archivos_en_carpeta' folder.id %}" alt="{{ folder.name }}">
+                <img src="/static/icons/folder_icon3.png" alt="{{ folder.name }}" class="thumbnail">
+            </a>
+        </div>
+    {% endfor %}
+    {% for file in files %}
+        <div class="grid-item">
+            <div>
+                <p> {{ file.name }} </p>
+                <a href="/media/{{ file.file }}" download="{{file.name}}">Descargar</a>
+                <a href="{% url 'eliminar_archivo' file.id %}">Eliminar</a>
+                <a href="{% url 'mover_archivo' file.id %}">Mover</a>
+            </div>
+            
+            {% if file.is_image %}
+                <a href="/media/{{ file.file }}" alt="{{ file.name }}" target="_blank">
+                    <img src="/media/{{ file.file }}" alt="{{ file.name }}" class="thumbnail">
+                </a>
+            {% elif file.is_video %}
+                <a href="/media/{{ file.file }}" alt="{{ file.name }}" target="_blank">
+                    <img src="/static/icons/video_icon3.png" alt="{{ file.name }}" class="thumbnail">
+                </a>
+            
+            {% elif file.is_pdf %}
+                <a href="/media/{{ file.file }}" alt="{{ file.name }}" target="_blank">
+                    <img src="/static/icons/pdf_icon3.png" alt="{{ file.name }}" class="thumbnail">
+                </a>
+            {% elif file.is_doc %}
+                <a href="/media/{{ file.file }}" alt="{{ file.name }}" target="_blank">
+                    <img src="/static/icons/doc_icon3.png" alt="{{ file.name }}" class="thumbnail">
+                </a>
+            {% elif file.is_excel %}
+                <a href="/media/{{ file.file }}" alt="{{ file.name }}" target="_blank">
+                    <img src="/static/icons/xls_icon3.png" alt="{{ file.name }}" class="thumbnail">
+                </a>
+            {% elif file.is_ppt %}
+                <a href="/media/{{ file.file }}" alt="{{ file.name }}" target="_blank">
+                    <img src="/static/icons/ppt_icon3.png" alt="{{ file.name }}" class="thumbnail">
+                </a>
+            {% else %}
+                <a href="/media/{{ file.file }}" alt="{{ file.name }}" target="_blank">
+                    <img src="/static/icons/file_icon3.png" alt="{{ file.name }}" class="thumbnail">
+                </a>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
+
+<style>
+    .grid-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+
+    .grid-item {
+        flex: 0 1 200px;
+        margin: 10px;
+    }
+
+    .thumbnail {
+        max-width: 250px; 
+        max-height: 250px; 
+    }
+
+</style>
+{% endblock %}

@@ -13,9 +13,9 @@
     <button class="filter-btn" onclick="filterByCiclo('posco_4')">Poscomunión 4</button>
     <button class="filter-btn" onclick="filterByCiclo('gr_juv_1')">Grupos Juveniles 1</button>
     <button class="filter-btn" onclick="filterByCiclo('gr_juv_2')">Grupos Juveniles 2</button>
-    <button class="filter-btn" onclick="filterByCiclo('catequmenados_1')">Catecumenados 1</button>
-    <button class="filter-btn" onclick="filterByCiclo('catequmenados_2')">Catecumenados 2</button>
-    <button class="filter-btn" onclick="filterByCiclo('catequmenados_3')">Catecumenados 3</button>
+    <button class="filter-btn" onclick="filterByCiclo('catecumenados_1')">Catecumenados 1</button>
+    <button class="filter-btn" onclick="filterByCiclo('catecumenados_2')">Catecumenados 2</button>
+    <button class="filter-btn" onclick="filterByCiclo('catecumenados_3')">Catecumenados 3</button>
 </div>
 <div id="alumnos-container">
     <table class="alumnos-table rounded-border">
@@ -31,6 +31,7 @@
                 <th>Nombre Padre</th>
                 <th>Apellidos Padre</th>
                 <th>Email Padre</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -46,6 +47,7 @@
                     <td>{{ catecumeno.nombre_padre }}</td>
                     <td>{{ catecumeno.apellidos_padre }}</td>
                     <td>{{ catecumeno.email_padre }}</td>
+                    <td><a href="{% url 'eliminar_catecumeno' catecumeno.id %}">Eliminar</a></td>
                 </tr>
             {% endfor %}
         </tbody>

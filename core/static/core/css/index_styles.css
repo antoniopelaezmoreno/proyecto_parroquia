@@ -1,0 +1,201 @@
+.container {
+    display: grid;
+    grid-template-columns: 0.7fr 0.3fr;
+    margin-top: -40px;
+}
+
+.columna {
+    flex: 0 1 calc(50% - 20px);
+    margin-bottom: 20px;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.estaditicas {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 20px;
+}
+
+.estadistica {
+    color: #322d28;
+    position: relative;
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    aspect-ratio: 2.5;
+    box-shadow: 10px 10px 40px rgba(190, 192, 244, 0.34);
+    overflow: hidden;
+    z-index: -2;
+}
+
+.catecumenos {
+    background-color: #00acee;
+}
+
+.ausencias {
+    background-color: #ef5734;
+}
+
+.ausencias-ultimas {
+    background-color: #ffcc2f;
+}
+
+.info-estadisticas {
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+    align-items: center;
+    flex-grow: 1;
+    position: relative; /* Añadido para que el contenido esté sobre el ícono */
+    margin-left: 100px; /* Ajusta el margen izquierdo para mover el contenido hacia la derecha */
+}
+
+.icono {
+    position: absolute;
+    bottom: 0px;
+    left: 0;
+    margin: 0;
+    font-size: 130px;
+    z-index: -1;
+}
+
+.calendario {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: left;
+    aspect-ratio: 1;
+    box-shadow: 10px 10px 40px rgba(190, 192, 244, 0.34);
+    
+}
+
+.notificaciones {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: left;
+    box-shadow: 10px 10px 40px rgba(190, 192, 244, 0.34);
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.sesion {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: left;
+    box-shadow: 10px 10px 40px rgba(190, 192, 244, 0.34);
+    height: auto;
+}
+
+.sesion-info {
+    display: grid;
+    grid-template-columns: 0.6fr 0.4fr;
+}
+
+.notificacion {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid black;
+    width: stretch;
+    margin-bottom: 5px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 20px;
+}
+
+.grid-item {
+    text-align: center;
+}
+
+.thumbnail {
+    max-width: 100px;
+}
+
+.boton {
+    display: inline-block;
+    background-color: #F7A24F;
+    color: #322d28;
+    font-weight: bold;
+    padding: 0 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.boton:hover {
+    background-color: #ebb37a;
+}
+
+.leido-btn {
+    text-align: center;
+    color: green;
+    /* Color del icono */
+    font-size: 24px;
+    /* Tamaño del icono */
+    margin-top: 5px;
+    /* Espaciado superior */
+    display: inline-block;
+    /* Asegura que el botón se ajuste al icono */
+}
+
+
+.flex-container {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    margin-bottom: 20px;
+
+}
+
+.caja {
+    background-color: white;
+    color: black;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.5s, box-shadow 0.5s;
+    /* Agregado box-shadow a la transición */
+}
+
+.grupo {
+    flex-basis: 20%;
+    margin: 10px;
+    padding: 20px;
+    text-align: center;
+}
+
+.caja:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(160, 59, 59, 0.5);
+    /* Cambiado el color de la sombra en :hover */
+}
+
+.miembros {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.miembros p {
+    margin: 0;
+    font-weight: normal;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}

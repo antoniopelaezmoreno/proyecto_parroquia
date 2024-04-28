@@ -1,6 +1,7 @@
 from django import forms
 from custom_user.models import CustomUser
 from .models import Grupo
+from catecumeno.models import Catecumeno
 
 class GrupoForm(forms.ModelForm):
     def __init__(self, *args, catequistas=None, **kwargs):
@@ -19,6 +20,13 @@ class GrupoForm(forms.ModelForm):
 
         if catequista1 == catequista2:
             raise forms.ValidationError("Los catequistas deben ser diferentes.")
+        
+        # Check if catequista1 and catequista2 are in another group of the same ciclo
+        if catequista1 and catequista2:
+            if Grupo.objects.filter(ciclo=catequista1.ciclo, catequista1=catequista1).exclude(pk=self.instance.pk).exists() or Grupo.objects.filter(ciclo=catequista1.ciclo, catequista2=catequista1).exclude(pk=self.instance.pk).exists():
+                raise forms.ValidationError("El catequista 1 ya está en otro grupo del mismo ciclo.")
+            if Grupo.objects.filter(ciclo=catequista2.ciclo, catequista2=catequista2).exclude(pk=self.instance.pk).exists() or Grupo.objects.filter(ciclo=catequista2.ciclo, catequista1=catequista2).exclude(pk=self.instance.pk).exists():
+                raise forms.ValidationError("El catequista 2 ya está en otro grupo del mismo ciclo.")
         
         return cleaned_data
 
