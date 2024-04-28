@@ -1,0 +1,12 @@
+services:
+  - name: web
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn proyecto_parroquia.wsgi --bind 0.0.0.0:$PORT
+
+staticFiles:
+  - urlPrefix: /static/
+    directory: static
+
+  - urlPrefix: /media/
+    directory: media
