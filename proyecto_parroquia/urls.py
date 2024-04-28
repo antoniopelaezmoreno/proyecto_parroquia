@@ -19,7 +19,7 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 from django.conf.urls import handler500
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.views.static import serve
 
 handler500 = 'core.views.c500'
 
@@ -40,4 +40,14 @@ urlpatterns = [
     path('evento/', include('evento.urls')),
 ]
 
-urlpatterns += staticfiles_urlpatterns()
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+else:
+    # Configuración para servir archivos estáticos y de medios en modo de producción (DEBUG=False)
+    urlpatterns += [
+        # URL para servir archivos estáticos
+        path('static/<path:path>', serve, {'document_root': settings.STATIC_ROOT}),
+        # URL para servir archivos de medios
+        path('media/<path:path>', serve, {'document_root': settings.MEDIA_ROOT}),
+    ]
