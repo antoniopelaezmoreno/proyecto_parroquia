@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 from django.utils.translation import gettext_lazy as _
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -99,6 +100,8 @@ WSGI_APPLICATION = 'proyecto_parroquia.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -110,7 +113,7 @@ DATABASES = {
     }
 }
 
-
+DATABASES['default'] = dj_database_url.parse("postgres://proyecto_parroquia_db_user:znwYAI3BSH0KnPMb0mz8ggBKICRbx9fE@dpg-con28a4f7o1s73fc8g50-a.frankfurt-postgres.render.com/proyecto_parroquia_db")
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
