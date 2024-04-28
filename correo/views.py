@@ -21,7 +21,7 @@ import re
 
 @login_required
 def bandeja_salida(request):
-    creds = conseguir_credenciales(request.user)
+    creds = conseguir_credenciales(request, request.user)
     try:
         service = build("gmail", "v1", credentials=creds)
         remitentes = obtener_remitentes_interesados(request)
@@ -120,7 +120,7 @@ def conseguir_credenciales(user):
     return creds
 '''
 
-def conseguir_credenciales(user):
+def conseguir_credenciales(request, user):
     SCOPES = ["https://www.googleapis.com/auth/gmail.readonly", 
               "https://www.googleapis.com/auth/gmail.send", 
               "https://www.googleapis.com/auth/gmail.modify", 
@@ -136,15 +136,19 @@ def conseguir_credenciales(user):
             if creds and creds.expired and creds.refresh_token:
                 creds.refresh(Request())
             else:
-                flow = InstalledAppFlow.from_client_secrets_file(
-                    "credentials.json", SCOPES,
-                    redirect_uri="https://proyecto-parroquia.onrender.com/auth/google/callback"
+                flow = Flow.from_client_secrets_file(
+                    "credentials.json",
+                    scopes= SCOPES
                 )
+                flow.redirect_uri="https://proyecto-parroquia.onrender.com/auth/google/callback"
+                print("Flow: ", flow)
                 authorization_url, state = flow.authorization_url(
                     access_type='offline',
                     prompt='consent',
                     login_hint=user.email
                 )
+                print("Authorization URL: ", authorization_url)
+                request.session['state'] = state
                 return redirect(authorization_url)
                 # Aquí debes redirigir al usuario a `authorization_url` para que pueda autorizar la aplicación.
                 # Después de autorizar, Google redirigirá al usuario de vuelta a la URL especificada en `redirect_uri`.
@@ -153,10 +157,37 @@ def conseguir_credenciales(user):
         return HttpResponseServerError("Error: Ha habido un error. Por favor, inténtalo de nuevo más tarde.")
     return creds
 
+def oauth2callback(request):
+    # Especificar el estado al crear el flujo en la devolución de llamada para que pueda
+    # ser verificado en la respuesta del servidor de autorización.
+    print("En oauth2callback")
+    SCOPES = ["https://www.googleapis.com/auth/gmail.readonly", 
+              "https://www.googleapis.com/auth/gmail.send", 
+              "https://www.googleapis.com/auth/gmail.modify", 
+              "https://www.googleapis.com/auth/calendar"]
+    state = request.session['state']
+
+    flow = Flow.from_client_secrets_file(
+        "credentials.json", scopes=SCOPES, state=state)
+    flow.redirect_uri = "https://proyecto-parroquia.onrender.com/auth/google/callback"
+
+    # Utilizar la respuesta del servidor de autorización para obtener los tokens OAuth 2.0.
+    authorization_response = request.build_absolute_uri()
+    flow.fetch_token(authorization_response=authorization_response)
+
+    # Almacenar las credenciales en la sesión del usuario
+    credentials = flow.credentials
+    print("Credenciales: ", credentials)
+    creds = credentials.to_json()
+    request.user.token_json = creds
+    request.user.save()
+
+    return creds
+
 @login_required
 def bandeja_de_entrada(request):
     
-    creds=conseguir_credenciales(request.user)
+    creds=conseguir_credenciales(request, request.user)
     try:
         service = build("gmail", "v1", credentials=creds)
         remitentes = obtener_remitentes_interesados(request)
@@ -210,7 +241,7 @@ def bandeja_de_entrada(request):
     
 @login_required
 def marcar_mensaje_visto(request, message_id):
-    creds = conseguir_credenciales(request.user)
+    creds = conseguir_credenciales(request, request.user)
 
     try:
         service = build("gmail", "v1", credentials=creds)
@@ -223,7 +254,7 @@ def marcar_mensaje_visto(request, message_id):
     
 @login_required
 def obtener_detalles_mensaje(request, mensaje_id):
-    creds = conseguir_credenciales(request.user)
+    creds = conseguir_credenciales(request, request.user)
 
     try:
         service = build("gmail", "v1", credentials=creds)
@@ -318,7 +349,7 @@ def obtener_detalles_mensaje(request, mensaje_id):
     
 @login_required
 def obtener_detalles_mensaje_enviado(request, mensaje_id):
-    creds = conseguir_credenciales(request.user)
+    creds = conseguir_credenciales(request, request.user)
 
     try:
         service = build("gmail", "v1", credentials=creds)
@@ -398,7 +429,7 @@ def formatear_fecha(headers):
 def enviar_correo(request):
     try:
         user=request.user
-        creds = conseguir_credenciales(user)
+        creds = conseguir_credenciales(request, user)
         service = build("gmail", "v1", credentials=creds)
 
         if request.method == 'POST':

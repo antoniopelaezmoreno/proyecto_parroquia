@@ -20,6 +20,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.conf.urls import handler500
 from django.views.static import serve
+from correo.views import oauth2callback
 
 handler500 = 'core.views.c500'
 
@@ -38,6 +39,7 @@ urlpatterns = [
     path('sala/', include('sala.urls')),
     path('correo/', include('correo.urls')),
     path('evento/', include('evento.urls')),
+    path('auth/google/callback', oauth2callback, name='oauth2callback'),
 ]
 
 if settings.DEBUG:
