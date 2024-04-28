@@ -23,12 +23,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-hjlf5=8-j_vm6%l=@=l0*8rn9+%5=d6w5sz%wg@^&p^!30@kr='
 
+SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
+
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(' ')
 
 
 # Application definition
@@ -112,8 +113,8 @@ DATABASES = {
         'PORT': '', # Puerto por defecto (5432)
     }
 }
-
-DATABASES['default'] = dj_database_url.parse("postgres://proyecto_parroquia_db_user:znwYAI3BSH0KnPMb0mz8ggBKICRbx9fE@dpg-con28a4f7o1s73fc8g50-a.frankfurt-postgres.render.com/proyecto_parroquia_db")
+database_url=os.environ.get('DATABASE_URL')
+DATABASES['default'] = dj_database_url.parse(database_url)
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
