@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.db.models import Q
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
-from google_auth_oauthlib.flow import InstalledAppFlow
+from google_auth_oauthlib.flow import InstalledAppFlow, Flow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 import json
@@ -92,6 +92,7 @@ def obtener_remitentes_interesados(request):
 
     return remitentes
 
+'''
 def conseguir_credenciales(user):
     SCOPES = ["https://www.googleapis.com/auth/gmail.readonly", "https://www.googleapis.com/auth/gmail.send", "https://www.googleapis.com/auth/gmail.modify", "https://www.googleapis.com/auth/calendar" ]
 
@@ -113,6 +114,41 @@ def conseguir_credenciales(user):
                 creds = flow.run_local_server(port=8081, login_hint=user.email, prompt='consent', access_type='offline')
                 user.token_json = creds.to_json()
                 user.save()
+
+    except OSError as e:
+        return HttpResponseServerError("Error: Ha habido un error. Por favor, inténtalo de nuevo más tarde.")
+    return creds
+'''
+
+def conseguir_credenciales(user):
+    SCOPES = ["https://www.googleapis.com/auth/gmail.readonly", 
+              "https://www.googleapis.com/auth/gmail.send", 
+              "https://www.googleapis.com/auth/gmail.modify", 
+              "https://www.googleapis.com/auth/calendar"]
+
+    creds = None
+
+    try:
+        if user.token_json:
+            creds = Credentials.from_authorized_user_info(json.loads(user.token_json), SCOPES)
+
+        if not creds or not creds.valid:
+            if creds and creds.expired and creds.refresh_token:
+                creds.refresh(Request())
+            else:
+                flow = Flow.from_client_secrets_file(
+                    "credentials.json", 
+                    scopes=SCOPES,
+                    redirect_uri="http://localhost:8080/auth/google/callback"
+                )
+                authorization_url, state = flow.authorization_url(
+                    access_type='offline',
+                    prompt='consent',
+                    login_hint=user.email
+                )
+                return redirect(authorization_url)
+                # Aquí debes redirigir al usuario a `authorization_url` para que pueda autorizar la aplicación.
+                # Después de autorizar, Google redirigirá al usuario de vuelta a la URL especificada en `redirect_uri`.
 
     except OSError as e:
         return HttpResponseServerError("Error: Ha habido un error. Por favor, inténtalo de nuevo más tarde.")
