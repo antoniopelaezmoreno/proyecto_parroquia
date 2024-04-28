@@ -19,6 +19,7 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 from django.conf.urls import handler500
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 handler500 = 'core.views.c500'
 
@@ -39,5 +40,4 @@ urlpatterns = [
     path('evento/', include('evento.urls')),
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += staticfiles_urlpatterns()
