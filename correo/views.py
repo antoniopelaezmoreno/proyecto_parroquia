@@ -149,7 +149,7 @@ def conseguir_credenciales(request, user):
                 )
                 print("Authorization URL: ", authorization_url)
                 request.session['state'] = state
-                return redirect(authorization_url)
+                redirect(authorization_url)
                 # Aquí debes redirigir al usuario a `authorization_url` para que pueda autorizar la aplicación.
                 # Después de autorizar, Google redirigirá al usuario de vuelta a la URL especificada en `redirect_uri`.
 
