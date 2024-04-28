@@ -139,7 +139,7 @@ def conseguir_credenciales(user):
                 flow = Flow.from_client_secrets_file(
                     "credentials.json", 
                     scopes=SCOPES,
-                    redirect_uri="http://localhost:8080/auth/google/callback"
+                    redirect_uri="https://proyecto-parroquia.onrender.com/auth/google/callback"
                 )
                 authorization_url, state = flow.authorization_url(
                     access_type='offline',
