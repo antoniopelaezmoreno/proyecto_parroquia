@@ -14,8 +14,9 @@ from datetime import datetime
 from custom_user.models import CustomUser
 from solicitud_catequista.models import SolicitudCatequista
 from email.mime.text import MIMEText
-from django.http import JsonResponse, HttpResponseServerError
+from django.http import JsonResponse, HttpResponseServerError, HttpResponseRedirect
 import re
+from django.urls import reverse
 
 # Create your views here.
 
@@ -118,6 +119,47 @@ def conseguir_credenciales(user):
     except OSError as e:
         return HttpResponseServerError("Error: Ha habido un error. Por favor, inténtalo de nuevo más tarde.")
     return creds
+
+
+def conseguir_credenciales(request, user):
+    SCOPES = ["https://www.googleapis.com/auth/gmail.readonly", 
+              "https://www.googleapis.com/auth/gmail.send", 
+              "https://www.googleapis.com/auth/gmail.modify", 
+              "https://www.googleapis.com/auth/calendar"]
+
+    creds = None
+
+    try:
+        if user.token_json:
+            creds = Credentials.from_authorized_user_info(json.loads(user.token_json), SCOPES)
+
+        if not creds or not creds.valid:
+            if creds and creds.expired and creds.refresh_token:
+                creds.refresh(Request())
+            else:
+                
+
+                flow = Flow.from_client_secrets_file(
+                    "credentials.json",
+                    scopes= SCOPES
+                )
+                flow.redirect_uri="http://localhost:8000/auth/google/callback"
+                print("Flow: ", flow)
+                authorization_url, state = flow.authorization_url(
+                    access_type='offline',
+                    prompt='consent',
+                    login_hint=user.email
+                )
+                print("Authorization URL: ", authorization_url)
+                print("State: ", state)
+                request.session['state'] = state
+                return redirect(authorization_url)
+                # Aquí debes redirigir al usuario a `authorization_url` para que pueda autorizar la aplicación.
+                # Después de autorizar, Google redirigirá al usuario de vuelta a la URL especificada en `redirect_uri`.
+
+    except OSError as e:
+        return HttpResponseServerError("Error: Ha habido un error. Por favor, inténtalo de nuevo más tarde.")
+    return creds
 '''
 
 def conseguir_credenciales(request, user):
@@ -136,27 +178,20 @@ def conseguir_credenciales(request, user):
             if creds and creds.expired and creds.refresh_token:
                 creds.refresh(Request())
             else:
-                flow = Flow.from_client_secrets_file(
-                    "credentials.json",
-                    scopes= SCOPES
+                flow = InstalledAppFlow.from_client_secrets_file(
+                    "credentials.json", SCOPES
                 )
-                flow.redirect_uri="https://proyecto-parroquia.onrender.com/auth/google/callback"
-                print("Flow: ", flow)
+                flow.redirect_uri = request.build_absolute_uri(reverse('oauth2callback'))
                 authorization_url, state = flow.authorization_url(
-                    access_type='offline',
-                    prompt='consent',
-                    login_hint=user.email
+                    access_type='offline', 
+                    login_hint=user.email, 
+                    prompt='consent'
                 )
-                print("Authorization URL: ", authorization_url)
-                request.session['state'] = state
-                redirect(authorization_url)
-                # Aquí debes redirigir al usuario a `authorization_url` para que pueda autorizar la aplicación.
-                # Después de autorizar, Google redirigirá al usuario de vuelta a la URL especificada en `redirect_uri`.
+                return HttpResponseRedirect(authorization_url)
 
     except OSError as e:
         return HttpResponseServerError("Error: Ha habido un error. Por favor, inténtalo de nuevo más tarde.")
     return creds
-
 def oauth2callback(request):
     # Especificar el estado al crear el flujo en la devolución de llamada para que pueda
     # ser verificado en la respuesta del servidor de autorización.
@@ -165,11 +200,10 @@ def oauth2callback(request):
               "https://www.googleapis.com/auth/gmail.send", 
               "https://www.googleapis.com/auth/gmail.modify", 
               "https://www.googleapis.com/auth/calendar"]
-    state = request.session['state']
-
+    state = request.session.pop('state', "")
     flow = Flow.from_client_secrets_file(
         "credentials.json", scopes=SCOPES, state=state)
-    flow.redirect_uri = "https://proyecto-parroquia.onrender.com/auth/google/callback"
+    flow.redirect_uri = request.build_absolute_uri(reverse('inbox'))
 
     # Utilizar la respuesta del servidor de autorización para obtener los tokens OAuth 2.0.
     authorization_response = request.build_absolute_uri()
@@ -186,8 +220,15 @@ def oauth2callback(request):
 
 @login_required
 def bandeja_de_entrada(request):
+    SCOPES = ["https://www.googleapis.com/auth/gmail.readonly", 
+              "https://www.googleapis.com/auth/gmail.send", 
+              "https://www.googleapis.com/auth/gmail.modify", 
+              "https://www.googleapis.com/auth/calendar"]
     
     creds=conseguir_credenciales(request, request.user)
+    if isinstance(creds, HttpResponseRedirect):
+        return creds  # Redirigir al usuario a la página de autorización
+    print("Ya he salido")
     try:
         service = build("gmail", "v1", credentials=creds)
         remitentes = obtener_remitentes_interesados(request)
