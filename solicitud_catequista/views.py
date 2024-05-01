@@ -39,13 +39,6 @@ def asignar_catequistas(request):
     return render(request, 'asignar_catequistas.html', {'solicitudes': solicitudes})
 
 
-def enviar_correo(to, ciclo_asignado, user):
-    sender="antoniopelaez2002@gmail.com"
-    subject="Asignación de ciclo"
-    message_text=f"Se te ha asignado el ciclo {ciclo_asignado}"
-    enviar_email(sender, to, subject, message_text, user)
-
-
 def enviar_correo_solicitud(request, to, solicitud_id, ciclo, user):
     sender = "antoniopelaez2002@gmail.com"
     subject="Asignación de ciclo"
@@ -53,4 +46,4 @@ def enviar_correo_solicitud(request, to, solicitud_id, ciclo, user):
     enlace = request.build_absolute_uri(url)
     print(enlace)
     message_text = f'Haga clic en el siguiente enlace para completar su registro: {enlace}'
-    enviar_email(sender, to, subject, message_text, user)
+    enviar_email(request, sender, to, subject, message_text, user)

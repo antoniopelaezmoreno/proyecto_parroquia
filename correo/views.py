@@ -23,7 +23,10 @@ from django.urls import reverse
 
 @login_required
 def bandeja_salida(request):
-    creds = conseguir_credenciales(request, request.user)
+    request.session['redirect_to'] = "outbox"
+    creds=conseguir_credenciales(request, request.user)
+    if isinstance(creds, HttpResponseRedirect):
+        return creds
     try:
         service = build("gmail", "v1", credentials=creds)
         remitentes = obtener_remitentes_interesados(request)
@@ -94,34 +97,6 @@ def obtener_remitentes_interesados(request):
 
     return remitentes
 
-'''
-def conseguir_credenciales(user):
-    SCOPES = ["https://www.googleapis.com/auth/gmail.readonly", "https://www.googleapis.com/auth/gmail.send", "https://www.googleapis.com/auth/gmail.modify", "https://www.googleapis.com/auth/calendar" ]
-
-    creds = None
-
-    try:
-
-        if user.token_json:
-            creds = Credentials.from_authorized_user_info(json.loads(user.token_json), SCOPES)
-
-        if not creds or not creds.valid:
-            if creds and creds.expired and creds.refresh_token:
-                creds.refresh(Request())
-            else:
-                flow = InstalledAppFlow.from_client_secrets_file(
-                    "credentials.json", SCOPES,
-                    redirect_uri="urn:ietf:wg:oauth:2.0:oob"
-                )
-                creds = flow.run_local_server(port=8081, login_hint=user.email, prompt='consent', access_type='offline')
-                user.token_json = creds.to_json()
-                user.save()
-
-    except OSError as e:
-        return HttpResponseServerError("Error: Ha habido un error. Por favor, inténtalo de nuevo más tarde.")
-    return creds
-
-
 def conseguir_credenciales(request, user):
     SCOPES = ["https://www.googleapis.com/auth/gmail.readonly", 
               "https://www.googleapis.com/auth/gmail.send", 
@@ -138,47 +113,7 @@ def conseguir_credenciales(request, user):
             if creds and creds.expired and creds.refresh_token:
                 creds.refresh(Request())
             else:
-                
-
-                flow = Flow.from_client_secrets_file(
-                    "credentials.json",
-                    scopes= SCOPES
-                )
-                flow.redirect_uri="http://localhost:8000/auth/google/callback"
-                print("Flow: ", flow)
-                authorization_url, state = flow.authorization_url(
-                    access_type='offline',
-                    prompt='consent',
-                    login_hint=user.email
-                )
-                print("Authorization URL: ", authorization_url)
-                print("State: ", state)
-                request.session['state'] = state
-                return redirect(authorization_url)
-                # Aquí debes redirigir al usuario a `authorization_url` para que pueda autorizar la aplicación.
-                # Después de autorizar, Google redirigirá al usuario de vuelta a la URL especificada en `redirect_uri`.
-
-    except OSError as e:
-        return HttpResponseServerError("Error: Ha habido un error. Por favor, inténtalo de nuevo más tarde.")
-    return creds
-'''
-
-def conseguir_credenciales(request, user):
-    SCOPES = ["https://www.googleapis.com/auth/gmail.readonly", 
-              "https://www.googleapis.com/auth/gmail.send", 
-              "https://www.googleapis.com/auth/gmail.modify", 
-              "https://www.googleapis.com/auth/calendar"]
-
-    creds = None
-
-    try:
-        if user.token_json:
-            creds = Credentials.from_authorized_user_info(json.loads(user.token_json), SCOPES)
-
-        if not creds or not creds.valid:
-            if creds and creds.expired and creds.refresh_token:
-                creds.refresh(Request())
-            else:
+                print("estoy dentro")
                 flow = InstalledAppFlow.from_client_secrets_file(
                     "credentials.json", SCOPES
                 )
@@ -188,11 +123,14 @@ def conseguir_credenciales(request, user):
                     login_hint=user.email, 
                     prompt='consent'
                 )
+                request.session['state'] = state
+                print("despues de la autorizacion")
                 return HttpResponseRedirect(authorization_url)
 
     except OSError as e:
         return HttpResponseServerError("Error: Ha habido un error. Por favor, inténtalo de nuevo más tarde.")
     return creds
+
 def oauth2callback(request):
     # Especificar el estado al crear el flujo en la devolución de llamada para que pueda
     # ser verificado en la respuesta del servidor de autorización.
@@ -218,7 +156,10 @@ def oauth2callback(request):
     request.user.token_json = creds
     request.user.save()
 
-    return redirect('inbox')
+    redirect_to = request.session.get('redirect_to', 'index')
+    del request.session['redirect_to']
+
+    return redirect(redirect_to)
 
 @login_required
 def bandeja_de_entrada(request):
@@ -227,9 +168,11 @@ def bandeja_de_entrada(request):
               "https://www.googleapis.com/auth/gmail.modify", 
               "https://www.googleapis.com/auth/calendar"]
     
+    request.session['redirect_to'] = "inbox"
+
     creds=conseguir_credenciales(request, request.user)
     if isinstance(creds, HttpResponseRedirect):
-        return creds  # Redirigir al usuario a la página de autorización
+        return creds
     print("Ya he salido")
     try:
         service = build("gmail", "v1", credentials=creds)
@@ -282,9 +225,12 @@ def bandeja_de_entrada(request):
         from core.views import error
         return error(request, err)
     
+    
 @login_required
 def marcar_mensaje_visto(request, message_id):
     creds = conseguir_credenciales(request, request.user)
+    if isinstance(creds, HttpResponseRedirect):
+        return creds
 
     try:
         service = build("gmail", "v1", credentials=creds)
@@ -298,6 +244,8 @@ def marcar_mensaje_visto(request, message_id):
 @login_required
 def obtener_detalles_mensaje(request, mensaje_id):
     creds = conseguir_credenciales(request, request.user)
+    if isinstance(creds, HttpResponseRedirect):
+        return creds
 
     try:
         service = build("gmail", "v1", credentials=creds)
@@ -393,6 +341,8 @@ def obtener_detalles_mensaje(request, mensaje_id):
 @login_required
 def obtener_detalles_mensaje_enviado(request, mensaje_id):
     creds = conseguir_credenciales(request, request.user)
+    if isinstance(creds, HttpResponseRedirect):
+        return creds
 
     try:
         service = build("gmail", "v1", credentials=creds)
@@ -473,6 +423,8 @@ def enviar_correo(request):
     try:
         user=request.user
         creds = conseguir_credenciales(request, user)
+        if isinstance(creds, HttpResponseRedirect):
+            return creds
         service = build("gmail", "v1", credentials=creds)
 
         if request.method == 'POST':
