@@ -6,6 +6,7 @@ from google_auth_oauthlib.flow import InstalledAppFlow, Flow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 import json
+import os
 import base64
 from django.contrib.auth.decorators import login_required
 from catecumeno.models import Catecumeno
@@ -196,6 +197,7 @@ def oauth2callback(request):
     # Especificar el estado al crear el flujo en la devolución de llamada para que pueda
     # ser verificado en la respuesta del servidor de autorización.
     print("En oauth2callback")
+    os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
     SCOPES = ["https://www.googleapis.com/auth/gmail.readonly", 
               "https://www.googleapis.com/auth/gmail.send", 
               "https://www.googleapis.com/auth/gmail.modify", 
@@ -203,7 +205,7 @@ def oauth2callback(request):
     state = request.session.pop('state', "")
     flow = Flow.from_client_secrets_file(
         "credentials.json", scopes=SCOPES, state=state)
-    flow.redirect_uri = request.build_absolute_uri(reverse('inbox'))
+    flow.redirect_uri = request.build_absolute_uri(reverse('oauth2callback'))
 
     # Utilizar la respuesta del servidor de autorización para obtener los tokens OAuth 2.0.
     authorization_response = request.build_absolute_uri()
@@ -216,7 +218,7 @@ def oauth2callback(request):
     request.user.token_json = creds
     request.user.save()
 
-    return creds
+    return redirect('inbox')
 
 @login_required
 def bandeja_de_entrada(request):
