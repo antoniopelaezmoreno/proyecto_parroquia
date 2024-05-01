@@ -5,7 +5,7 @@ from .models import Evento
 from sala.models import Sala, Reserva
 import re
 from datetime import datetime
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from custom_user.models import CustomUser
 from sesion.models import Sesion
 from correo.views import conseguir_credenciales
@@ -50,7 +50,7 @@ def crear_evento(request):
                 evento.participantes.set(participantes_seleccionados)
                 evento.save()
 
-                asociar_a_google_calendar(evento, request.user)
+                asociar_a_google_calendar(request, evento, request.user)
                 return redirect('/')
 
         if request.GET.get('reunion_comision') and request.user.is_superuser:
@@ -109,7 +109,7 @@ def nuevo_evento(request):
             evento.participantes.set(participantes)
             evento.save()
 
-            asociar_a_google_calendar(evento, request.user)
+            asociar_a_google_calendar(request, evento, request.user)
 
             return redirect('/')
         else:
@@ -118,8 +118,10 @@ def nuevo_evento(request):
         return redirect('/403')
 
 
-def asociar_a_google_calendar(evento, user):
-    creds = conseguir_credenciales(user)
+def asociar_a_google_calendar(request, evento, user):
+    creds = conseguir_credenciales(request, user)
+    if isinstance(creds, HttpResponseRedirect):
+        return creds
     event={
         'summary': evento.nombre,
         'description': evento.descripcion,

@@ -12,6 +12,7 @@ from evento.views import asociar_a_google_calendar
 from django.db.models import Count
 from correo.views import conseguir_credenciales
 from googleapiclient.discovery import build
+from django.http import HttpResponseRedirect
 # Create your views here.
 
 @login_required
@@ -66,6 +67,8 @@ def crear_sesion(request):
 def crear_sesion_en_calendar(request,sesion, user):
 
     creds = conseguir_credenciales(request, user)
+    if isinstance(creds, HttpResponseRedirect):
+        return creds
     catequistas = CustomUser.objects.filter(ciclo = user.ciclo)
     
     event={
