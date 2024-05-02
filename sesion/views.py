@@ -18,6 +18,11 @@ from django.http import HttpResponseRedirect
 @login_required
 def crear_sesion(request):
     if request.user.is_authenticated:
+        
+        request.session['redirect_to'] = request.path
+        creds= conseguir_credenciales(request, request.user)
+        if isinstance(creds, HttpResponseRedirect):
+            return creds
         ciclo=request.user.ciclo
         if request.user.is_superuser:
             ciclo = request.POST.get('ciclo')
