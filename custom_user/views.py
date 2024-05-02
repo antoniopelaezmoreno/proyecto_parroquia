@@ -9,9 +9,6 @@ from django.contrib.auth.decorators import login_required
 import json
 from catecumeno.models import Catecumeno
 
-SCOPES = ["https://www.googleapis.com/auth/gmail.readonly", "https://www.googleapis.com/auth/gmail.send", "https://www.googleapis.com/auth/gmail.modify", "https://www.googleapis.com/auth/calendar"]
-
-
 def cerrar_sesion(request):
     logout(request)
     return redirect('/')
@@ -60,12 +57,6 @@ def crear_usuario_desde_solicitud(request, id, ciclo):
             custom_user.last_name = solicitud.apellidos
             custom_user.email = solicitud.email
             custom_user.ciclo = opcion_ciclo
-                # Save the credentials for the next run
-            flow = InstalledAppFlow.from_client_secrets_file(
-                "credentials.json", SCOPES
-            )
-            creds = flow.run_local_server(port=8081, login_hint=solicitud.email, prompt='consent', access_type='offline')
-            custom_user.token_json = creds.to_json()
             custom_user.save()
             
             # Eliminar la solicitud de catequista
