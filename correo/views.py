@@ -5,6 +5,7 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow, Flow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
+from google.auth.exceptions import RefreshError
 import json
 import os
 import base64
@@ -111,7 +112,21 @@ def conseguir_credenciales(request, user):
 
         if not creds or not creds.valid:
             if creds and creds.expired and creds.refresh_token:
-                creds.refresh(Request())
+                try:
+                    creds.refresh(Request())
+                except RefreshError as e:
+                    # Si el token está caducado o ha sido revocado, redirecciona para volver a autenticar al usuario
+                    flow = InstalledAppFlow.from_client_secrets_file(
+                        "credentials.json", SCOPES
+                    )
+                    flow.redirect_uri = request.build_absolute_uri(reverse('oauth2callback'))
+                    authorization_url, state = flow.authorization_url(
+                        access_type='offline', 
+                        login_hint=user.email, 
+                        prompt='consent'
+                    )
+                    request.session['state'] = state
+                    return HttpResponseRedirect(authorization_url)
             else:
                 flow = InstalledAppFlow.from_client_secrets_file(
                     "credentials.json", SCOPES
@@ -234,7 +249,7 @@ def marcar_mensaje_visto(request, message_id):
 
     except HttpError as err:
         from core.views import error
-        return error(request, err)
+        return error(request, "No puede visualizar este mensaje.")
     
 @login_required
 def obtener_detalles_mensaje(request, mensaje_id):
@@ -331,7 +346,7 @@ def obtener_detalles_mensaje(request, mensaje_id):
 
     except Exception as err:
         from core.views import error
-        return error(request, err)
+        return error(request, "No puede visualizar este mensaje.")
     
 @login_required
 def obtener_detalles_mensaje_enviado(request, mensaje_id):
@@ -402,7 +417,7 @@ def obtener_detalles_mensaje_enviado(request, mensaje_id):
 
     except Exception as err:
         from core.views import error
-        return error(request, err)
+        return error(request, "No puede visualizar este mensaje.")
     
 def formatear_fecha(headers):
     fecha = next((header['value'] for header in headers if header['name'] == 'Date'), None)
