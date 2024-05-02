@@ -6,6 +6,8 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .quickstart import enviar_email
 from django.urls import reverse
+from correo.views import conseguir_credenciales
+from django.http import HttpResponseRedirect
 
 # Create your views here.
 def crear_solicitud_cateqista(request):
@@ -24,6 +26,10 @@ def asignar_catequistas(request):
     if not request.user.is_superuser:
         return redirect('/403')
 
+    request.session['redirect_to'] = request.path
+    creds = conseguir_credenciales(request, request.user)
+    if isinstance(creds, HttpResponseRedirect):
+        return creds
     if request.method == 'POST':
         data = json.loads(request.body)
         
@@ -44,6 +50,5 @@ def enviar_correo_solicitud(request, to, solicitud_id, ciclo, user):
     subject="Asignación de ciclo"
     url = reverse('crear_usuario_desde_solicitud', args=[solicitud_id, ciclo])
     enlace = request.build_absolute_uri(url)
-    print(enlace)
     message_text = f'Haga clic en el siguiente enlace para completar su registro: {enlace}'
     enviar_email(request, sender, to, subject, message_text, user)
