@@ -14,6 +14,11 @@ from googleapiclient.discovery import build
 @login_required
 def crear_evento(request):
     if request.user.is_coord or request.user.is_superuser:
+
+        request.session['redirect_to'] = request.path
+        creds= conseguir_credenciales(request, request.user)
+        if isinstance(creds, HttpResponseRedirect):
+            return creds
         tipo_choices = Evento.TIPO_CHOICES.choices
         usuarios = CustomUser.objects.all()
         participantes_seleccionados=[]
@@ -63,7 +68,6 @@ def crear_evento(request):
             return render(request, 'crear_evento.html', {'tipo_choices': tipo_choices, 'usuarios':usuarios, 'participantes_seleccionados':participantes_seleccionados, 'tipo_seleccionado': tipo, 'nombre': nombre})
         
         if request.GET.get('reunion_ciclo') and request.user.is_coord:
-            print("Creando evento de reunión de ciclo")
             # Crear el evento automáticamente con los detalles predefinidos
             ciclo = request.user.ciclo
             nombre = "Reunión de " + ciclo

@@ -12,11 +12,12 @@ import json
 
 # If modifying these scopes, delete the file token.json.
 
-def enviar_email(sender, to, subject, message_text, user):
+def enviar_email(request, sender, to, subject, message_text, user):
   """Shows basic usage of the Gmail API.
   Lists the user's Gmail labels.
   """
-  creds = conseguir_credenciales(user)
+  request.session['redirect_to'] = request.path
+  creds = conseguir_credenciales(request, user)
 
   try:
     # Call the Gmail API

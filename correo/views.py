@@ -5,6 +5,7 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow, Flow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
+from google.auth.exceptions import RefreshError
 import json
 import os
 import base64
@@ -23,7 +24,7 @@ from django.urls import reverse
 
 @login_required
 def bandeja_salida(request):
-    request.session['redirect_to'] = "outbox"
+    request.session['redirect_to'] = request.path
     creds=conseguir_credenciales(request, request.user)
     if isinstance(creds, HttpResponseRedirect):
         return creds
@@ -111,9 +112,22 @@ def conseguir_credenciales(request, user):
 
         if not creds or not creds.valid:
             if creds and creds.expired and creds.refresh_token:
-                creds.refresh(Request())
+                try:
+                    creds.refresh(Request())
+                except RefreshError as e:
+                    # Si el token está caducado o ha sido revocado, redirecciona para volver a autenticar al usuario
+                    flow = InstalledAppFlow.from_client_secrets_file(
+                        "credentials.json", SCOPES
+                    )
+                    flow.redirect_uri = request.build_absolute_uri(reverse('oauth2callback'))
+                    authorization_url, state = flow.authorization_url(
+                        access_type='offline', 
+                        login_hint=user.email, 
+                        prompt='consent'
+                    )
+                    request.session['state'] = state
+                    return HttpResponseRedirect(authorization_url)
             else:
-                print("estoy dentro")
                 flow = InstalledAppFlow.from_client_secrets_file(
                     "credentials.json", SCOPES
                 )
@@ -124,7 +138,6 @@ def conseguir_credenciales(request, user):
                     prompt='consent'
                 )
                 request.session['state'] = state
-                print("despues de la autorizacion")
                 return HttpResponseRedirect(authorization_url)
 
     except OSError as e:
@@ -134,8 +147,7 @@ def conseguir_credenciales(request, user):
 def oauth2callback(request):
     # Especificar el estado al crear el flujo en la devolución de llamada para que pueda
     # ser verificado en la respuesta del servidor de autorización.
-    print("En oauth2callback")
-    os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+    #os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
     SCOPES = ["https://www.googleapis.com/auth/gmail.readonly", 
               "https://www.googleapis.com/auth/gmail.send", 
               "https://www.googleapis.com/auth/gmail.modify", 
@@ -151,7 +163,6 @@ def oauth2callback(request):
 
     # Almacenar las credenciales en la sesión del usuario
     credentials = flow.credentials
-    print("Credenciales: ", credentials)
     creds = credentials.to_json()
     request.user.token_json = creds
     request.user.save()
@@ -168,12 +179,10 @@ def bandeja_de_entrada(request):
               "https://www.googleapis.com/auth/gmail.modify", 
               "https://www.googleapis.com/auth/calendar"]
     
-    request.session['redirect_to'] = "inbox"
-
+    request.session['redirect_to'] = request.path
     creds=conseguir_credenciales(request, request.user)
     if isinstance(creds, HttpResponseRedirect):
         return creds
-    print("Ya he salido")
     try:
         service = build("gmail", "v1", credentials=creds)
         remitentes = obtener_remitentes_interesados(request)
@@ -228,6 +237,7 @@ def bandeja_de_entrada(request):
     
 @login_required
 def marcar_mensaje_visto(request, message_id):
+    request.session['redirect_to'] = request.path
     creds = conseguir_credenciales(request, request.user)
     if isinstance(creds, HttpResponseRedirect):
         return creds
@@ -239,10 +249,11 @@ def marcar_mensaje_visto(request, message_id):
 
     except HttpError as err:
         from core.views import error
-        return error(request, err)
+        return error(request, "No puede visualizar este mensaje.")
     
 @login_required
 def obtener_detalles_mensaje(request, mensaje_id):
+    request.session['redirect_to'] = request.path
     creds = conseguir_credenciales(request, request.user)
     if isinstance(creds, HttpResponseRedirect):
         return creds
@@ -305,7 +316,6 @@ def obtener_detalles_mensaje(request, mensaje_id):
             'date': formatted_date,
             'attachments': attachments
         }
-        print(emisor)
 
         # Si es una solicitud POST, procesar el formulario de respuesta
         if request.method == 'POST':
@@ -336,10 +346,11 @@ def obtener_detalles_mensaje(request, mensaje_id):
 
     except Exception as err:
         from core.views import error
-        return error(request, err)
+        return error(request, "No puede visualizar este mensaje.")
     
 @login_required
 def obtener_detalles_mensaje_enviado(request, mensaje_id):
+    request.session['redirect_to'] = request.path
     creds = conseguir_credenciales(request, request.user)
     if isinstance(creds, HttpResponseRedirect):
         return creds
@@ -406,7 +417,7 @@ def obtener_detalles_mensaje_enviado(request, mensaje_id):
 
     except Exception as err:
         from core.views import error
-        return error(request, err)
+        return error(request, "No puede visualizar este mensaje.")
     
 def formatear_fecha(headers):
     fecha = next((header['value'] for header in headers if header['name'] == 'Date'), None)
@@ -422,6 +433,7 @@ def formatear_fecha(headers):
 def enviar_correo(request):
     try:
         user=request.user
+        request.session['redirect_to'] = request.path
         creds = conseguir_credenciales(request, user)
         if isinstance(creds, HttpResponseRedirect):
             return creds
