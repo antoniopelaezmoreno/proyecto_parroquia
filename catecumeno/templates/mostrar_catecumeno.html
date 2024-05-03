@@ -9,13 +9,14 @@
 <p>Nombre: {{ catecumeno.nombre }} {{ catecumeno.apellidos }}</p>
 <p>Email: {{ catecumeno.email }}</p>
 <p>DNI: {{ catecumeno.dni }}</p>
+<p>Teléfono: {{ catecumeno.telefono }}</p>
 <p>Ciclo: {{ catecumeno.get_ciclo_display }}</p>
 <p>Nombre de la madre: {{ catecumeno.nombre_madre }} {{ catecumeno.apellidos_madre }}</p>
 <p>Email de la madre: {{ catecumeno.email_madre }}</p>
-<p>DNI de la madre: {{ catecumeno.dni_madre }}</p>
+<p>Teléfono de la madre: {{ catecumeno.telefono_madre }}</p>
 <p>Nombre del padre: {{ catecumeno.nombre_padre }} {{ catecumeno.apellidos_padre }}</p>
 <p>Email del padre: {{ catecumeno.email_padre }}</p>
-<p>DNI del padre: {{ catecumeno.dni_padre }}</p>
+<p>Teléfono del padre: {{ catecumeno.telefono_padre }}</p>
 <p> Catequistas:
     {% if catequistas %}
         {{ catequistas.0 }} y 

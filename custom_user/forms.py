@@ -1,8 +1,10 @@
 from django import forms
 from .models import CustomUser
+from django.core.validators import RegexValidator
 
 class CustomUserForm(forms.ModelForm):
     password = forms.CharField(label='Contraseña', widget=forms.PasswordInput)
+    telefono = forms.CharField(label='Teléfono', max_length=9,validators=[RegexValidator(r'^\d{9}$', message="El número de teléfono debe tener exactamente 9 dígitos.")])
 
     class Meta:
         model = CustomUser
