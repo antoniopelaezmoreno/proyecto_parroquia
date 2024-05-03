@@ -8,6 +8,8 @@ from .quickstart import enviar_email
 from django.urls import reverse
 from correo.views import conseguir_credenciales
 from django.http import HttpResponseRedirect
+import uuid
+from catecumeno.models import Catecumeno
 
 # Create your views here.
 def crear_solicitud_cateqista(request):
@@ -37,7 +39,14 @@ def asignar_catequistas(request):
             user_id = asignacion.get('userId')
             ciclo_asignado = asignacion.get('cicloAsignado')
             solicitud = SolicitudCatequista.objects.get(id=user_id)
-            enviar_correo_solicitud(request,solicitud.email,user_id, ciclo_asignado, request.user)
+            token = uuid.uuid4()
+            solicitud.token = token
+            opcion_ciclo = Catecumeno.CicloChoices(ciclo_asignado)
+            if opcion_ciclo is None:
+                return redirect('/404')
+            solicitud.ciclo_asignado = opcion_ciclo
+            solicitud.save()
+            enviar_correo_solicitud(request,solicitud.email,token, request.user)
             
         return JsonResponse({'message': 'Asignaciones procesadas correctamente'})
 
@@ -45,10 +54,10 @@ def asignar_catequistas(request):
     return render(request, 'asignar_catequistas.html', {'solicitudes': solicitudes})
 
 
-def enviar_correo_solicitud(request, to, solicitud_id, ciclo, user):
+def enviar_correo_solicitud(request, to, token, user):
     sender = "antoniopelaez2002@gmail.com"
     subject="Asignación de ciclo"
-    url = reverse('crear_usuario_desde_solicitud', args=[solicitud_id, ciclo])
+    url = reverse('crear_usuario_desde_solicitud', args=[token])
     enlace = request.build_absolute_uri(url)
     message_text = f'Haga clic en el siguiente enlace para completar su registro: {enlace}'
     enviar_email(request, sender, to, subject, message_text, user)
