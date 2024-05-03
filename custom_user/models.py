@@ -3,6 +3,7 @@ from django.db import models
 from django.utils import timezone
 from curso.models import Curso
 from catecumeno.models import Catecumeno
+from django.core.validators import RegexValidator
 
 
 class CustomUserManager(BaseUserManager):
@@ -28,7 +29,16 @@ class CustomUserManager(BaseUserManager):
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
-    telefono = models.CharField(max_length=10, null=True, blank=True)
+    telefono = models.CharField(
+        max_length=9,
+        validators=[
+            RegexValidator(
+                regex='^\d{9}$',
+                message='El teléfono debe tener 9 dígitos',
+                code='invalid_phone_number'
+            )
+        ]
+    )
     is_coord = models.BooleanField(default=False)
     ciclo = models.CharField(max_length=20, choices=Catecumeno.CicloChoices.choices, default=Catecumeno.CicloChoices.POSCO_1)
     first_name = models.CharField(max_length=30, blank=True)
