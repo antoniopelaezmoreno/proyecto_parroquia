@@ -10,9 +10,11 @@ from correo.views import conseguir_credenciales
 from django.http import HttpResponseRedirect
 import uuid
 from catecumeno.models import Catecumeno
+from django.contrib.auth import logout
 
 # Create your views here.
 def crear_solicitud_cateqista(request):
+    logout(request)
     if request.method == 'POST':
         form = SolicitudCatequistaForm(request.POST, request.FILES)
         if form.is_valid():

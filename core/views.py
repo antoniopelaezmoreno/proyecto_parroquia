@@ -5,7 +5,17 @@ from sesion.models import Sesion
 from evento.models import Evento
 from notificacion.models import Notificacion
 from catecumeno.models import Catecumeno
+from custom_user.models import CustomUser
+from sala.models import Reserva, SolicitudReserva
+from solicitud_catequista.models import SolicitudCatequista
+from curso.models import Curso
 from sesion.views import contar_ausencias, contar_ausencias_ultima_sesion
+from django.contrib.auth.decorators import login_required
+from django.db import DEFAULT_DB_ALIAS
+from django.urls import reverse
+from solicitud_catequista.quickstart import enviar_email
+from django.http import HttpResponseRedirect
+from correo.views import conseguir_credenciales
 
 # Create your views here.
 def index(request):
@@ -41,3 +51,43 @@ def c500(request):
 
 def error(request, mensaje):
     return render(request, 'error.html', {'mensaje': mensaje})
+
+@login_required
+def terminar_curso(request):
+    if request.user.is_superuser:
+        if request.method == 'POST':
+            SolicitudCatequista.objects.all().delete()
+            Catecumeno.objects.all().delete()
+            usuarios = CustomUser.objects.all().exclude(is_superuser=True)
+            for usuario in usuarios:
+                enviar_correo_renovacion(request, usuario.email)
+                usuario.delete()
+
+            Grupo.objects.all().delete()
+            Evento.objects.all().delete()
+            Notificacion.objects.all().delete()
+            Reserva.objects.all().delete()
+            SolicitudReserva.objects.all().delete()
+            ultimo_curso = Curso.objects.latest('id')
+            primer_año = int(ultimo_curso.curso.split('-')[0])
+            segundo_año = int(ultimo_curso.curso.split('-')[1])
+            nombre_curso = f'{primer_año+1}-{segundo_año+1}'
+            Curso.objects.create(curso=nombre_curso)
+
+            return redirect('/')
+        else:
+            request.session['redirect_to'] = '/terminar_curso'
+            creds=conseguir_credenciales(request, request.user)
+            if isinstance(creds, HttpResponseRedirect):
+                return creds
+            return render(request, 'confirmar_terminar_curso.html')
+    else:
+        return redirect('/403')
+
+def enviar_correo_renovacion(request, to):
+    sender = "antoniopelaez2002@gmail.com"
+    subject="Renovación de catequista"
+    url = reverse('crear_solicitud_catequista')
+    enlace = request.build_absolute_uri(url)
+    message_text = f'Haga clic para volver a solicitar ser catequista: {enlace}'
+    enviar_email(request, sender, to, subject, message_text, request.user)
