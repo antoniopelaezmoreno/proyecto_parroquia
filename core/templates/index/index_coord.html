@@ -15,9 +15,6 @@
             <p id="descripcionEvento"></p>
             <p id="participantesEvento"></p>
             <p id="salaEvento"></p>
-          
-          
-          
         </div>
       </div>
     <div class="container">
@@ -53,7 +50,7 @@
                     <div class="sesion-info">
                         <div>
                             <p style="text-align: center; margin: 0 auto;"><b>Descripción:  </b></p> </br>
-                            {{ proxima_sesion.descripcion }}
+                            <p id="descripcionSesion">{{ proxima_sesion.descripcion }}</p>
                             <div style="display: flex; flex-flow: row; justify-content: space-between;">
                                 <a href="{% url 'pasar_lista' proxima_sesion.id %}" class="boton" style="margin-top: 20px;">
                                     <p> PASAR LISTA </p>
@@ -66,7 +63,7 @@
                         <div>
                             <p style="text-align: center; margin: 0 auto;"><b>Archivos:  </b></p> </br>
                             {% if archivos_sesion %}
-                                <div class="grid-container">
+                                <div id="contenedorArchivos" class="grid-container">
                                     {% for file in archivos_sesion %}
                                         <div class="grid-item">
                                             <p>{{ file.name }}</p>
@@ -116,7 +113,7 @@
                 {% if proximo_evento %}
                     <h2 style="margin-bottom: 10px; border-bottom: 1px solid black; text-align: center; padding-bottom: 10px;"> {{ proximo_evento.nombre }} - {{ proximo_evento.fecha }} </h2>
                     <p><b>Descripción:  </b></p>
-                    {{ proximo_evento.descripcion }}    
+                    <p id="descripcionProximoEvento">{{ proximo_evento.descripcion }}</p>
                     <p><b>Horario:  </b></p> {{ proximo_evento.hora_inicio}} - {{ proximo_evento.hora_fin}}
                     {% if proximo_evento.sala_reservada %}
                         <p><b>Sala:  </b></p> {{ proximo_evento.sala_reservada }}
@@ -317,6 +314,15 @@
         padding: 0px 0px 8px 12px; /* Ajusta el padding para separar el borde del texto */
         margin-right: 10px; /* Ajusta el margen derecho para mover el texto a la derecha */
     }
+    
+    #contenedorArchivos, 
+    #descripcionProximoEvento, 
+    #descripcionSesion{
+        word-wrap: break-word;
+        max-height: 400px;
+        overflow-y: auto;
+    }
+    
 </style>
 
 
