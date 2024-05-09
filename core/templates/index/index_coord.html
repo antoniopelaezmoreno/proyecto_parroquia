@@ -22,10 +22,10 @@
       </div>
     <div class="container">
         <!--Panel central-->
-        <div class="columna">
+        <div class="columna" style="flex-basis: 68%;">
             <div class="estaditicas" style="margin-top: 30px;">
                 <a class="estadistica catecumenos" href="{% url 'listar_catecumenos' %}">
-                    <span class="material-icons icono" style="color: #0883b4; font-size: 150px; bottom: -15px; left: -10px;">groups</span>
+                    <span class="material-icons icono" style="color: #0883b4; ">groups</span>
                     <div class="info-estadisticas">
                         <p style="margin-bottom: 10px; font-size: 20px;"> Catecúmenos </p>
                         <p style="font-size: 50px; text-align: center; margin-top: 0px;"> <b>{{ num_catecumenos }}</b></p> 
@@ -127,7 +127,7 @@
             </div>
         </div>
         <!--Panel derecho-->
-        <div class="columna">
+        <div class="columna" style="flex-basis: 30%;">
             <h3 style="padding: auto;"> Notificaciones</h3>
             <div class="notificaciones">
                 {% if notificaciones %}
