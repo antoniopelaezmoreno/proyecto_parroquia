@@ -1,7 +1,8 @@
 .container {
-    display: grid;
-    grid-template-columns: 0.7fr 0.3fr;
+    display: flex;
+    flex-wrap: wrap;
     margin-top: -40px;
+    justify-content: space-between;
 }
 
 .columna {
@@ -9,24 +10,49 @@
     margin-bottom: 20px;
     border-radius: 10px;
     padding: 20px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.columna:first-child {
+   padding-left: 10px;
 }
 
 .estaditicas {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-gap: 20px;
+    display: flex;
+    flex-wrap: wrap; /* Ajuste para que se ajuste al tamaño de la pantalla */
+    justify-content: center; /* Espaciado entre los cuadros */
+    gap: 15px;
 }
 
 .estadistica {
+    display: flex;
+    flex-direction: row;
     color: #322d28;
     position: relative;
-    padding: 20px;
+    padding: 10px;
     border-radius: 10px;
-    display: flex;
-    aspect-ratio: 2.5;
+    align-items: center;
+    justify-content: center;
     box-shadow: 10px 10px 40px rgba(190, 192, 244, 0.34);
     overflow: hidden;
     z-index: -2;
+    height: 160px; /* Altura ajustada */
+}
+
+.info-estadisticas {
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+    align-items: center;
+    flex-grow: 1;
+    position: absolute; /* Añadido para que el contenido esté sobre el ícono */
+    
+}
+
+.icono {
+    font-size: 32vh; /* Tamaño del ícono reducido */
+    z-index: -50;
 }
 
 .catecumenos {
@@ -41,24 +67,6 @@
     background-color: #ffcc2f;
 }
 
-.info-estadisticas {
-    display: flex;
-    flex-flow: column;
-    justify-content: space-between;
-    align-items: center;
-    flex-grow: 1;
-    position: relative; /* Añadido para que el contenido esté sobre el ícono */
-    margin-left: 100px; /* Ajusta el margen izquierdo para mover el contenido hacia la derecha */
-}
-
-.icono {
-    position: absolute;
-    bottom: 0px;
-    left: 0;
-    margin: 0;
-    font-size: 130px;
-    z-index: -1;
-}
 
 .calendario {
     background-color: #ffffff;
