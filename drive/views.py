@@ -105,3 +105,15 @@ def mover_carpeta(request, folder_id):
     else:
         form = MoveFolderForm(current_folder=folder)
     return render(request, 'mover_carpeta.html', {'form': form})
+
+@login_required
+def cambiar_nombre_carpeta(request, folder_id):
+    folder = get_object_or_404(Folder, id=folder_id)
+    if request.method == 'POST':
+        form = FolderForm(request.POST, instance=folder)
+        if form.is_valid():
+            form.save()
+            return redirect('listar_archivos')
+    else:
+        form = FolderForm(instance=folder)
+    return render(request, 'cambiar_nombre_carpeta.html', {'form': form})
