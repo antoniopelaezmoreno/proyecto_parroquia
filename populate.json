@@ -2107,6 +2107,427 @@
         "curso": 1
       }
     },
+    {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Ker",
+        "apellidos": "Alenshev",
+        "email": "mthursfield0@symantec.com",
+        "dni": "24851669F",
+        "telefono": 654125896,
+        "ciclo": "catecumenados_1",
+        "nombre_madre": "Darrell",
+        "apellidos_madre": "Finlry",
+        "email_madre": "mthursfield0@wikia.com",
+        "telefono_madre": 654125896,
+        "nombre_padre": "Marvin",
+        "apellidos_padre": "Thursfield",
+        "email_padre": "mthursfield0@columbia.edu",
+        "telefono_padre": 654125896,
+        "preferencias": "User-friendly optimizing database",
+        "foto": "autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Paxton",
+        "apellidos": "Currier",
+        "email": "rrymmer1@omniture.com",
+        "dni": "24851669F",
+        "telefono": 654125896,
+        "ciclo": "catecumenados_1",
+        "nombre_madre": "Ludovika",
+        "apellidos_madre": "Miell",
+        "email_madre": "rrymmer1@naver.com",
+        "telefono_madre": 654125896,
+        "nombre_padre": "Ryun",
+        "apellidos_padre": "Rymmer",
+        "email_padre": "rrymmer1@ihg.com",
+        "telefono_padre": 654125896,
+        "preferencias": "Pre-emptive analyzing encoding",
+        "foto": "autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Winston",
+        "apellidos": "Castagna",
+        "email": "ahalsey2@webmd.com",
+        "dni": "24851669F",
+        "telefono": 654125896,
+        "ciclo": "catecumenados_1",
+        "nombre_madre": "Petunia",
+        "apellidos_madre": "Butterwick",
+        "email_madre": "ahalsey2@technorati.com",
+        "telefono_madre": 654125896,
+        "nombre_padre": "Annalee",
+        "apellidos_padre": "Halsey",
+        "email_padre": "ahalsey2@ocn.ne.jp",
+        "telefono_padre": 654125896,
+        "preferencias": "Assimilated modular utilisation",
+        "foto": "autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Walt",
+        "apellidos": "Krauss",
+        "email": "epierucci3@washingtonpost.com",
+        "dni": "24851669F",
+        "telefono": 654125896,
+        "ciclo": "catecumenados_1",
+        "nombre_madre": "Alexa",
+        "apellidos_madre": "Martyntsev",
+        "email_madre": "epierucci3@wunderground.com",
+        "telefono_madre": 654125896,
+        "nombre_padre": "Eyde",
+        "apellidos_padre": "Pierucci",
+        "email_padre": "epierucci3@lycos.com",
+        "telefono_padre": 654125896,
+        "preferencias": "Grass-roots demand-driven infrastructure",
+        "foto": "autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Pen",
+        "apellidos": "Cuel",
+        "email": "kogles4@house.gov",
+        "dni": "24851669F",
+        "telefono": 654125896,
+        "ciclo": "catecumenados_1",
+        "nombre_madre": "Field",
+        "apellidos_madre": "Cockshut",
+        "email_madre": "kogles4@rakuten.co.jp",
+        "telefono_madre": 654125896,
+        "nombre_padre": "Korie",
+        "apellidos_padre": "Ogles",
+        "email_padre": "kogles4@infoseek.co.jp",
+        "telefono_padre": 654125896,
+        "preferencias": "Virtual tangible benchmark",
+        "foto": "autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Gale",
+        "apellidos": "Hartman",
+        "email": "ccrookes5@globo.com",
+        "dni": "24851669F",
+        "telefono": 654125896,
+        "ciclo": "catecumenados_1",
+        "nombre_madre": "Mariellen",
+        "apellidos_madre": "Laweles",
+        "email_madre": "ccrookes5@eepurl.com",
+        "telefono_madre": 654125896,
+        "nombre_padre": "Corette",
+        "apellidos_padre": "Crookes",
+        "email_padre": "ccrookes5@blogtalkradio.com",
+        "telefono_padre": 654125896,
+        "preferencias": "Re-engineered bottom-line array",
+        "foto": "autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Michel",
+        "apellidos": "Crich",
+        "email": "tilett6@weibo.com",
+        "dni": "24851669F",
+        "telefono": 654125896,
+        "ciclo": "catecumenados_1",
+        "nombre_madre": "Natala",
+        "apellidos_madre": "Odam",
+        "email_madre": "tilett6@mozilla.com",
+        "telefono_madre": 654125896,
+        "nombre_padre": "Tony",
+        "apellidos_padre": "Ilett",
+        "email_padre": "tilett6@usda.gov",
+        "telefono_padre": 654125896,
+        "preferencias": "Right-sized multimedia adapter",
+        "foto": "autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Izaak",
+        "apellidos": "Reside",
+        "email": "afumagall7@scientificamerican.com",
+        "dni": "24851669F",
+        "telefono": 654125896,
+        "ciclo": "catecumenados_1",
+        "nombre_madre": "Tamarah",
+        "apellidos_madre": "Grimolbie",
+        "email_madre": "afumagall7@miibeian.gov.cn",
+        "telefono_madre": 654125896,
+        "nombre_padre": "Ayn",
+        "apellidos_padre": "Fumagall",
+        "email_padre": "afumagall7@tamu.edu",
+        "telefono_padre": 654125896,
+        "preferencias": "Synchronised systematic access",
+        "foto": "autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Abner",
+        "apellidos": "Pottes",
+        "email": "mmews8@china.com.cn",
+        "dni": "24851669F",
+        "telefono": 654125896,
+        "ciclo": "catecumenados_1",
+        "nombre_madre": "Caddric",
+        "apellidos_madre": "Sabatini",
+        "email_madre": "mmews8@github.io",
+        "telefono_madre": 654125896,
+        "nombre_padre": "Madelene",
+        "apellidos_padre": "Mews",
+        "email_padre": "mmews8@geocities.jp",
+        "telefono_padre": 654125896,
+        "preferencias": "Open-source mobile matrices",
+        "foto": "autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Marta",
+        "apellidos": "Bowstead",
+        "email": "dsmorthit9@psu.edu",
+        "dni": "24851669F",
+        "telefono": 654125896,
+        "ciclo": "catecumenados_1",
+        "nombre_madre": "Benedicto",
+        "apellidos_madre": "Frotton",
+        "email_madre": "dsmorthit9@tinypic.com",
+        "telefono_madre": 654125896,
+        "nombre_padre": "Dorothy",
+        "apellidos_padre": "Smorthit",
+        "email_padre": "dsmorthit9@huffingtonpost.com",
+        "telefono_padre": 654125896,
+        "preferencias": "Self-enabling demand-driven instruction set",
+        "foto": "autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Pierson",
+        "apellidos": "Downe",
+        "email": "descaleroa@mlb.com",
+        "dni": "24851669F",
+        "telefono": 654125896,
+        "ciclo": "catecumenados_1",
+        "nombre_madre": "Harrietta",
+        "apellidos_madre": "Hoston",
+        "email_madre": "descaleroa@guardian.co.uk",
+        "telefono_madre": 654125896,
+        "nombre_padre": "Dacie",
+        "apellidos_padre": "Escalero",
+        "email_padre": "descaleroa@blog.com",
+        "telefono_padre": 654125896,
+        "preferencias": "Balanced systemic collaboration",
+        "foto": "autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Gabrielle",
+        "apellidos": "Pontin",
+        "email": "wrosenbloomb@mashable.com",
+        "dni": "24851669F",
+        "telefono": 654125896,
+        "ciclo": "catecumenados_1",
+        "nombre_madre": "Latrina",
+        "apellidos_madre": "Mattersley",
+        "email_madre": "wrosenbloomb@facebook.com",
+        "telefono_madre": 654125896,
+        "nombre_padre": "Wyn",
+        "apellidos_padre": "Rosenbloom",
+        "email_padre": "wrosenbloomb@google.es",
+        "telefono_padre": 654125896,
+        "preferencias": "Cloned mobile customer loyalty",
+        "foto": "autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Malcolm",
+        "apellidos": "Nickels",
+        "email": "bscarlinc@hubpages.com",
+        "dni": "24851669F",
+        "telefono": 654125896,
+        "ciclo": "catecumenados_1",
+        "nombre_madre": "Shanan",
+        "apellidos_madre": "Edgcombe",
+        "email_madre": "bscarlinc@xrea.com",
+        "telefono_madre": 654125896,
+        "nombre_padre": "Bettine",
+        "apellidos_padre": "Scarlin",
+        "email_padre": "bscarlinc@nsw.gov.au",
+        "telefono_padre": 654125896,
+        "preferencias": "Customizable eco-centric contingency",
+        "foto": "autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Vivyanne",
+        "apellidos": "Blakemore",
+        "email": "ahealdd@cbc.ca",
+        "dni": "24851669F",
+        "telefono": 654125896,
+        "ciclo": "catecumenados_1",
+        "nombre_madre": "Pasquale",
+        "apellidos_madre": "Tysack",
+        "email_madre": "ahealdd@craigslist.org",
+        "telefono_madre": 654125896,
+        "nombre_padre": "Alix",
+        "apellidos_padre": "Heald",
+        "email_padre": "ahealdd@harvard.edu",
+        "telefono_padre": 654125896,
+        "preferencias": "Reactive real-time open architecture",
+        "foto": "autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Ninnetta",
+        "apellidos": "Gook",
+        "email": "bomullane@globo.com",
+        "dni": "24851669F",
+        "telefono": 654125896,
+        "ciclo": "catecumenados_1",
+        "nombre_madre": "Jarret",
+        "apellidos_madre": "Compson",
+        "email_madre": "bomullane@networkadvertising.org",
+        "telefono_madre": 654125896,
+        "nombre_padre": "Beret",
+        "apellidos_padre": "O' Mullan",
+        "email_padre": "bomullane@mayoclinic.com",
+        "telefono_padre": 654125896,
+        "preferencias": "Up-sized needs-based success",
+        "foto": "autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Randolf",
+        "apellidos": "Ephgrave",
+        "email": "swhittinghamf@ted.com",
+        "dni": "24851669F",
+        "telefono": 654125896,
+        "ciclo": "catecumenados_1",
+        "nombre_madre": "Land",
+        "apellidos_madre": "Yakushkin",
+        "email_madre": "swhittinghamf@blog.com",
+        "telefono_madre": 654125896,
+        "nombre_padre": "Sascha",
+        "apellidos_padre": "Whittingham",
+        "email_padre": "swhittinghamf@amazon.co.uk",
+        "telefono_padre": 654125896,
+        "preferencias": "Balanced tertiary application",
+        "foto": "autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Ethelred",
+        "apellidos": "Sharer",
+        "email": "hdefaug@howstuffworks.com",
+        "dni": "24851669F",
+        "telefono": 654125896,
+        "ciclo": "catecumenados_1",
+        "nombre_madre": "Luis",
+        "apellidos_madre": "Francisco",
+        "email_madre": "hdefaug@blog.com",
+        "telefono_madre": 654125896,
+        "nombre_padre": "Harrie",
+        "apellidos_padre": "Defau",
+        "email_padre": "hdefaug@utexas.edu",
+        "telefono_padre": 654125896,
+        "preferencias": "Synergistic asynchronous algorithm",
+        "foto": "autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Barbie",
+        "apellidos": "Isaacson",
+        "email": "cbuggeh@marketwatch.com",
+        "dni": "24851669F",
+        "telefono": 654125896,
+        "ciclo": "catecumenados_1",
+        "nombre_madre": "Octavius",
+        "apellidos_madre": "Loggie",
+        "email_madre": "cbuggeh@addthis.com",
+        "telefono_madre": 654125896,
+        "nombre_padre": "Clio",
+        "apellidos_padre": "Bugge",
+        "email_padre": "cbuggeh@java.com",
+        "telefono_padre": 654125896,
+        "preferencias": "Visionary dedicated model",
+        "foto": "autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Jillene",
+        "apellidos": "O'Heyne",
+        "email": "hredmaini@domainmarket.com",
+        "dni": "24851669F",
+        "telefono": 654125896,
+        "ciclo": "catecumenados_1",
+        "nombre_madre": "Kurt",
+        "apellidos_madre": "Haggis",
+        "email_madre": "hredmaini@cmu.edu",
+        "telefono_madre": 654125896,
+        "nombre_padre": "Heddie",
+        "apellidos_padre": "Redmain",
+        "email_padre": "hredmaini@example.com",
+        "telefono_padre": 654125896,
+        "preferencias": "Down-sized systemic paradigm",
+        "foto": "autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    }, {
+      "model": "catecumeno.Catecumeno",
+      "fields": {
+        "nombre": "Felicity",
+        "apellidos": "St. Aubyn",
+        "email": "emyrickj@jalbum.net",
+        "dni": "24851669F",
+        "telefono": 654125896,
+        "ciclo": "catecumenados_1",
+        "nombre_madre": "Jacobo",
+        "apellidos_madre": "Blodgett",
+        "email_madre": "emyrickj@weibo.com",
+        "telefono_madre": 654125896,
+        "nombre_padre": "Edward",
+        "apellidos_padre": "Myrick",
+        "email_padre": "emyrickj@surveymonkey.com",
+        "telefono_padre": 654125896,
+        "preferencias": "Optional composite encryption",
+        "foto": "autorizaciones/plantilla_dafo.jpg",
+        "curso": 1
+      }
+    },
     
       {
         "model": "custom_user.CustomUser",
