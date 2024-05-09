@@ -13,10 +13,10 @@
 </div>
 
 {% if not actual_folder is None %}
-    <a href="{% url 'subir_archivo_en_carpeta' actual_folder %}">Subir archivo</a>
+    <a href="{% url 'subir_archivo_en_carpeta' actual_folder %}">Nuevo archivo</a>
     <a href="{% url 'crear_carpeta_en_carpeta' actual_folder %}">Nueva carpeta</a>
 {% else %}
-    <a href="{% url 'subir_archivo' %}">Subir archivo</a>
+    <a href="{% url 'subir_archivo' %}">Nuevo archivo</a>
     <a href="{% url 'crear_carpeta' %}">Nueva carpeta</a>
 {% endif %}
 
