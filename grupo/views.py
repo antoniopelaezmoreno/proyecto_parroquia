@@ -107,8 +107,9 @@ def panel_grupos(request):
         grupos = Grupo.objects.filter(ciclo=request.user.ciclo)
         sesiones = Sesion.objects.filter(ciclo=request.user.ciclo, curso=Curso.objects.latest('id')).order_by('fecha')
         return render(request, 'panel_grupos_coord.html', {'grupos': grupos, 'catequistas': catequistas, 'error': error, 'sesiones': sesiones})
-    
-def calcular_valor(grupos, lista_catecumenos, num_grupos):
+
+''' 
+def calcular_valor(grupos, lista_catecumenos, num_grupos, preferencias_totales):
    
     num_miembros_grupo = {}
     preferencias = {}
@@ -141,9 +142,34 @@ def calcular_valor(grupos, lista_catecumenos, num_grupos):
     else:
         diferencia = 0
 
-    valor = numero_preferencias_cumplidas - diferencia *10 - castigo * 10
-
+    print("Preferencias cumplidas: ", numero_preferencias_cumplidas)
+    print(numero_preferencias_cumplidas/preferencias_totales)
+    valor = numero_preferencias_cumplidas/preferencias_totales - diferencia *50 - castigo * 10
+    #print(valor)
     return valor
+'''
+def calcular_valor(grupos, lista_catecumenos, num_grupos, preferencias_totales):
+    contador_preferencias = 0
+    map = {}
+
+    for grupo in grupos:
+        map[grupo] = map.get(grupo, 0) + 1
+    
+    min_value = min(map.values())
+    max_value = max(map.values())
+    num_keys = len(map.keys())
+    castigo=0
+    if num_keys < num_grupos:
+        castigo=1
+    
+    diff = max_value - min_value
+    
+    for i in range(len(grupos)):
+        for j in range(i + 1, len(grupos)):
+            if grupos[i] == grupos[j] and lista_catecumenos[j] in lista_catecumenos[i].preferencias_procesadas.all():
+                contador_preferencias += 1
+    #print("Preferencias cumplidas: ", contador_preferencias)
+    return contador_preferencias - diff * 100 - castigo * 1000
 
 def fitness(grupos, lista_catecumenos,num_grupos):
     contador_preferencias = 0
@@ -171,6 +197,10 @@ def fitness(grupos, lista_catecumenos,num_grupos):
 
 def ag(request):
     catecumenos = Catecumeno.objects.filter(ciclo='catecumenados_1')
+    preferencias_totales = 0
+    for catecumeno in catecumenos:
+        preferencias_totales += len(catecumeno.preferencias_procesadas.all())
+    print(preferencias_totales)
     num_grupos=4
     num_catecumenos=len(catecumenos)
     solutions=[]
@@ -179,11 +209,13 @@ def ag(request):
         solutions.append(lista)
     
     for i in range(20):
+        print("Generacion ", i+1)
         rankedsolutions=[]
         for s in solutions:
-            fit=calcular_valor(s, catecumenos, num_grupos)
+            fit=calcular_valor(s, catecumenos, num_grupos, preferencias_totales)
             rankedsolutions.append((fit,s))
-        rankedsolutions.sort(reverse=True)
+        rankedsolutions.sort(key=lambda x: x[0], reverse=True)
+        print(rankedsolutions[:1])
 
         bestsolutions = rankedsolutions[:100]
         
@@ -196,6 +228,7 @@ def ag(request):
         for s in range(20):
             newGen.append(tuple(random.choice(lista[l]) for l in range(num_catecumenos)))
         solutions = newGen
+    print("Mejor solucion: ", bestsolutions[0])
     grupo_final=bestsolutions[0][1]
 
     map = {}
