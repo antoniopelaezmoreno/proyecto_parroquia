@@ -4,7 +4,7 @@ from django.core.validators import FileExtensionValidator
 from django.core.exceptions import ValidationError
 
 class Folder(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=30)
     owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     files = models.ManyToManyField('File', related_name='folders')
     parent_folder = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
@@ -13,7 +13,7 @@ class Folder(models.Model):
         return self.name
 
 class File(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=50)
     file = models.FileField(upload_to='files/')
     owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     parent_folder = models.ForeignKey(Folder, on_delete=models.CASCADE, null=True, blank=True)

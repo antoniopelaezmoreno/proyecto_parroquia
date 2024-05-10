@@ -147,7 +147,7 @@ def conseguir_credenciales(request, user):
 def oauth2callback(request):
     # Especificar el estado al crear el flujo en la devolución de llamada para que pueda
     # ser verificado en la respuesta del servidor de autorización.
-    os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+    #os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
     SCOPES = ["https://www.googleapis.com/auth/gmail.readonly", 
               "https://www.googleapis.com/auth/gmail.send", 
               "https://www.googleapis.com/auth/gmail.modify", 
@@ -441,7 +441,7 @@ def enviar_correo(request):
 
         if request.method == 'POST':
             sender = request.user.email
-            
+            print(request.POST)
             destinatarios = request.POST.get('destinatario')
             if destinatarios == "":
                 return JsonResponse({'success': False, 'error': 'No se ha especificado ningún destinatario'})

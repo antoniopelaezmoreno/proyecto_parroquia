@@ -7,22 +7,41 @@
 <div class="ruta">
     <a href="{% url 'listar_archivos' %}">Principal</a>
     {% for carpeta in ruta %}
-        <span style="margin: 0 5px;">&gt;</span>
-        <a href="{% url 'listar_archivos_en_carpeta' carpeta.id %}">{{ carpeta.name }}</a>
+        <span style="margin: 0 5px; color: #86c631">&gt;</span>
+        <a href="{% url 'listar_archivos_en_carpeta' carpeta.id %}" style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="{{ carpeta.name }}">{{ carpeta.name }}</a>
     {% endfor %}
 </div>
 
-{% if not actual_folder is None %}
-    <a href="{% url 'subir_archivo_en_carpeta' actual_folder %}">Nuevo archivo</a>
-    <a href="{% url 'crear_carpeta_en_carpeta' actual_folder %}">Nueva carpeta</a>
-{% else %}
-    <a href="{% url 'subir_archivo' %}">Nuevo archivo</a>
-    <a href="{% url 'crear_carpeta' %}">Nueva carpeta</a>
-{% endif %}
+<a onclick="toggleDropdownCreate(this)" class="crearbtn">
+    <span class="material-icons" style="font-size: 75px; color: #86c631">
+        add_circle
+    </span>
+</a>
+
+<div id="dropdown-content-create" class="dropdown-content">
+    <a id="mostrarFormularioArchivo">Nuevo archivo</a>
+    <a id="mostrarFormularioCarpeta">Nueva carpeta</a>
+</div>
+
+
+<!-- Contenedor del formulario para subir archivo -->
+<div id="formularioSubirArchivo" class="formulario-subir-archivo">
+    <button id="cerrarFormulario" class="cerrar-btn" style="color: black; border: none; border-radius: 50%; padding: 5px 10px; cursor: pointer;"><span class="material-icons">
+        close
+        </span></button>
+    {% include 'subir_archivo.html' %}
+</div>
+
+<div id="formularioCrearCarpeta" class="formulario-subir-archivo">
+    <button id="cerrarFormulario" class="cerrar-btn" style="color: black; border: none; border-radius: 50%; padding: 5px 10px; cursor: pointer;"><span class="material-icons">
+        close
+        </span></button>
+    {% include 'crear_carpeta.html' %}
+</div>
 
 <div class="grid-container">
     {% for folder in folders %}
-        <div class="grid-item">
+        <div class="grid-item"  title="{{ folder.name }}">
             <div class="dropdown">
                 <button onclick="toggleDropdown(this)" class="dropbtn"><span class="material-icons">
                     more_vert
@@ -34,11 +53,13 @@
                 </div>
             </div>
             <div style="display: flex; flex-direction: column; align-items: center;">
-                <p style="text-align: center;"> {{ folder.name }} </p>
-                <a style="display: flex; justify-content: center;"href="{% url 'listar_archivos_en_carpeta' folder.id %}" alt="{{ folder.name }}">
+                <p style="text-align: center; max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"> {{ folder.name }} </p>
+                <a style="display: flex; justify-content: center;" href="{% url 'listar_archivos_en_carpeta' folder.id %}" alt="{{ folder.name }}">
                     <img src="/static/icons/folder_icon3.png" alt="{{ folder.name }}" class="thumbnail">
                 </a>
             </div>
+            
+            
         </div>
     {% endfor %}
     {% for file in files %}
@@ -120,7 +141,7 @@
 
     .dropdown-content {
         display: none;
-        position: absolute;
+        position: fixed;
         background-color: #f9f9f9;
         min-width: 160px;
         box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
@@ -154,24 +175,151 @@
         border-radius: 5px; 
         background-color: #fff;
         padding: 5px;
-        font-size: larger;
+        font-size: x-large;
     }
-
     a {
         text-decoration: none;
         color: black;
     }
+
+    .formulario-subir-archivo {
+        display: none; 
+        position: absolute;
+        bottom: 20px; 
+        right: 20px; 
+        width: auto;
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        z-index: 999;
+    }
+
+    .crearbtn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        border: none;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        margin: 4px 2px;
+        cursor: pointer;
+        z-index: 10;
+    }
+
+    #dropdown-content{
+        position: absolute;
+        bottom: 100px;
+        right: 20px;
+    }
+    #dropdown-content-create {
+        position: fixed;
+        bottom: 100px;
+        right: 20px;
+    
+    }
+
 </style>
 
 <script>
     function toggleDropdown(btn) {
-        var dropdownContent = btn.nextElementSibling;
+        var dropdownContent = document.getElementById("dropdown-content");
         if (dropdownContent.style.display === "block") {
             dropdownContent.style.display = "none";
         } else {
             dropdownContent.style.display = "block";
         }
     }
+
+    function toggleDropdownCreate(btn) {
+        var dropdownContent = document.getElementById("dropdown-content-create");
+        if (dropdownContent.style.display === "block") {
+            dropdownContent.style.display = "none";
+        } else {
+            dropdownContent.style.display = "block";
+        }
+    }
+
+    document.getElementById("mostrarFormularioArchivo").addEventListener("click", function() {
+        document.getElementById("fileForm").reset();
+        document.getElementById("formularioSubirArchivo").style.display = "block";
+        document.getElementById("dropdown-content-create").style.display = "none";
+    });
+
+    document.getElementById("mostrarFormularioCarpeta").addEventListener("click", function() {
+        document.getElementById("folderForm").reset();
+        document.getElementById("formularioCrearCarpeta").style.display = "block";
+        document.getElementById("dropdown-content-create").style.display = "none";
+    });
+
+    const botonesCerrar = document.querySelectorAll(".cerrar-btn");
+    botonesCerrar.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+            document.getElementById("formularioSubirArchivo").style.display = "none";
+            document.getElementById("formularioCrearCarpeta").style.display = "none";
+        });
+    });
+
+    document.getElementById("fileForm").addEventListener("submit", function(event) {
+        const carpeta_actual = '{{ actual_folder }}';
+        event.preventDefault(); 
+        var form_data = new FormData(this);
+        form_data.append("carpeta_actual", carpeta_actual);
+        fetch("{% url 'subir_archivo' %}", {
+            method: "POST",
+            body: form_data,
+            headers: {
+                "X-CSRFToken": getCookie("csrftoken")
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById("formularioSubirArchivo").style.display = "none";
+                window.location.reload();
+            } else {
+                console.error("Ha ocurrido un error al subir el archivo.");
+            }
+        })
+        .catch(error => {
+            console.error("Ha ocurrido un error al subir el archivo.");
+        });
+    });
+
+    document.getElementById("folderForm").addEventListener("submit", function(event) {
+        const carpeta_actual = '{{ actual_folder }}';
+        event.preventDefault(); 
+        var form_data = new FormData(this);
+        form_data.append("carpeta_actual", carpeta_actual);
+        console.log(carpeta_actual);
+        fetch("{% url 'crear_carpeta' %}", {
+            method: "POST",
+            body: form_data,
+            headers: {
+                "X-CSRFToken": getCookie("csrftoken")
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById("formularioCrearCarpeta").style.display = "none";
+                window.location.reload();
+            } else {
+                console.error("Ha ocurrido un error al crear la carpeta:", data.error);
+            }
+        })
+        .catch(error => {
+            console.error("Ha ocurrido un error al crear la carpeta: ", error);
+        });
+    });
+
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
 </script>
+
 
 {% endblock %}

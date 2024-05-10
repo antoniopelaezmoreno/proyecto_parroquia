@@ -1,29 +1,22 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .forms import FileForm, FolderForm, MoveFileForm, MoveFolderForm
+from .forms import FolderForm, MoveFileForm, MoveFolderForm
 from .models import File, Folder
+from django.http import JsonResponse
 # Create your views here.
 
 @login_required
-def subir_archivo(request, folder_id=None):
+def subir_archivo(request):
     if request.method == 'POST':
-        form = FileForm(request.POST, request.FILES)
-        if form.is_valid():
-            file = form.cleaned_data['file']
-            new_file = form.save(commit=False)
-            new_file.owner = request.user
-            new_file.name = file.name
-            if folder_id is not None:
-                folder = get_object_or_404(Folder,id=folder_id)
-                new_file.parent_folder = folder
-            new_file.save()
-            if folder_id is not None:
-                return redirect('listar_archivos_en_carpeta', folder_id)
-            else:   
-                return redirect('listar_archivos')
-    else:
-        form = FileForm()
-    return render(request, 'subir_archivo.html', {'form': form})
+        archivo = request.FILES.get('archivo')
+        id_carpeta_actual = request.POST.get('carpeta_actual')
+        carpeta_actual = None
+        if id_carpeta_actual is not None and id_carpeta_actual != 'None':
+            carpeta_actual = get_object_or_404(Folder, id=id_carpeta_actual)
+        nuevo_archivo = File(file=archivo, owner=request.user, name=archivo.name, parent_folder=carpeta_actual)
+        nuevo_archivo.save()
+        return JsonResponse({'success': True})
+    return redirect('listar_archivos')
 
 @login_required
 def listar_archivos(request, folder_id=None):
@@ -40,24 +33,17 @@ def listar_archivos(request, folder_id=None):
 
 
 @login_required
-def crear_carpeta(request, folder_id=None):
+def crear_carpeta(request):
     if request.method == 'POST':
-
-        form = FolderForm(request.POST)
-        if form.is_valid():
-            new_folder = form.save(commit=False)
-            new_folder.owner = request.user
-            if folder_id is not None:
-                folder = get_object_or_404(Folder,id=folder_id)
-                new_folder.parent_folder = folder
-            new_folder.save()
-            if folder_id is not None:
-                return redirect('listar_archivos_en_carpeta', folder_id)
-            else:   
-                return redirect('listar_archivos')
-    else:
-        form = FolderForm()
-    return render(request, 'crear_carpeta.html', {'form': form})
+        nombre = request.POST.get('name')
+        id_carpeta_actual = request.POST.get('carpeta_actual')
+        carpeta_actual = None
+        if id_carpeta_actual is not None and id_carpeta_actual != 'None':
+            carpeta_actual = get_object_or_404(Folder, id=id_carpeta_actual)
+        nueva_carpeta = Folder(name=nombre, owner=request.user, parent_folder=carpeta_actual)
+        nueva_carpeta.save()
+        return JsonResponse({'success': True})
+    return redirect('listar_archivos')
 
 def obtener_ruta_carpeta(carpeta):
     if carpeta.parent_folder is None:
