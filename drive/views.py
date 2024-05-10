@@ -75,7 +75,8 @@ def mover_archivo(request, file_id):
             return redirect('listar_archivos')
     else:
         form = MoveFileForm()
-    return render(request, 'mover_archivo.html', {'form': form})
+    return render(request, 'mover_archivo.html', {'form': form, 'file_id': file_id})
+
 
 @login_required
 def mover_carpeta(request, folder_id):
