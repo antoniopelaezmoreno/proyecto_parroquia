@@ -159,7 +159,8 @@
 
                 // Enviar las asignaciones al servidor a través de una solicitud HTTP
                 const csrftoken = getCookie('csrftoken');
-                fetch("/catecumeno/asignar_a_grupo/", {
+                const ciclo = "{{ ciclo }}";
+                fetch("/catecumeno/asignar_a_grupo/?ciclo=" + ciclo, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -170,7 +171,8 @@
                 .then(response => {
                     if (response.ok) {
                         console.log("Asignaciones enviadas correctamente");
-                        window.location.href='/grupo';
+
+                        window.location.href='/grupo?ciclo=' + ciclo;
                     } else {
                         console.error("Error al enviar las asignaciones");
                     }

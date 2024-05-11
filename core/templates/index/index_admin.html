@@ -5,7 +5,278 @@
 
 {% block content %}
 
-<a href="{% url 'crear_reservas' %}"> Asignar sala</a>
+    <link rel="stylesheet" type="text/css" href="{% static 'core/css/index_styles.css' %}">
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" style="margin-left: 99%; margin-right: 30px;">&times;</span>
+            <h2>Detalles del Evento</h2>
+            <p id="tituloEvento"></p>
+            <p id="fechaEvento"></p>
+            <p id="descripcionEvento"></p>
+            <p id="participantesEvento"></p>
+            <p id="salaEvento"></p>
+        </div>
+      </div>
+    <div class="container">
+        <!--Panel central-->
+        <div class="columna" style="flex-basis: 68%;">
+            <div class="estaditicas" style="margin-top: 30px;">
+                <a class="estadistica catecumenos" href="{% url 'listar_catecumenos' %}">
+                    <span class="material-icons icono" style="color: #0883b4; ">groups</span>
+                    <div class="info-estadisticas">
+                        <p style="margin-bottom: 10px; font-size: 20px;"> Catecúmenos </p>
+                        <p style="font-size: 50px; text-align: center; margin-top: 0px;"> <b>0</b></p> 
+                    </div>
+                </a>
+                <div class="estadistica ausencias">
+                    <span class="material-icons icono" style="color: #ce4222;">supervisor_account</span>
+                    <div class="info-estadisticas">
+                        <p style="margin-bottom: 10px; font-size: 20px;"> Catequistas </p>
+                        <p style="font-size: 50px; text-align: center; margin-top: 0px;"> <b>0</b></p> 
+                    </div>
+                </div>
+                <div class="estadistica ausencias-ultimas">
+                    <span class="material-icons icono" style="color: #deac19;">help_outline</span>
+                    <div class="info-estadisticas">
+                        <p style="margin-bottom: 10px; font-size: 20px;"> Solicitudes </p>
+                        <p style="font-size: 50px; text-align: center; margin-top: 0px;"> <b>0</b></p> 
+                    </div>
+                </div>
+            </div>
+            
+            <h3 style="margin-top: 30px; padding: auto;"> Próximo Evento</h3>
+            <div class="sesion">
+                {% if proximo_evento %}
+                    <h2 style="margin-bottom: 10px; border-bottom: 1px solid black; text-align: center; padding-bottom: 10px;"> {{ proximo_evento.nombre }} - {{ proximo_evento.fecha }} </h2>
+                    <p><b>Descripción:  </b></p>
+                    <p id="descripcionProximoEvento">{{ proximo_evento.descripcion }}</p>
+                    <p><b>Horario:  </b></p> {{ proximo_evento.hora_inicio}} - {{ proximo_evento.hora_fin}}
+                    {% if proximo_evento.sala_reservada %}
+                        <p><b>Sala:  </b></p> {{ proximo_evento.sala_reservada }}
+                    {% endif %}
+                {% else %}
+                    <p> No hay próximo evento</p>
+                {% endif %}
+            </div>
+
+            <h3 style="margin-top: 30px; padding: auto;"> Próxima Sesión</h3>
+            <div class="acciones">
+                <a class="accion" href="{% url 'terminar_curso' %}">
+                    Terminar Curso
+                </a>
+
+                <a class="accion" href="{% url 'convertir_a_coordinador' %}">
+                    Coordinadores
+                </a>
+
+                <a class="accion" href="{% url 'panel_ciclos' %}">
+                    Ciclos
+                </a>
+                
+            </div>
+        </div>
+        <!--Panel derecho-->
+        <div class="columna" style="flex-basis: 30%;">
+            <h3 style="padding: auto;"> Notificaciones</h3>
+            <div class="notificaciones">
+                {% if notificaciones %}
+                    {% for notificacion in notificaciones %}
+                        <div class="notificacion">
+                            <div>
+                                <p>{{ notificacion.mensaje }}</p>
+                                <p>{{ notificacion.fecha }}</p>
+                            </div>
+                            <input type="radio" class="form-check-input" name="notificacion" value="{{ notificacion.id }}">
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p style="text-align: center;">No hay notificaciones nuevas</p>
+                {% endif %}
+            </div>
+            <h3 style="padding: auto;">Calendario</h3>
+            <div class="calendario">
+                <div id='calendario'></div>
+                <a class="btnCrearEvento" href="{% url 'crear_evento' %}" id="crearEventoBtn" style="margin-top: 10px;">Crear Evento</a>
+                <a class="btnCrearEvento predeterminado" href="{% url 'crear_evento' %}?reunion_comision=true" id="crearEventoBtn" style="margin-top: 10px;">Reunión Comisión</a>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.0/main.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.0/main.min.css" rel="stylesheet"/>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@3.10.2/dist/locale/es.js'></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const openModalBtns = document.querySelectorAll(".openModalBtn");
+            const modal = document.getElementById("myModal");
+            const closeModal = document.querySelector(".close");
+        });
+
+        
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById("myModal");
+            const closeModal = document.querySelector(".close");
+            var calendarEl = document.getElementById('calendario');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                themeSystem: 'bootstrap5',
+                firstDay: 1,
+                events: "{% url 'obtener_eventos' %}", // URL para obtener los eventos
+                initialView: 'dayGridMonth', // Vista predeterminada del calendario
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                dayMaxEventRows: true, // allow "more" link when too many events            
+                views: {
+                    timeGrid: {
+                        eventLimit: 3 // adjust to 6 only for agendaWeek/agendaDay
+                    }
+                },
+                locale: 'es',
+                eventContent: function(info) {
+                    return { html: '<b>' + info.event.title + '</b>' };
+                },
+                eventDisplay: 'block',  // Muestra el evento como un bloque
+                scrollTime: '16:00:00',
+                eventClick: function(info) {
+                    
+                    modal.style.display = "block";
+                    var evento = info.event;
+                    var tipo = evento.extendedProps.tipo;
+                    console.log(tipo);
+                    $('#tituloEvento').text(evento.title);
+                    $('#descripcionEvento').text('Descripción: ' +evento.extendedProps.description);
+                    $('#fechaEvento').text(evento.start.toLocaleString() + ' - ' + evento.end.toLocaleString());
+                    
+                    if (tipo == 'Evento' && evento.extendedProps.sala_reservada){
+                        $('#salaEvento').text('Sala: ' + evento.extendedProps.sala_reservada);
+                    }
+                 
+                },
+                eventMouseEnter: function(info){
+                    info.el.style.cursor = 'pointer';
+                },
+                eventMouseLeave: function(info){
+                    info.el.style.cursor = 'default';
+                }
+            });
+            calendar.render();
+            closeModal.addEventListener("click", function () {
+                modal.style.display = "none";
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('input[name="notificacion"]').change(function() {
+                var notificacionId = $(this).val();
+                var url = "{% url 'marcar_notificacion_vista' 0 %}".replace('0', notificacionId);
+                $.ajax({
+                    url: url,
+                    type: "GET",
+                    success: function(data) {
+                        console.log("buen")
+                        window.location.reload();
+                        
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                        window.location.reload();
+                    }
+                });
+            });
+
+            
+        });
+    </script>
+
+<style>
+    /* Estilos para los botones del encabezado */
+    .fc-header-toolbar button {
+        padding: 4px 8px; /* Ajusta el padding según sea necesario */
+        font-size: 12px; /* Tamaño de fuente */
+    }
+
+    /* Estilos para el texto del título del calendario */
+    .fc-toolbar-title {
+        font-size: 16px; /* Tamaño de fuente del título */
+    }
+
+    /* Estilos para los botones de cambio de vista */
+    .fc-header-toolbar .fc-button-group button {
+        padding: 4px 8px; /* Ajusta el padding según sea necesario */
+        font-size: 12px; /* Tamaño de fuente */
+    }
+
+    .fc-header-toolbar .fc-today-button {
+        padding: 4px 8px; /* Ajusta el padding según sea necesario */
+        font-size: 12px; /* Tamaño de fuente */
+    }
+
+    .btnCrearEvento{
+        text-decoration: none;
+        background-color: #436b10;
+        color: white;
+        padding: 5px;
+        border-radius: .25em;
+        text-align: center;
+    }
+
+    .predeterminado{
+        background-color: #6ca81e;
+    }
+
+    .btnCrearEvento:hover{
+        background-color: #7493b2;
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 100000;
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+    }
+
+    h3{
+        color: black;
+        border-bottom: 3px solid #A3CB6D;
+        border-radius: 10px;
+        padding: 0px 0px 8px 12px; /* Ajusta el padding para separar el borde del texto */
+        margin-right: 10px; /* Ajusta el margen derecho para mover el texto a la derecha */
+    }
+    
+    #contenedorArchivos, 
+    #descripcionProximoEvento, 
+    #descripcionSesion{
+        word-wrap: break-word;
+        max-height: 400px;
+        overflow-y: auto;
+    }
+    
+</style>
+
 
 
 {% endblock %}

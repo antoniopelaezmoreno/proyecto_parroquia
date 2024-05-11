@@ -65,14 +65,17 @@
 </div>
 
 <div class = "flex-container">
-    <a href="{% url 'crear_grupo' %}" class = "panel">
+    <a href="{% url 'crear_grupo' %}?ciclo={{ciclo}}" class = "panel">
         <p>NUEVO GRUPO</p>
     </a>
-    <a href ="{% url 'asignar_catecumenos_a_grupo' %}" class = "panel">
+    <a href ="{% url 'asignar_catecumenos_a_grupo' %}?ciclo={{ciclo}}" class = "panel">
         <p>ASIGNAR</p>
     </a>
     <a href="{% url 'listar_catecumenos' %}" class = "panel">
         <p>LISTAR DATOS</p>
+    </a>
+    <a href="{% url 'asociar_preferencias' %}?ciclo={{ciclo}}" class = "panel">
+        <p>PREFERENCIAS</p>
     </a>
 </div>
 <div>
