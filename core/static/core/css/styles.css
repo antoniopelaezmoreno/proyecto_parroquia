@@ -239,13 +239,32 @@ div.scrollmenu a:hover {
   padding: 8px;
 }
 
+.sidebar-btn-mobile {
+  display: none;
+  background-color: transparent;
+  border: 2px solid #f1f1f1f1;
+  border-radius: 10%;
+  color: #f1f1f1f1;
+  font-weight: bold;
+  aspect-ratio: 1;
+}
+
+.sidebar-btn-mobile:hover {
+  background-color: #f1f1f1f1;
+  color: #333;
+}
+
 /* Estilos adicionales para hacer que la barra de navegación sea responsive */
 @media screen and (max-width: 800px) {
+  .sidebar-btn-mobile {
+    display: block;
+  }
+
   .sidebar {
     width: 100%;
     left: -100%;
     transition: left 0.3s ease;
-    z-index: 1;
+    z-index: 50;
   }
   
   .sidebar-btn {
@@ -255,4 +274,6 @@ div.scrollmenu a:hover {
   .content-shift {
     margin-left: 0;
   }
+
+  
 }

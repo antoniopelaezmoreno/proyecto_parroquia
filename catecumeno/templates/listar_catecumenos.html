@@ -6,25 +6,25 @@
 {% block content %}
 
 <div id="alumnos-container">
-    <table class="alumnos-table rounded-border">
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Apellidos</th>
-                <th>Email</th>
-                <th>Ciclo</th>
-                <th>Nombre Madre</th>
-                <th>Email Madre</th>
-                <th>Teléfono Madre</th>
-                <th>Nombre Padre</th>
-                <th>Email Padre</th>
-                <th>Teléfono Padre</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for catecumeno in catecumenos %}
-                <a href="{% url 'mostrar_catecumeno' catecumeno.id %}">
+    <div class="scrollmenu">
+        <table class="alumnos-table rounded-border">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Apellidos</th>
+                    <th>Email</th>
+                    <th>Ciclo</th>
+                    <th>Nombre Madre</th>
+                    <th>Email Madre</th>
+                    <th>Teléfono Madre</th>
+                    <th>Nombre Padre</th>
+                    <th>Email Padre</th>
+                    <th>Teléfono Padre</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for catecumeno in catecumenos %}
                     <tr id="catecumeno-{{ catecumeno.id }}" class="alumno" data-ciclo="{{ catecumeno.ciclo }}">
                         <td>{{ catecumeno.nombre }}</td>
                         <td>{{ catecumeno.apellidos }}</td>
@@ -36,12 +36,12 @@
                         <td>{{ catecumeno.nombre_padre }} {{ catecumeno.apellidos_padre }}</td>
                         <td>{{ catecumeno.telefono_padre }}</td>
                         <td>{{ catecumeno.email_padre }}</td>
-                        <td><a href="{% url 'eliminar_catecumeno' catecumeno.id %}">Eliminar</a></td>
+                        <td><a class="btnEliminar" href="{% url 'eliminar_catecumeno' catecumeno.id %}">Eliminar</a></td>
                     </tr>
-                </a>
-            {% endfor %}
-        </tbody>
-    </table>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <script>
@@ -60,6 +60,26 @@
 <style>
     .alumno{
         cursor: pointer;
+    }
+
+    /* Scroll horizontal */
+    .scrollmenu {
+        overflow-x: auto;
+    }
+
+    .scrollmenu table {
+        width: 100%;
+        white-space: nowrap; /* Para que los elementos no se rompan */
+    }
+
+    .btnEliminar {
+        color: black !important;
+        border: 1px solid black;
+    }
+
+    .btnEliminar:hover {
+        background-color: #f44336 !important;
+        color: white !important;
     }
 </style>
 
