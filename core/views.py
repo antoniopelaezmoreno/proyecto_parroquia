@@ -91,3 +91,14 @@ def enviar_correo_renovacion(request, to):
     enlace = request.build_absolute_uri(url)
     message_text = f'Haga clic para volver a solicitar ser catequista: {enlace}'
     enviar_email(request, sender, to, subject, message_text, request.user)
+
+
+@login_required
+def panel_ciclos(request):
+    if request.user.is_superuser:
+        ciclos = Catecumeno.CicloChoices.choices
+        catequistas = CustomUser.objects.all().exclude(is_superuser=True)
+        return render(request, 'panel_ciclos.html', {'ciclos': ciclos, 'catequistas': catequistas})
+    else:
+        return redirect('/403')
+    

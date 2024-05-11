@@ -32,8 +32,14 @@ def listar_catecumenos(request):
         return redirect('/403')
     
 @login_required
-def asociar_preferencias(request, ciclo):
-    if request.user.is_coord and request.user.ciclo == ciclo:
+def asociar_preferencias(request):
+    ciclo = request.user.ciclo
+    if request.user.is_superuser:
+        ciclo = request.GET.get('ciclo')
+        if ciclo not in [choice[0] for choice in Catecumeno.CicloChoices.choices]:
+            return redirect('/404')
+
+    if request.user.is_coord or request.user.is_superuser:
         usuarios_disponibles = Catecumeno.objects.filter(ciclo=ciclo)
 
         if request.method == 'POST':
@@ -45,7 +51,7 @@ def asociar_preferencias(request, ciclo):
                 alumno.preferencias_procesadas.set(lista_alumnos_preferidos)
                 alumno.save()
 
-        context = {'alumnos_con_preferencias': usuarios_disponibles, 'usuarios_disponibles': usuarios_disponibles, 'curso': ciclo}
+        context = {'alumnos_con_preferencias': usuarios_disponibles, 'usuarios_disponibles': usuarios_disponibles, 'ciclo': ciclo}
         return render(request, 'asociar_preferencias.html', context)
     else:
         return redirect('/403')
@@ -53,8 +59,13 @@ def asociar_preferencias(request, ciclo):
 @login_required
 @csrf_exempt
 def asignar_catecumenos_a_grupo(request):
-    if request.user.is_coord:
-        ciclo = request.user.ciclo
+    ciclo = request.user.ciclo
+    if request.user.is_superuser:
+        ciclo = request.GET.get('ciclo')
+        if ciclo not in [choice[0] for choice in Catecumeno.CicloChoices.choices]:
+            return redirect('/404')
+
+    if request.user.is_coord or request.user.is_superuser:
         grupos = Grupo.objects.filter(ciclo=ciclo)
         if request.method == 'POST':
             data = json.loads(request.body)
@@ -71,7 +82,7 @@ def asignar_catecumenos_a_grupo(request):
                     grupo.save()
             return redirect('index')
         catecumenos = Catecumeno.objects.filter(ciclo=ciclo)
-        return render(request, 'asignar_catecumenos_a_grupo.html', {'catecumenos': catecumenos, 'grupos': grupos})
+        return render(request, 'asignar_catecumenos_a_grupo.html', {'catecumenos': catecumenos, 'grupos': grupos, 'ciclo': ciclo})
     else:
         return redirect('/403')
 

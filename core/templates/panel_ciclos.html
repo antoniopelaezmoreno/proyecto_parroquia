@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Ciclos {% endblock %}
+
+{% block content %}
+
+<h2>Poscomunión</h2>
+<div class="cards">
+    {% for ciclo in ciclos %}
+        {% if ciclo.0|slice:":5" == 'posco' %} 
+            <a class="posco-card card" style="width: 20rem;" href="{% url 'panel_grupos' %}?ciclo={{ciclo.0}}">
+                <div class="card-body">
+                    <h2 style="border-bottom: 1px solid #86c631;">{{ ciclo.1|upper }}</h2>
+                    {% for catequista in catequistas %}
+                        {% if catequista.ciclo == ciclo.0 %}
+                            <p style="text-align: center;">{% if catequista.is_coord %} <b>{{ catequista.first_name }} (Coordinador)</b>  {% else %} {{ catequista.first_name }} {% endif %}</p>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </a>
+        {% endif %}
+    {% endfor %}
+</div>
+<h2>Grupos Juveniles</h2>
+<div class="cards">
+    {% for ciclo in ciclos %}
+        {% if ciclo.0|slice:":6" == 'gr_juv' %}
+            <a class="grupo-juvenil-card card" style="width: 20rem;" href="{% url 'panel_grupos' %}?ciclo={{ciclo.0}}">
+                <div class="card-body">
+                    <h2 style="border-bottom: 1px solid #f39c12;">{{ ciclo.1|upper }}</h2>
+                    {% for catequista in catequistas %}
+                        {% if catequista.ciclo == ciclo.0 %}
+                            <p style="text-align: center;">{% if catequista.is_coord %} <b>{{ catequista.first_name }} (Coordinador)</b>  {% else %} {{ catequista.first_name }} {% endif %}</p>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </a>
+        {% endif %}
+    {% endfor %}
+</div>
+<h2>Catecumenados</h2>
+<div class="cards">
+    {% for ciclo in ciclos %}
+        {% if ciclo.0|slice:":13" == 'catecumenados' %}
+            <a class="catecumenado-card card" style="width: 20rem;" href="{% url 'panel_grupos' %}?ciclo={{ciclo.0}}">
+                <div class="card-body">
+                    <h2 style="border-bottom: 1px solid #3498db;">{{ ciclo.1|upper }}</h2>
+                    {% for catequista in catequistas %}
+                        {% if catequista.ciclo == ciclo.0 %}
+                            <p style="text-align: center;">{% if catequista.is_coord %} <b>{{ catequista.first_name }} (Coordinador)</b>  {% else %} {{ catequista.first_name }} {% endif %}</p>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </a>
+        {% endif %}
+    {% endfor %}
+</div>
+
+<style>
+    .cards {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .card {
+        margin-bottom: 20px;
+        margin-right: 20px;
+        border: 1px solid lightgray;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease;
+        
+    }
+
+    .card:hover {
+        transform: scale(1.05);
+        cursor: pointer;
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    a{
+        text-decoration: none;
+        color: black;
+    }
+    .posco-card {
+        background-color: #e8f7dc;
+        border: 1px solid #86c631;
+    }
+
+    .grupo-juvenil-card {
+        background-color: #f4e5d4;
+        border: 1px solid #f39c12;
+    }
+
+    .catecumenado-card {
+        background-color: #d6eaf8;
+        border: 1px solid #3498db;
+    }
+
+    h2{
+        text-align: center;
+    }
+</style>
+
+
+{% endblock %}

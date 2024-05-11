@@ -16,19 +16,18 @@ from django.contrib import messages
 
 @login_required
 def crear_grupo(request):
-    if request.user.is_authenticated:
-        if request.user.is_coord:
-            ciclo = request.user.ciclo
-            grupo = Grupo.objects.create(ciclo=ciclo)
-            grupo.save()
-            return redirect('/grupo')
-        if request.user.is_superuser:
-            return redirect('crear_grupo_admin')
-        else:
-            return redirect('/403')
+    ciclo = request.user.ciclo
+    if request.user.is_superuser:
+        ciclo = request.GET.get('ciclo')
+        if ciclo not in [choice[0] for choice in Catecumeno.CicloChoices.choices]:
+            return redirect('/404')
+    if request.user.is_coord or request.user.is_superuser:
+        grupo = Grupo.objects.create(ciclo=ciclo)
+        grupo.save()
+        return redirect('/grupo?ciclo=' + ciclo)
+    
     else:
         return redirect('/403')
-    
         
 @login_required
 def editar_grupo(request, grupo_id):
@@ -40,11 +39,11 @@ def editar_grupo(request, grupo_id):
             if form.is_valid():
                 grupo = form.save(commit=False)
                 grupo.save()
-                return redirect('/grupo')
+                return redirect('/grupo?ciclo='+grupo.ciclo)
             else:
                 errores = form.errors['__all__'][0]
                 request.session['errores'] = [grupo.id,errores]
-                return redirect('/grupo')
+                return redirect('/grupo?ciclo='+grupo.ciclo)
                 
         else:
             form = GrupoForm(instance=grupo, catequistas=catequistas)
@@ -57,7 +56,7 @@ def eliminar_grupo(request, grupo_id):
     grupo = get_object_or_404(Grupo, pk=grupo_id)
     if request.user.ciclo == grupo.ciclo or request.user.is_superuser:
         grupo.delete()
-        return redirect('/grupo')
+        return redirect('/grupo?ciclo='+grupo.ciclo)
     else:
         return redirect('/403')
     
@@ -101,12 +100,20 @@ def ajax_obtener_catequistas(request):
 
 @login_required
 def panel_grupos(request):
-    if request.user.is_coord:
+    ciclo=request.user.ciclo
+    if request.user.is_superuser:
+        ciclo = request.GET.get('ciclo')
+        if ciclo not in [choice[0] for choice in Catecumeno.CicloChoices.choices]:
+            return redirect('/404')
+
+    if request.user.is_coord or request.user.is_superuser:
         error = request.session.pop('errores', "")
-        catequistas = CustomUser.objects.filter(ciclo=request.user.ciclo)
-        grupos = Grupo.objects.filter(ciclo=request.user.ciclo)
-        sesiones = Sesion.objects.filter(ciclo=request.user.ciclo, curso=Curso.objects.latest('id')).order_by('fecha')
-        return render(request, 'panel_grupos_coord.html', {'grupos': grupos, 'catequistas': catequistas, 'error': error, 'sesiones': sesiones})
+        catequistas = CustomUser.objects.filter(ciclo=ciclo)
+        grupos = Grupo.objects.filter(ciclo=ciclo)
+        sesiones = Sesion.objects.filter(ciclo=ciclo, curso=Curso.objects.latest('id')).order_by('fecha')
+        return render(request, 'panel_grupos_coord.html', {'grupos': grupos, 'catequistas': catequistas, 'error': error, 'sesiones': sesiones, 'ciclo': ciclo})
+    else:
+        return redirect('/403')
 
 ''' 
 def calcular_valor(grupos, lista_catecumenos, num_grupos, preferencias_totales):

@@ -36,9 +36,9 @@
     justify-content: center;
     box-shadow: 10px 10px 40px rgba(190, 192, 244, 0.34);
     overflow: hidden;
-    height: 160px; /* Altura ajustada */
+    height: 160px;
     pointer-events: auto;
-    transition: transform 0.2s ease; /* Transición suave de 0.3 segundos */
+    transition: transform 0.2s ease;
 }
 
 .estadistica:hover {
@@ -126,6 +126,24 @@
     border: 1px solid black;
     width: stretch;
     margin-bottom: 5px;
+}
+
+.accion {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: left;
+    box-shadow: 10px 10px 40px rgba(190, 192, 244, 0.34);
+    height: auto;
+    margin-right: 15px;
+}
+
+.acciones{
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .grid-container {
