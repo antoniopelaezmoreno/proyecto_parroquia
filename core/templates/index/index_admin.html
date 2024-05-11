@@ -25,21 +25,21 @@
                     <span class="material-icons icono" style="color: #0883b4; ">groups</span>
                     <div class="info-estadisticas">
                         <p style="margin-bottom: 10px; font-size: 20px;"> Catecúmenos </p>
-                        <p style="font-size: 50px; text-align: center; margin-top: 0px;"> <b>0</b></p> 
+                        <p style="font-size: 50px; text-align: center; margin-top: 0px;"> <b>{{ num_catecumenos }}</b></p> 
                     </div>
                 </a>
                 <div class="estadistica ausencias">
                     <span class="material-icons icono" style="color: #ce4222;">supervisor_account</span>
                     <div class="info-estadisticas">
                         <p style="margin-bottom: 10px; font-size: 20px;"> Catequistas </p>
-                        <p style="font-size: 50px; text-align: center; margin-top: 0px;"> <b>0</b></p> 
+                        <p style="font-size: 50px; text-align: center; margin-top: 0px;"> <b>{{ num_catequistas }}</b></p> 
                     </div>
                 </div>
                 <div class="estadistica ausencias-ultimas">
                     <span class="material-icons icono" style="color: #deac19;">help_outline</span>
                     <div class="info-estadisticas">
                         <p style="margin-bottom: 10px; font-size: 20px;"> Solicitudes </p>
-                        <p style="font-size: 50px; text-align: center; margin-top: 0px;"> <b>0</b></p> 
+                        <p style="font-size: 50px; text-align: center; margin-top: 0px;"> <b>{{ num_solicitudes }}</b></p> 
                     </div>
                 </div>
             </div>
@@ -58,22 +58,7 @@
                     <p> No hay próximo evento</p>
                 {% endif %}
             </div>
-
-            <h3 style="margin-top: 30px; padding: auto;"> Próxima Sesión</h3>
-            <div class="acciones">
-                <a class="accion" href="{% url 'terminar_curso' %}">
-                    Terminar Curso
-                </a>
-
-                <a class="accion" href="{% url 'convertir_a_coordinador' %}">
-                    Coordinadores
-                </a>
-
-                <a class="accion" href="{% url 'panel_ciclos' %}">
-                    Ciclos
-                </a>
-                
-            </div>
+           
         </div>
         <!--Panel derecho-->
         <div class="columna" style="flex-basis: 30%;">
@@ -98,6 +83,22 @@
                 <div id='calendario'></div>
                 <a class="btnCrearEvento" href="{% url 'crear_evento' %}" id="crearEventoBtn" style="margin-top: 10px;">Crear Evento</a>
                 <a class="btnCrearEvento predeterminado" href="{% url 'crear_evento' %}?reunion_comision=true" id="crearEventoBtn" style="margin-top: 10px;">Reunión Comisión</a>
+            </div>
+
+            <h3 style="padding: auto;">Acciones</h3>
+            <div class="acciones">
+                <a class="accion" href="{% url 'terminar_curso' %}">
+                    Terminar Curso
+                </a>
+
+                <a class="accion" href="{% url 'convertir_a_coordinador' %}">
+                    Coordinadores
+                </a>
+
+                <a class="accion" href="{% url 'panel_ciclos' %}">
+                    Ciclos
+                </a>
+                
             </div>
         </div>
     </div>

@@ -31,10 +31,13 @@ def index(request):
                 archivos_sesion = proxima_sesion.files.all()
             else:
                 archivos_sesion = None
-            grupos = Grupo.objects.filter(ciclo=request.user.ciclo)
-            return render(request, 'index/index_coord.html', {'grupos': grupos, 'proxima_sesion': proxima_sesion, 'archivos_sesion': archivos_sesion,'proximo_evento':proximo_evento,'notificaciones': notificaciones, 'num_catecumenos': num_catecumenos, 'num_ausencias': num_ausencias, 'num_ausencias_ultima_sesion': num_ausencias_ultima_sesion})
+            return render(request, 'index/index_coord.html', {'proxima_sesion': proxima_sesion, 'archivos_sesion': archivos_sesion,'proximo_evento':proximo_evento,'notificaciones': notificaciones, 'num_catecumenos': num_catecumenos, 'num_ausencias': num_ausencias, 'num_ausencias_ultima_sesion': num_ausencias_ultima_sesion})
         elif request.user.is_superuser:
-            return render(request, 'index/index_admin.html')
+            proximo_evento = Evento.objects.filter(fecha__gte=date.today()).order_by('fecha').first()
+            num_catecumenos = Catecumeno.objects.all().count()
+            num_catequistas = CustomUser.objects.all().exclude(is_superuser=True).count()
+            num_solicitudes = SolicitudCatequista.objects.all().count()
+            return render(request, 'index/index_admin.html', {'proximo_evento':proximo_evento,'notificaciones': notificaciones, 'num_catecumenos': num_catecumenos, 'num_catequistas': num_catequistas, 'num_solicitudes': num_solicitudes})
         else:
             return render(request, 'index/index_cat.html')
     else:
