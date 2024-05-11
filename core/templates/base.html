@@ -70,6 +70,8 @@
 <body>
   <header class="content-shift" id="header">
     <div class="header-content">
+        <!-- Nuevo botón para pantallas pequeñas -->
+        <button class="sidebar-btn-mobile" onclick="toggleSidebarMobile()"><i class="bi bi-list"></i></button>
         <div style="margin-left: 10px;" class="text-center">
           <p>{% block title %} {% endblock %}</p>
         </div>
@@ -141,6 +143,12 @@
         dashboard.classList.add('content-shift');
         header.classList.add('content-shift');
       }
+    }
+
+    function toggleSidebarMobile() {
+      var sidebar = document.getElementById('sidebar');
+      sidebar.style.left = '0';
+
     }
   </script>
 </body>

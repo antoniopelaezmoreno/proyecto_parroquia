@@ -42,8 +42,8 @@
 <div class="grid-container">
     {% for folder in folders %}
         <div class="grid-item"  title="{{ folder.name }}">
-            <div class="dropdown">
-                <button onclick="toggleDropdown(this)" class="dropbtn"><span class="material-icons">
+            <div class="dropdown-panel">
+                <button onclick="toggleDropdown(this)" class="dropdownbtn"><span class="material-icons">
                     more_vert
                     </span></button>
                 <div id="dropdown{{ folder.id }}" class="dropdown-content">
@@ -64,8 +64,8 @@
     {% endfor %}
     {% for file in files %}
         <div class="grid-item">
-            <div class="dropdown">
-                <button onclick="toggleDropdown(this)" class="dropbtn"><span class="material-icons">
+            <div class="dropdown-panel">
+                <button onclick="toggleDropdown(this)" class="dropdownbtn"><span class="material-icons">
                     more_vert
                     </span></button>
                 <div id="dropdown{{ file.id }}" class="dropdown-content">
@@ -133,7 +133,7 @@
         margin-bottom: 10px;
     }
 
-    .dropdown {
+    .dropdown-panel {
         position: absolute;
         top: 0;
         right: 0;
@@ -160,12 +160,18 @@
         background-color: #ddd;
     }
 
-    .dropdown:hover .dropdown-content {
+    .dropdown-panel:hover .dropdown-content {
         display: block;
     }
 
-    .dropdown:hover .dropbtn {
+    .dropdown-panel:hover .dropdownbtn {
         background-color: #3e8e41;
+    }
+
+    .dropdownbtn {
+        background-color: transparent;
+        border: none;
+        color: #f1f1f1f1;
     }
 
     .ruta {
