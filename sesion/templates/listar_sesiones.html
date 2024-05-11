@@ -5,37 +5,93 @@
 
 {% block content %}
 
-<div id="alumnos-container">
-    <table class="alumnos-table rounded-border">
-        <thead>
-            <tr>
-                <th>Título</th>
-                <th>Descripción</th>
-                <th>Fecha</th>
-                <th></th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for sesion in sesiones %}
-                <tr class="alumno" data-ciclo="{{ catecumeno.ciclo }}">
-                    <td>{{ sesion.titulo }}</td>
-                    <td>{{ sesion.descripcion }}</td>
-                    <td>{{ sesion.fecha }}</td>
-                    <td>
-                        <a href="{% url 'pasar_lista' sesion.id %}">Pasar Lista</a>
-                    </td>
-                    <td>
-                        <a href="{% url 'editar_sesion' sesion.id %}">Editar</a>
-                    </td>
-                    <td>
-                        <a href="{% url 'eliminar_sesion' sesion.id %}">Eliminar</a>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<a href="{% url 'crear_sesion' %}" class="crearbtn">
+    <span class="material-icons" style="font-size: 75px; color: #86c631">
+        add_circle
+    </span>
+</a>
+
+{% if not sesiones %}
+    <h2 style="text-align: center;">No hay sesiones registradas</h2>
+{% else %}
+<div class="sesion-container">
+    {% for sesion in sesiones %}
+    <div class="sesion" data-ciclo="{{ sesion.ciclo }}">
+        <h3>{{ sesion.titulo }}</h3>
+        <div class="descripcion">{{ sesion.descripcion }}</div>
+        <p> - {{ sesion.fecha }} - </p>
+        <div class="botones">
+            {% if user.ciclo == sesion.ciclo %}
+                <a class="boton" style="background-color: #86c631;" href="{% url 'pasar_lista' sesion.id %}">Pasar Lista</a>
+            {% endif %}
+            <a class="boton" style="background-color: #2792d8;" href="{% url 'editar_sesion' sesion.id %}">Editar</a>
+            <a class="boton" style="background-color: #eb2a2a;" href="{% url 'eliminar_sesion' sesion.id %}">Eliminar</a>
+            
+        </div>
+    </div>
+    {% endfor %}
 </div>
+{% endif %}
+
+<style>
+        .sesion-container{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: row;
+    }
+
+    .sesion{
+        background-color: #fff;
+        margin: 10px;
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        position: relative;
+    }
+
+    .sesion h3{
+        text-align: center;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .descripcion {
+        max-width: 500px; /* Ancho máximo */
+        max-height: 100px; /* Altura máxima */
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding-right: 20px;
+        display: -webkit-box;
+        -webkit-line-clamp: 5; /* Número de líneas a mostrar */
+        -webkit-box-orient: vertical;
+    }
+
+    .botones{
+        display: flex;
+        justify-content: center;
+    }
+
+    .boton{
+        display: inline-block;
+        margin: 10px;
+        padding: 5px 10px;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+    .crearbtn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        border: none;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        margin: 4px 2px;
+        cursor: pointer;
+        z-index: 10;
+    }
+</style>
 
 
 {% endblock %}

@@ -119,6 +119,7 @@ def editar_sesion(request, sesionId):
         return render(request, 'editar_sesion.html', {'form': form, 'sesion': sesion})
     else:
         return redirect('/403')
+
     
 
 @login_required
