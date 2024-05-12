@@ -6,7 +6,10 @@
    
     <!-- Contenido principal a la derecha -->
 <div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
-    <h2 class="mb-12 text-2xl text-center">Catecumenos</h2>
+
+    <div class="text-center">
+        <button  class="asignar-button boton">Asignar</button>
+    </div>
 
     <div class="flex-container">
         <div class="solicitudes-column">
@@ -15,6 +18,7 @@
                     <tr>
                         <th>Nombre</th>
                         <th>Apellidos</th>
+                        <th> </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -56,11 +60,21 @@
             </div>
         </div>
     </div>
-
-    <div class="text-center">
-        <button  class="asignar-button">Asignar</button>
-    </div>
 </div>
+
+<style>
+    .boton{
+        display: inline-block;
+        margin: 10px;
+        padding: 5px 10px;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        background-color: #ea7c22;
+        cursor: pointer;
+        border: none;
+    }
+</style>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {

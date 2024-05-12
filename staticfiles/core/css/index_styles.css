@@ -139,7 +139,15 @@
     box-shadow: 10px 10px 40px rgba(190, 192, 244, 0.34);
     height: auto;
     margin-right: 15px;
+    margin-bottom: 15px;
+    transition: transform 0.2s;
 }
+
+.accion:hover {
+    transform: scale(1.05);
+}
+
+
 
 .acciones{
     display: flex;

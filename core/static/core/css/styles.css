@@ -184,6 +184,7 @@ header {
 
 .flex-container {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .solicitudes-column {

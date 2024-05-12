@@ -28,20 +28,20 @@
                         <p style="font-size: 50px; text-align: center; margin-top: 0px;"> <b>{{ num_catecumenos }}</b></p> 
                     </div>
                 </a>
-                <div class="estadistica ausencias">
+                <a class="estadistica ausencias" href="{% url 'listar_catequistas' %}">
                     <span class="material-icons icono" style="color: #ce4222;">supervisor_account</span>
                     <div class="info-estadisticas">
                         <p style="margin-bottom: 10px; font-size: 20px;"> Catequistas </p>
                         <p style="font-size: 50px; text-align: center; margin-top: 0px;"> <b>{{ num_catequistas }}</b></p> 
                     </div>
-                </div>
-                <div class="estadistica ausencias-ultimas">
+                </a>
+                <a class="estadistica ausencias-ultimas" href="{% url 'asignar_catequistas' %}">
                     <span class="material-icons icono" style="color: #deac19;">help_outline</span>
                     <div class="info-estadisticas">
                         <p style="margin-bottom: 10px; font-size: 20px;"> Solicitudes </p>
                         <p style="font-size: 50px; text-align: center; margin-top: 0px;"> <b>{{ num_solicitudes }}</b></p> 
                     </div>
-                </div>
+                </a>
             </div>
             
             <h3 style="margin-top: 30px; padding: auto;"> Próximo Evento</h3>
@@ -57,6 +57,34 @@
                 {% else %}
                     <p> No hay próximo evento</p>
                 {% endif %}
+            </div>
+
+            <h3 style="padding: auto;">Acciones</h3>
+            <div class="acciones">
+                <a class="accion" href="{% url 'terminar_curso' %}">
+                    Terminar Curso
+                </a>
+
+                <a class="accion" href="{% url 'convertir_a_coordinador' %}">
+                    Coordinadores
+                </a>
+
+                <a class="accion" href="{% url 'panel_ciclos' %}">
+                    Ciclos
+                </a>
+
+                <a class="accion" href="{% url 'crear_reservas' %}">
+                    Asignar Sala
+                </a>
+
+                <a class="accion" href="{% url 'crear_sala' %}">
+                    Crear Sala
+                </a>
+
+                <a class="accion" href="{% url 'lista_salas' %}">
+                    Reservar Sala
+                </a>
+                
             </div>
            
         </div>
@@ -83,23 +111,7 @@
                 <div id='calendario'></div>
                 <a class="btnCrearEvento" href="{% url 'crear_evento' %}" id="crearEventoBtn" style="margin-top: 10px;">Crear Evento</a>
                 <a class="btnCrearEvento predeterminado" href="{% url 'crear_evento' %}?reunion_comision=true" id="crearEventoBtn" style="margin-top: 10px;">Reunión Comisión</a>
-            </div>
-
-            <h3 style="padding: auto;">Acciones</h3>
-            <div class="acciones">
-                <a class="accion" href="{% url 'terminar_curso' %}">
-                    Terminar Curso
-                </a>
-
-                <a class="accion" href="{% url 'convertir_a_coordinador' %}">
-                    Coordinadores
-                </a>
-
-                <a class="accion" href="{% url 'panel_ciclos' %}">
-                    Ciclos
-                </a>
-                
-            </div>
+            </div>            
         </div>
     </div>
 
