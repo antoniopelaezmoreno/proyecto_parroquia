@@ -131,22 +131,48 @@
       var sidebar = document.getElementById('sidebar');
       var dashboard = document.getElementById('dashboard');
       var header = document.getElementById('header');
-      if (sidebar.style.left === '0px' || sidebar.style.left === '') {
-        sidebar.style.left = '-250px';
+      if (window.innerWidth <= 800) {
+        if (sidebar.style.left === '0px' || sidebar.style.left === '') {
+          sidebar.style.left = '-100%';
+          dashboard.classList.remove('content-shift');
+          header.classList.remove('content-shift');
+        } else {
+          sidebar.style.left = '0px';
+          dashboard.classList.add('content-shift');
+          header.classList.add('content-shift');
+        }
+      } else {
+        if (sidebar.style.left === '0px' || sidebar.style.left === '') {
+          sidebar.style.left = '-250px';
+          dashboard.classList.remove('content-shift');
+          header.classList.remove('content-shift');
+        } else {
+          sidebar.style.left = '0px';
+          dashboard.classList.add('content-shift');
+          header.classList.add('content-shift');
+        }
+      }
+    }
+  
+    function toggleSidebarMobile() {
+      var sidebar = document.getElementById('sidebar');
+      sidebar.style.left = '0';
+    }
+  
+    window.addEventListener('resize', function() {
+      if (window.innerWidth <= 800) {
+        var sidebar = document.getElementById('sidebar');
+        sidebar.style.left = '-100%';
         dashboard.classList.remove('content-shift');
         header.classList.remove('content-shift');
       } else {
+        var sidebar = document.getElementById('sidebar');
         sidebar.style.left = '0px';
         dashboard.classList.add('content-shift');
         header.classList.add('content-shift');
       }
-    }
-
-    function toggleSidebarMobile() {
-      var sidebar = document.getElementById('sidebar');
-      sidebar.style.left = '0';
-
-    }
+    });
   </script>
+  
 </body>
 </html>
