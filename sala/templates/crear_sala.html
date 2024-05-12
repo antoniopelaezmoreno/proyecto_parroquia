@@ -5,10 +5,70 @@
 
 {% block content %}
 
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Crear</button>
-    </form>
+<form method="post" enctype="multipart/form-data" id="crearSalaForm">
+    <h2 style="text-align: center;">Crear una nueva sala</h2>
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="id_nombre">Nombre:</label>
+        {{ form.nombre }}
+    </div>
+    <div>
+        <label for="id_requiere_aprobacion" style="font-weight: bold;">¿Requiere Aprobación?: </label>
+        <input type="checkbox" id="id_requiere_aprobacion" name="requiere_aprobacion">
+        
+    </div>
+    <button type="submit">Crear</button>
+</form>
+
+<style>
+    #crearSalaForm {
+        max-width: 500px;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: bold;
+    }
+
+    .form-group input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-size: 16px;
+    }
+
+    .form-group input[type="checkbox"] {
+        margin-right: 10px;
+    }
+
+    button[type="submit"] {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin-top: 10px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    button[type="submit"]:hover {
+        background-color: #45a049;
+    }
+</style>
 
 {% endblock %}
