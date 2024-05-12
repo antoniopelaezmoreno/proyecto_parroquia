@@ -18,28 +18,28 @@
     <button class="filter-btn" onclick="filterByCiclo('catecumenados_3')">Catecumenados 3</button>
 </div>
 <div id="alumnos-container">
-    <table class="alumnos-table rounded-border">
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Apellidos</th>
-                <th>Email</th>
-                <th>Teléfono</th>
-                <th>Ciclo</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for catequista in catequistas %}
-                <tr class="alumno" data-ciclo="{{ catequista.ciclo }}">
-                    <td>{{ catequista.first_name }}</td>
-                    <td>{{ catequista.last_name }}</td>
-                    <td>{{ catequista.email }}</td>
-                    <td>{{ catequista.telefono }}</td>
-                    <td>{{ catequista.ciclo }}</td>
+    <div class="scrollmenu">
+        <table class="alumnos-table rounded-border">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Teléfono</th>
+                    <th>Ciclo</th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {% for catequista in catequistas %}
+                    <tr class="alumno" data-ciclo="{{ catequista.ciclo }}">
+                        <td>{{ catequista.first_name }} {{ catequista.last_name }}</td>
+                        <td>{{ catequista.email }}</td>
+                        <td>{{ catequista.telefono }}</td>
+                        <td>{{ catequista.ciclo }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 
 
@@ -62,5 +62,15 @@
     }
 </script>
 
+<style>
+    .scrollmenu {
+        overflow-x: auto;
+    }
+
+    .scrollmenu table {
+        width: 100%;
+        white-space: nowrap; /* Para que los elementos no se rompan */
+    }
+</style>
 
 {% endblock %}
