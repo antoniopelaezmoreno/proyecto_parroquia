@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import logout
-from .forms import CatecumenoForm
+from .forms import CatecumenoForm, CatecumenoEditForm
 from .models import Catecumeno
 from grupo.models import Grupo
+from sesion.models import Sesion
 import json
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
@@ -105,12 +106,19 @@ def ver_autorizaciones(request):
 def eliminar_catecumeno(request, id):
     if request.user.is_authenticated:
         catecumeno = get_object_or_404(Catecumeno,id=id)
+        previous_page = request.META.get('HTTP_REFERER', '/')
         if request.user.is_superuser:
             catecumeno.delete()
-            return redirect(request.META.get('HTTP_REFERER', '/'))
+            if previous_page.endswith(f'/catecumeno/{id}/'):
+                return redirect('/')
+            else:
+                return redirect(previous_page)
         elif request.user.is_coord and catecumeno.ciclo == request.user.ciclo:
             catecumeno.delete()
-            return redirect(request.META.get('HTTP_REFERER', '/'))
+            if previous_page.endswith(f'/catecumeno/{id}/'):
+                return redirect('/')
+            else:
+                return redirect(previous_page)
         else:
             return redirect('/403')
     else:
@@ -120,23 +128,37 @@ def eliminar_catecumeno(request, id):
 def mostrar_catecumeno(request, id):
     catecumeno = get_object_or_404(Catecumeno,id=id)
     catequistas = obtener_catequistas_de_catecumeno(catecumeno)
+    ausencias, justificaciones, asistencias = contar_ausencias_justificaciones_asistencias(request, id)
     if request.user.is_superuser or (request.user.is_coord and catecumeno.ciclo == request.user.ciclo):
-        return render(request, 'mostrar_catecumeno.html', {'catecumeno': catecumeno, 'catequistas': catequistas})
+        return render(request, 'mostrar_catecumeno.html', {'catecumeno': catecumeno, 'catequistas': catequistas, 'ausencias': ausencias, 'justificaciones': justificaciones, 'asistencias': asistencias})
     else:
         return redirect('/403')
+    
+
+@login_required
+def contar_ausencias_justificaciones_asistencias(request, catecumeno_id):
+    catecumeno = get_object_or_404(Catecumeno, id=catecumeno_id)
+    ausencias = Sesion.objects.filter(ciclo=catecumeno.ciclo).filter(ausentes=catecumeno)
+    justificaciones = Sesion.objects.filter(ciclo=catecumeno.ciclo).filter(justificados=catecumeno)
+    asistencias = Sesion.objects.filter(ciclo=catecumeno.ciclo).filter(asistentes=catecumeno)
+    return ausencias, justificaciones, asistencias
     
 @login_required
 def editar_catecumeno(request, id):
     catecumeno = get_object_or_404(Catecumeno,id=id)
+    catequistas = obtener_catequistas_de_catecumeno(catecumeno)
+    ausencias, justificaciones, asistencias = contar_ausencias_justificaciones_asistencias(request, id)
     if request.user.is_superuser or (request.user.is_coord and catecumeno.ciclo == request.user.ciclo):
         if request.method == 'POST':
-            form = CatecumenoForm(request.POST, request.FILES, instance=catecumeno)
+            form = CatecumenoEditForm(request.POST, request.FILES, instance=catecumeno)
             if form.is_valid():
                 form.save()
                 return redirect('mostrar_catecumeno', id=id)
+            else:
+                print(form.errors)
         else:
-            form = CatecumenoForm(instance=catecumeno)
-        return render(request, 'editar_catecumeno.html', {'form': form})
+            form = CatecumenoEditForm(instance=catecumeno)
+        return render(request, 'editar_catecumeno.html', {'form': form, 'catecumeno': catecumeno, 'catequistas': catequistas, 'ausencias': ausencias, 'justificaciones': justificaciones, 'asistencias': asistencias})
     else:
         return redirect('/403')
     
