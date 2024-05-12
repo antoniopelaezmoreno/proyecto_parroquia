@@ -35,9 +35,6 @@
         <p> {{ sesion.ciclo }}</p>
         <p> - {{ sesion.fecha }} - </p>
         <div class="botones">
-            {% if user.ciclo == sesion.ciclo or user.is_superuser %}
-                <a class="boton" style="background-color: #86c631;" href="{% url 'pasar_lista' sesion.id %}">Pasar Lista</a>
-            {% endif %}
             <a class="boton" style="background-color: #2792d8;" href="{% url 'editar_sesion' sesion.id %}">Editar</a>
             <a class="boton" style="background-color: #eb2a2a;" href="{% url 'eliminar_sesion' sesion.id %}">Eliminar</a>
             
