@@ -22,6 +22,10 @@
     <button type="submit" id="guardarBtn">Buscar</button>
 </form>
 
+{% if todas_salas %}
+    <h2>Salas disponibles:</h2>
+
+<div id="contenedorSalas">
 {% for sala in todas_salas %}
     {% if sala in salas_ocupadas %}
         {% for reserva in reservas_salas_ocupadas %}
@@ -37,6 +41,8 @@
         </div>
     {% endif %}
 {% endfor %}
+</div>
+{% endif %}
 
 <div id="myModal" class="modal">
   <div class="modal-content">
@@ -51,4 +57,63 @@
 </div>
 
 <script src="{% static 'core/js/sala.js' %}"></script>
+
+<style>
+    #solicitudForm {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    #solicitudForm input[type="date"],
+    #solicitudForm select,
+    #solicitudForm button {
+        width: 100%;
+        padding: 12px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-size: 16px;
+    }
+
+    #solicitudForm button {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+    #solicitudForm button:hover {
+        background-color: #45a049;
+    }
+
+    #solicitudForm button:disabled {
+        background-color: #cccccc;
+        cursor: not-allowed;
+    }
+
+    .error {
+        display: flex;
+        justify-content: center;
+        background-color: #d31d1d;
+        color: white;
+        border-radius: 5px;
+        margin-bottom: 15px;
+        padding: 10px;
+    }
+
+    #contenedorSalas {
+        background-color: #fff;
+        display: flex;
+        flex-wrap: wrap;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+    }
+
+</style>
 {% endblock %}
+
