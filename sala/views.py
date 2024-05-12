@@ -55,6 +55,8 @@ def obtener_salas_disponibles(request):
     else:
         return redirect('/403')
 
+from django.contrib import messages
+
 @login_required
 def crear_reservas_por_defecto(request):
     if request.user.is_superuser:
@@ -65,13 +67,13 @@ def crear_reservas_por_defecto(request):
             hora_inicio = request.POST.get('hora_inicio')
             hora_fin = request.POST.get('hora_fin')
             if hora_inicio >= hora_fin:
-                print('La hora de inicio debe ser menor a la hora de fin.')
-                return HttpResponse('La hora de inicio debe ser menor a la hora de fin.')
-            
+                messages.error(request, 'La hora de inicio debe ser menor a la hora de fin.')
+                return redirect('crear_reservas')  # Reemplaza 'nombre_de_la_url' con el nombre de la URL a la que deseas redirigir
+
             # Obtener usuario y sala
-            usuario = CustomUser.objects.get(pk=usuario_id)
-            sala = Sala.objects.get(pk=sala_id)
-            
+            usuario = get_object_or_404(CustomUser, pk=usuario_id)
+            sala = get_object_or_404(Sala, pk=sala_id)
+
             # Obtener la fecha actual
             fecha_actual = date.today()
 
@@ -88,9 +90,8 @@ def crear_reservas_por_defecto(request):
             while proxima_fecha <= fecha_limite:
                 reservas_exist = Reserva.objects.filter(sala=sala, fecha=proxima_fecha, hora_inicio__lt=hora_fin, hora_fin__gt=hora_inicio)
                 if reservas_exist.exists():
-                    print('Ya existe una reserva en el plazo seleccionado. La fecha ocupada es: ', reservas_exist.first().fecha)
-                    lista_reservas.clear()
-                    return HttpResponse('Ya existe una reserva en el plazo seleccionado. La fecha ocupada es: ', reservas_exist.first().fecha)
+                    messages.error(request, f'Ya existe una reserva en el plazo seleccionado. La fecha ocupada es: {reservas_exist.first().fecha}')
+                    return redirect('crear_reservas')  # Reemplaza 'nombre_de_la_url' con el nombre de la URL a la que deseas redirigir
                 
                 reserva = Reserva(usuario=usuario, sala=sala, fecha=proxima_fecha, hora_inicio=hora_inicio, hora_fin=hora_fin)
                 lista_reservas.append(reserva)
@@ -98,13 +99,15 @@ def crear_reservas_por_defecto(request):
 
             Reserva.objects.bulk_create(lista_reservas)
             
-            return HttpResponse('Reservas creadas exitosamente.')  # O redirigir a una página de éxito
+            messages.success(request, 'Reservas creadas exitosamente.')
+            return redirect('crear_reservas')  # Reemplaza 'nombre_de_la_url' con el nombre de la URL a la que deseas redirigir
 
         salas = Sala.objects.all()
         usuarios = CustomUser.objects.filter(is_coord=True)
         return render(request, 'crear_reservas.html', {'salas': salas, 'usuarios': usuarios})
     else:
         return redirect('/403')
+
     
 @login_required
 def reservar_sala(request):
