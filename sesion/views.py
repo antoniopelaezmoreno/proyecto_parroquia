@@ -218,27 +218,31 @@ def tabla_asistencias_admin(request, ciclo):
     
 @login_required
 def contar_ausencias(request):
+    if request.user.is_superuser:
+        return redirect('/403')
+    sesiones_ausentes = Sesion.objects.filter(ciclo = request.user.ciclo, ausentes__isnull=False)
     if request.user.is_coord:
-        sesiones_ausentes = Sesion.objects.filter(ciclo = request.user.ciclo, ausentes__isnull=False)
-
-        # Anotar el número de ausencias de cada catecúmeno
         catecumenos_con_ausencias = Catecumeno.objects.annotate(num_ausencias=Count('sesiones_ausentes')).filter(num_ausencias__gte=3)
 
-        # Contar el número de catecúmenos resultantes
         return catecumenos_con_ausencias
     else:
-        return redirect('/403')
+        catecumenos = catecumenos_desde_catequista(request.user)
+        catecumenos_con_ausencias = Catecumeno.objects.annotate(num_ausencias=Count('sesiones_ausentes')).filter(num_ausencias__gte=3).filter(id__in=[catecumeno.id for catecumeno in catecumenos])
+        return catecumenos_con_ausencias
     
 @login_required
 def contar_ausencias_ultima_sesion(request):
-    if request.user.is_coord:
-        sesion = Sesion.objects.filter(ciclo=request.user.ciclo, fecha__lte=timezone.now().date())
-        if sesion.exists():
-            sesion = sesion.latest('fecha')
-            ausentes = sesion.ausentes.all()
-            return ausentes
-        else:
-            ausentes=[]
-            return ausentes
-    else:
+    if request.user.is_superuser:
         return redirect('/403')
+    sesion = Sesion.objects.filter(ciclo=request.user.ciclo, fecha__lte=timezone.now().date())
+    
+    if sesion.exists():
+        sesion = sesion.latest('fecha')
+    else:
+        return []
+    
+    if request.user.is_coord:
+        return sesion.ausentes.all()
+    else:
+        catecumenos = catecumenos_desde_catequista(request.user)
+        return sesion.ausentes.filter(id__in=[catecumeno.id for catecumeno in catecumenos])
