@@ -4,6 +4,7 @@ from .forms import CatecumenoForm, CatecumenoEditForm
 from .models import Catecumeno
 from grupo.models import Grupo
 from sesion.models import Sesion
+from sesion.views import catecumenos_desde_catequista
 import json
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
@@ -30,7 +31,8 @@ def listar_catecumenos(request):
         catecumenos = Catecumeno.objects.filter(ciclo=ciclo)
         return render(request, 'listar_catecumenos.html', {'catecumenos': catecumenos})
     else:
-        return redirect('/403')
+        catecumenos = catecumenos_desde_catequista(request.user)
+        return render(request, 'listar_catecumenos.html', {'catecumenos': catecumenos})
     
 @login_required
 def asociar_preferencias(request):

@@ -9,7 +9,7 @@ from custom_user.models import CustomUser
 from sala.models import Reserva, SolicitudReserva
 from solicitud_catequista.models import SolicitudCatequista
 from curso.models import Curso
-from sesion.views import contar_ausencias, contar_ausencias_ultima_sesion
+from sesion.views import contar_ausencias, contar_ausencias_ultima_sesion, catecumenos_desde_catequista
 from django.contrib.auth.decorators import login_required
 from django.db import DEFAULT_DB_ALIAS
 from django.urls import reverse
@@ -39,7 +39,16 @@ def index(request):
             num_solicitudes = SolicitudCatequista.objects.all().count()
             return render(request, 'index/index_admin.html', {'proximo_evento':proximo_evento,'notificaciones': notificaciones, 'num_catecumenos': num_catecumenos, 'num_catequistas': num_catequistas, 'num_solicitudes': num_solicitudes})
         else:
-            return render(request, 'index/index_cat.html')
+            proxima_sesion = Sesion.objects.filter(ciclo = request.user.ciclo).filter(fecha__gte=date.today()).order_by('fecha').first()
+            proximo_evento = Evento.objects.filter(participantes=request.user).filter(fecha__gte=date.today()).order_by('fecha').first()
+            num_catecumenos = len(catecumenos_desde_catequista(request.user))
+            num_ausencias= contar_ausencias(request).count()
+            num_ausencias_ultima_sesion = len(contar_ausencias_ultima_sesion(request))
+            if proxima_sesion:
+                archivos_sesion = proxima_sesion.files.all()
+            else:
+                archivos_sesion = None
+            return render(request, 'index/index_cat.html', {'proxima_sesion': proxima_sesion, 'archivos_sesion': archivos_sesion,'proximo_evento':proximo_evento,'notificaciones': notificaciones, 'num_catecumenos': num_catecumenos, 'num_ausencias': num_ausencias, 'num_ausencias_ultima_sesion': num_ausencias_ultima_sesion})
     else:
         return render(request, 'index/index.html')
 

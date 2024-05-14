@@ -102,7 +102,7 @@
         </div>
         <a href="{% url 'index' %}" class="menu-btn">Inicio</a>
         {% if user.is_superuser %}
-            <a href="{% url 'ver_autorizaciones' %}" class="menu-btn">Autorizaciones</a>
+            <a href="{% url 'panel_ciclos' %}" class="menu-btn">Ciclos</a>
             <a href="{% url 'tabla_asistencias_admin' 'posco_1' %}" class="menu-btn">Tabla asistencias</a>
             <a href="{% url 'solicitudes_reserva' %}" class="menu-btn">Solicitudes Sala</a>
         {% else %}
@@ -110,8 +110,7 @@
             <a href="{% url 'panel_grupos' %}" class="menu-btn">Grupos</a>
             <a href="{% url 'mis_reservas' %}" class="menu-btn">Salas</a>
           {% else %}
-            <button class="menu-btn" onclick="toggleSidebar()">Reports</button>
-            <button class="menu-btn" onclick="toggleSidebar()">Analytics</button>
+            <a href="{% url 'panel_grupos' %}" class="menu-btn">Mi Grupo</a>
           {% endif %}
           
         {% endif %}

@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Mi Grupo {% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'core/css/index_styles.css' %}">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+<div class="flex-container">
+    {% for grupo in grupos %}
+        <div class="caja grupo">
+            <!-- Nombre de catequistas -->
+            <h3 class="catequistas-info" style="display: block; margin-top: 0;">
+                {% if grupo.catequista1 %}
+                    {{ grupo.catequista1.first_name }} y
+                {% else %}
+                    Catequista 1 y 
+                {% endif %}
+                {% if grupo.catequista2 %}
+                    {{ grupo.catequista2.first_name }}
+                {% else %}
+                    Catequista 2
+                {% endif %}
+            </h3>
+
+            <!-- Formulario para editar catequistas -->
+            <form class="editar-form" style="display: none;" action="{% url 'editar_grupo' grupo.id %}" method="POST">
+                {% csrf_token %}
+                <select id="catequista1" name="catequista1">
+                    {% for catequista in catequistas %}
+                        <option value="{{ catequista.id }}" {% if grupo.catequista1.id == catequista.id %}selected{% endif %}>
+                            {{ catequista.first_name }}
+                        </option>
+                    {% endfor %}
+                </select>
+                y
+                <select id="catequista2" name="catequista2">
+                    {% for catequista in catequistas %}
+                        <option value="{{ catequista.id }}" {% if grupo.catequista2.id == catequista.id %}selected{% endif %}>
+                            {{ catequista.first_name }}
+                        </option>
+                    {% endfor %}
+                </select>
+                
+                <button type="submit">Guardar Cambios</button>
+            </form>
+            {% if error.0 == grupo.id %}
+                <span style="color:red;">{{ error.1 }} </span>
+            {% endif %}
+            <div class="miembros">
+                {% for miembro in grupo.miembros.all %}
+                    <p>{{ miembro.nombre }}</p>
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+
+<div>
+    {% include 'tabla_asistencias_coord.html' %}
+</div>
+
+{% endblock %}

@@ -100,20 +100,30 @@ def ajax_obtener_catequistas(request):
 
 @login_required
 def panel_grupos(request):
+    from core.views import error
     ciclo=request.user.ciclo
     if request.user.is_superuser:
         ciclo = request.GET.get('ciclo')
         if ciclo not in [choice[0] for choice in Catecumeno.CicloChoices.choices]:
             return redirect('/404')
-
+    mensaje_error = request.session.pop('errores', "")
+    sesiones = Sesion.objects.filter(ciclo=ciclo, curso=Curso.objects.latest('id')).order_by('fecha')
     if request.user.is_coord or request.user.is_superuser:
-        error = request.session.pop('errores', "")
         catequistas = CustomUser.objects.filter(ciclo=ciclo)
         grupos = Grupo.objects.filter(ciclo=ciclo)
-        sesiones = Sesion.objects.filter(ciclo=ciclo, curso=Curso.objects.latest('id')).order_by('fecha')
-        return render(request, 'panel_grupos_coord.html', {'grupos': grupos, 'catequistas': catequistas, 'error': error, 'sesiones': sesiones, 'ciclo': ciclo})
+        return render(request, 'panel_grupos_coord.html', {'grupos': grupos, 'catequistas': catequistas, 'error': mensaje_error, 'sesiones': sesiones, 'ciclo': ciclo})
     else:
-        return redirect('/403')
+        grupo1 = Grupo.objects.filter(catequista1=request.user).first()
+        grupo2 = Grupo.objects.filter(catequista2=request.user).first()
+        if grupo1:
+            catequistas = [grupo1.catequista1, grupo1.catequista2]
+            grupos = [grupo1]
+        elif grupo2:
+            catequistas = [grupo2.catequista1, grupo2.catequista2]
+            grupos = [grupo2]
+        else:
+            return error(request, 'No tienes grupo asignado')
+        return render(request, 'panel_grupos_catequista.html', {'grupos': grupos, 'catequistas': catequistas, 'error': mensaje_error, 'sesiones': sesiones, 'ciclo': ciclo})
 
 ''' 
 def calcular_valor(grupos, lista_catecumenos, num_grupos, preferencias_totales):
