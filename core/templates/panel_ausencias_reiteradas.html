@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Ausencias reiteradas {% endblock %}
+
+{% block content %}
+
+<p style="text-align: center;"> Aquí se muestran los catecúmenos que han faltado durante 3 sesiones seguidas o más. Puedes notificar a la familia pulsando el botón en forma de correo junto a cada nombre</p>
+<div class="ausencia-container">
+    {% if lista_ausentes %}
+        {% for ausencia in lista_ausentes %}
+            <div class="ausencia">
+                <div style="display: flex; flex-direction: column; margin-right: 10px;">
+                    <h2 style="margin-bottom: 0;">{{ ausencia.nombre }} {{ ausencia.apellidos }}</h2>
+                    <p style="margin-top: 2px;">Número de ausencias seguidas: {{ ausencia.num_ausencias }}</p>
+                </div>
+                <a href="{% url 'notificar_familias_ausencias_reiteradas' ausencia.id %}" class="email-link">
+                    <span class="material-icons">email</span>
+                </a>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="no-ausencias">
+            <p>No hay catecúmenos con 3 o más ausencias seguidas</p>
+        </div>
+    {% endif %}
+</div>
+
+<style>
+    .ausencia-container{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: row;
+    }
+
+    .ausencia{
+        display: flex;
+        align-items: center;
+        background-color: #fff;
+        margin: 10px;
+        padding: 10px 15px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        position: relative;
+    }
+
+    .email-link {
+        margin-left: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        text-decoration: none;
+        color: #000;
+        border-left: 1px solid #ddd;
+        padding-left: 15px;
+    }
+
+    .email-link:hover {
+        color: #007bff;
+    }
+
+    .no-ausencias {
+        background-color: #d4edda; 
+        color: #155724; 
+        border: 1px solid #c3e6cb; 
+        border-radius: 10px;
+        padding: 10px;
+        text-align: center;
+        margin: 10px auto; 
+        max-width: 500px;
+    }
+</style>
+
+{% endblock %}

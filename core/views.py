@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from grupo.models import Grupo
 from datetime import date
 from sesion.models import Sesion
@@ -25,13 +25,13 @@ def index(request):
             proxima_sesion = Sesion.objects.filter(ciclo = request.user.ciclo).filter(fecha__gte=date.today()).order_by('fecha').first()
             proximo_evento = Evento.objects.filter(participantes=request.user).filter(fecha__gte=date.today()).order_by('fecha').first()
             num_catecumenos = Catecumeno.objects.filter(ciclo=request.user.ciclo).count()
-            num_ausencias= contar_ausencias(request).count()
-            num_ausencias_ultima_sesion = len(contar_ausencias_ultima_sesion(request))
+            ausencias= contar_ausencias(request)
+            ausencias_ultima_sesion = contar_ausencias_ultima_sesion(request)
             if proxima_sesion:
                 archivos_sesion = proxima_sesion.files.all()
             else:
                 archivos_sesion = None
-            return render(request, 'index/index_coord.html', {'proxima_sesion': proxima_sesion, 'archivos_sesion': archivos_sesion,'proximo_evento':proximo_evento,'notificaciones': notificaciones, 'num_catecumenos': num_catecumenos, 'num_ausencias': num_ausencias, 'num_ausencias_ultima_sesion': num_ausencias_ultima_sesion})
+            return render(request, 'index/index_coord.html', {'proxima_sesion': proxima_sesion, 'archivos_sesion': archivos_sesion,'proximo_evento':proximo_evento,'notificaciones': notificaciones, 'num_catecumenos': num_catecumenos, 'ausencias': ausencias, 'ausencias_ultima_sesion': ausencias_ultima_sesion})
         elif request.user.is_superuser:
             proximo_evento = Evento.objects.filter(fecha__gte=date.today()).order_by('fecha').first()
             num_catecumenos = Catecumeno.objects.all().count()
@@ -96,6 +96,7 @@ def terminar_curso(request):
     else:
         return redirect('/403')
 
+@login_required
 def enviar_correo_renovacion(request, to):
     sender = "antoniopelaez2002@gmail.com"
     subject="Renovación de catequista"
@@ -103,6 +104,44 @@ def enviar_correo_renovacion(request, to):
     enlace = request.build_absolute_uri(url)
     message_text = f'Haga clic para volver a solicitar ser catequista: {enlace}'
     enviar_email(request, sender, to, subject, message_text, request.user)
+
+@login_required
+def notificar_familias_ultima_ausencia(request, catecumeno_id):
+    creds=conseguir_credenciales(request, request.user)
+    if isinstance(creds, HttpResponseRedirect):
+        return creds
+    catecumeno = get_object_or_404(Catecumeno, pk=catecumeno_id)
+    sender = request.user.email
+    subject="Ausencia a catequesis de su hijo " + catecumeno.nombre + " " + catecumeno.apellidos
+    message_text = """
+    Estimada familia,
+    Nos ponemos en contacto con ustedes para notificarle que su hijo/a, """ + catecumeno.nombre + " " + catecumeno.apellidos + """, ha faltado a la última sesión de catequesis y no hemos recibido justificación al respecto.
+    Atentamente,
+    El equipo de catequesis.
+    """
+    enviar_email(request, sender, catecumeno.email_madre, subject, message_text, request.user)
+    enviar_email(request, sender, catecumeno.email_padre, subject, message_text, request.user)
+    return redirect('/panel_ultimas_ausencias')
+
+@login_required
+def notificar_familias_ausencias_reiteradas(request, catecumeno_id):
+    creds=conseguir_credenciales(request, request.user)
+    if isinstance(creds, HttpResponseRedirect):
+        return creds
+    catecumeno = get_object_or_404(Catecumeno, pk=catecumeno_id)
+    sender = request.user.email
+    subject="Ausencias reiteradas a catequesis de su hijo " + catecumeno.nombre + " " + catecumeno.apellidos
+    message_text = """
+    Estimada familia,
+    Nos ponemos en contacto con ustedes para notificarle que su hijo/a, """ + catecumeno.nombre + " " + catecumeno.apellidos + """, ha faltado ya más de tres veces en este curso.
+    Nos vemos en la obligación de recordarles que la asistencia a catequesis es obligatoria y que, en caso de no poder asistir, deben justificar la ausencia.
+    Atentamente,
+    El equipo de catequesis.
+    """
+    enviar_email(request, sender, catecumeno.email_madre, subject, message_text, request.user)
+    enviar_email(request, sender, catecumeno.email_padre, subject, message_text, request.user)
+    return redirect('/panel_ausencias_reiteradas')
+
 
 
 @login_required
@@ -114,3 +153,18 @@ def panel_ciclos(request):
     else:
         return redirect('/403')
     
+@login_required
+def panel_ultimas_ausencias(request):
+    if request.user.is_coord:
+        lista_ausentes = contar_ausencias_ultima_sesion(request)
+        return render(request, 'panel_ultimas_ausencias.html', {'lista_ausentes': lista_ausentes})
+    else:
+        return redirect('/403')
+
+@login_required
+def panel_ausencias_reiteradas(request):
+    if request.user.is_coord:
+        lista_ausentes = contar_ausencias(request)
+        return render(request, 'panel_ausencias_reiteradas.html', {'lista_ausentes': lista_ausentes})
+    else:
+        return redirect('/403')
