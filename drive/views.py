@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import FolderForm, MoveFileForm, MoveFolderForm
 from .models import File, Folder
 from django.http import JsonResponse
+from django.db.models import Q
 # Create your views here.
 
 @login_required
@@ -22,12 +23,12 @@ def subir_archivo(request):
 def listar_archivos(request, folder_id=None):
     ruta = []
     if folder_id is None:
-        files = File.objects.filter(parent_folder=None)
-        folders = Folder.objects.filter(parent_folder=None)
+        files = File.objects.filter(parent_folder=None).order_by('id')
+        folders = Folder.objects.filter(parent_folder=None).order_by('id')
     else:
         folder = get_object_or_404(Folder,id=folder_id)
-        files = File.objects.filter(parent_folder=folder)
-        folders = Folder.objects.filter(parent_folder=folder)
+        files = File.objects.filter(parent_folder=folder).order_by('id')
+        folders = Folder.objects.filter(parent_folder=folder).order_by('id')
         ruta = obtener_ruta_carpeta(folder) 
     return render(request, 'listar_archivos.html', {'files': files, 'folders':folders, 'actual_folder':folder_id, 'ruta':ruta})
 
@@ -78,20 +79,43 @@ def mover_archivo(request, file_id):
     return render(request, 'mover_archivo.html', {'form': form, 'file_id': file_id})
 
 
+
 @login_required
 def mover_carpeta(request, folder_id):
     folder = get_object_or_404(Folder, id=folder_id)
     if request.method == 'POST':
         form = MoveFolderForm(request.POST, current_folder=folder)
         if form.is_valid():
+            print("valido")
             parent_folder = form.cleaned_data['parent_folder']
             if parent_folder != folder:
                 folder.parent_folder = parent_folder
                 folder.save()
-            return redirect('listar_archivos')
+            return redirect(request.META.get('HTTP_REFERER'))
+        else:
+            print("no valido")
+            return redirect(request.META.get('HTTP_REFERER'))
     else:
         form = MoveFolderForm(current_folder=folder)
-    return render(request, 'mover_carpeta.html', {'form': form})
+    return render(request, 'mover_carpeta.html', {'form': form, 'folder': folder})
+
+@login_required
+def obtener_carpetas_destino_carpeta(request, folder_id):
+    folder = Folder.objects.get(id=folder_id)
+    subfolders = folder.get_descendants()
+    available_folders = list(Folder.objects.exclude(
+        Q(id__in=[subfolder.id for subfolder in subfolders]) |
+        Q(id=folder_id)
+    ).values("id", "name"))
+    
+    data = {"available_folders": available_folders}
+    return JsonResponse(data)
+
+@login_required
+def obtener_carpetas_destino_archivo(request):
+    available_folders = list(Folder.objects.all().values("id", "name"))
+    data = {"available_folders": available_folders}
+    return JsonResponse(data)
 
 @login_required
 def cambiar_nombre_carpeta(request, folder_id):
@@ -100,7 +124,7 @@ def cambiar_nombre_carpeta(request, folder_id):
         form = FolderForm(request.POST, instance=folder)
         if form.is_valid():
             form.save()
-            return redirect('listar_archivos')
+            return redirect(request.META.get('HTTP_REFERER'))
     else:
         form = FolderForm(instance=folder)
-    return render(request, 'cambiar_nombre_carpeta.html', {'form': form})
+    return render(request, 'cambiar_nombre_carpeta.html', {'form': form, 'folder': folder})

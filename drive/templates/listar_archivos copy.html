@@ -50,55 +50,51 @@
     <button id="cerrarFormulario" class="cerrar-btn" style="color: black; border: none; border-radius: 50%; padding: 5px 10px; cursor: pointer;"><span class="material-icons">
         close
         </span></button>
-    {% include 'mover_carpeta.html' with folder=folder %}
+    {% include 'mover_carpeta.html' with form=form folder=folder %}
 </div>
-
-<div id="formularioMoverArchivo" class="formulario-subir-archivo">
-    <button id="cerrarFormulario" class="cerrar-btn" style="color: black; border: none; border-radius: 50%; padding: 5px 10px; cursor: pointer;"><span class="material-icons">
-        close
-        </span></button>
-    {% include 'mover_archivo.html' %}
-</div>
-
-
-
 
 <div class="grid-container">
     {% for folder in folders %}
-        <div class="grid-item" title="{{ folder.name }}">
-            <div class="dropdown-panel">
-                <button onclick="toggleDropdown(this)" class="dropdownbtn"><span class="material-icons">
-                    more_vert
-                    </span></button>
-                <div id="dropdown{{ folder.id }}" class="dropdown-content">
-                    <a href="{% url 'eliminar_carpeta' folder.id %}">Eliminar</a>
-                    <a style="cursor: pointer;" onclick="mostrarFormularioMover({{ folder.id }})">Mover</a>
-                    <a style="cursor: pointer;" onclick="mostrarFormularioCambiarNombre({{ folder.id }})">Cambiar nombre</a>
-                </div>
-            </div>
+        <div class="grid-item"  title="{{ folder.name }}">
+            
             <div style="display: flex; flex-direction: column; align-items: center;">
-                <p style="text-align: center; max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"> {{ folder.name }} </p>
+                <div style="display: flex; flex-direction: row;">
+                    <p style="text-align: center; max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"> {{ folder.name }} </p>
+                    <div class="dropdown-panel">
+                        <button onclick="toggleDropdown(this)" class="dropdownbtn"><span class="material-icons">
+                            more_vert
+                            </span></button>
+                        <div id="dropdown{{ folder.id }}" class="dropdown-content">
+                            <a href="{% url 'eliminar_carpeta' folder.id %}">Eliminar</a>
+                            <a href="#" onclick="mostrarFormularioMoverCarpeta({{ folder.id }})">Mover</a>
+                            <a href="#" onclick="mostrarFormularioCambiarNombre({{ folder.id }})">Cambiar nombre</a>
+                        </div>
+                    </div>
+                </div>
+                
                 <a style="display: flex; justify-content: center;" href="{% url 'listar_archivos_en_carpeta' folder.id %}" alt="{{ folder.name }}">
                     <img src="/static/icons/folder_icon3.png" alt="{{ folder.name }}" class="thumbnail">
                 </a>
             </div>
         </div>
-    
     {% endfor %}
     {% for file in files %}
         <div class="grid-item">
-            <div class="dropdown-panel">
-                <button onclick="toggleDropdown(this)" class="dropdownbtn"><span class="material-icons">
-                    more_vert
-                    </span></button>
-                <div id="dropdown{{ file.id }}" class="dropdown-content">
-                    <a href="/media/{{ file.file }}" download="{{file.name}}">Descargar</a>
-                    <a href="{% url 'eliminar_archivo' file.id %}">Eliminar</a>
-                    <a style="cursor: pointer;" onclick="mostrarFormularioMoverArchivo({{ file.id }})">Mover</a>
-                </div>
-            </div>
+            
             <div style="display: flex; flex-direction: column; align-items: center;">
-                <p> {{ file.name }} </p>
+                <div style="display: flex; flex-direction: row;">
+                    <p> {{ file.name }} </p>
+                    <div class="dropdown-panel">
+                        <button onclick="toggleDropdown(this)" class="dropdownbtn"><span class="material-icons">
+                            more_vert
+                            </span></button>
+                        <div id="dropdown{{ file.id }}" class="dropdown-content">
+                            <a href="/media/{{ file.file }}" download="{{file.name}}">Descargar</a>
+                            <a href="{% url 'eliminar_archivo' file.id %}">Eliminar</a>
+                            <a href="{% url 'mover_archivo' file.id %}">Mover</a>
+                        </div>
+                    </div>
+                </div>
                 {% if file.is_image %}
                     <a href="/media/{{ file.file }}" alt="{{ file.name }}" target="_blank">
                         <img src="/media/{{ file.file }}" alt="{{ file.name }}" class="thumbnail">
@@ -157,14 +153,13 @@
     }
 
     .dropdown-panel {
-        position: absolute;
-        top: 0;
-        right: 0;
+        position: relative;
+        display: inline-block;
     }
 
     .dropdown-content {
         display: none;
-        position: fixed;
+        position: absolute;
         background-color: #f9f9f9;
         min-width: 160px;
         box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
@@ -183,8 +178,15 @@
         background-color: #ddd;
     }
 
+    .dropdown-panel:hover .dropdown-content {
+        display: block;
+    }
+
+    .dropdown-panel.clicked .dropdown-content {
+        display: block;
+    }
+
     .dropdown-panel:hover .dropdownbtn {
-        cursor: pointer;
         background-color: #3e8e41;
     }
 
@@ -243,9 +245,7 @@
         position: fixed;
         bottom: 100px;
         right: 20px;
-    
     }
-
 </style>
 
 <script>
@@ -267,6 +267,23 @@
         }
     }
 
+    document.querySelectorAll(".dropdown-panel").forEach(function(btn){
+        btn.addEventListener("click", function(){
+            this.classList.toggle("clicked");
+        });
+
+        btn.addEventListener("mouseenter", function(){
+            this.classList.add("clicked");
+        });
+
+        btn.addEventListener("mouseleave", function(){
+            var that = this;
+            setTimeout(function(){
+                that.classList.remove("clicked");
+            }, 200); // Adjust this delay according to your need
+        });
+    });
+
     document.getElementById("mostrarFormularioArchivo").addEventListener("click", function() {
         document.getElementById("fileForm").reset();
         document.getElementById("formularioSubirArchivo").style.display = "block";
@@ -286,7 +303,6 @@
             document.getElementById("formularioCrearCarpeta").style.display = "none";
             document.getElementById("formularioCambiarNombreCarpeta").style.display = "none";
             document.getElementById("formularioMoverCarpeta").style.display = "none";
-            document.getElementById("formularioMoverArchivo").style.display = "none";
         });
     });
 
@@ -355,71 +371,11 @@
         document.getElementById("dropdown" + folder_id).style.display = "none";
     }
 
-    function mostrarFormularioMover(folder_id) {
-        const form = document.getElementById("moveFolderForm");
-        form.action = "/drive/mover_carpeta/" + folder_id;
-        cargarOpcionesCarpeta(folder_id);
+    function mostrarFormularioMoverCarpeta(folder_id) {
+        document.getElementById("moveFolderForm").action = "/drive/mover_carpeta/" + folder_id;
         document.getElementById("formularioMoverCarpeta").style.display = "block";
         document.getElementById("dropdown" + folder_id).style.display = "none";
     }
-
-    function mostrarFormularioMoverArchivo(file_id) {
-        const form = document.getElementById("moveFileForm");
-        form.action = "/drive/mover_archivo/" + file_id;
-        cargarOpcionesArchivo(file_id);
-        document.getElementById("formularioMoverArchivo").style.display = "block";
-        document.getElementById("dropdown" + file_id).style.display = "none";
-    }
-
-    function cargarOpcionesCarpeta(folderId) {
-        const select = document.getElementById("parent_folder_folder");
-        if(folderId){
-            fetch(`/drive/carpetas_destino_carpeta/${folderId}`)
-            .then(response => response.json())
-            .then(data => {
-                select.innerHTML = '<option value="" selected>Principal</option>'; // Limpiamos las opciones antes de cargar nuevas
-                data.available_folders.forEach(folder => {
-                    const option = document.createElement("option");
-                    option.value = folder.id;
-                    option.textContent = folder.name;
-                    select.appendChild(option);
-                });
-            })
-            .catch(error => {
-                console.error("Ha ocurrido un error al cargar las carpetas disponibles:", error);
-            });
-        }
-    }
-
-    function cargarOpcionesArchivo(fileId) {
-        const select = document.getElementById("parent_folder_file");
-        if(fileId){
-            fetch(`/drive/carpetas_destino_archivo`)
-            .then(response => response.json())
-            .then(data => {
-                console.log(data.available_folders);
-                select.innerHTML = '<option value="" selected>Principal</option>';
-                data.available_folders.forEach(folder => {
-                    console.log(folder);
-                    const option = document.createElement("option");
-                    option.value = folder.id;
-                    option.textContent = folder.name;
-                    select.appendChild(option);
-                });
-            })
-            .catch(error => {
-                console.error("Ha ocurrido un error al cargar las carpetas disponibles:", error);
-            });
-        }
-    }
-
-    // Ocultar dropdown-content cuando el mouse sale de él
-    var dropdownContents = document.querySelectorAll('.dropdown-content');
-    dropdownContents.forEach(function(content) {
-        content.addEventListener('mouseleave', function() {
-            content.style.display = 'none';
-        });
-    });
 </script>
 
 
