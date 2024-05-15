@@ -8,15 +8,15 @@
     <link rel="stylesheet" type="text/css" href="{% static 'core/css/index_styles.css' %}">
     <div id="myModal" class="modal">
         <div class="modal-content">
-            <span class="close" style="margin-left: 99%; margin-right: 30px;">&times;</span>
-            <h2>Detalles del Evento</h2>
-            <p id="tituloEvento"></p>
+            <span class="close" style="margin-left: 99%; margin-right: 30px; cursor: pointer;">&times;</span>
+            <h2 id="tituloH2" style="margin-top: 0;"></h2>
+            <p id="titulo"></p>
             <p id="fechaEvento"></p>
-            <p id="descripcionEvento"></p>
+            <p id="descripcion"></p>
             <p id="participantesEvento"></p>
             <p id="salaEvento"></p>
         </div>
-      </div>
+    </div>
     <div class="container">
         <!--Panel central-->
         <div class="columna" style="flex-basis: 68%;">
@@ -28,20 +28,20 @@
                         <p style="font-size: 50px; text-align: center; margin-top: 0px;"> <b>{{ num_catecumenos }}</b></p> 
                     </div>
                 </a>
-                <div class="estadistica ausencias">
+                <a href="{% url 'panel_ausencias_reiteradas' %}" class="estadistica ausencias">
                     <span class="material-icons icono" style="color: #ce4222;">warning</span>
                     <div class="info-estadisticas">
                         <p style="margin-bottom: 10px; font-size: 20px;"> Ausencias </p>
-                        <p style="font-size: 50px; text-align: center; margin-top: 0px;"> <b>{{ num_ausencias }}</b></p> 
+                        <p style="font-size: 50px; text-align: center; margin-top: 0px;"> <b>{{ ausencias|length }}</b></p> 
                     </div>
-                </div>
-                <div class="estadistica ausencias-ultimas">
+                </a>
+                <a href="{% url 'panel_ultimas_ausencias' %}" class="estadistica ausencias-ultimas">
                     <span class="material-icons icono" style="color: #deac19;">info_outline</span>
                     <div class="info-estadisticas">
                         <p style="margin-bottom: 10px; font-size: 20px;"> Faltas </p>
-                        <p style="font-size: 50px; text-align: center; margin-top: 0px;"> <b>{{ num_ausencias_ultima_sesion }}</b></p> 
+                        <p style="font-size: 50px; text-align: center; margin-top: 0px;"> <b>{{ ausencias_ultima_sesion|length }}</b></p>
                     </div>
-                </div>
+                </a>
             </div>
             <h3 style="margin-top: 30px; padding: auto;"> Próxima Sesión</h3>
             <div class="sesion">
@@ -157,16 +157,7 @@
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.0/main.min.css" rel="stylesheet"/>
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@3.10.2/dist/locale/es.js'></script>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const openModalBtns = document.querySelectorAll(".openModalBtn");
-            const modal = document.getElementById("myModal");
-            const closeModal = document.querySelector(".close");
-        });
-
-        
-    </script>
-
+  
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const modal = document.getElementById("myModal");
@@ -199,9 +190,9 @@
                     modal.style.display = "block";
                     var evento = info.event;
                     var tipo = evento.extendedProps.tipo;
-                    console.log(tipo);
-                    $('#tituloEvento').text(evento.title);
-                    $('#descripcionEvento').text('Descripción: ' +evento.extendedProps.description);
+                    $('#tituloH2').text("Detalles del evento");
+                    $('#titulo').text(evento.title);
+                    $('#descripcion').text('Descripción: ' +evento.extendedProps.description);
                     $('#fechaEvento').text(evento.start.toLocaleString() + ' - ' + evento.end.toLocaleString());
                     
                     if (tipo == 'Evento' && evento.extendedProps.sala_reservada){
@@ -305,6 +296,14 @@
         padding: 20px;
         border: 1px solid #888;
         width: 80%;
+    }
+
+    .close{
+        padding: 0px 5px;
+    }
+
+    .close:hover{
+        background-color: #cec9c9;
     }
 
     h3{

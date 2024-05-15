@@ -135,11 +135,11 @@ def eliminar_sesion(request, sesionId):
 def listar_sesiones(request):
     if request.user.is_authenticated:
         if request.user.is_superuser:
-            sesiones = Sesion.objects.all().order_by('fecha')
+            sesiones = Sesion.objects.all().order_by('fecha', 'id')
             return render(request, 'listar_sesiones_admin.html', {'sesiones': sesiones})
         else:
             ciclo=request.user.ciclo
-            sesiones = Sesion.objects.filter(ciclo=ciclo).order_by('fecha')
+            sesiones = Sesion.objects.filter(ciclo=ciclo).order_by('fecha', 'id')
             return render(request, 'listar_sesiones.html', {'sesiones': sesiones})
     else:
         return redirect('/403')
@@ -154,18 +154,27 @@ def pasar_lista(request, sesionid):
             if sesion.fecha > timezone.now().date():
                 return error(request, "No puedes pasar lista de una sesión futura")
             if request.method == 'POST':
+                print("dentro de post")
+                sesion.asistentes.clear()
+                sesion.justificados.clear()
+                sesion.ausentes.clear()
                 for catecumeno in catecumenos_desde_catequista(request.user):
                     categoria = request.POST.get(f'categoria_{catecumeno.id}')
                     if categoria in ['asistente', 'justificado', 'ausente']:
                         if categoria == 'asistente':
+                            print("asistente")
                             sesion.asistentes.add(catecumeno)
                         elif categoria == 'justificado':
+                            print("justificado")
                             sesion.justificados.add(catecumeno)
+                            print(sesion.justificados.all())
                         elif categoria == 'ausente':
+                            print("ausente")
                             sesion.ausentes.add(catecumeno)
                     else:
                         return error(request, "Categoría no válida")
                 sesion.save()
+                print("despues de guardar")
                 return redirect('/sesion/listar')
             else:
                 catecumenos = catecumenos_desde_catequista(request.user)
