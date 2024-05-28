@@ -19,7 +19,7 @@ def crear_evento(request):
         creds= conseguir_credenciales(request, request.user)
         if isinstance(creds, HttpResponseRedirect):
             return creds
-        tipo_choices = Evento.TIPO_CHOICES.choices
+        tipo_choices = Evento.TIPO_EVENTO.choices
         usuarios = CustomUser.objects.all()
         participantes_seleccionados=[]
         if request.method == 'POST':
@@ -61,7 +61,7 @@ def crear_evento(request):
         if request.GET.get('reunion_comision') and request.user.is_superuser:
             # Crear el evento automáticamente con los detalles predefinidos
             nombre = "Reunión de Comisión"
-            tipo = Evento.TIPO_CHOICES.REUNION
+            tipo = Evento.TIPO_EVENTO.REUNION
             coordinadores = CustomUser.objects.filter(is_coord=True)
             participantes_seleccionados = list(coordinadores.values_list('id', flat=True))
             
@@ -71,7 +71,7 @@ def crear_evento(request):
             # Crear el evento automáticamente con los detalles predefinidos
             ciclo = request.user.ciclo
             nombre = "Reunión de " + ciclo
-            tipo = Evento.TIPO_CHOICES.REUNION
+            tipo = Evento.TIPO_EVENTO.REUNION
             catequistas = CustomUser.objects.filter(ciclo=ciclo)
             participantes_seleccionados = list(catequistas.values_list('id', flat=True))
             
@@ -155,12 +155,14 @@ def asociar_a_google_calendar(request, evento, user):
 @login_required
 def obtener_eventos(request):
     eventos = Evento.objects.filter(participantes=request.user)
+    if request.user.is_superuser:
+        eventos = Evento.objects.all()
     eventos_data = [{
         'id': evento.id,
         'title': evento.nombre,
         'start': evento.fecha.strftime('%Y-%m-%dT'+evento.hora_inicio.strftime('%H:%M:%S')),  # Formatea la fecha y hora de inicio
         'end': evento.fecha.strftime('%Y-%m-%dT'+evento.hora_fin.strftime('%H:%M:%S')),    # Formatea la fecha y hora de fin
-        'color': '#2c36bd' if evento.tipo == Evento.TIPO_CHOICES.REUNION else ('green' if evento.tipo ==  Evento.TIPO_CHOICES.CONVIVENCIA else '#c02424'),
+        'color': '#2c36bd' if evento.tipo == Evento.TIPO_EVENTO.REUNION else ('green' if evento.tipo ==  Evento.TIPO_EVENTO.CONVIVENCIA else '#c02424'),
         'tipo': 'Evento',
         'description': evento.descripcion,
         'sala_reservada': evento.sala_reservada.nombre if evento.sala_reservada else None

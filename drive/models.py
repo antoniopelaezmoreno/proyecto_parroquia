@@ -3,10 +3,9 @@ from custom_user.models import CustomUser
 from django.core.validators import FileExtensionValidator
 from django.core.exceptions import ValidationError
 
-class Folder(models.Model):
+class Carpeta(models.Model):
     name = models.CharField(max_length=30)
     owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    files = models.ManyToManyField('File', related_name='folders')
     parent_folder = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='subfolders')
 
     def get_descendants(self):
@@ -18,11 +17,11 @@ class Folder(models.Model):
     def __str__(self):
         return self.name
 
-class File(models.Model):
+class Archivo(models.Model):
     name = models.CharField(max_length=50)
     file = models.FileField(upload_to='files/')
     owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    parent_folder = models.ForeignKey(Folder, on_delete=models.CASCADE, null=True, blank=True)
+    parent_folder = models.ForeignKey(Carpeta, on_delete=models.CASCADE, null=True, blank=True)
 
     def is_pdf(self):
         try:

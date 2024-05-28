@@ -82,7 +82,6 @@ def crear_grupo_admin(request):
                 ciclo=ciclo,
                 catequista1=catequista1,
                 catequista2=catequista2,
-                curso= Curso.objects.latest('id')
             )
                 
             return redirect('/') 

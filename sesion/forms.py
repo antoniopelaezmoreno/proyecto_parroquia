@@ -1,9 +1,9 @@
 from django import forms
 from .models import Sesion
-from drive.models import File
+from drive.models import Archivo
 
 class SesionForm(forms.ModelForm):
-    files = forms.ModelMultipleChoiceField(queryset=File.objects.all(), required=False)
+    files = forms.ModelMultipleChoiceField(queryset=Archivo.objects.all(), required=False)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
