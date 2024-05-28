@@ -1,16 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal de Catequesis</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'core/css/inicio_style.css' %}">
-
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Portal de Catequesis</title>
+   {% load static %}
+   <link rel="stylesheet" href="{% static 'core/css/inicio_style.css' %}">
 </head>
 <body class="font-sans" data-font-pack="dynamic">
   <div id="app" data-v-app="">
-     <div class="modals-container"></div>
      <div class="bg-canvas dark:bg-slate-950 overflow-hidden" data-testid="site-content">
         <div class="section-spacing">
            <div class="border-b border-slate-100 dark:border-slate-800 overflow-hidden relative" sectionname="hero" id="hero" sectionlabel="Hero" sortorder="0">
@@ -29,6 +27,8 @@
                  </div>
                  <div class="py-32" style="padding-top: 4rem;">
                     <div class="mx-auto">
+                        {% block content %}
+                        {% endblock %}
                        <div class="text-center">
                           <div class="mx-auto">
                              <h1 class="text-4xl font-black font-sans text-balance tracking-tight sm:text-6xl xl:text-7xl text-type-950 dark:text-white preview-menu-wrapper relative">
@@ -49,7 +49,7 @@
                  </div>
               </div>
            </div>
-           <section class="space-y-5 md:space-y-20 lg:space-y-10 2xl:space-y-32" style="margin-top: 3rem;" sectionname="features" id="features" sectioncomponent="Features" sectionlabel="Features" sortorder="1" section-component="Features" site-name="Catequesis" site-id="MTFG4UK0kilyUHHcDBM0" site-logo-url="https://storage.googleapis.com/mixo-files/logos/1714242146314-catequesis-31bm.svg" site-config="[object Object]" header-visible="true" header="[object Object]">
+           <section class="space-y-5 md:space-y-20 lg:space-y-10 2xl:space-y-32" style="margin-top: 3rem; z-index: -1;" sectionname="features" id="features" sectioncomponent="Features" sectionlabel="Features" sortorder="1" section-component="Features" site-name="Catequesis" site-id="MTFG4UK0kilyUHHcDBM0" site-logo-url="https://storage.googleapis.com/mixo-files/logos/1714242146314-catequesis-31bm.svg" site-config="[object Object]" header-visible="true" header="[object Object]">
               <div class="relative overflow-hidden space-y-24" style="margin-top: 3rem;">
                  <div class="lg:mx-auto lg:grid lg:grid-cols-2 lg:grid-flow-col-dense lg:gap-6 xl:gap-12 2xl:gap-24">
                     <div class="max-w-xl px-4 mx-auto space-y-6 sm:px-6 lg:py-28 xl:py-32 2xl:mx-0 lg:col-start-2 lg:mx-0 lg:px-0 lg:pr-8">

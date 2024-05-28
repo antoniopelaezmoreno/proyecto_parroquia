@@ -1,7 +1,7 @@
 from django.db import models
 from catecumeno.models import Catecumeno
 from curso.models import Curso
-from drive.models import File
+from drive.models import Archivo
 
 # Create your models here.
 class Sesion(models.Model):
@@ -15,7 +15,7 @@ class Sesion(models.Model):
     asistentes = models.ManyToManyField(Catecumeno, related_name='sesiones_asistentes')
     justificados = models.ManyToManyField(Catecumeno, related_name='sesiones_justificados')
     ausentes = models.ManyToManyField(Catecumeno, related_name='sesiones_ausentes') 
-    files = models.ManyToManyField(File, related_name='sesiones', blank=True)
+    files = models.ManyToManyField(Archivo, related_name='sesiones', blank=True)
 
     def __str__(self):
         return f"Sesión de {self.ciclo} - {self.fecha}"
