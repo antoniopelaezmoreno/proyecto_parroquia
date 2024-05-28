@@ -168,7 +168,7 @@
                     $('#tituloEvento').text(evento.title);
                     $('#descripcionEvento').text('Descripción: ' +evento.extendedProps.description);
                     $('#fechaEvento').text(evento.start.toLocaleString() + ' - ' + evento.end.toLocaleString());
-                    
+                    $('#salaEvento').text('');
                     if (tipo == 'Evento' && evento.extendedProps.sala_reservada){
                         $('#salaEvento').text('Sala: ' + evento.extendedProps.sala_reservada);
                     }

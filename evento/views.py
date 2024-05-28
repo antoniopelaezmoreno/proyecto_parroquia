@@ -38,13 +38,15 @@ def crear_evento(request):
             salas_ocupadas = todas_salas.filter(
                 reserva__fecha=fecha,
                 reserva__hora_inicio__lt=hora_fin,
-                reserva__hora_fin__gt=hora_inicio
+                reserva__hora_fin__gt=hora_inicio,
+                reserva__estado=Reserva.EstadoChoices.ACEPTADA
             )
             reservas_salas_ocupadas = Reserva.objects.filter(
                 sala__in=salas_ocupadas,
                 fecha=fecha,
                 hora_inicio__lt=hora_fin,
-                hora_fin__gt=hora_inicio
+                hora_fin__gt=hora_inicio,
+                estado=Reserva.EstadoChoices.ACEPTADA
             )
             
             if sala_necesaria:         
