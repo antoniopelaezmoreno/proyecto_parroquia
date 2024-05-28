@@ -6,7 +6,7 @@ from evento.models import Evento
 from notificacion.models import Notificacion
 from catecumeno.models import Catecumeno
 from custom_user.models import CustomUser
-from sala.models import Reserva, SolicitudReserva
+from sala.models import Reserva
 from solicitud_catequista.models import SolicitudCatequista
 from curso.models import Curso
 from sesion.views import contar_ausencias, contar_ausencias_ultima_sesion, catecumenos_desde_catequista
@@ -79,7 +79,6 @@ def terminar_curso(request):
             Evento.objects.all().delete()
             Notificacion.objects.all().delete()
             Reserva.objects.all().delete()
-            SolicitudReserva.objects.all().delete()
             ultimo_curso = Curso.objects.latest('id')
             primer_año = int(ultimo_curso.curso.split('-')[0])
             segundo_año = int(ultimo_curso.curso.split('-')[1])

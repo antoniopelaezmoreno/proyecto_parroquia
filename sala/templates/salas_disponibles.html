@@ -31,7 +31,7 @@
         {% for reserva in reservas_salas_ocupadas %}
             {% if reserva.sala == sala %}
                 <div class="sala ocupada" data-reserva="{{ reserva }}">
-                    <p>{{ sala }}</p>
+                    <button style="cursor: auto; color: white;">{{ sala }}</button>
                 </div>
             {% endif %}
         {% endfor %}
