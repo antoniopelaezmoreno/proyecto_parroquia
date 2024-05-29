@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
@@ -145,8 +145,6 @@ def conseguir_credenciales(request, user):
     return creds
 
 def oauth2callback(request):
-    # Especificar el estado al crear el flujo en la devolución de llamada para que pueda
-    # ser verificado en la respuesta del servidor de autorización.
     #os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
     SCOPES = ["https://www.googleapis.com/auth/gmail.readonly", 
               "https://www.googleapis.com/auth/gmail.send", 
@@ -469,6 +467,25 @@ def enviar_correo(request):
     except Exception as e:
         # Manejar otras excepciones
         return JsonResponse({'success': False, 'error': str(e)})
+    
+
+@login_required
+def pantalla_enviar_correo(request, catecumeno_id):
+    catecumeno = get_object_or_404(Catecumeno, pk=catecumeno_id)
+    if request.user.is_superuser or (request.user.is_coord and catecumeno.ciclo == request.user.ciclo):
+        try:
+            user=request.user
+            request.session['redirect_to'] = request.path
+            creds = conseguir_credenciales(request, user)
+            if isinstance(creds, HttpResponseRedirect):
+                return creds
+            emails = catecumeno.email_madre +" , "+ catecumeno.email_padre
+            print("emails: ", emails)
+            return render(request, 'pantalla_enviar_correo.html', {'emails': emails})
+        except HttpError as err:
+            return redirect('/404')
+    else:
+        return redirect('/403')
     
 def create_message(sender, to, subject, message_text):
     message = MIMEText(message_text)

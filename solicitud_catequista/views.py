@@ -52,8 +52,9 @@ def asignar_catequistas(request):
             
         return JsonResponse({'message': 'Asignaciones procesadas correctamente'})
 
-    solicitudes = SolicitudCatequista.objects.all()
-    return render(request, 'asignar_catequistas.html', {'solicitudes': solicitudes})
+    solicitudes_asignadas = SolicitudCatequista.objects.filter(ciclo_asignado__isnull=False)
+    solicitudes_por_asignar = SolicitudCatequista.objects.filter(ciclo_asignado__isnull=True)
+    return render(request, 'asignar_catequistas.html', {'solicitudes_asignadas': solicitudes_asignadas, 'solicitudes_por_asignar':solicitudes_por_asignar})
 
 
 def enviar_correo_solicitud(request, to, token, user):
