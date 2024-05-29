@@ -60,7 +60,7 @@
                           <div class="mt-4 prose prose-user font-serif leading-relaxed text-type-700 dark:text-slate-200 text-base sm:text-lg preview-menu-wrapper relative">
                              ¡Regístrate aquí y comienza tu camino de fe! Apúntete ahora para participar en nuestras sesiones de catequesis.
                           </div>
-                          <a class="ui-button ui-button-base ui-button-primary" href="/catecumeno/crear" disabled="false" style="margin-top: 1rem;">Registrarse</a>
+                          <a class="ui-button ui-button-base ui-button-primary" href="javascript:void(0);" onclick="toggleForm('divRegisterForm')" style="margin-top: 1rem;">Registrarse</a>
                        </div>
                     </div>
                     <div class="mt-12 sm:mt-16 lg:mt-0 lg:col-start-1 preview-menu-wrapper relative">
@@ -70,6 +70,47 @@
                     </div>
                  </div>
               </div>
+              <!-- El formulario oculto inicialmente -->
+              <div id="divRegisterForm" style="{% if mostrar_formulario %}display: block;{% else %}display: none;{% endif %}; margin-top: 2rem;">
+                  <form id="registerForm" method="post" enctype="multipart/form-data">
+                     {% csrf_token %}
+                     <div style="display: flex; flex-direction: column;">
+                        <div style="display: flex; flex-wrap: wrap;">
+                           <div style="flex: 1; margin-right: 15px;">
+                                 <div style="display: flex; flex-direction: row; justify-content: space-between;  border-bottom: 2px solid #ccc; padding-bottom: 5px;">
+                                    <h1 style="margin-top: 5px; margin-bottom: 10px;">Información de contacto</h1>
+                                 </div>
+                                 <p><strong>Nombre:</strong> <input type="text" name="nombre" required>{% for error in form.nombre.errors  %}  <span class="error">{{ error }}</span> {% endfor %} <input type="text" name="apellidos" required> {% for error in form.apellidos.errors  %}  <span class="error">{{ error }}</span> {% endfor %}</p>
+                                 <p><strong>Email:</strong> <input type="email" name="email" required></p>
+                                 <p><strong>DNI:</strong> <input type="text" name="dni" required> {% for error in form.dni.errors  %}  <span class="error">{{ error }}</span> {% endfor %}</p>
+                                 <p><strong>Teléfono:</strong> <input type="tel" name="telefono" required>  {% for error in form.telefono.errors  %}  <span class="error">{{ error }}</span> {% endfor %}</p>
+                                 <p><strong>Ciclo:</strong>
+                                    <select name="ciclo" required>
+                                       {% for ciclo_key, ciclo_value in choices %}
+                                             <option value="{{ ciclo_key }}" >{{ ciclo_value }}</option>
+                                       {% endfor %}
+                                    </select>
+                                    {% for error in form.ciclo.errors  %}  
+                                       <span class="error">{{ error }}</span> 
+                                    {% endfor %}
+                                 </p>
+                                 <p><strong>Preferencias: </strong><input type="text" name="preferencias"> {% for error in form.preferencias.errors  %}  <span class="error">{{ error }}</span> {% endfor %}</p>
+                           </div>
+                           <div style="flex: 1; margin-right: 15px;">
+                                 <h1 style="margin-top: 5px; margin-bottom: 10px; border-bottom: 2px solid #ccc; padding-bottom: 5px;">Información de familia</h1>
+                                 <p><strong>Nombre de la madre:</strong> <input type="text" name="nombre_madre" required> {% for error in form.nombre_madre.errors  %}  <span class="error">{{ error }}</span> {% endfor %}<input type="text" name="apellidos_madre" required>{% for error in form.apellidos_madre.errors  %}  <span class="error">{{ error }}</span> {% endfor %}</p>
+                                 <p><strong>Email de la madre:</strong> <input type="email" name="email_madre" required> {% for error in form.email_madre.errors  %}  <span class="error">{{ error }}</span> {% endfor %}</p>
+                                 <p><strong>Teléfono de la madre:</strong> <input type="tel" name="telefono_madre" required> {% for error in form.telefono_madre.errors  %}  <span class="error">{{ error }}</span> {% endfor %}</p>
+                                 <p><strong>Nombre del padre:</strong> <input type="text" name="nombre_padre" required>{% for error in form.nombre_padre.errors  %}  <span class="error">{{ error }}</span> {% endfor %} <input type="text" name="apellidos_padre" required>{% for error in form.apellidos_padre.errors  %}  <span class="error">{{ error }}</span> {% endfor %}</p>
+                                 <p><strong>Email del padre:</strong> <input type="email" name="email_padre" required>{% for error in form.email_padre.errors  %}  <span class="error">{{ error }}</span> {% endfor %}</p>
+                                 <p><strong>Teléfono del padre:</strong> <input type="tel" name="telefono_padre" required>{% for error in form.telefono_padre.errors  %}  <span class="error">{{ error }}</span> {% endfor %}</p>
+                                 <p><strong>Autorización:</strong></p> <input type="file" name="foto" required> {% for error in form.foto.errors  %}  <span class="error">{{ error }}</span> {% endfor %}
+                           </div>
+                        </div>
+                        <button class="ui-button ui-button-base ui-button-primary" type="submit">Registrarse</button>
+                     </div>
+                  </form>
+               </div>
               <div class="relative overflow-hidden space-y-24" style="margin-top: 2rem;">
                  <div class="lg:mx-auto lg:grid lg:grid-cols-2 lg:grid-flow-col-dense lg:gap-6 xl:gap-12 2xl:gap-24">
                     <div class="max-w-xl px-4 mx-auto space-y-6 sm:px-6 lg:py-28 xl:py-32 2xl:mx-0 lg:mx-auto lg:max-w-3xl xl:pl-12 2xl:pl-20 2xl:justify-self-end">
@@ -117,4 +158,100 @@
      </div>
   </div>
 </body>
+<script>
+   function toggleForm(formId) {
+       var form = document.getElementById(formId);
+       if (form.style.display === "none") {
+           form.style.display = "block";
+       } else {
+           form.style.display = "none";
+       }
+   }
+
+   document.getElementById("registerForm").addEventListener("submit", function(event) {
+      event.preventDefault(); 
+      var form_data = new FormData(this);
+      fetch("{% url 'crear_catecumeno' %}", {
+         method: "POST",
+         body: form_data,
+         headers: {
+            "X-CSRFToken": getCookie("csrftoken")
+         }
+      })
+      .then(response => response.json())
+      .then(data => {
+         if (data.success) {
+            window.location.href = "{% url 'pantalla_confirmacion_exito' %}";
+         } else {
+            let errorMessage = "";
+            for (const field in data.errors) {
+               errorMessage += data.errors[field].join(", ") + "\n";
+            }
+            alert(errorMessage);
+            
+         }
+      })
+      .catch(error => {
+         console.error("Ha ocurrido un error al enviar el correo electrónico.");
+      });
+
+      function getCookie(name) {
+         const value = `; ${document.cookie}`;
+         const parts = value.split(`; ${name}=`);
+         if (parts.length === 2) return parts.pop().split(';').shift();
+      }
+   });
+</script>
+<style>
+
+   section {
+       z-index: -1;
+   }
+
+   /* Estilos adicionales para el formulario */
+   form {
+       margin: auto;
+       max-width: 900px; /* Ajusta el ancho máximo según sea necesario */
+       padding: 20px;
+       display: flex; /* Usa flexbox para dividir en dos columnas */
+       justify-content: space-between; /* Distribuye los elementos en dos columnas */
+   }
+
+   /* Estilos para los campos del formulario */
+   form p {
+       margin-bottom: 10px;
+       width: 45%; /* Ajusta el ancho de cada columna según sea necesario */
+   }
+
+   form input[type="text"],
+   form input[type="password"],
+   form input[type="email"],
+   form input[type="tel"],
+   form select {
+       width: 100%;
+       padding: 10px;
+       margin-bottom: 10px;
+       border: 1px solid #cccccc;
+       border-radius: 4px;
+       box-sizing: border-box;
+   }
+
+   form button[type="submit"] {
+       width: 100%;
+       padding: 10px;
+       background-color: #007bff;
+       color: #ffffff;
+       border: none;
+       border-radius: 4px;
+       cursor: pointer;
+   }
+
+   form button[type="submit"]:hover {
+       background-color: #0056b3;
+   }
+
+   .error {
+      color: #ff0000;
+   }
+</style>
 </html>
