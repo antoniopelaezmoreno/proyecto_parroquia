@@ -50,7 +50,8 @@ def index(request):
                 archivos_sesion = None
             return render(request, 'index/index_cat.html', {'proxima_sesion': proxima_sesion, 'archivos_sesion': archivos_sesion,'proximo_evento':proximo_evento,'notificaciones': notificaciones, 'num_catecumenos': num_catecumenos, 'num_ausencias': num_ausencias, 'num_ausencias_ultima_sesion': num_ausencias_ultima_sesion})
     else:
-        return render(request, 'index/index.html')
+        choices = Catecumeno.CicloChoices.choices
+        return render(request, 'index/index.html', {'choices': choices})
 
 def c403(request):
     return render(request, '403.html', status=403)
@@ -167,3 +168,6 @@ def panel_ausencias_reiteradas(request):
         return render(request, 'panel_ausencias_reiteradas.html', {'lista_ausentes': lista_ausentes})
     else:
         return redirect('/403')
+    
+def pantalla_confirmacion_exito(request):
+    return render(request, 'confirmacion_exito.html')

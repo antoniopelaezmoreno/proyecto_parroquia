@@ -8,18 +8,23 @@ from sesion.views import catecumenos_desde_catequista
 import json
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+
 
 def crear_catecumeno(request):
     logout(request)
-    if request.method == 'POST':
-        form = CatecumenoForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('/')
-    else:
-        form = CatecumenoForm()
-    
-    return render(request, 'crear_catecumeno.html', {'form': form})
+    try:
+        if request.method == 'POST':
+            form = CatecumenoForm(request.POST, request.FILES)
+            if form.is_valid():
+                form.save()
+                return JsonResponse({'success': True})
+            else:
+                return JsonResponse({'success': False, 'errors': form.errors})
+
+    except Exception as e:
+        # Manejar otras excepciones
+        return JsonResponse({'success': False, 'error': str(e)})
 
 @login_required
 def listar_catecumenos(request):
