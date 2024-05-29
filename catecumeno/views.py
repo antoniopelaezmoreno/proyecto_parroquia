@@ -72,17 +72,14 @@ def asignar_catecumenos_a_grupo(request):
         grupos = Grupo.objects.filter(ciclo=ciclo)
         if request.method == 'POST':
             data = json.loads(request.body)
-            for grupo in grupos:
-                grupo.miembros.clear()
-                grupo.save()
             for asignacion in data:
                 catecumeno_id = asignacion.get('userId')
                 grupo_asignado = asignacion.get('grupoAsignado')
                 if grupo_asignado:
                     catecumeno = Catecumeno.objects.get(id=catecumeno_id)
                     grupo = Grupo.objects.get(id=grupo_asignado)
-                    grupo.miembros.add(catecumeno)
-                    grupo.save()
+                    catecumeno.grupo = grupo
+                    catecumeno.save()
             return redirect('index')
         catecumenos = Catecumeno.objects.filter(ciclo=ciclo)
         return render(request, 'asignar_catecumenos_a_grupo.html', {'catecumenos': catecumenos, 'grupos': grupos, 'ciclo': ciclo})
@@ -168,7 +165,7 @@ def obtener_catequistas_de_catecumeno(catecumeno):
     grupos = Grupo.objects.filter(ciclo=catecumeno.ciclo)
     catequistas = []
     for grupo in grupos:
-        if catecumeno in grupo.miembros.all():
+        if catecumeno in grupo.miembros():
             catequistas.append(grupo.catequista1.first_name)
             catequistas.append(grupo.catequista2.first_name)
     return catequistas

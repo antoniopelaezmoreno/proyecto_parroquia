@@ -66,6 +66,7 @@ class Catecumeno(models.Model):
     preferencias = models.CharField(max_length=200)
     preferencias_procesadas =models.ManyToManyField('self', related_name='preferencias_procesadas_rel', symmetrical=False)
     foto = models.ImageField(upload_to='autorizaciones/')
+    grupo = models.ForeignKey('grupo.Grupo', on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.nombre + ' ' + self.apellidos
