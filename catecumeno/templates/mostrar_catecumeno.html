@@ -25,7 +25,16 @@
         <p><strong>Ciclo:</strong> {{ catecumeno.get_ciclo_display }}</p>
     </div>
     <div class="panel" style="flex: 1; margin-right: 15px;">
-        <h1 style="margin-top: 5px; margin-bottom: 10px; border-bottom: 2px solid #ccc; padding-bottom: 5px;">Información de familia</h1>
+        <div style="display: flex; flex-direction: row; justify-content: space-between;  border-bottom: 2px solid #ccc; padding-bottom: 5px;">
+            <h1 style="margin-top: 5px; margin-bottom: 10px;">Información de familia</h1>
+            <div style="display: flex; flex-direction: row;">
+                <a class="editar" href="{% url 'pantalla_enviar_correo' catecumeno.id %}">
+                    <span class="material-icons">email</span>
+                </a>
+            </div>
+            
+        </div>
+        
         <p><strong>Nombre de la madre:</strong> {{ catecumeno.nombre_madre }} {{ catecumeno.apellidos_madre }}</p>
         <p><strong>Email de la madre:</strong> {{ catecumeno.email_madre }}</p>
         <p><strong>Teléfono de la madre:</strong> {{ catecumeno.telefono_madre }}</p>

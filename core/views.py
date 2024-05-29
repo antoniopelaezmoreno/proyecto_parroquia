@@ -36,7 +36,7 @@ def index(request):
             proximo_evento = Evento.objects.filter(fecha__gte=date.today()).order_by('fecha').first()
             num_catecumenos = Catecumeno.objects.all().count()
             num_catequistas = CustomUser.objects.all().exclude(is_superuser=True).count()
-            num_solicitudes = SolicitudCatequista.objects.all().count()
+            num_solicitudes = SolicitudCatequista.objects.filter(ciclo_asignado__isnull=True).count()
             return render(request, 'index/index_admin.html', {'proximo_evento':proximo_evento,'notificaciones': notificaciones, 'num_catecumenos': num_catecumenos, 'num_catequistas': num_catequistas, 'num_solicitudes': num_solicitudes})
         else:
             proxima_sesion = Sesion.objects.filter(ciclo = request.user.ciclo).filter(fecha__gte=date.today()).order_by('fecha').first()

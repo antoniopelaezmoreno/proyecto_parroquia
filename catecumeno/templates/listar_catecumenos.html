@@ -20,14 +20,11 @@
                     <th>Nombre Padre</th>
                     <th>Email Padre</th>
                     <th>Teléfono Padre</th>
-                    {% if user.is_coord %}
-                        <th></th>
-                    {% endif %}
                 </tr>
             </thead>
             <tbody>
                 {% for catecumeno in catecumenos %}
-                    <tr id="catecumeno-{{ catecumeno.id }}" class="alumno" data-ciclo="{{ catecumeno.ciclo }}">
+                    <tr id="catecumeno-{{ catecumeno.id }}" class="alumno{% if user.is_coord %} clickable{% endif %}" data-ciclo="{{ catecumeno.ciclo }}">
                         <td>{{ catecumeno.nombre }}</td>
                         <td>{{ catecumeno.apellidos }}</td>
                         <td>{{ catecumeno.email }}</td>
@@ -38,9 +35,6 @@
                         <td>{{ catecumeno.nombre_padre }} {{ catecumeno.apellidos_padre }}</td>
                         <td>{{ catecumeno.telefono_padre }}</td>
                         <td>{{ catecumeno.email_padre }}</td>
-                        {% if user.is_coord %}
-                            <td><a class="btnEliminar" href="{% url 'eliminar_catecumeno' catecumeno.id %}">Eliminar</a></td>
-                        {% endif %}
                     </tr>
                 {% endfor %}
             </tbody>
@@ -50,7 +44,7 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        var filas = document.querySelectorAll(".alumno");
+        var filas = document.querySelectorAll(".alumno.clickable");
         filas.forEach(function(fila) {
             fila.addEventListener("click", function() {
                 var id = this.id.split("-")[1];
@@ -62,11 +56,14 @@
 </script>
 
 <style>
-    .alumno{
+    .alumno {
+        cursor: default;
+    }
+
+    .clickable {
         cursor: pointer;
     }
 
-    /* Scroll horizontal */
     .scrollmenu {
         overflow-x: auto;
     }
@@ -74,16 +71,7 @@
     .scrollmenu table {
         width: 100%;
         white-space: nowrap; /* Para que los elementos no se rompan */
-    }
-
-    .btnEliminar {
-        color: black !important;
-        border: 1px solid black;
-    }
-
-    .btnEliminar:hover {
-        background-color: #f44336 !important;
-        color: white !important;
+        
     }
 </style>
 
