@@ -21,6 +21,8 @@ def crear_catecumeno(request):
                 return JsonResponse({'success': True})
             else:
                 return JsonResponse({'success': False, 'errors': form.errors})
+        else:
+            return JsonResponse({'success': False, 'error': 'Método no permitido'})
 
     except Exception as e:
         # Manejar otras excepciones

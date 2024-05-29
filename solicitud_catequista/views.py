@@ -15,15 +15,19 @@ from django.contrib.auth import logout
 # Create your views here.
 def crear_solicitud_cateqista(request):
     logout(request)
-    if request.method == 'POST':
-        form = SolicitudCatequistaForm(request.POST, request.FILES)
-        if form.is_valid():
-            catecumeno = form.save()
-            return redirect('/') 
-    else:
-        form = SolicitudCatequistaForm()
-    
-    return render(request, 'crear_solicitud_catequista.html', {'form': form})
+    try:
+        if request.method == 'POST':
+            form = SolicitudCatequistaForm(request.POST, request.FILES)
+            if form.is_valid():
+                form.save()
+                return JsonResponse({'success': True})
+            else:
+                return JsonResponse({'success': False, 'errors': form.errors})
+        else:
+            return JsonResponse({'success': False, 'error': 'Método no permitido'})
+    except Exception as e:
+        # Manejar otras excepciones
+        return JsonResponse({'success': False, 'error': str(e)})
 
 @csrf_exempt
 def asignar_catequistas(request):
