@@ -189,9 +189,9 @@ def catecumenos_desde_catequista(catequista):
     grupo2 = Grupo.objects.filter(catequista2=catequista).first()
     
     if grupo1:
-        return grupo1.miembros.all()
+        return grupo1.miembros()
     elif grupo2:
-        return grupo2.miembros.all()
+        return grupo2.miembros()
     else:
         return []
 @login_required
