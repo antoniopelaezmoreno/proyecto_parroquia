@@ -184,14 +184,11 @@ def obtener_eventos(request):
 
 @login_required
 def mostrar_eventos(request):
-    if request.user.is_authenticated:
-        if request.user.is_superuser:
-            eventos = Evento.objects.all()
-        else:
-            eventos=Evento.objects.filter(participantes=request.user)
-        return render(request, 'mostrar_eventos.html', {'eventos': eventos})
+    if request.user.is_superuser:
+        eventos = Evento.objects.all().order_by('fecha')
     else:
-        return redirect('/403')
+        eventos=Evento.objects.filter(participantes=request.user).order_by('fecha')
+    return render(request, 'mostrar_eventos.html', {'eventos': eventos})
     
 @login_required
 def detalles_evento(request, evento_id):

@@ -17,7 +17,7 @@
     {% csrf_token %}
 
     <label for="nombre">Nombre del evento</label>
-    <input type="text" name="nombre" id="nombre" placeholder="Nombre del evento" value="{{ nombre }}" required>
+    <input type="text" name="nombre" id="nombre" placeholder="Nombre del evento" value="{{ nombre }}" maxlength="75" required>
 
     <div class="label-group">
         <label for="tipo">Tipo del evento</label>
