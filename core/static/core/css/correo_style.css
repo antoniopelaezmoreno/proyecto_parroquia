@@ -78,7 +78,7 @@
 }
 
 /* Estilos para pantallas grandes */
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 800px) {
     /* Restaura el ancho de la tabla al 100% */
     table {
         width: 100%;
@@ -93,7 +93,7 @@
 }
 
 /* Estilos para pantallas pequeñas */
-@media only screen and (max-width: 767px) {
+@media only screen and (max-width: 800px) {
     /* Utiliza Flexbox para organizar las celdas en columnas */
     .mensaje td {
         display: flex;
