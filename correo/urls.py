@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import bandeja_de_entrada, enviar_correo, marcar_mensaje_visto, obtener_detalles_mensaje,obtener_detalles_mensaje_enviado,bandeja_salida, pantalla_enviar_correo
+from .views import bandeja_de_entrada, enviar_correo, marcar_mensaje_visto, obtener_detalles_mensaje,obtener_detalles_mensaje_enviado,bandeja_salida, pantalla_enviar_correo, pantalla_enviar_correo_destinatarios
 
 urlpatterns = [
     path('inbox', bandeja_de_entrada, name='inbox'),
@@ -9,4 +9,5 @@ urlpatterns = [
     path('detalles_enviado/<str:mensaje_id>', obtener_detalles_mensaje_enviado, name='detalles_mensaje_enviado'),
     path('outbox', bandeja_salida, name='outbox'),
     path('pantalla_enviar_correo/<int:catecumeno_id>', pantalla_enviar_correo, name='pantalla_enviar_correo'),
+    path('pantalla_enviar_correo_destinatarios', pantalla_enviar_correo_destinatarios, name='pantalla_enviar_correo_destinatarios'),
 ]

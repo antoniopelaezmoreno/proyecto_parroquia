@@ -88,6 +88,18 @@
                 <a class="accion" href="{% url 'mis_reservas' %}">
                     Mis Reservas
                 </a>
+
+                <a class="accion" href="{% url 'pantalla_enviar_correo_destinatarios' %}?destinatarios=coordinadores">
+                    Correo Coordinadores
+                </a>
+
+                <a class="accion" href="{% url 'pantalla_enviar_correo_destinatarios' %}?destinatarios=catequistas">
+                    Correo Catequistas
+                </a>
+
+                <a class="accion" href="{% url 'pantalla_enviar_correo_destinatarios' %}?destinatarios=familias">
+                    Correo Familias
+                </a>
                 
             </div>
            

@@ -1,11 +1,28 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}  {% endblock %}
+{% block title %} Error {% endblock %}
 
 {% block content %}
+<div class="error-message">
+    <p>{{ mensaje }}</p>
+</div>
 
-<p>{{ mensaje }}</p>
+<style>
+    .error-message {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+        border-radius: 5px;
+        padding: 20px;
+        margin: 20px auto;
+        max-width: 600px;
+        text-align: center;
+    }
 
-
+    .error-message p {
+        font-size: 1.2em;
+        margin: 0;
+    }
+</style>
 {% endblock %}
