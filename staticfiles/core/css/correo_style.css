@@ -77,12 +77,37 @@
     color: #333;
 }
 
-.mensaje td {
-    padding: 10px; 
+/* Estilos para pantallas grandes */
+@media only screen and (min-width: 768px) {
+    /* Restaura el ancho de la tabla al 100% */
+    table {
+        width: 100%;
+    }
+    
+    /* Restaura el diseño de las celdas a horizontal */
+    .mensaje td {
+        display: table-cell;
+        vertical-align: top;
+        padding: 10px;
+    }
 }
 
-table {
-    width: 100%;
+/* Estilos para pantallas pequeñas */
+@media only screen and (max-width: 767px) {
+    /* Utiliza Flexbox para organizar las celdas en columnas */
+    .mensaje td {
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Ajusta el espacio entre las columnas */
+    .mensaje td > * {
+        margin-bottom: 5px; /* Espacio entre las secciones */
+    }
+}
+
+.mensaje:hover {
+    background-color: #f0f0f0;
 }
 
 .pagination {
