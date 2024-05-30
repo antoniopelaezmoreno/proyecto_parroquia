@@ -35,20 +35,26 @@
                 </tr>
             </thead>
             <tbody>
-                {% for catecumeno in catecumenos %}
-                    <tr id="catecumeno-{{ catecumeno.id }}" class="alumno" data-ciclo="{{ catecumeno.ciclo }}">
-                        <td>{{ catecumeno.nombre }}</td>
-                        <td>{{ catecumeno.apellidos }}</td>
-                        <td>{{ catecumeno.email }}</td>
-                        <td>{{ catecumeno.get_ciclo_display }}</td>
-                        <td>{{ catecumeno.nombre_madre }} {{ catecumeno.apellidos_madre }}</td>
-                        <td>{{ catecumeno.email_madre }}</td>
-                        <td>{{ catecumeno.telefono_madre }}</td>
-                        <td>{{ catecumeno.nombre_padre }} {{ catecumeno.apellidos_padre }}</td>
-                        <td>{{ catecumeno.email_padre }}</td>
-                        <td>{{ catecumeno.telefono_padre }}</td>
+                {% if not catecumenos %}
+                    <tr>
+                        <td colspan="10" class="no-alumnos">No hay catecúmenos para mostrar</td>
                     </tr>
-                {% endfor %}
+                {% else %}
+                    {% for catecumeno in catecumenos %}
+                        <tr id="catecumeno-{{ catecumeno.id }}" class="alumno" data-ciclo="{{ catecumeno.ciclo }}">
+                            <td>{{ catecumeno.nombre }}</td>
+                            <td>{{ catecumeno.apellidos }}</td>
+                            <td>{{ catecumeno.email }}</td>
+                            <td>{{ catecumeno.get_ciclo_display }}</td>
+                            <td>{{ catecumeno.nombre_madre }} {{ catecumeno.apellidos_madre }}</td>
+                            <td>{{ catecumeno.email_madre }}</td>
+                            <td>{{ catecumeno.telefono_madre }}</td>
+                            <td>{{ catecumeno.nombre_padre }} {{ catecumeno.apellidos_padre }}</td>
+                            <td>{{ catecumeno.email_padre }}</td>
+                            <td>{{ catecumeno.telefono_padre }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
             </tbody>
         </table>
     </div>
@@ -67,6 +73,17 @@
     .scrollmenu table {
         width: 100%;
         white-space: nowrap; /* Para que los elementos no se rompan */
+    }
+
+    .no-alumnos {
+        background-color: #d4edda; 
+        color: #155724; 
+        border: 1px solid #c3e6cb; 
+        border-radius: 10px;
+        padding: 10px;
+        text-align: center;
+        margin: 10px auto; 
+        max-width: 500px;
     }
 </style>
 

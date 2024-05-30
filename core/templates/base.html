@@ -10,6 +10,7 @@
   <title>Dashboard</title>
   {% load static %}
   <link rel="stylesheet" href="{% static 'core/css/styles.css' %}">
+  <script src="https://kit.fontawesome.com/63b9fca43d.js" crossorigin="anonymous"></script>
   <style>
     .dropdown {
       position: relative;
@@ -108,15 +109,15 @@
         {% else %}
           {% if user.is_coord %}
             <a href="{% url 'panel_grupos' %}" class="menu-btn">Grupos</a>
-            <a href="{% url 'mis_reservas' %}" class="menu-btn">Salas</a>
+            <a href="{% url 'mis_reservas' %}" class="menu-btn">Mis Reservas</a>
           {% else %}
             <a href="{% url 'panel_grupos' %}" class="menu-btn">Mi Grupo</a>
           {% endif %}
           
         {% endif %}
-        <a href="{% url 'listar_sesiones' %}" class="menu-btn">Sesiones</a>
+        <a href="{% url 'listar_sesiones' %}" class="menu-btn">Sesiones <i class="fa-brands fa-google"></i></a>
         <a href="{% url 'listar_archivos' %}" class="menu-btn">Materiales</a>
-        <a href="{% url 'inbox' %}" class="menu-btn">Correo</a>
+        <a href="{% url 'inbox' %}" class="menu-btn">Correo <i class="fa-brands fa-google"></i></a>
       {% else %}
         <p>Inicia sesión para acceder</p>
       {% endif %}

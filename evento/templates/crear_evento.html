@@ -104,7 +104,7 @@
       <p id="mensajeConfirmacion"></p>
       <input type="text" id="motivo" name="motivo">
       <div id="motivoError" style="color: red;"></div>
-      <button id="reservarBtn">Reservar</button>
+      <button id="reservarBtn" style="border-radius: 5px; padding: 10px 20px;">Reservar</button>
     </div>
 </div>
 
@@ -165,6 +165,7 @@
 }
 
 /* Estilo para los botones */
+#reservarBtn,
 #eventoForm button {
     color: #fff;
     padding: 10px 20px;
@@ -174,8 +175,14 @@
 }
 
 /* Estilo para el botón de submit */
+#reservarBtn,
 #eventoForm button[type="submit"] {
-    background-color: #28a745; /* Color verde */
+    background-color: #86c631; /* Color verde */
+}
+#reservarBtn:hover,
+#eventoForm button[type="submit"]:hover{
+    background-color: #FFBE0B; /* Color amarillo */
+
 }
 
 /* Estilo para el checkbox */

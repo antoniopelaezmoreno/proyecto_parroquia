@@ -17,7 +17,7 @@
     <button class="filter-btn" onclick="filterByCiclo('catecumenados_3')">Catecumenados 3</button>
 </div>
 {% if not grupos %}
-    <p>No hay grupos para mostrar</p>
+    <p class="no-grupos">No hay grupos para mostrar</p>
 {% else %}
     {% for grupo in grupos %}
         <h2>{{ grupo }}</h2>
@@ -62,6 +62,17 @@
 
         .justificado {
             background-color: blue;
+        }
+
+        .no-grupos {
+            background-color: #d4edda; 
+            color: #155724; 
+            border: 1px solid #c3e6cb; 
+            border-radius: 10px;
+            padding: 10px;
+            text-align: center;
+            margin: 10px auto; 
+            max-width: 500px;
         }
     </style>
 
