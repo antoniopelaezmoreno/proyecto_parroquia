@@ -154,7 +154,6 @@ def pasar_lista(request, sesionid):
             if sesion.fecha > timezone.now().date():
                 return error(request, "No puedes pasar lista de una sesión futura")
             if request.method == 'POST':
-                print("dentro de post")
                 sesion.asistentes.clear()
                 sesion.justificados.clear()
                 sesion.ausentes.clear()
@@ -162,19 +161,14 @@ def pasar_lista(request, sesionid):
                     categoria = request.POST.get(f'categoria_{catecumeno.id}')
                     if categoria in ['asistente', 'justificado', 'ausente']:
                         if categoria == 'asistente':
-                            print("asistente")
                             sesion.asistentes.add(catecumeno)
                         elif categoria == 'justificado':
-                            print("justificado")
                             sesion.justificados.add(catecumeno)
-                            print(sesion.justificados.all())
                         elif categoria == 'ausente':
-                            print("ausente")
                             sesion.ausentes.add(catecumeno)
                     else:
                         return error(request, "Categoría no válida")
                 sesion.save()
-                print("despues de guardar")
                 return redirect('/sesion/listar')
             else:
                 catecumenos = catecumenos_desde_catequista(request.user)

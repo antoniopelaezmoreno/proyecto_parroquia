@@ -121,28 +121,23 @@ def reservar_sala(request):
             hora_fin = request.POST.get('hora_fin')
 
             if fecha < str(datetime.now().date()):
-                print('No se puede reservar una sala para una fecha pasada.')
                 return HttpResponse('No se puede reservar una sala para una fecha pasada.')
             elif hora_inicio >= hora_fin:
-                print('La hora de inicio debe ser menor a la hora de fin.')
                 return HttpResponse('La hora de inicio debe ser menor a la hora de fin.')
 
             sala = get_object_or_404(Sala, pk=sala_id)
 
             reservas_exist = Reserva.objects.filter(sala=sala, fecha=fecha, hora_inicio__lt=hora_fin, hora_fin__gt=hora_inicio, estado=Reserva.EstadoChoices.ACEPTADA)
             if reservas_exist.exists():
-                print('Ya existe una reserva en el plazo seleccionado. La fecha ocupada es: ', reservas_exist.first().fecha)
                 return HttpResponse('Ya existe una reserva en el plazo seleccionado. La fecha ocupada es: ', reservas_exist.first().fecha)
             else:
                 if sala.requiere_aprobacion:
-                    print('La sala requiere aprobación. Se ha enviado una solicitud de reserva.')
                     motivo = request.POST.get('motivo')
                     if len(motivo) > 250:
                         return HttpResponse('El motivo no puede tener más de 250 caracteres.')
                     reserva = Reserva(usuario=request.user, sala=sala, fecha=fecha, hora_inicio=hora_inicio, hora_fin=hora_fin, motivo=motivo, estado=Reserva.EstadoChoices.PENDIENTE)
                     reserva.save()
                 else:
-                    print('Reserva creada exitosamente.')
                     reserva = Reserva(usuario=request.user, sala=sala, fecha=fecha, hora_inicio=hora_inicio, hora_fin=hora_fin, estado=Reserva.EstadoChoices.ACEPTADA)
                     reserva.save()
                 return redirect('mis_reservas')

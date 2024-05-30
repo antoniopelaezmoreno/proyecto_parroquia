@@ -439,7 +439,6 @@ def enviar_correo(request):
 
         if request.method == 'POST':
             sender = request.user.email
-            print(request.POST)
             destinatarios = request.POST.get('destinatario')
             if destinatarios == "":
                 return JsonResponse({'success': False, 'error': 'No se ha especificado ningún destinatario'})
@@ -483,7 +482,6 @@ def pantalla_enviar_correo(request, catecumeno_id):
                 emails = catecumeno.email_madre
             else:
                 emails = catecumeno.email_madre +" , "+ catecumeno.email_padre
-            print("emails: ", emails)
             return render(request, 'pantalla_enviar_correo.html', {'emails': emails})
         except HttpError as err:
             return redirect('/404')
