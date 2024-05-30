@@ -38,7 +38,7 @@
                 <a class="estadistica ausencias-ultimas" href="{% url 'asignar_catequistas' %}">
                     <span class="material-icons icono" style="color: #deac19;">help_outline</span>
                     <div class="info-estadisticas">
-                        <p style="margin-bottom: 10px; font-size: 20px;"> Solicitudes </p>
+                        <p style="margin-bottom: 10px; font-size: 20px;"> Solicitudes <i class="fa-brands fa-google"></i> </p>
                         <p style="font-size: 50px; text-align: center; margin-top: 0px;"> <b>{{ num_solicitudes }}</b></p> 
                     </div>
                 </a>
@@ -62,7 +62,7 @@
             <h3 style="padding: auto;">Acciones</h3>
             <div class="acciones">
                 <a class="accion" href="{% url 'terminar_curso' %}">
-                    Terminar Curso
+                    Terminar Curso <i class="fa-brands fa-google"></i>
                 </a>
 
                 <a class="accion" href="{% url 'convertir_a_coordinador' %}">
@@ -113,8 +113,8 @@
             <h3 style="padding: auto;">Calendario</h3>
             <div class="calendario">
                 <div id='calendario'></div>
-                <a class="btnCrearEvento" href="{% url 'crear_evento' %}" id="crearEventoBtn" style="margin-top: 10px;">Crear Evento</a>
-                <a class="btnCrearEvento predeterminado" href="{% url 'crear_evento' %}?reunion_comision=true" id="crearEventoBtn" style="margin-top: 10px;">Reunión Comisión</a>
+                <a class="btnCrearEvento" href="{% url 'crear_evento' %}" id="crearEventoBtn" style="margin-top: 10px;">Crear Evento <i class="fa-brands fa-google"></i></a>
+                <a class="btnCrearEvento predeterminado" href="{% url 'crear_evento' %}?reunion_comision=true" id="crearEventoBtn" style="margin-top: 10px;">Reunión Comisión <i class="fa-brands fa-google"></i></a>
             </div>            
         </div>
     </div>

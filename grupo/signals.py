@@ -17,6 +17,9 @@ def capturar_valores_anteriores(sender, instance, **kwargs):
         # Capturar los valores anteriores de los campos catequista1 y catequista2
         instance._old_catequista1_id = old_instance.catequista1_id
         instance._old_catequista2_id = old_instance.catequista2_id
+    else:
+        instance._old_catequista1_id = None
+        instance._old_catequista2_id = None
 
 @receiver(post_save, sender=Grupo)
 def crear_notificacion_edicion_grupo(sender, instance, **kwargs):
@@ -29,7 +32,7 @@ def crear_notificacion_edicion_grupo(sender, instance, **kwargs):
             notificacion1 = Notificacion(mensaje=mensaje)
             notificacion1.destinatario = catequista1
             notificacion1.save()
-    elif instance.catequista2_id != instance._old_catequista2_id:
+    if instance.catequista2_id != instance._old_catequista2_id:
         catequista2 = instance.catequista2
         if catequista2:
             mensaje = "Se te ha asignado a un grupo"

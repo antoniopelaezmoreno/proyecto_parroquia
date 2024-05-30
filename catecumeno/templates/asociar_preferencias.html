@@ -10,7 +10,7 @@
 <div class="grid grid-cols-2 gap-4">
   <form method="post" action="{% url 'asociar_preferencias' %}?ciclo={{ciclo}}">
     {% csrf_token %}
-    <button class="p-6 bg-white rounded-b-xl text-center text-xl" type="submit">Guardar Asociaciones</button>
+    <button class="boton" type="submit">Guardar Asociaciones</button>
     {% for alumno in alumnos_con_preferencias %}
       <div class="mb-3">
         <p><strong>{{ alumno.nombre }} {{ alumno.apellidos }}</strong>: {{ alumno.preferencias }}</p>
@@ -45,5 +45,27 @@
     {% endfor %}
   </div>
 </div>
+
+<style>
+  .boton{
+    display: inline-block;
+    margin: 10px;
+    padding: 10px 20px;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    background-color: #86c631;
+    cursor: pointer;
+    border: none;
+    font-size: 16px;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .boton:hover {
+    background-color: #FFBE0B;
+  }
+</style>
 
 {% endblock %}

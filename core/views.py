@@ -21,7 +21,13 @@ from correo.views import conseguir_credenciales
 def index(request):
     if request.user.is_authenticated:
         notificaciones = Notificacion.objects.filter(destinatario=request.user, visto=False)
-        if request.user.is_coord:
+        if request.user.is_superuser:
+            proximo_evento = Evento.objects.filter(fecha__gte=date.today()).order_by('fecha').first()
+            num_catecumenos = Catecumeno.objects.all().count()
+            num_catequistas = CustomUser.objects.all().exclude(is_superuser=True).count()
+            num_solicitudes = SolicitudCatequista.objects.filter(ciclo_asignado__isnull=True).count()
+            return render(request, 'index/index_admin.html', {'proximo_evento':proximo_evento,'notificaciones': notificaciones, 'num_catecumenos': num_catecumenos, 'num_catequistas': num_catequistas, 'num_solicitudes': num_solicitudes})
+        elif request.user.is_coord:
             proxima_sesion = Sesion.objects.filter(ciclo = request.user.ciclo).filter(fecha__gte=date.today()).order_by('fecha').first()
             proximo_evento = Evento.objects.filter(participantes=request.user).filter(fecha__gte=date.today()).order_by('fecha').first()
             num_catecumenos = Catecumeno.objects.filter(ciclo=request.user.ciclo).count()
@@ -32,12 +38,7 @@ def index(request):
             else:
                 archivos_sesion = None
             return render(request, 'index/index_coord.html', {'proxima_sesion': proxima_sesion, 'archivos_sesion': archivos_sesion,'proximo_evento':proximo_evento,'notificaciones': notificaciones, 'num_catecumenos': num_catecumenos, 'ausencias': ausencias, 'ausencias_ultima_sesion': ausencias_ultima_sesion})
-        elif request.user.is_superuser:
-            proximo_evento = Evento.objects.filter(fecha__gte=date.today()).order_by('fecha').first()
-            num_catecumenos = Catecumeno.objects.all().count()
-            num_catequistas = CustomUser.objects.all().exclude(is_superuser=True).count()
-            num_solicitudes = SolicitudCatequista.objects.filter(ciclo_asignado__isnull=True).count()
-            return render(request, 'index/index_admin.html', {'proximo_evento':proximo_evento,'notificaciones': notificaciones, 'num_catecumenos': num_catecumenos, 'num_catequistas': num_catequistas, 'num_solicitudes': num_solicitudes})
+        
         else:
             proxima_sesion = Sesion.objects.filter(ciclo = request.user.ciclo).filter(fecha__gte=date.today()).order_by('fecha').first()
             proximo_evento = Evento.objects.filter(participantes=request.user).filter(fecha__gte=date.today()).order_by('fecha').first()

@@ -132,10 +132,6 @@
     background-color: #ffffff;
     padding: 20px;
     border-radius: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: start;
-    align-items: left;
     box-shadow: 10px 10px 40px rgba(190, 192, 244, 0.34);
     height: auto;
     margin-right: 15px;

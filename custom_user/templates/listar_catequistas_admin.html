@@ -29,14 +29,21 @@
                 </tr>
             </thead>
             <tbody>
-                {% for catequista in catequistas %}
-                    <tr class="alumno" data-ciclo="{{ catequista.ciclo }}">
-                        <td>{{ catequista.first_name }} {{ catequista.last_name }}</td>
-                        <td>{{ catequista.email }}</td>
-                        <td>{{ catequista.telefono }}</td>
-                        <td>{{ catequista.ciclo }}</td>
+                {% if not catequistas %}
+                    <tr>
+                        <td colspan="10" class="no-alumnos">No hay catequistas para mostrar</td>
                     </tr>
-                {% endfor %}
+                {% else %}
+                    {% for catequista in catequistas %}
+                        <tr class="alumno" data-ciclo="{{ catequista.ciclo }}">
+                            <td>{{ catequista.first_name }} {{ catequista.last_name }}</td>
+                            <td>{{ catequista.email }}</td>
+                            <td>{{ catequista.telefono }}</td>
+                            <td>{{ catequista.ciclo }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+
             </tbody>
         </table>
     </div>
@@ -70,6 +77,17 @@
     .scrollmenu table {
         width: 100%;
         white-space: nowrap; /* Para que los elementos no se rompan */
+    }
+
+    .no-alumnos {
+        background-color: #d4edda; 
+        color: #155724; 
+        border: 1px solid #c3e6cb; 
+        border-radius: 10px;
+        padding: 10px;
+        text-align: center;
+        margin: 10px auto; 
+        max-width: 500px;
     }
 </style>
 

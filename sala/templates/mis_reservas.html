@@ -4,7 +4,7 @@
 
 {% block content %}
 
-<a href="{% url 'lista_salas' %}"> Reservar sala</a>
+<a class="boton nueva-reserva" href="{% url 'lista_salas' %}"> Reservar sala</a>
 <h2 style="text-align: center; border-bottom: 1px solid #ccc;"> Reservas futuras</h2>
 
 {% if error_reserva_pasada %}
@@ -12,38 +12,50 @@
 {% endif %}
 
 <div class="reservas-container">
-    {% for reserva in reservas_futuras %}
-        <div class = "reserva">
-            <h3> {{ reserva.sala }}</h3>
-            <p> {{ reserva.fecha }}</p>
-            <p> {{ reserva.hora_inicio }} - {{ reserva.hora_fin }}</p>
-            <div style="text-align: center;">
-                <a class="boton cancelar" href="{% url 'cancelar_reserva' reserva.id %}">Cancelar</a>
+    {% if reservas_futuras %}
+        {% for reserva in reservas_futuras %}
+            <div class = "reserva">
+                <h3> {{ reserva.sala }}</h3>
+                <p> {{ reserva.fecha }}</p>
+                <p> {{ reserva.hora_inicio }} - {{ reserva.hora_fin }}</p>
+                <div style="text-align: center;">
+                    <a class="boton cancelar" href="{% url 'cancelar_reserva' reserva.id %}">Cancelar</a>
+                </div>
             </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
+    {% else %}
+        <p class="no-reservas">No tienes reservas futuras</p>
+    {% endif %}
 </div>
 
 <h2 style="text-align: center; border-bottom: 1px solid #ccc;"> Solicitudes de reserva pendientes</h2>
 <div class="reservas-container">
-    {% for solicitud in solicitudes_de_reserva %}
-        <div class = "reserva solicitud" motivo-solicitud="Motivo: {{ solicitud.motivo }}">
-            <h3> {{ solicitud.sala }}</h3>
-            <p> Fecha: {{ solicitud.fecha }}</p>
-            <p> {{ solicitud.hora_inicio }} - {{ solicitud.hora_fin }}</p>
-        </div>
-    {% endfor %}
+    {% if solicitudes_de_reserva %}
+        {% for solicitud in solicitudes_de_reserva %}
+            <div class = "reserva solicitud" motivo-solicitud="Motivo: {{ solicitud.motivo }}">
+                <h3> {{ solicitud.sala }}</h3>
+                <p> Fecha: {{ solicitud.fecha }}</p>
+                <p> {{ solicitud.hora_inicio }} - {{ solicitud.hora_fin }}</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="no-reservas">No hay solicitudes pendientes</p>
+    {% endif %}
 </div>
 
 <h2 style="text-align: center; border-bottom: 1px solid #ccc;"> Reservas pasadas</h2>
 <div class="reservas-container">
-    {% for reserva in reservas_pasadas %}
-        <div class = "reserva">
-            <h3> {{ reserva.sala }}</h3>
-            <p> Fecha: {{ reserva.fecha }}</p>
-            <p> {{ reserva.hora_inicio }} - {{ reserva.hora_fin }}</p>
-        </div>
-    {% endfor %}
+    {% if reservas_pasadas %}
+        {% for reserva in reservas_pasadas %}
+            <div class = "reserva">
+                <h3> {{ reserva.sala }}</h3>
+                <p> Fecha: {{ reserva.fecha }}</p>
+                <p> {{ reserva.hora_inicio }} - {{ reserva.hora_fin }}</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="no-reservas">No hay reservas pasadas</p>
+    {% endif %}
 </div>
 
 <style>
@@ -86,14 +98,36 @@
     .boton{
         display: inline-block;
         margin: 10px;
-        padding: 5px 10px;
+        
         color: white;
         text-decoration: none;
         border-radius: 5px;
     }
 
     .cancelar{
+        padding: 5px 10px;
         background-color: red;
+    }
+
+    .nueva-reserva{
+        background-color: #86c631;
+        padding: 10px 20px;
+        font-weight: bold;
+    }
+
+    .nueva-reserva:hover{
+        background-color: #FFBE0B;
+    }
+
+    .no-reservas {
+        background-color: #d4edda; 
+        color: #155724; 
+        border: 1px solid #c3e6cb; 
+        border-radius: 10px;
+        padding: 10px;
+        text-align: center;
+        margin: 10px auto; 
+        max-width: 500px;
     }
 
 </style>
