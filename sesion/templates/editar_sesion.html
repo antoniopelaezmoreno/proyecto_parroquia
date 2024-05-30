@@ -5,18 +5,69 @@
 
 {% block content %}
 
-{% if messages %}
-    {% for message in messages %}
-        <div class="alert alert-danger" role="alert">
-            {{ message }}
-        </div>
-    {% endfor %}
-{% endif %}
-
+<div class="container">
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Guardar</button>
     </form>
+</div>
+
+<style>
+    .container {
+        margin: 20px auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 50%;
+        height: auto;
+        overflow: auto;
+        width: 50%;
+    }
+
+    @media only screen and (max-width: 800px) {
+        .container {
+            width: auto;
+        }
+    }
+
+
+    form input[type="text"],
+    form input[type="date"],
+    form input[type="file"],
+    form textarea,
+    form select {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+    }
+
+    form textarea {
+        height: 200px;
+    }
+
+    form button {
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        background-color: #86c631;
+    }
+
+    form button:hover {
+        background-color: #FFBE0B;
+    }
+
+    .errorlist {
+        list-style-type: none;
+        padding: 0;
+        color: #f53131;
+    }
+</style>
 
 {% endblock %}
