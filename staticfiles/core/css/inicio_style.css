@@ -136,7 +136,7 @@
     position: absolute
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 800px) {
     .v-toast {
         padding:0;
         position: fixed!important

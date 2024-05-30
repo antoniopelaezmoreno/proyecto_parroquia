@@ -8,7 +8,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'core/css/index_styles.css' %}">
     <div id="myModal" class="modal">
         <div class="modal-content">
-            <span class="close" style="margin-left: 99%; margin-right: 30px;">&times;</span>
+            <span class="close" style="margin-left: 99%; margin-right: 30px; cursor: pointer;">&times;</span>
             <h2>Detalles del Evento</h2>
             <p id="tituloEvento"></p>
             <p id="fechaEvento"></p>
@@ -47,13 +47,17 @@
             <h3 style="margin-top: 30px; padding: auto;"> Próximo Evento</h3>
             <div class="sesion">
                 {% if proximo_evento %}
-                    <h2 style="margin-bottom: 10px; border-bottom: 1px solid black; text-align: center; padding-bottom: 10px;"> {{ proximo_evento.nombre }} - {{ proximo_evento.fecha }} </h2>
-                    <p><b>Descripción:  </b></p>
-                    <p id="descripcionProximoEvento">{{ proximo_evento.descripcion }}</p>
-                    <p><b>Horario:  </b></p> {{ proximo_evento.hora_inicio}} - {{ proximo_evento.hora_fin}}
-                    {% if proximo_evento.sala_reservada %}
-                        <p><b>Sala:  </b></p> {{ proximo_evento.sala_reservada }}
-                    {% endif %}
+                    <div style="display: grid; grid-template-columns: 1fr;">
+                    <h2 id="nombreProximoEvento" style="margin-bottom: 10px; border-bottom: 1px solid black; text-align: center; padding-bottom: 10px;"> {{ proximo_evento.nombre }} </h2>
+                        <div style="max-width: calc(100% - 20px); min-width: 250px;">
+                            <p><b>Descripción: </b></p>
+                            <p id="descripcionProximoEvento">{{ proximo_evento.descripcion }}</p>
+                            <p><b>Horario: </b></p> {{ proximo_evento.fecha }} - {{ proximo_evento.hora_inicio}} - {{ proximo_evento.hora_fin}}
+                            {% if proximo_evento.sala_reservada %}
+                            <p><b>Sala: </b></p> {{ proximo_evento.sala_reservada }}
+                            {% endif %}
+                        </div>
+                    </div>
                 {% else %}
                     <p> No hay próximo evento</p>
                 {% endif %}
@@ -96,10 +100,6 @@
                 <a class="accion" href="{% url 'pantalla_enviar_correo_destinatarios' %}?destinatarios=catequistas">
                     Correo Catequistas
                 </a>
-
-                <a class="accion" href="{% url 'pantalla_enviar_correo_destinatarios' %}?destinatarios=familias">
-                    Correo Familias
-                </a>
                 
             </div>
            
@@ -109,17 +109,19 @@
             <h3 style="padding: auto;"> Notificaciones</h3>
             <div class="notificaciones">
                 {% if notificaciones %}
-                    {% for notificacion in notificaciones %}
-                        <div class="notificacion">
-                            <div>
-                                <p>{{ notificacion.mensaje }}</p>
-                                <p>{{ notificacion.fecha }}</p>
-                            </div>
-                            <input type="radio" class="form-check-input" name="notificacion" value="{{ notificacion.id }}">
+                {% for notificacion in notificaciones %}
+                <div class="notificacion">
+                    <div style="display: grid; grid-template-columns: 0.9fr;">
+                        <div style="max-width: calc(100% - 20px); min-width: 250px;">
+                        <p id="mensajeNotificacion">{{ notificacion.mensaje }}</p>
+                        <p>{{ notificacion.fecha }}</p>
                         </div>
-                    {% endfor %}
+                    </div>
+                    <input type="radio" class="form-check-input" name="notificacion" value="{{ notificacion.id }}">
+                </div>
+                {% endfor %}
                 {% else %}
-                    <p style="text-align: center;">No hay notificaciones nuevas</p>
+                <p style="text-align: center;">No hay notificaciones nuevas</p>
                 {% endif %}
             </div>
             <h3 style="padding: auto;">Calendario</h3>
@@ -127,6 +129,8 @@
                 <div id='calendario'></div>
                 <a class="btnCrearEvento" href="{% url 'crear_evento' %}" id="crearEventoBtn" style="margin-top: 10px;">Crear Evento <i class="fa-brands fa-google"></i></a>
                 <a class="btnCrearEvento predeterminado" href="{% url 'crear_evento' %}?reunion_comision=true" id="crearEventoBtn" style="margin-top: 10px;">Reunión Comisión <i class="fa-brands fa-google"></i></a>
+                <a class="btnCrearEvento predeterminado" href="{% url 'mostrar_eventos' %}"
+                id="crearEventoBtn" style="margin-top: 10px;">Mostrar Eventos</a>
             </div>            
         </div>
     </div>
@@ -229,83 +233,23 @@
     </script>
 
 <style>
-    /* Estilos para los botones del encabezado */
-    .fc-header-toolbar button {
-        padding: 4px 8px; /* Ajusta el padding según sea necesario */
-        font-size: 12px; /* Tamaño de fuente */
+
+    .close {
+        padding: 0px 5px;
     }
 
-    /* Estilos para el texto del título del calendario */
-    .fc-toolbar-title {
-        font-size: 16px; /* Tamaño de fuente del título */
-    }
-
-    /* Estilos para los botones de cambio de vista */
-    .fc-header-toolbar .fc-button-group button {
-        padding: 4px 8px; /* Ajusta el padding según sea necesario */
-        font-size: 12px; /* Tamaño de fuente */
-    }
-
-    .fc-header-toolbar .fc-today-button {
-        padding: 4px 8px; /* Ajusta el padding según sea necesario */
-        font-size: 12px; /* Tamaño de fuente */
-    }
-
-    .btnCrearEvento{
-        text-decoration: none;
-        background-color: #436b10;
-        color: white;
-        padding: 5px;
-        border-radius: .25em;
-        text-align: center;
-    }
-
-    .predeterminado{
-        background-color: #6ca81e;
-    }
-
-    .btnCrearEvento:hover{
-        background-color: #7493b2;
-    }
-
-    .modal {
-        display: none;
-        position: fixed;
-        z-index: 1;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 100000;
-    }
-
-    .modal-content {
-        background-color: #fefefe;
-        margin: 15% auto;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 80%;
+    .close:hover {
+        background-color: #cec9c9;
     }
 
     h3{
         color: black;
         border-bottom: 3px solid #A3CB6D;
         border-radius: 10px;
-        padding: 0px 0px 8px 12px; /* Ajusta el padding para separar el borde del texto */
-        margin-right: 10px; /* Ajusta el margen derecho para mover el texto a la derecha */
+        padding: 0px 0px 8px 12px; 
+        margin-right: 10px;
     }
     
-    #contenedorArchivos, 
-    #descripcionProximoEvento, 
-    #descripcionSesion{
-        word-wrap: break-word;
-        max-height: 400px;
-        overflow-y: auto;
-    }
     
 </style>
-
-
-
 {% endblock %}

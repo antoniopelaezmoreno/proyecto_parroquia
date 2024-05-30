@@ -9,7 +9,7 @@ class Evento(models.Model):
         CONVIVENCIA = 'convivencia', 'Convivencia'
         OTRO = 'otro', 'Otro'
 
-    nombre = models.CharField(max_length=100)
+    nombre = models.CharField(max_length=75)
     fecha = models.DateField()
     hora_inicio = models.TimeField()
     hora_fin = models.TimeField()
