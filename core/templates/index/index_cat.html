@@ -122,6 +122,13 @@
                     <p> No hay próximo evento</p>
                 {% endif %}
             </div>
+
+            <h3 style="padding: auto;">Acciones</h3>
+            <div class="acciones">
+                <a class="accion" href="{% url 'pantalla_enviar_correo_destinatarios' %}?destinatarios=familias">
+                    Correo Familias <i class="fa-brands fa-google"></i>
+                </a>
+            </div>
         </div>
         <!--Panel derecho-->
         <div class="columna" style="flex-basis: 30%;">
