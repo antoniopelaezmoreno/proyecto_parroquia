@@ -3,11 +3,18 @@
 {% block title %} Editar Catequista {% endblock %}
 
 {% block content %}
+<style>
+    .errorlist {
+        list-style-type: none;
+        padding: 0;
+        color: #f53131;
+    }
+
+</style>
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <label for="id_new_password">New Password:</label>
-    <input type="password" id="id_new_password" name="new_password">
     <button type="submit">Editar</button>
 </form>
 {% endblock %}
+

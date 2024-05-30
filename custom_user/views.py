@@ -34,7 +34,7 @@ def editar_catequista(request, id):
             form = EditCustomUserForm(request.POST, instance=catequista)
             if form.is_valid():
                 form.save()
-                return redirect('listar_catequistas')
+                return redirect('/')
         else:
             form = EditCustomUserForm(instance=catequista)
     else:
