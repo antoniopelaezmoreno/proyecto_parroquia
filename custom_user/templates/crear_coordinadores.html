@@ -12,7 +12,8 @@
       <select name="cycle_{{ cycle.0 }}">
         <option value="">Seleccione un usuario</option>
         {% for user in users %}
-        <option value="{{ user.id }}" {% if user.is_coord %} selected {% endif %}>{{ user.first_name }} {{ user.last_name }}</option>
+        <option value="{{ user.id }}" {% if user.is_coord %} selected {% endif %}>{{ user.first_name }} {{
+          user.last_name }}</option>
         {% endfor %}
       </select>
     </div>
@@ -20,7 +21,7 @@
   </div>
   <button type="submit">Guardar</button>
 </form>
-  
+
 <style>
   .row {
     display: flex;
@@ -29,8 +30,10 @@
   }
 
   .column {
-    flex: 0 1 calc(33.33% - 20px); /* 33.33% width with 10px padding */
-    margin-bottom: 20px; /* Espacio entre las columnas */
+    flex: 0 1 calc(33.33% - 20px);
+    /* 33.33% width with 10px padding */
+    margin-bottom: 20px;
+    /* Espacio entre las columnas */
     padding: 10px;
     box-sizing: border-box;
   }
@@ -52,14 +55,15 @@
   button[type="submit"] {
     padding: 10px 20px;
     background-color: #86c631;
-    color: white;
+    color: #ffffff;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    font-weight: bold;
   }
 
   button[type="submit"]:hover {
-    background-color: #77b52a;
+    background-color: #FFBE0B;
   }
 </style>
 {% endblock %}
