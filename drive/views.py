@@ -86,14 +86,12 @@ def mover_carpeta(request, folder_id):
     if request.method == 'POST':
         form = MoveFolderForm(request.POST, current_folder=folder)
         if form.is_valid():
-            print("valido")
             parent_folder = form.cleaned_data['parent_folder']
             if parent_folder != folder:
                 folder.parent_folder = parent_folder
                 folder.save()
             return redirect(request.META.get('HTTP_REFERER'))
         else:
-            print("no valido")
             return redirect(request.META.get('HTTP_REFERER'))
     else:
         form = MoveFolderForm(current_folder=folder)

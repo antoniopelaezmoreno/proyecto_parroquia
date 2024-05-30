@@ -99,10 +99,8 @@ def nuevo_evento(request):
                 participantes = list(participantes)
 
             if fecha < str(datetime.now().date()):
-                print('No se puede crear una evento para una fecha pasada.')
                 return HttpResponse('No se puede crear una evento para una fecha pasada.')
             elif hora_inicio >= hora_fin:
-                print('La hora de inicio debe ser menor a la hora de fin.')
                 return HttpResponse('La hora de inicio debe ser menor a la hora de fin.')
 
             sala = get_object_or_404(Sala, pk=sala_id)
