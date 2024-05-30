@@ -1,6 +1,8 @@
 from django.db import models
 import uuid
 from catecumeno.models import Catecumeno
+from custom_user.models import CustomUser
+from django.core.exceptions import ValidationError
 
 
 class SolicitudCatequista(models.Model):
@@ -15,3 +17,7 @@ class SolicitudCatequista(models.Model):
 
     def __str__(self):
         return self.nombre + ' ' + self.apellidos
+    
+    def clean(self):
+        if CustomUser.objects.filter(email=self.email).exists():
+            raise ValidationError("Este email ya está registrado en el sistema.")
