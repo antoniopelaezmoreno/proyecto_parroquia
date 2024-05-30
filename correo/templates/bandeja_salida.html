@@ -16,7 +16,7 @@
         <table>
             <tbody>
                 {% for mensaje in mensajes %}
-                    <tr class="mensaje {% if mensaje.seen %} leido {% else %} no_leido {% endif %}" data-id="{{ mensaje.id }}">
+                    <tr class="mensaje" data-id="{{ mensaje.id }}">
                         <td><strong>Para: {{ mensaje.receiver }}</strong></td>
                         <td><strong>{{ mensaje.subject }}</strong> | {{ mensaje.body }}</td>
                         <td>{{ mensaje.date }}</td>
