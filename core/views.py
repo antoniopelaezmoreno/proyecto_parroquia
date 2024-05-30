@@ -107,40 +107,54 @@ def enviar_correo_renovacion(request, to):
 
 @login_required
 def notificar_familias_ultima_ausencia(request, catecumeno_id):
-    creds=conseguir_credenciales(request, request.user)
-    if isinstance(creds, HttpResponseRedirect):
-        return creds
     catecumeno = get_object_or_404(Catecumeno, pk=catecumeno_id)
-    sender = request.user.email
-    subject="Ausencia a catequesis de su hijo " + catecumeno.nombre + " " + catecumeno.apellidos
-    message_text = """
-    Estimada familia,
-    Nos ponemos en contacto con ustedes para notificarle que su hijo/a, """ + catecumeno.nombre + " " + catecumeno.apellidos + """, ha faltado a la última sesión de catequesis y no hemos recibido justificación al respecto.
-    Atentamente,
-    El equipo de catequesis.
-    """
-    enviar_email(request, sender, catecumeno.email_madre, subject, message_text, request.user)
-    enviar_email(request, sender, catecumeno.email_padre, subject, message_text, request.user)
-    return redirect('/panel_ultimas_ausencias')
+    if request.user.is_superuser or (request.user.is_coord and catecumeno.ciclo == request.user.ciclo):
+        creds=conseguir_credenciales(request, request.user)
+        if isinstance(creds, HttpResponseRedirect):
+            return creds
+        
+        sender = request.user.email
+        subject="Ausencia a catequesis de su hijo " + catecumeno.nombre + " " + catecumeno.apellidos
+        message_text = """
+        Estimada familia,
+        Nos ponemos en contacto con ustedes para notificarle que su hijo/a, """ + catecumeno.nombre + " " + catecumeno.apellidos + """, ha faltado a la última sesión de catequesis y no hemos recibido justificación al respecto.
+        Atentamente,
+        El equipo de catequesis.
+        """
+        if catecumeno.email_madre == catecumeno.email_padre:
+            enviar_email(request, sender, catecumeno.email_madre, subject, message_text, request.user)
+        else:
+            enviar_email(request, sender, catecumeno.email_madre, subject, message_text, request.user)
+            enviar_email(request, sender, catecumeno.email_padre, subject, message_text, request.user)
+        return redirect('/panel_ultimas_ausencias')
+    else:
+        return redirect('/403')
 
 @login_required
 def notificar_familias_ausencias_reiteradas(request, catecumeno_id):
-    creds=conseguir_credenciales(request, request.user)
-    if isinstance(creds, HttpResponseRedirect):
-        return creds
     catecumeno = get_object_or_404(Catecumeno, pk=catecumeno_id)
-    sender = request.user.email
-    subject="Ausencias reiteradas a catequesis de su hijo " + catecumeno.nombre + " " + catecumeno.apellidos
-    message_text = """
-    Estimada familia,
-    Nos ponemos en contacto con ustedes para notificarle que su hijo/a, """ + catecumeno.nombre + " " + catecumeno.apellidos + """, ha faltado ya más de tres veces en este curso.
-    Nos vemos en la obligación de recordarles que la asistencia a catequesis es obligatoria y que, en caso de no poder asistir, deben justificar la ausencia.
-    Atentamente,
-    El equipo de catequesis.
-    """
-    enviar_email(request, sender, catecumeno.email_madre, subject, message_text, request.user)
-    enviar_email(request, sender, catecumeno.email_padre, subject, message_text, request.user)
-    return redirect('/panel_ausencias_reiteradas')
+    if request.user.is_superuser or (request.user.is_coord and catecumeno.ciclo == request.user.ciclo):
+        creds=conseguir_credenciales(request, request.user)
+        if isinstance(creds, HttpResponseRedirect):
+            return creds
+        
+        sender = request.user.email
+        subject="Ausencias reiteradas a catequesis de su hijo " + catecumeno.nombre + " " + catecumeno.apellidos
+        message_text = """
+        Estimada familia,
+        Nos ponemos en contacto con ustedes para notificarle que su hijo/a, """ + catecumeno.nombre + " " + catecumeno.apellidos + """, ha faltado ya más de tres veces en este curso.
+        Nos vemos en la obligación de recordarles que la asistencia a catequesis es obligatoria y que, en caso de no poder asistir, deben justificar la ausencia.
+        Atentamente,
+        El equipo de catequesis.
+        """
+        if catecumeno.email_madre == catecumeno.email_padre:
+            enviar_email(request, sender, catecumeno.email_madre, subject, message_text, request.user)
+        else:
+            enviar_email(request, sender, catecumeno.email_madre, subject, message_text, request.user)
+            enviar_email(request, sender, catecumeno.email_padre, subject, message_text, request.user)
+        return redirect('/panel_ausencias_reiteradas')
+    else:
+        return redirect('/403')
 
 
 

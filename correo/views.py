@@ -479,7 +479,10 @@ def pantalla_enviar_correo(request, catecumeno_id):
             creds = conseguir_credenciales(request, user)
             if isinstance(creds, HttpResponseRedirect):
                 return creds
-            emails = catecumeno.email_madre +" , "+ catecumeno.email_padre
+            if catecumeno.email_madre == catecumeno.email_padre:
+                emails = catecumeno.email_madre
+            else:
+                emails = catecumeno.email_madre +" , "+ catecumeno.email_padre
             print("emails: ", emails)
             return render(request, 'pantalla_enviar_correo.html', {'emails': emails})
         except HttpError as err:
