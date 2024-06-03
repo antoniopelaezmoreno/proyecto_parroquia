@@ -5,8 +5,12 @@
 
 {% block content %}
     <link rel="stylesheet" type="text/css" href="{% static 'core/css/correo_style.css' %}">
-    <div class="container">
-        
+
+    <!-- Spinner de carga -->
+    <div id="spinner" class="spinner"></div>
+
+    <!-- Contenedor del contenido -->
+    <div id="content" class="container" style="display: none;">
         <div class="cabecera">
             <h1>Bandeja de Entrada</h1>
             <div class="botones-derecha">
@@ -17,14 +21,8 @@
             </div>
         </div>
         <table>
-            <tbody>
-                {% for mensaje in mensajes %}
-                    <tr class="mensaje {% if mensaje.seen %} leido {% else %} no_leido {% endif %}" data-id="{{ mensaje.id }}">
-                        <td><strong>{{ mensaje.sender }}</strong></td>
-                        <td><strong>{{ mensaje.subject }}</strong> | {{ mensaje.body }}</td>
-                        <td>{{ mensaje.date }}</td>
-                    </tr>
-                {% endfor %}
+            <tbody id="messages-body">
+                <!-- Los mensajes se cargarán aquí dinámicamente -->
             </tbody>
         </table>
     </div>
@@ -39,83 +37,152 @@
         El mensaje se ha enviado con éxito.
     </div>
 
-    <div class="pagination">
-        <span class="step-links">
-            {% if mensajes_pagina.has_previous %}
-                <a href="?page={{ mensajes_pagina.previous_page_number }}">Anterior</a>
-            {% endif %}
-
-            <span class="current">
-                Página {{ mensajes_pagina.number }} de {{ mensajes_pagina.paginator.num_pages }}.
-            </span>
-
-            {% if mensajes_pagina.has_next %}
-                <a href="?page={{ mensajes_pagina.next_page_number }}">Siguiente</a>
-            {% endif %}
+    <div id="pagination" class="pagination" style="display: none;">
+        <span class="step-links" id="pagination-links">
+            <!-- Los enlaces de paginación se cargarán aquí dinámicamente -->
         </span>
     </div>
 
     <script>
-        
-        document.getElementById("mostrarFormulario").addEventListener("click", function() {
-            document.getElementById("correoForm").reset();
-            document.getElementById("formularioEnviarMensaje").style.display = "block";
-        });
+        document.addEventListener("DOMContentLoaded", function() {
+            function loadMessages(page) {
+                const spinner = document.getElementById("spinner");
+                const content = document.getElementById("content");
+                const pagination = document.getElementById("pagination");
 
-        document.getElementById("cerrarFormulario").addEventListener("click", function() {
-            document.getElementById("formularioEnviarMensaje").style.display = "none";
-        });
+                // Mostrar el spinner y ocultar el contenido mientras se cargan los mensajes
+                spinner.style.display = "block";
+                content.style.display = "none";
+                pagination.style.display = "none";
 
-        document.getElementById("correoForm").addEventListener("submit", function(event) {
-
-            event.preventDefault(); 
-            var form_data = new FormData(this);
-            console.log(form_data);
-            fetch("{% url 'enviar_correo' %}", {
-                method: "POST",
-                body: form_data,
-                headers: {
-                    "X-CSRFToken": getCookie("csrftoken")
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    document.getElementById("formularioEnviarMensaje").style.display = "none";
-                    document.getElementById("mensajeExito").style.display = "block";
-
-                    setTimeout(() => {
-                        document.getElementById("mensajeExito").style.display = "none";
-                    }, 5000); 
-                } else {
-                    if (data.error == 'No se ha especificado ningún destinatario'){
-                        alert("No se ha especificado ningún destinatario");
-                    }else if(data.error == 'Las direcciones de correo electrónico no son válidas'){
-                        alert("Las direcciones de correo electrónico no son válidas");
-                    }else{
-                        alert("Ha ocurrido un error al enviar el correo electrónico.");
+                fetch("{% url 'obtener_mensajes_inbox' %}?page=" + page, {
+                    headers: {
+                        "X-Requested-With": "XMLHttpRequest"
                     }
-                    
-                }
-            })
-            .catch(error => {
-                console.error("Ha ocurrido un error al enviar el correo electrónico.");
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const messagesBody = document.getElementById("messages-body");
+                    const paginationLinks = document.getElementById("pagination-links");
+
+                    // Limpiar el contenido anterior
+                    messagesBody.innerHTML = "";
+                    paginationLinks.innerHTML = "";
+
+                    // Añadir los mensajes al cuerpo de la tabla
+                    data.mensajes.forEach(mensaje => {
+                        const row = document.createElement("tr");
+                        row.className = `mensaje ${mensaje.seen ? 'leido' : 'no_leido'}`;
+                        row.setAttribute("data-id", mensaje.id);
+                        row.innerHTML = `
+                            <td><strong>${mensaje.sender}</strong></td>
+                            <td><strong>${mensaje.subject}</strong> | ${mensaje.body}</td>
+                            <td>${mensaje.date}</td>
+                        `;
+                        messagesBody.appendChild(row);
+                    });
+
+                    // Configurar la paginación
+                    if (data.mensajes_pagina.has_previous) {
+                        const prevLink = document.createElement("a");
+                        prevLink.href = "#";
+                        prevLink.textContent = "Anterior";
+                        prevLink.addEventListener("click", (event) => {
+                            event.preventDefault();
+                            loadMessages(data.mensajes_pagina.previous_page_number);
+                        });
+                        paginationLinks.appendChild(prevLink);
+                    }
+
+                    const pageInfo = document.createElement("span");
+                    pageInfo.className = "current";
+                    pageInfo.textContent = `Página ${data.mensajes_pagina.number} de ${data.mensajes_pagina.num_pages}.`;
+                    paginationLinks.appendChild(pageInfo);
+
+                    if (data.mensajes_pagina.has_next) {
+                        const nextLink = document.createElement("a");
+                        nextLink.href = "#";
+                        nextLink.textContent = "Siguiente";
+                        nextLink.addEventListener("click", (event) => {
+                            event.preventDefault();
+                            loadMessages(data.mensajes_pagina.next_page_number);
+                        });
+                        paginationLinks.appendChild(nextLink);
+                    }
+
+                    // Ocultar el spinner y mostrar el contenido
+                    spinner.style.display = "none";
+                    content.style.display = "block";
+                    pagination.style.display = "block";
+
+                    // Agregar event listeners a las filas para redirigir al detalle del mensaje
+                    document.querySelectorAll("table tbody tr").forEach(row => {
+                        row.addEventListener("click", () => {
+                            const id = row.getAttribute("data-id");
+                            if (id) {
+                                const url = "{% url 'detalles_mensaje' 0 %}".replace("0", id);
+                                window.location.href = url;
+                            }
+                        });
+                    });
+                })
+                .catch(error => {
+                    console.error("Error al cargar los mensajes:", error);
+                    spinner.style.display = "none";
+                    content.style.display = "block";
+                });
+            }
+
+            // Cargar la primera página de mensajes cuando se carga la página
+            loadMessages(1);
+
+            document.getElementById("mostrarFormulario").addEventListener("click", function() {
+                document.getElementById("correoForm").reset();
+                document.getElementById("formularioEnviarMensaje").style.display = "block";
             });
 
-            function getCookie(name) {
-                const value = `; ${document.cookie}`;
-                const parts = value.split(`; ${name}=`);
-                if (parts.length === 2) return parts.pop().split(';').shift();
-            }
-        });
+            document.getElementById("cerrarFormulario").addEventListener("click", function() {
+                document.getElementById("formularioEnviarMensaje").style.display = "none";
+            });
 
-        const rows = document.querySelectorAll("table tbody tr");
-        rows.forEach(row => {
-            row.addEventListener("click", () => {
-                const id = row.getAttribute("data-id");
-                if (id) {
-                    var url = "{% url 'detalles_mensaje' 0 %}".replace("0", id);
-                    window.location.href = url;
+            document.getElementById("correoForm").addEventListener("submit", function(event) {
+                event.preventDefault(); 
+                var form_data = new FormData(this);
+                console.log(form_data);
+                fetch("{% url 'enviar_correo' %}", {
+                    method: "POST",
+                    body: form_data,
+                    headers: {
+                        "X-CSRFToken": getCookie("csrftoken")
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById("formularioEnviarMensaje").style.display = "none";
+                        document.getElementById("mensajeExito").style.display = "block";
+
+                        setTimeout(() => {
+                            document.getElementById("mensajeExito").style.display = "none";
+                        }, 5000); 
+                    } else {
+                        if (data.error == 'No se ha especificado ningún destinatario'){
+                            alert("No se ha especificado ningún destinatario");
+                        } else if(data.error == 'Las direcciones de correo electrónico no son válidas'){
+                            alert("Las direcciones de correo electrónico no son válidas");
+                        } else {
+                            alert("Ha ocurrido un error al enviar el correo electrónico.");
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error("Ha ocurrido un error al enviar el correo electrónico.");
+                });
+
+                function getCookie(name) {
+                    const value = `; ${document.cookie}`;
+                    const parts = value.split(`; ${name}=`);
+                    if (parts.length === 2) return parts.pop().split(';').shift();
                 }
             });
         });

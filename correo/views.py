@@ -23,9 +23,16 @@ from django.urls import reverse
 
 # Create your views here.
 
-
 @login_required
 def bandeja_salida(request):
+    request.session['redirect_to'] = request.path
+    creds = conseguir_credenciales(request, request.user)
+    if isinstance(creds, HttpResponseRedirect):
+        return creds
+    return render(request, 'bandeja_salida.html')
+
+@login_required
+def obtener_mensajes_outbox(request):
     request.session['redirect_to'] = request.path
     creds = conseguir_credenciales(request, request.user)
     if isinstance(creds, HttpResponseRedirect):
@@ -75,10 +82,21 @@ def bandeja_salida(request):
             mensajes.append({'subject': subject, 'body': body,
                             'receiver': receptor, 'date': fecha, 'id': message['id']})
 
-        return render(request, 'bandeja_salida.html', {'mensajes_pagina': mensajes_pagina, 'mensajes': mensajes})
+        response_data = {
+            'mensajes': mensajes,
+            'mensajes_pagina': {
+                'has_previous': mensajes_pagina.has_previous(),
+                'previous_page_number': mensajes_pagina.previous_page_number() if mensajes_pagina.has_previous() else None,
+                'number': mensajes_pagina.number,
+                'num_pages': paginator.num_pages,
+                'has_next': mensajes_pagina.has_next(),
+                'next_page_number': mensajes_pagina.next_page_number() if mensajes_pagina.has_next() else None
+            }
+        }
+
+        return JsonResponse(response_data)
     except HttpError as err:
-        from core.views import error
-        return error(request, err)
+        return JsonResponse({'error': str(err)}, status=500)
 
 
 @login_required
@@ -189,14 +207,16 @@ def oauth2callback(request):
 
     return redirect(redirect_to)
 
-
 @login_required
 def bandeja_de_entrada(request):
-    SCOPES = ["https://www.googleapis.com/auth/gmail.readonly",
-              "https://www.googleapis.com/auth/gmail.send",
-              "https://www.googleapis.com/auth/gmail.modify",
-              "https://www.googleapis.com/auth/calendar"]
+    request.session['redirect_to'] = request.path
+    creds = conseguir_credenciales(request, request.user)
+    if isinstance(creds, HttpResponseRedirect):
+        return creds
+    return render(request, 'bandeja_de_entrada.html')
 
+@login_required
+def obtener_mensajes_inbox(request):
     request.session['redirect_to'] = request.path
     creds = conseguir_credenciales(request, request.user)
     if isinstance(creds, HttpResponseRedirect):
@@ -209,18 +229,13 @@ def bandeja_de_entrada(request):
             userId="me", q=query, labelIds=["INBOX"]).execute()
         messages = results.get("messages", [])
 
-        # Crear un paginador con los mensajes
-        paginator = Paginator(messages, 10)  # 10 mensajes por página
-
-        # Obtener el número de página solicitado (por defecto, página 1)
+        paginator = Paginator(messages, 10)
         page = request.GET.get('page')
         try:
             mensajes_pagina = paginator.page(page)
         except PageNotAnInteger:
-            # Si el número de página no es un entero, mostrar la primera página
             mensajes_pagina = paginator.page(1)
         except EmptyPage:
-            # Si la página está fuera de rango (por ejemplo, 9999), mostrar la última página
             mensajes_pagina = paginator.page(paginator.num_pages)
 
         mensajes = []
@@ -254,10 +269,21 @@ def bandeja_de_entrada(request):
             mensajes.append({'subject': subject, 'body': body, 'sender': emisor,
                             'seen': leido, 'date': fecha, 'id': message['id']})
 
-        return render(request, 'bandeja_de_entrada.html', {'mensajes_pagina': mensajes_pagina, 'mensajes': mensajes})
+        response_data = {
+            'mensajes': mensajes,
+            'mensajes_pagina': {
+                'has_previous': mensajes_pagina.has_previous(),
+                'previous_page_number': mensajes_pagina.previous_page_number() if mensajes_pagina.has_previous() else None,
+                'number': mensajes_pagina.number,
+                'num_pages': paginator.num_pages,
+                'has_next': mensajes_pagina.has_next(),
+                'next_page_number': mensajes_pagina.next_page_number() if mensajes_pagina.has_next() else None
+            }
+        }
+
+        return JsonResponse(response_data)
     except HttpError as err:
-        from core.views import error
-        return error(request, err)
+        return JsonResponse({'error': str(err)}, status=500)
 
 
 @login_required
