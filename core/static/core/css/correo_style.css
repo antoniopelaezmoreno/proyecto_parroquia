@@ -78,7 +78,7 @@
 }
 
 /* Estilos para pantallas grandes */
-@media only screen and (min-width: 800px) {
+@media only screen and (min-width: 1000px) {
     /* Restaura el ancho de la tabla al 100% */
     table {
         width: 100%;
@@ -93,7 +93,7 @@
 }
 
 /* Estilos para pantallas pequeñas */
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 1000px) {
     /* Utiliza Flexbox para organizar las celdas en columnas */
     .mensaje td {
         display: flex;
@@ -138,4 +138,24 @@
     padding: 15px; 
     border-radius: 5px; 
     z-index: 9999; 
+}
+
+.spinner {
+    display: block;
+    position: fixed;
+    z-index: 1000;
+    top: 50%;
+    left: 50%;
+    width: 80px;
+    height: 80px;
+    margin: -40px 0 0 -40px;
+    border: 16px solid #f3f3f3;
+    border-top: 16px solid #86c631;
+    border-radius: 50%;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }

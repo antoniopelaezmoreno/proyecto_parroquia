@@ -7,6 +7,7 @@
    <title>Portal de Catequesis</title>
    {% load static %}
    <link rel="stylesheet" href="{% static 'core/css/inicio_style.css' %}">
+   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 
 <body class="font-sans" data-font-pack="dynamic">
@@ -82,11 +83,16 @@
                            </h2>
                            <div
                               class="mt-4 prose prose-user font-serif leading-relaxed text-type-700 dark:text-slate-200 text-base sm:text-lg preview-menu-wrapper relative">
-                              ¡Regístrate aquí y comienza tu camino de fe! Apúntete ahora para participar en nuestras
+                              ¡Envía tu inscripción aquí y comienza tu camino de fe! Apúntete ahora para participar en nuestras
                               sesiones de catequesis.
                            </div>
-                           <a class="ui-button ui-button-base ui-button-primary" href="javascript:void(0);"
-                              onclick="toggleForm('divRegisterForm')" style="margin-top: 1rem;">Registrarse</a>
+                           <div class="flex gap-4 mt-4">
+                              <a class="ui-button ui-button-base ui-button-primary" href="javascript:void(0);"
+                                  onclick="toggleForm('divRegisterForm')">Inscribirse</a> 
+                              <a class="ui-button ui-button-base ui-button-primary" href="/media/inscripción.pdf" download="autorizacion.jpg"><span class="material-icons">
+                                      file_download
+                                  </span> <p>Autorización</p></a>
+                          </div>
                         </div>
                      </div>
                      <div class="mt-12 sm:mt-16 lg:mt-0 lg:col-start-1 preview-menu-wrapper relative">
@@ -95,7 +101,7 @@
                            <img
                               src="https://images.unsplash.com/photo-1528437457702-ec66df48de3f?crop=entropy&amp;cs=tinysrgb&amp;fit=max&amp;fm=jpg&amp;ixid=M3wzMzczODV8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTQyNDIxNDV8&amp;ixlib=rb-4.0.3&amp;q=80&amp;w=1080"
                               class="lg:right-0 rounded-r-2xl max-h-screen w-auto  2xl:max-w-2xl 3xl:max-w-3xl object-contain ml-auto 2xl:rounded-2xl w-full 2xl:max-h-[44rem]"
-                              alt="Encuentra guías de estudio"><!---->
+                              alt="Encuentra guías de estudio">
                         </div>
                      </div>
                   </div>
@@ -136,8 +142,8 @@
                               type="text" name="apellidos_padre" placeholder="Apellidos" required></p>
                         <p><strong>Email del padre:</strong> <input type="email" name="email_padre" required></p>
                         <p><strong>Teléfono del padre:</strong> <input type="tel" name="telefono_padre" required></p>
-                        <p><strong>Autorización:</strong></p> <input type="file" name="foto" required>
-                        <button class="ui-button ui-button-base ui-button-primary" type="submit">Enviar</button>
+                        <p><strong>Autorización rellena y firmada:</strong></p> <input type="file" name="foto" required>
+                        <button class="ui-button ui-button-base ui-button-primary mt-3" type="submit">Enviar</button>
                      </div>
                   </form>
                </div>
@@ -182,8 +188,8 @@
                         <p><strong>Datos del catequista:</strong> <input type="text" name="nombre" placeholder="Nombre" required></p>
                         <p><input type="text" name="apellidos" placeholder="Apellidos" required></p>
                         <p><strong>Email:</strong> <input type="email" name="email" required></p>
-                        <p><strong>Preferencias: </strong><input type="text" name="disponibilidad" required></p>
-                        <p><strong>Disponibilidad: </strong><input type="text" name="preferencias" required></p>
+                        <p><strong>Preferencias: </strong><input type="text" name="disponibilidad" placeholder="¿En qué ciclos te ves más preparado para dar catequesis?" required></p>
+                        <p><strong>Disponibilidad: </strong><input type="text" name="preferencias" placeholder="¿Qué días y horas tienes dispoibles?" required></p>
                         <button class="ui-button ui-button-base ui-button-primary" type="submit">Enviar</button>
                      </div>
                   </form>
