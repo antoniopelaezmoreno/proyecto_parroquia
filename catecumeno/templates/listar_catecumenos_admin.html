@@ -75,6 +75,11 @@
         margin: 10px auto; 
         max-width: 500px;
     }
+
+    .selected {
+        background-color: #FFBE0B;
+    }
+
 </style>
 
 <script>
@@ -92,7 +97,6 @@
     // Función para filtrar los alumnos por ciclo
     function filterByCiclo(ciclo, btn) {
         var alumnos = document.getElementsByClassName('alumno');
-
         var buttons = document.getElementsByClassName('filter-btn');
 
         for (var i = 0; i < buttons.length; i++) {
