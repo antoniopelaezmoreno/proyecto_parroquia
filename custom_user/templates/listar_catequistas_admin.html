@@ -6,16 +6,16 @@
 {% block content %}
 
 <div class="filter-panel">
-    <button class="filter-btn" onclick="filterByCiclo('')">Todos</button>
-    <button class="filter-btn" onclick="filterByCiclo('posco_1')">Poscomunión 1</button>
-    <button class="filter-btn" onclick="filterByCiclo('posco_2')">Poscomunión 2</button>
-    <button class="filter-btn" onclick="filterByCiclo('posco_3')">Poscomunión 3</button>
-    <button class="filter-btn" onclick="filterByCiclo('posco_4')">Poscomunión 4</button>
-    <button class="filter-btn" onclick="filterByCiclo('gr_juv_1')">Grupos Juveniles 1</button>
-    <button class="filter-btn" onclick="filterByCiclo('gr_juv_2')">Grupos Juveniles 2</button>
-    <button class="filter-btn" onclick="filterByCiclo('catecumenados_1')">Catecumenados 1</button>
-    <button class="filter-btn" onclick="filterByCiclo('catecumenados_2')">Catecumenados 2</button>
-    <button class="filter-btn" onclick="filterByCiclo('catecumenados_3')">Catecumenados 3</button>
+    <button class="filter-btn" onclick="filterByCiclo('', this)">Todos</button>
+    <button class="filter-btn" onclick="filterByCiclo('posco_1', this)">Poscomunión 1</button>
+    <button class="filter-btn" onclick="filterByCiclo('posco_2', this)">Poscomunión 2</button>
+    <button class="filter-btn" onclick="filterByCiclo('posco_3', this)">Poscomunión 3</button>
+    <button class="filter-btn" onclick="filterByCiclo('posco_4', this)">Poscomunión 4</button>
+    <button class="filter-btn" onclick="filterByCiclo('gr_juv_1', this)">Grupos Juveniles 1</button>
+    <button class="filter-btn" onclick="filterByCiclo('gr_juv_2', this)">Grupos Juveniles 2</button>
+    <button class="filter-btn" onclick="filterByCiclo('catecumenados_1', this)">Catecumenados 1</button>
+    <button class="filter-btn" onclick="filterByCiclo('catecumenados_2', this)">Catecumenados 2</button>
+    <button class="filter-btn" onclick="filterByCiclo('catecumenados_3', this)">Catecumenados 3</button>
 </div>
 <div id="alumnos-container">
     <div class="scrollmenu">
@@ -49,12 +49,25 @@
     </div>
 </div>
 
-
+<style>
+    .selected {
+        background-color: #FFBE0B;
+    }
+</style>
 
 <script>
     // Función para filtrar los alumnos por ciclo
-    function filterByCiclo(ciclo) {
+    function filterByCiclo(ciclo, btn) {
         var alumnos = document.getElementsByClassName('alumno');
+        var buttons = document.getElementsByClassName('filter-btn');
+
+        // Remover la clase 'selected' de todos los botones
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove('selected');
+        }
+
+        // Agregar la clase 'selected' al botón actual
+        btn.classList.add('selected');
 
         for (var i = 0; i < alumnos.length; i++) {
             var alumno = alumnos[i];

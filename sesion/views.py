@@ -112,16 +112,20 @@ def editar_sesion(request, sesionId):
                 files = form.cleaned_data['files']
                 for file in files:
                     sesion.files.add(file)
-                return redirect('/sesion/listar')
+                url_anterior = request.session.get('url_anterior', '/sesion/listar')
+                del request.session['url_anterior']
+
+                return redirect(url_anterior)
             else:
                 messages.error(request, "Hay algo mal en el formulario, por favor revisa los campos")
         else:
+            url_anterior = request.META.get('HTTP_REFERER')
+            request.session['url_anterior'] = url_anterior
+            
             form = SesionForm(instance=sesion)
         return render(request, 'editar_sesion.html', {'form': form, 'sesion': sesion})
     else:
         return redirect('/403')
-
-    
 
 @login_required
 def eliminar_sesion(request, sesionId):
@@ -134,16 +138,27 @@ def eliminar_sesion(request, sesionId):
  
 @login_required
 def listar_sesiones(request):
-    if request.user.is_authenticated:
-        if request.user.is_superuser:
-            sesiones = Sesion.objects.all().order_by('fecha', 'id')
-            return render(request, 'listar_sesiones_admin.html', {'sesiones': sesiones})
+    id_curso = request.GET.get('curso')
+    
+    ultimo_curso = Curso.objects.latest('id')
+    curso = ultimo_curso
+    cursos = Curso.objects.all().order_by('id').reverse()
+    if request.user.is_superuser:
+        if id_curso:
+            curso = get_object_or_404(Curso, pk=id_curso)
+            sesiones = Sesion.objects.filter(curso_id=id_curso).order_by('fecha', 'id')
         else:
-            ciclo=request.user.ciclo
-            sesiones = Sesion.objects.filter(ciclo=ciclo).order_by('fecha', 'id')
-            return render(request, 'listar_sesiones.html', {'sesiones': sesiones})
+            sesiones = Sesion.objects.filter(curso=ultimo_curso).order_by('fecha', 'id')
+        return render(request, 'listar_sesiones_admin.html', {'sesiones': sesiones, 'cursos': cursos, 'id_curso': id_curso, 'curso_seleccionado': curso})
     else:
-        return redirect('/403')
+        ciclo=request.user.ciclo
+        if id_curso:
+            curso = get_object_or_404(Curso, pk=id_curso)
+            sesiones = Sesion.objects.filter(ciclo=ciclo).filter(curso_id=id_curso).order_by('fecha', 'id')
+        else:
+            sesiones = Sesion.objects.filter(ciclo=ciclo).filter(curso=ultimo_curso).order_by('fecha', 'id')
+        return render(request, 'listar_sesiones.html', {'sesiones': sesiones, 'cursos': cursos, 'id_curso': id_curso, 'curso_seleccionado': curso})
+
 
 @login_required
 def mostrar_sesion(request, sesionId):

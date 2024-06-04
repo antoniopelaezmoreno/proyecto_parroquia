@@ -173,6 +173,8 @@ def obtener_catequistas_de_catecumeno(catecumeno):
     catequistas = []
     for grupo in grupos:
         if catecumeno in grupo.miembros():
-            catequistas.append(grupo.catequista1.first_name)
-            catequistas.append(grupo.catequista2.first_name)
+            if grupo.catequista1:
+                catequistas.append(grupo.catequista1.first_name)
+            if grupo.catequista2:
+                catequistas.append(grupo.catequista2.first_name)
     return catequistas

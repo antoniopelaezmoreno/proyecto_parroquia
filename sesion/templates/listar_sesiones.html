@@ -5,6 +5,20 @@
 
 {% block content %}
 
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;">
+    <div>
+        <select id="curso-filter">
+            <option value="">---</option>
+            {% for curso in cursos %}
+                <option value="{{ curso.id }}" {% if curso.id == id_curso %} selected {% endif %}>{{ curso.curso }}</option>
+            {% endfor %}
+        </select>
+        <button id="aplicar-filtro">Aplicar filtro</button>
+    </div>
+
+    <h1>Sesiones del curso {{ curso_seleccionado.curso }} </h1>
+</div>
+
 <a href="{% url 'crear_sesion' %}" class="crearbtn">
     <span class="material-icons" style="font-size: 75px; color: #86c631">
         add_circle
@@ -89,10 +103,24 @@
         cursor: pointer;
         z-index: 10;
     }
+
+    h1 {
+        text-align: center;
+        flex-grow: 1;
+    }
 </style>
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
+        var cursoFilter = document.getElementById('curso-filter');
+        var aplicarFiltroBtn = document.getElementById('aplicar-filtro');
+
+        aplicarFiltroBtn.addEventListener('click', function() {
+            var selectedCurso = cursoFilter.value;
+            var url = "{% url 'listar_sesiones' %}?curso=" + selectedCurso;
+            window.location.href = url;
+        });
+
         var sesiones = document.querySelectorAll(".sesion");
         sesiones.forEach(function(sesion) {
             sesion.addEventListener("click", function() {
