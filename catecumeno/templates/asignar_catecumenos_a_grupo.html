@@ -11,52 +11,54 @@
         <button  class="asignar-button boton">Asignar</button>
     </div>
 
-    <div class="flex-container">
-        <div class="solicitudes-column">
-            <table class="alumnos-table rounded-border">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Apellidos</th>
-                        <th> </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for catecumeno in catecumenos %}
-                        <tr class="alumno">
-                            <td class="py-2 px-4 border-b">{{ catecumeno.nombre }}</td>
-                            <td class="py-2 px-4 border-b">{{ catecumeno.apellidos }}</td>
-                            <td class="py-2 px-4 border-b">
-                                <!-- Barra de selección -->
-                                <select class="select-option" data-user-id="{{ catecumeno.id }}">
-                                    <option value="">Seleccionar grupo</option>
-                                    {% for grupo in grupos %}
-                                        {% if catecumeno in grupo.miembros.all %}
-                                            <option value="{{ grupo.id }}" selected>{{ grupo }}</option>
-                                        {% else %}
-                                            <option value="{{ grupo.id }}">{{ grupo }}</option>
-                                        {% endif %}
-                                    {% endfor %}
-                                </select>
-                                
-                            </td>
+    <div class="scrollmenu">
+        <div class="flex-container">
+            <div class="solicitudes-column">
+                <table class="alumnos-table rounded-border">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Apellidos</th>
+                            <th> </th>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-
-        <div class="cuadricula-column">
-            <div class="grid-container">
-                {% for grupo in grupos %}
-                    <div class="grid-cell-title">{% if grupo.catequista1 %}{{ grupo.catequista1.nombre }}{% else %}Catequista1{% endif %} y {% if grupo.catequista2 %}{{ grupo.catequista2.nombre }}{% else %}Catequista2{% endif %}</div>
-                {% endfor %}
+                    </thead>
+                    <tbody>
+                        {% for catecumeno in catecumenos %}
+                            <tr class="alumno">
+                                <td class="py-2 px-4 border-b">{{ catecumeno.nombre }}</td>
+                                <td class="py-2 px-4 border-b">{{ catecumeno.apellidos }}</td>
+                                <td class="py-2 px-4 border-b">
+                                    <!-- Barra de selección -->
+                                    <select class="select-option" data-user-id="{{ catecumeno.id }}">
+                                        <option value="">Seleccionar grupo</option>
+                                        {% for grupo in grupos %}
+                                            {% if catecumeno in grupo.miembros.all %}
+                                                <option value="{{ grupo.id }}" selected>{{ grupo }}</option>
+                                            {% else %}
+                                                <option value="{{ grupo.id }}">{{ grupo }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                    
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
-            <!-- Cuadrícula debajo de la tabla -->
-            <div class="grid-container">
-                {% for grupo in grupos %}
-                    <div class="grid-cell" data-option="{{ grupo.id }}"></div>
-                {% endfor %}
+
+            <div class="cuadricula-column">
+                <div class="grid-container">
+                    {% for grupo in grupos %}
+                        <div class="grid-cell-title">{% if grupo.catequista1 %}{{ grupo.catequista1.nombre }}{% else %}Catequista1{% endif %} y {% if grupo.catequista2 %}{{ grupo.catequista2.nombre }}{% else %}Catequista2{% endif %}</div>
+                    {% endfor %}
+                </div>
+                <!-- Cuadrícula debajo de la tabla -->
+                <div class="grid-container">
+                    {% for grupo in grupos %}
+                        <div class="grid-cell" data-option="{{ grupo.id }}"></div>
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>
