@@ -43,10 +43,9 @@ def editar_grupo(request, grupo_id):
                 errores = form.errors['__all__'][0]
                 request.session['errores'] = [grupo.id,errores]
                 return redirect('/grupo?ciclo='+grupo.ciclo)
-                
         else:
-            form = GrupoForm(instance=grupo, catequistas=catequistas)
-        return render(request, 'editar_grupo.html', {'form': form})
+            return redirect('/404')
+                
     else:
         return redirect('/403')
     

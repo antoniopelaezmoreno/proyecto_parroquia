@@ -10,7 +10,4 @@ urlpatterns = [
     path('new/<uuid:token>', crear_usuario_desde_solicitud, name='crear_usuario_desde_solicitud'),
     path('listar', listar_catequistas, name='listar_catequistas'),
     path('convertir_coordinador', convertir_a_coordinador, name='convertir_a_coordinador'),
-
-
-
 ]
