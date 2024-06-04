@@ -95,16 +95,13 @@ def asignar_catecumenos_a_grupo(request):
 
 @login_required
 def ver_autorizaciones(request):
-    if request.user.is_authenticated:
-        if request.user.is_superuser:
-            catecumenos = Catecumeno.objects.all()
-            return render(request, 'ver_autorizaciones.html', {'catecumenos': catecumenos})
-        elif request.user.is_coord:
-            ciclo=request.user.ciclo
-            catecumenos = Catecumeno.objects.filter(ciclo=ciclo)
-            return render(request, 'ver_autorizaciones.html', {'catecumenos': catecumenos})
-        else:
-            return redirect('/403')
+    if request.user.is_superuser:
+        catecumenos = Catecumeno.objects.all()
+        return render(request, 'ver_autorizaciones.html', {'catecumenos': catecumenos})
+    elif request.user.is_coord:
+        ciclo=request.user.ciclo
+        catecumenos = Catecumeno.objects.filter(ciclo=ciclo)
+        return render(request, 'ver_autorizaciones.html', {'catecumenos': catecumenos})
     else:
         return redirect('/403')
     
