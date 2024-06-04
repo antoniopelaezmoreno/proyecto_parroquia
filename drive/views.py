@@ -14,7 +14,7 @@ def subir_archivo(request):
         carpeta_actual = None
         if id_carpeta_actual is not None and id_carpeta_actual != 'None':
             carpeta_actual = get_object_or_404(Carpeta, id=id_carpeta_actual)
-        nuevo_archivo = Archivo(file=archivo, dueño=request.user, name=archivo.name, carpeta_padre=carpeta_actual)
+        nuevo_archivo = Archivo(archivo=archivo, dueño=request.user, name=archivo.name, carpeta_padre=carpeta_actual)
         nuevo_archivo.save()
         return JsonResponse({'success': True})
     return redirect('listar_archivos')

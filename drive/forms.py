@@ -5,7 +5,7 @@ from django.db.models import Q
 class FileForm(forms.ModelForm):
     class Meta:
         model = Archivo
-        fields = ['file']
+        fields = ['archivo']
 
 class FolderForm(forms.ModelForm):
     class Meta:

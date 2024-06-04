@@ -19,7 +19,7 @@ class Carpeta(models.Model):
 
 class Archivo(models.Model):
     name = models.CharField(max_length=50)
-    file = models.FileField(upload_to='files/')
+    archivo = models.FileField(upload_to='files/')
     dueño = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     carpeta_padre = models.ForeignKey(Carpeta, on_delete=models.CASCADE, null=True, blank=True)
 
@@ -70,12 +70,12 @@ class Archivo(models.Model):
     
     def clean(self):
         # Si el archivo ya existe, entonces se valida la extensión
-        if self.file:
+        if self.archivo:
             try:
-                FileExtensionValidator(allowed_extensions=['pdf','jpeg','jpg','png','doc','docx','dot','dotx','docm','dotm','xls','xlsx','xlsm','xlsb','xltx','xltm','ppt','pptx','pot','potx','pptm','potm','mp4','mov','avi','mkv','txt'])(self.file)
+                FileExtensionValidator(allowed_extensions=['pdf','jpeg','jpg','png','doc','docx','dot','dotx','docm','dotm','xls','xlsx','xlsm','xlsb','xltx','xltm','ppt','pptx','pot','potx','pptm','potm','mp4','mov','avi','mkv','txt'])(self.archivo)
             except ValidationError as e:
-                raise ValidationError({'file': ('Este tipo de archivo no está permitido')}) 
+                raise ValidationError({'archivo': ('Este tipo de archivo no está permitido')}) 
         # Si se está moviendo el archivo y no se selecciona un nuevo archivo, no se realiza ninguna validación
         elif not self.carpeta_padre:
-            raise ValidationError({'file': ('Debe subir un archivo.')})
+            raise ValidationError({'archivo': ('Debe subir un archivo.')})
         
