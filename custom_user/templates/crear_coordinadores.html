@@ -12,7 +12,7 @@
       <select name="cycle_{{ cycle.0 }}">
         <option value="">Seleccione un usuario</option>
         {% for user in users %}
-        <option value="{{ user.id }}" {% if user.is_coord %} selected {% endif %}>{{ user.first_name }} {{ user.last_name }}</option>
+        <option value="{{ user.id }}" {% if user.is_coord %} selected {% endif %}>{{ user.nombre }} {{user.apellidos }}</option>
         {% endfor %}
       </select>
     </div>
@@ -20,19 +20,63 @@
   </div>
   <button type="submit">Guardar</button>
 </form>
-  
-  <style>
-    .column {
-      float: left;
-      width: 33.33%;
-      padding: 10px;
-    }
-    
-    /* Clear floats after the columns */
-    .row:after {
-      content: "";
-      display: table;
-      clear: both;
-    }
-    </style>
+
+<style>
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .column {
+    flex: 0 1 calc(33.33% - 20px);
+    /* 33.33% width with 10px padding */
+    margin-bottom: 20px;
+    /* Espacio entre las columnas */
+    padding: 10px;
+    box-sizing: border-box;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+  select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  button[type="submit"] {
+    padding: 10px 20px;
+    background-color: #86c631;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  button[type="submit"]:hover {
+    background-color: #FFBE0B;
+  }
+  /* Estilos para pantallas medianas y pequeñas */
+@media only screen and (max-width: 800px) {
+  .column {
+    flex-basis: calc(50% - 20px); /* Dos columnas por fila con 20px de espacio entre ellas */
+  }
+}
+
+/* Estilos para pantallas pequeñas */
+@media only screen and (max-width: 480px) {
+  .column {
+    flex-basis: calc(100% - 20px); /* Una columna por fila con 20px de espacio */
+  }
+}
+
+</style>
 {% endblock %}

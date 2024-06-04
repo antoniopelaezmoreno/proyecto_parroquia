@@ -1,11 +1,52 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %} Acceso Restringido {% endblock %}
+{% block title %} Acceso denegado {% endblock %}
 
 {% block content %}
+<div class="error-page">
+    <h1>403</h1>
+    <h2>Acceso denegado</h2>
+    <p>Lo sentimos, pero no tienes permiso para acceder a esta página</p>
+    <a href="{% url 'index' %}" class="home-button">Volver a la página principal</a>
+</div>
 
-<p>No tienes acceso</p>
+<style>
+    .error-page {
+        text-align: center;
+        padding: 50px 20px;
+    }
 
+    .error-page h1 {
+        font-size: 10em;
+        margin: 0;
+        color: #FF6B6B;
+    }
 
+    .error-page h2 {
+        font-size: 2em;
+        margin: 20px 0;
+        color: #333;
+    }
+
+    .error-page p {
+        font-size: 1.2em;
+        color: #666;
+    }
+
+    .home-button {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #86c631;
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 4px;
+        font-weight: bold;
+    }
+
+    .home-button:hover {
+        background-color: #FFBE0B;
+    }
+</style>
 {% endblock %}

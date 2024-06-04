@@ -5,7 +5,256 @@
 
 {% block content %}
 
-<a href="{% url 'crear_reservas' %}"> Asignar sala</a>
+    <link rel="stylesheet" type="text/css" href="{% static 'core/css/index_styles.css' %}">
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" style="margin-left: 99%; margin-right: 30px; cursor: pointer;">&times;</span>
+            <h2>Detalles del Evento</h2>
+            <p id="tituloEvento"></p>
+            <p id="fechaEvento"></p>
+            <p id="descripcionEvento"></p>
+            <p id="participantesEvento"></p>
+            <p id="salaEvento"></p>
+        </div>
+      </div>
+    <div class="container">
+        <!--Panel central-->
+        <div class="columna" style="flex-basis: 68%;">
+            <div class="estaditicas" style="margin-top: 30px;">
+                <a class="estadistica catecumenos" href="{% url 'listar_catecumenos' %}">
+                    <span class="material-icons icono" style="color: #0883b4; ">groups</span>
+                    <div class="info-estadisticas">
+                        <p style="margin-bottom: 10px; font-size: 20px;"> Catecúmenos </p>
+                        <p style="font-size: 50px; text-align: center; margin-top: 0px;"> <b>{{ num_catecumenos }}</b></p> 
+                    </div>
+                </a>
+                <a class="estadistica ausencias" href="{% url 'listar_catequistas' %}">
+                    <span class="material-icons icono" style="color: #ce4222;">supervisor_account</span>
+                    <div class="info-estadisticas">
+                        <p style="margin-bottom: 10px; font-size: 20px;"> Catequistas </p>
+                        <p style="font-size: 50px; text-align: center; margin-top: 0px;"> <b>{{ num_catequistas }}</b></p> 
+                    </div>
+                </a>
+                <a class="estadistica ausencias-ultimas" href="{% url 'asignar_catequistas' %}">
+                    <span class="material-icons icono" style="color: #deac19;">help_outline</span>
+                    <div class="info-estadisticas">
+                        <p style="margin-bottom: 10px; font-size: 20px;"> Solicitudes <i class="fa-brands fa-google"></i> </p>
+                        <p style="font-size: 50px; text-align: center; margin-top: 0px;"> <b>{{ num_solicitudes }}</b></p> 
+                    </div>
+                </a>
+            </div>
+            
+            <h3 style="margin-top: 30px; padding: auto;"> Próximo Evento</h3>
+            <div class="sesion">
+                {% if proximo_evento %}
+                    <div style="display: grid; grid-template-columns: 1fr;">
+                    <h2 id="nombreProximoEvento" style="margin-bottom: 10px; border-bottom: 1px solid black; text-align: center; padding-bottom: 10px;"> {{ proximo_evento.nombre }} </h2>
+                        <div style="max-width: calc(100% - 20px); min-width: 250px;">
+                            <p><b>Descripción: </b></p>
+                            <p id="descripcionProximoEvento">{{ proximo_evento.descripcion }}</p>
+                            <p><b>Horario: </b></p> {{ proximo_evento.fecha }} - {{ proximo_evento.hora_inicio}} - {{ proximo_evento.hora_fin}}
+                            {% if proximo_evento.sala_reservada %}
+                            <p><b>Sala: </b></p> {{ proximo_evento.sala_reservada }}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-flow: row; justify-content: space-between;">
+                        <a href="{% url 'detalles_evento' proximo_evento.id %}" class="boton" style="margin-top: 20px;">
+                            <p> DETALLES </p>
+                        </a>
+                    </div>
+                {% else %}
+                    <p> No hay próximo evento</p>
+                {% endif %}
+            </div>
+
+            <h3 style="padding: auto;">Acciones</h3>
+            <div class="acciones">
+                <a class="accion" href="{% url 'terminar_curso' %}">
+                    Terminar Curso <i class="fa-brands fa-google"></i>
+                </a>
+
+                <a class="accion" href="{% url 'convertir_a_coordinador' %}">
+                    Coordinadores
+                </a>
+
+                <a class="accion" href="{% url 'ver_autorizaciones' %}">
+                    Autorizaciones
+                </a>
+
+                <a class="accion" href="{% url 'crear_reservas' %}">
+                    Asignar Sala
+                </a>
+
+                <a class="accion" href="{% url 'crear_sala' %}">
+                    Crear Sala
+                </a>
+
+                <a class="accion" href="{% url 'lista_salas' %}">
+                    Reservar Sala
+                </a>
+
+                <a class="accion" href="{% url 'mis_reservas' %}">
+                    Mis Reservas
+                </a>
+
+                <a class="accion" href="{% url 'pantalla_enviar_correo_destinatarios' %}?destinatarios=coordinadores">
+                    Correo Coordinadores
+                </a>
+
+                <a class="accion" href="{% url 'pantalla_enviar_correo_destinatarios' %}?destinatarios=catequistas">
+                    Correo Catequistas
+                </a>
+                
+            </div>
+           
+        </div>
+        <!--Panel derecho-->
+        <div class="columna" style="flex-basis: 30%;">
+            <h3 style="padding: auto;"> Notificaciones</h3>
+            <div class="notificaciones">
+                {% if notificaciones %}
+                {% for notificacion in notificaciones %}
+                <div class="notificacion">
+                    <div style="display: grid; grid-template-columns: 0.9fr;">
+                        <div style="max-width: calc(100% - 20px); min-width: 250px;">
+                        <p id="mensajeNotificacion">{{ notificacion.mensaje }}</p>
+                        <p>{{ notificacion.fecha }}</p>
+                        </div>
+                    </div>
+                    <input type="radio" class="form-check-input" name="notificacion" value="{{ notificacion.id }}">
+                </div>
+                {% endfor %}
+                {% else %}
+                <p style="text-align: center;">No hay notificaciones nuevas</p>
+                {% endif %}
+            </div>
+            <h3 style="padding: auto;">Calendario</h3>
+            <div class="calendario">
+                <div id='calendario'></div>
+                <a class="btnCrearEvento" href="{% url 'crear_evento' %}" id="crearEventoBtn" style="margin-top: 10px;">Crear Evento <i class="fa-brands fa-google"></i></a>
+                <a class="btnCrearEvento predeterminado" href="{% url 'crear_evento' %}?reunion_comision=true" id="crearEventoBtn" style="margin-top: 10px;">Reunión Comisión <i class="fa-brands fa-google"></i></a>
+                <a class="btnCrearEvento predeterminado" href="{% url 'mostrar_eventos' %}"
+                id="crearEventoBtn" style="margin-top: 10px;">Mostrar Eventos</a>
+            </div>            
+        </div>
+    </div>
 
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.0/main.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.0/main.min.css" rel="stylesheet"/>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@3.10.2/dist/locale/es.js'></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const openModalBtns = document.querySelectorAll(".openModalBtn");
+            const modal = document.getElementById("myModal");
+            const closeModal = document.querySelector(".close");
+        });
+
+        
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById("myModal");
+            const closeModal = document.querySelector(".close");
+            var calendarEl = document.getElementById('calendario');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                themeSystem: 'bootstrap5',
+                firstDay: 1,
+                events: "{% url 'obtener_eventos' %}", // URL para obtener los eventos
+                initialView: 'dayGridMonth', // Vista predeterminada del calendario
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                dayMaxEventRows: true, // allow "more" link when too many events            
+                views: {
+                    timeGrid: {
+                        eventLimit: 3 // adjust to 6 only for agendaWeek/agendaDay
+                    }
+                },
+                locale: 'es',
+                eventContent: function(info) {
+                    return { html: '<b>' + info.event.title + '</b>' };
+                },
+                eventDisplay: 'block',  // Muestra el evento como un bloque
+                scrollTime: '16:00:00',
+                eventClick: function(info) {
+                    
+                    modal.style.display = "block";
+                    var evento = info.event;
+                    var tipo = evento.extendedProps.tipo;
+                    console.log(tipo);
+                    $('#tituloEvento').text(evento.title);
+                    $('#descripcionEvento').text('Descripción: ' +evento.extendedProps.description);
+                    $('#fechaEvento').text(evento.start.toLocaleString() + ' - ' + evento.end.toLocaleString());
+                    $('#salaEvento').text('');
+                    if (tipo == 'Evento' && evento.extendedProps.sala_reservada){
+                        $('#salaEvento').text('Sala: ' + evento.extendedProps.sala_reservada);
+                    }
+                 
+                },
+                eventMouseEnter: function(info){
+                    info.el.style.cursor = 'pointer';
+                },
+                eventMouseLeave: function(info){
+                    info.el.style.cursor = 'default';
+                }
+            });
+            calendar.render();
+            closeModal.addEventListener("click", function () {
+                modal.style.display = "none";
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('input[name="notificacion"]').change(function() {
+                var notificacionId = $(this).val();
+                var url = "{% url 'marcar_notificacion_vista' 0 %}".replace('0', notificacionId);
+                $.ajax({
+                    url: url,
+                    type: "GET",
+                    success: function(data) {
+                        console.log("buen")
+                        window.location.reload();
+                        
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                        window.location.reload();
+                    }
+                });
+            });
+
+            
+        });
+    </script>
+
+<style>
+
+    .close {
+        padding: 0px 5px;
+    }
+
+    .close:hover {
+        background-color: #cec9c9;
+    }
+
+    h3{
+        color: black;
+        border-bottom: 3px solid #A3CB6D;
+        border-radius: 10px;
+        padding: 0px 0px 8px 12px; 
+        margin-right: 10px;
+    }
+    
+    
+</style>
 {% endblock %}

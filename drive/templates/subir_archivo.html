@@ -1,11 +1,6 @@
-{% extends 'base.html' %}
-
-{% block title %} Subir archivo {% endblock %}
-
-{% block content %}
-<form method="post" enctype="multipart/form-data">
+<form method="post" action="{% url 'subir_archivo' %}" enctype="multipart/form-data" id="fileForm" style="margin-top: 20px;">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Upload</button>
+    <label for="archivo" style="display: block; margin-bottom: 10px;">Seleccionar archivo:</label>
+    <input type="file" name="archivo" id="archivo" required style="margin-bottom: 10px;">
+    <button type="submit" style="background-color: #86c631; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Subir archivo</button>
 </form>
-{% endblock %}

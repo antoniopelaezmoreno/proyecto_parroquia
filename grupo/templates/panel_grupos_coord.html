@@ -20,12 +20,12 @@
             <!-- Nombre de catequistas -->
             <h3 class="catequistas-info" style="display: block;">
                 {% if grupo.catequista1 %}
-                    {{ grupo.catequista1.first_name }} y
+                    {{ grupo.catequista1.nombre }} y
                 {% else %}
                     Catequista 1 y 
                 {% endif %}
                 {% if grupo.catequista2 %}
-                    {{ grupo.catequista2.first_name }}
+                    {{ grupo.catequista2.nombre }}
                 {% else %}
                     Catequista 2
                 {% endif %}
@@ -37,7 +37,7 @@
                 <select id="catequista1" name="catequista1">
                     {% for catequista in catequistas %}
                         <option value="{{ catequista.id }}" {% if grupo.catequista1.id == catequista.id %}selected{% endif %}>
-                            {{ catequista.first_name }}
+                            {{ catequista.nombre }}
                         </option>
                     {% endfor %}
                 </select>
@@ -45,7 +45,7 @@
                 <select id="catequista2" name="catequista2">
                     {% for catequista in catequistas %}
                         <option value="{{ catequista.id }}" {% if grupo.catequista2.id == catequista.id %}selected{% endif %}>
-                            {{ catequista.first_name }}
+                            {{ catequista.nombre }}
                         </option>
                     {% endfor %}
                 </select>
@@ -65,14 +65,17 @@
 </div>
 
 <div class = "flex-container">
-    <a href="{% url 'crear_grupo' %}" class = "panel">
+    <a href="{% url 'crear_grupo' %}?ciclo={{ciclo}}" class = "panel">
         <p>NUEVO GRUPO</p>
     </a>
-    <a href ="{% url 'asignar_catecumenos_a_grupo' %}" class = "panel">
+    <a href ="{% url 'asignar_catecumenos_a_grupo' %}?ciclo={{ciclo}}" class = "panel">
         <p>ASIGNAR</p>
     </a>
-    <a href="{% url 'listar_catecumenos' %}" class = "panel">
-        <p>LISTAR DATOS</p>
+    <a href="{% url 'grupos_aleatorios' %}?ciclo={{ciclo}}" class = "panel">
+        <p>GRUPOS ALEATORIOS</p>
+    </a>
+    <a href="{% url 'asociar_preferencias' %}?ciclo={{ciclo}}" class = "panel">
+        <p>PREFERENCIAS</p>
     </a>
 </div>
 <div>
@@ -80,7 +83,8 @@
 </div>
 <style>
     .panel {
-        background-color: lightblue;
+        background-color: #86c631;
+        color: #f1f1f1f1;
         display: flex;
         flex-direction: column;
         flex-basis: auto;
@@ -90,9 +94,10 @@
         text-align: center; 
         justify-content: space-around;
         border-radius: 10px;
+        font-weight: bold;
     }
     .panel:hover {  
-        background-color: lightgreen;
+        background-color: #FFBE0B;
     }
 </style>
 

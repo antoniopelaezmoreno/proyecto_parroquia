@@ -4,28 +4,89 @@
 {% block title %} Pasar lista {% endblock %}
 
 {% block content %}
-<form method="POST">
-    {% csrf_token %}
-    <table>
-        <thead>
-            <tr>
-                <th>Catecumeno</th>
-                <th>Asistencia</th>
-                <th>Justificado</th>
-                <th>Ausente</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for catecumeno in catecumenos %}
-                <tr>
-                    <td>{{ catecumeno.nombre }}</td>
-                    <td><input type="radio" name="categoria_{{ catecumeno.id }}" value="asistente" {% if catecumeno in sesion.asistentes.all %}checked{% endif %}></td>
-                    <td><input type="radio" name="categoria_{{ catecumeno.id }}" value="justificado" {% if catecumeno in sesion.justificados.all %}checked{% endif %}></td>
-                    <td><input type="radio" name="categoria_{{ catecumeno.id }}" value="ausente" {% if catecumeno in sesion.ausentes.all %}checked{% endif %}></td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <button type="submit">Guardar</button>
-</form>
+<div class="container mt-5">
+    <form method="POST">
+        {% csrf_token %}
+        <div class="scrollmenu">
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Catecumeno</th>
+                        <th scope="col">Asistencia</th>
+                        <th scope="col">Justificado</th>
+                        <th scope="col">Ausente</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for catecumeno in catecumenos %}
+                    <tr>
+                        <td>{{ catecumeno.nombre }}</td>
+                        <td>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="categoria_{{ catecumeno.id }}" id="asistente_{{ catecumeno.id }}" value="asistente" {% if catecumeno in sesion.asistentes.all %}checked{% endif %}>
+                                <label class="form-check-label" for="asistente_{{ catecumeno.id }}"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="categoria_{{ catecumeno.id }}" id="justificado_{{ catecumeno.id }}" value="justificado" {% if catecumeno in sesion.justificados.all %}checked{% endif %}>
+                                <label class="form-check-label" for="justificado_{{ catecumeno.id }}"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="categoria_{{ catecumeno.id }}" id="ausente_{{ catecumeno.id }}" value="ausente" {% if catecumeno in sesion.ausentes.all %}checked{% endif %}>
+                                <label class="form-check-label" for="ausente_{{ catecumeno.id }}"></label>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <button type="submit" style="background-color: #86c631; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Guardar</button>
+    </form>
+</div>
+
+<style>
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    .table {
+        width: 100%;
+        margin-bottom: 1rem;
+        color: #212529;
+    }
+
+    .table th,
+    .table td {
+        padding: 0.75rem;
+        vertical-align: top;
+        border-top: 1px solid #dee2e6;
+    }
+
+    .table thead th {
+        vertical-align: bottom;
+        border-bottom: 2px solid #dee2e6;
+        background-color: #86c631;
+        color: white;
+    }
+
+    .table tbody + tbody {
+        border-top: 2px solid #dee2e6;
+    }
+
+    .form-check-input:checked {
+        background-color: #86c631;
+    }
+
+    .form-check-input {
+        width: 1.25rem;
+        height: 1.25rem;
+        padding: 0;
+        margin-left: 0.3rem;
+    }
+</style>
 {% endblock %}

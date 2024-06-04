@@ -1,30 +1,180 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %} Perfil {% endblock %}
+{% block title %} Perfil de {{ catecumeno.nombre }} {{ catecumeno.apellidos }} {% endblock %}
 
 {% block content %}
+<div style="display: flex; flex-wrap: wrap;">
+    <div class="panel" style="flex: 1; margin-right: 15px; position: relative; ">
+        <div style="display: flex; flex-direction: row; justify-content: space-between;  border-bottom: 2px solid #ccc; padding-bottom: 5px;">
+            <h1 style="margin-top: 5px; margin-bottom: 10px;">Información de contacto</h1>
+            <div style="display: flex; flex-direction: row;">
+                <a class="editar" href="{% url 'editar_catecumeno' catecumeno.id %}"><span class="material-icons">
+                    edit
+                    </span></a>
+                <a class="eliminar" href="{% url 'eliminar_catecumeno' catecumeno.id %}"><span class="material-icons">
+                    delete
+                    </span></a>
+            </div>
+            
+        </div>
+        <p><strong>Nombre:</strong> {{ catecumeno.nombre }} {{ catecumeno.apellidos }}</p>
+        <p><strong>Email:</strong> {{ catecumeno.email }}</p>
+        <p><strong>DNI:</strong> {{ catecumeno.dni }}</p>
+        <p><strong>Teléfono:</strong> {{ catecumeno.telefono }}</p>
+        <p><strong>Ciclo:</strong> {{ catecumeno.get_ciclo_display }}</p>
+    </div>
+    <div class="panel" style="flex: 1; margin-right: 15px;">
+        <div style="display: flex; flex-direction: row; justify-content: space-between;  border-bottom: 2px solid #ccc; padding-bottom: 5px;">
+            <h1 style="margin-top: 5px; margin-bottom: 10px;">Información de familia</h1>
+            <div style="display: flex; flex-direction: row;">
+                <a class="editar" href="{% url 'pantalla_enviar_correo' catecumeno.id %}">
+                    <span class="material-icons">email</span>
+                </a>
+            </div>
+            
+        </div>
+        
+        <p><strong>Nombre de la madre:</strong> {{ catecumeno.nombre_madre }} {{ catecumeno.apellidos_madre }}</p>
+        <p><strong>Email de la madre:</strong> {{ catecumeno.email_madre }}</p>
+        <p><strong>Teléfono de la madre:</strong> {{ catecumeno.telefono_madre }}</p>
+        <p><strong>Nombre del padre:</strong> {{ catecumeno.nombre_padre }} {{ catecumeno.apellidos_padre }}</p>
+        <p><strong>Email del padre:</strong> {{ catecumeno.email_padre }}</p>
+        <p><strong>Teléfono del padre:</strong> {{ catecumeno.telefono_padre }}</p>
+    </div>
+</div>
 
-<h1>Perfil del Catecumeno</h1>
-<p>Nombre: {{ catecumeno.nombre }} {{ catecumeno.apellidos }}</p>
-<p>Email: {{ catecumeno.email }}</p>
-<p>DNI: {{ catecumeno.dni }}</p>
-<p>Ciclo: {{ catecumeno.get_ciclo_display }}</p>
-<p>Nombre de la madre: {{ catecumeno.nombre_madre }} {{ catecumeno.apellidos_madre }}</p>
-<p>Email de la madre: {{ catecumeno.email_madre }}</p>
-<p>DNI de la madre: {{ catecumeno.dni_madre }}</p>
-<p>Nombre del padre: {{ catecumeno.nombre_padre }} {{ catecumeno.apellidos_padre }}</p>
-<p>Email del padre: {{ catecumeno.email_padre }}</p>
-<p>DNI del padre: {{ catecumeno.dni_padre }}</p>
-<p> Catequistas:
-    {% if catequistas %}
-        {{ catequistas.0 }} y 
-        {{ catequistas.1 }}
-    {% else %}
-        No hay catequistas asignados
-    {% endif %}
-</p>
+<div style="display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; margin-right: 15px;" class="panel">
+        <h1 style="margin-top: 5px; margin-bottom: 10px; border-bottom: 2px solid #ccc; padding-bottom: 5px;">Autorización</h1>
+        <div style="display: flex; justify-content: center;">
+            {% if catecumeno.foto %}
+                <a href="/media/{{ catecumeno.foto }}" alt="Autorización de {{ catecumeno.nombre }}" target="_blank">
+                    <img src="/media/{{ catecumeno.foto }}" alt="Autorización de {{ catecumeno.nombre }}" style="width: 500px;">
+                </a>
+            {% else %}
+                <p><strong>No hay autorización</strong></p>
+            {% endif %}
+        </div>
+    </div>
+    <div style="flex: 2; margin-right: 15px;" class="panel">
+        <h1 style="margin-top: 5px; margin-bottom: 10px; border-bottom: 2px solid #ccc; padding-bottom: 5px;">Estadísticas</h1>
+        <p><strong>Catequistas:</strong>
+            {% if catequistas %}
+                {{ catequistas.0 }} y 
+                {{ catequistas.1 }}
+            {% else %}
+                No hay catequistas asignados
+            {% endif %}
+        </p>
+        <div style="display: flex;">
+            <div style="flex: 1;">
+                <p><strong>Ausencias:</strong> {{ ausencias|length }}</p>
+                {% for ausencia in ausencias %}
+                    <li>
+                        {{ ausencia.fecha }}
+                    </li>
+                {% endfor %}
+            </div>
+            <div style="flex: 1;">
+                <p><strong>Faltas justificadas:</strong> {{ justificaciones|length }}</p>
+                {% for justificacion in justificaciones %}
+                    <li>
+                        {{ justificacion.fecha }}
+                    </li>
+                {% endfor %}
+            </div>
+            {% if ausencias|length > 0 or justificaciones|length > 0 or asistencias|length > 0 %}
+                <div style="flex: 1;">
+                    <div style="width: 100%; height: 250px; display: flex; justify-content: center;">
+                        <canvas id="myChart" width="200" height="200"></canvas>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
 
-<a href="{% url 'editar_catecumeno' catecumeno.id %}">Editar</a>
+<style>
+    .panel {
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
+    .panel h1 {
+        font-size: 18px;
+        color: #333;
+    }
+    .panel p {
+        font-size: 16px;
+        color: #666;
+    }
+    .editar {
+        color: #007bff;
+        text-decoration: none;
+        font-size: 16px;
+        display: block;
+        padding: 2px;
+    }
+
+    .editar:hover {
+        background-color: #3591f3;
+        border-radius: 2px;
+        color: white;
+    }
+
+    .eliminar {
+        text-decoration: none;
+        font-size: 16px;
+        display: block;
+        padding: 2px;
+        color: #f53131;
+    }
+
+    .eliminar:hover {
+        background-color: #f53131;
+        border-radius: 2px;
+        color: white;
+    }
+
+    hr {
+        margin-top: 0;
+    }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Asistencias', 'Justificaciones', 'Ausencias'],
+            datasets: [{
+                label: 'Estadísticas',
+                data: [{{ asistencias|length }}, {{ justificaciones|length }}, {{ ausencias|length }}],
+                backgroundColor: [
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 206, 86, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(255, 206, 86, 1)'
+                ]
+            }]
+        },
+        options: {
+            
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+</script>
 
 {% endblock %}

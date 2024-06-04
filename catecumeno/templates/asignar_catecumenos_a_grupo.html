@@ -6,61 +6,85 @@
    
     <!-- Contenido principal a la derecha -->
 <div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
-    <h2 class="mb-12 text-2xl text-center">Catecumenos</h2>
-
-    <div class="flex-container">
-        <div class="solicitudes-column">
-            <table class="alumnos-table rounded-border">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Apellidos</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for catecumeno in catecumenos %}
-                        <tr class="alumno">
-                            <td class="py-2 px-4 border-b">{{ catecumeno.nombre }}</td>
-                            <td class="py-2 px-4 border-b">{{ catecumeno.apellidos }}</td>
-                            <td class="py-2 px-4 border-b">
-                                <!-- Barra de selección -->
-                                <select class="select-option" data-user-id="{{ catecumeno.id }}">
-                                    <option value="">Seleccionar grupo</option>
-                                    {% for grupo in grupos %}
-                                        {% if catecumeno in grupo.miembros.all %}
-                                            <option value="{{ grupo.id }}" selected>{{ grupo }}</option>
-                                        {% else %}
-                                            <option value="{{ grupo.id }}">{{ grupo }}</option>
-                                        {% endif %}
-                                    {% endfor %}
-                                </select>
-                                
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-
-        <div class="cuadricula-column">
-            <div class="grid-container">
-                {% for grupo in grupos %}
-                    <div class="grid-cell-title">{% if grupo.catequista1 %}{{ grupo.catequista1.first_name }}{% else %}Catequista1{% endif %} y {% if grupo.catequista2 %}{{ grupo.catequista2.first_name }}{% else %}Catequista2{% endif %}</div>
-                {% endfor %}
-            </div>
-            <!-- Cuadrícula debajo de la tabla -->
-            <div class="grid-container">
-                {% for grupo in grupos %}
-                    <div class="grid-cell" data-option="{{ grupo.id }}"></div>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
 
     <div class="text-center">
-        <button  class="asignar-button">Asignar</button>
+        <button  class="asignar-button boton">Asignar</button>
+    </div>
+
+    <div class="scrollmenu">
+        <div class="flex-container">
+            <div class="solicitudes-column">
+                <table class="alumnos-table rounded-border">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Apellidos</th>
+                            <th> </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for catecumeno in catecumenos %}
+                            <tr class="alumno">
+                                <td class="py-2 px-4 border-b">{{ catecumeno.nombre }}</td>
+                                <td class="py-2 px-4 border-b">{{ catecumeno.apellidos }}</td>
+                                <td class="py-2 px-4 border-b">
+                                    <!-- Barra de selección -->
+                                    <select class="select-option" data-user-id="{{ catecumeno.id }}">
+                                        <option value="">Seleccionar grupo</option>
+                                        {% for grupo in grupos %}
+                                            {% if catecumeno in grupo.miembros.all %}
+                                                <option value="{{ grupo.id }}" selected>{{ grupo }}</option>
+                                            {% else %}
+                                                <option value="{{ grupo.id }}">{{ grupo }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                    
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="cuadricula-column">
+                <div class="grid-container">
+                    {% for grupo in grupos %}
+                        <div class="grid-cell-title">{% if grupo.catequista1 %}{{ grupo.catequista1.nombre }}{% else %}Catequista1{% endif %} y {% if grupo.catequista2 %}{{ grupo.catequista2.nombre }}{% else %}Catequista2{% endif %}</div>
+                    {% endfor %}
+                </div>
+                <!-- Cuadrícula debajo de la tabla -->
+                <div class="grid-container">
+                    {% for grupo in grupos %}
+                        <div class="grid-cell" data-option="{{ grupo.id }}"></div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+<style>
+    .boton{
+        display: inline-block;
+        margin: 10px;
+        padding: 10px 20px;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        background-color: #86c631;
+        cursor: pointer;
+        border: none;
+        font-size: 16px;
+        color: white;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    .boton:hover {
+        background-color: #FFBE0B;
+    }
+</style>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -159,7 +183,8 @@
 
                 // Enviar las asignaciones al servidor a través de una solicitud HTTP
                 const csrftoken = getCookie('csrftoken');
-                fetch("/catecumeno/asignar_a_grupo/", {
+                const ciclo = "{{ ciclo }}";
+                fetch("/catecumeno/asignar_a_grupo/?ciclo=" + ciclo, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -170,7 +195,8 @@
                 .then(response => {
                     if (response.ok) {
                         console.log("Asignaciones enviadas correctamente");
-                        window.location.href='/grupo';
+
+                        window.location.href='/grupo?ciclo=' + ciclo;
                     } else {
                         console.error("Error al enviar las asignaciones");
                     }

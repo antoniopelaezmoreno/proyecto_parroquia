@@ -5,7 +5,11 @@
 
 {% block content %}
     <link rel="stylesheet" type="text/css" href="{% static 'core/css/correo_style.css' %}">
-    <div class="container">
+
+    <!-- Spinner de carga -->
+    <div id="spinner" class="spinner"></div>
+
+    <div id="content" class="container" style="display: none;">
         
         <div class="cabecera">
             <h1>Bandeja de Salida</h1>
@@ -14,49 +18,106 @@
             </div>
         </div>
         <table>
-            <tbody>
-                {% for mensaje in mensajes %}
-                    <tr class="mensaje {% if mensaje.seen %} leido {% else %} no_leido {% endif %}" data-id="{{ mensaje.id }}">
-                        <td><strong>Para: {{ mensaje.receiver }}</strong></td>
-                        <td><strong>{{ mensaje.subject }}</strong> | {{ mensaje.body }}</td>
-                        <td>{{ mensaje.date }}</td>
-                    </tr>
-                {% endfor %}
+            <tbody id="messages-body">
+                <!-- Los mensajes se cargarán aquí dinámicamente -->
             </tbody>
         </table>
     </div>
 
-    <div class="pagination">
-        <span class="step-links">
-            {% if mensajes_pagina.has_previous %}
-                <a href="?page=1">&laquo; Primera</a>
-                <a href="?page={{ mensajes_pagina.previous_page_number }}">Anterior</a>
-            {% endif %}
-
-            <span class="current">
-                Página {{ mensajes_pagina.number }} de {{ mensajes_pagina.paginator.num_pages }}.
-            </span>
-
-            {% if mensajes_pagina.has_next %}
-                <a href="?page={{ mensajes_pagina.next_page_number }}">Siguiente</a>
-                <a href="?page={{ mensajes_pagina.paginator.num_pages }}">Última &raquo;</a>
-            {% endif %}
+    <div class="pagination" id="pagination" style="display: none;">
+        <span class="step-links" id="pagination-links">
+            <!-- Los enlaces de paginación se cargarán aquí dinámicamente -->
         </span>
     </div>
 
+    <!-- JavaScript -->
     <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Función para cargar los mensajes de la página especificada
+            function cargarMensajes(page) {
 
-        const rows = document.querySelectorAll("table tbody tr");
-        rows.forEach(row => {
-            row.addEventListener("click", () => {
-                const id = row.getAttribute("data-id");
-                if (id) {
-                    var url = "{% url 'detalles_mensaje_enviado' 0 %}".replace("0", id);
-                    window.location.href = url;
-                }
-            });
+                const spinner = document.getElementById("spinner");
+                const content = document.getElementById("content");
+                const pagination = document.getElementById("pagination");
+
+                // Mostrar el spinner y ocultar el contenido mientras se cargan los mensajes
+                spinner.style.display = "block";
+                content.style.display = "none";
+                pagination.style.display = "none";
+
+                fetch("{% url 'obtener_mensajes_outbox' %}?page=" + page)
+                    .then(response => response.json())
+                    .then(data => {
+                        const messagesBody = document.getElementById("messages-body");
+                        const paginationLinks = document.getElementById("pagination-links");
+
+                        // Limpiar el contenido anterior
+                        messagesBody.innerHTML = "";
+                        paginationLinks.innerHTML = "";
+
+                        // Añadir los mensajes al cuerpo de la tabla
+                        data.mensajes.forEach(mensaje => {
+                            const row = document.createElement("tr");
+                            row.className = "mensaje";
+                            row.setAttribute("data-id", mensaje.id);
+                            row.innerHTML = `
+                                <td><strong>Para: ${mensaje.receiver}</strong></td>
+                                <td><strong>${mensaje.subject}</strong> | ${mensaje.body}</td>
+                                <td>${mensaje.date}</td>
+                            `;
+                            messagesBody.appendChild(row);
+                        });
+
+                        // Configurar la paginación
+                        if (data.mensajes_pagina.has_previous) {
+                            const prevLink = document.createElement("a");
+                            prevLink.href = "#";
+                            prevLink.textContent = "Anterior";
+                            prevLink.addEventListener("click", () => cargarMensajes(data.mensajes_pagina.previous_page_number));
+                            paginationLinks.appendChild(prevLink);
+                        }
+
+                        const pageInfo = document.createElement("span");
+                        pageInfo.className = "current";
+                        pageInfo.textContent = `Página ${data.mensajes_pagina.number} de ${data.mensajes_pagina.num_pages}.`;
+                        paginationLinks.appendChild(pageInfo);
+
+                        if (data.mensajes_pagina.has_next) {
+                            const nextLink = document.createElement("a");
+                            nextLink.href = "#";
+                            nextLink.textContent = "Siguiente";
+                            nextLink.addEventListener("click", () => cargarMensajes(data.mensajes_pagina.next_page_number));
+                            paginationLinks.appendChild(nextLink);
+                        }
+
+                        // Ocultar el spinner y mostrar el contenido
+                        spinner.style.display = "none";
+                        content.style.display = "block";
+                        pagination.style.display = "block";
+
+                        // Redirigir a los detalles del mensaje cuando se haga clic en una fila
+                        const rows = document.querySelectorAll("table tbody tr");
+                        rows.forEach(row => {
+                            row.addEventListener("click", () => {
+                                const id = row.getAttribute("data-id");
+                                if (id) {
+                                    var url = "{% url 'detalles_mensaje_enviado' 0 %}".replace("0", id);
+                                    window.location.href = url;
+                                }
+                            });
+                        });
+
+                    })
+                    .catch(error => {
+                        console.error("Error al cargar los mensajes:", error);
+                    });
+            }
+
+            // Cargar los mensajes de la primera página al cargar la página
+            cargarMensajes(1);
         });
 
+        
     </script>
 
     <style>

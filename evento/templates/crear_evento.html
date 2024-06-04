@@ -17,7 +17,7 @@
     {% csrf_token %}
 
     <label for="nombre">Nombre del evento</label>
-    <input type="text" name="nombre" id="nombre" placeholder="Nombre del evento" value="{{ nombre }}" required>
+    <input type="text" name="nombre" id="nombre" placeholder="Nombre del evento" value="{{ nombre }}" maxlength="75" required>
 
     <div class="label-group">
         <label for="tipo">Tipo del evento</label>
@@ -53,9 +53,9 @@
         <select name="participantes" id="participantes" multiple>
             {% for usuario in usuarios %}
                 {% if usuario.id in participantes_seleccionados %}
-                    <option value="{{ usuario.id }}" selected>{{ usuario.first_name }} {{ usuario.last_name }}</option>
+                    <option value="{{ usuario.id }}" selected>{{ usuario.nombre }} {{ usuario.apellidos }}</option>
                 {% else %}
-                    <option value="{{ usuario.id }}">{{ usuario.first_name }} {{ usuario.last_name }}</option>
+                    <option value="{{ usuario.id }}">{{ usuario.nombre }} {{ usuario.apellidos }}</option>
                 {% endif %}
             {% endfor %}
         </select>
@@ -80,7 +80,7 @@
                 {% for reserva in reservas_salas_ocupadas %}
                     {% if reserva.sala == sala %}
                         <div class="sala ocupada" data-reserva="{{ reserva }}">
-                            <p>{{ sala }}</p>
+                            <button style="cursor: auto; color: white;">{{ sala }}</button>
                         </div>
                     {% endif %}
                 {% endfor %}
@@ -104,12 +104,11 @@
       <p id="mensajeConfirmacion"></p>
       <input type="text" id="motivo" name="motivo">
       <div id="motivoError" style="color: red;"></div>
-      <button id="reservarBtn">Reservar</button>
+      <button id="reservarBtn" style="border-radius: 5px; padding: 10px 20px;">Reservar</button>
     </div>
 </div>
 
 <style>
-/* Estilo para el contenedor de grupos de formulario */
 .form-group {
     display: flex;
     flex-wrap: wrap;
@@ -126,7 +125,6 @@
 }
 
 
-/* Estilo para los elementos dentro del contenedor */
 .form-group input,
 .form-group select,
 .form-group textarea {
@@ -134,19 +132,24 @@
     margin-right: 10px;
 }
 
-/* Estilo para el formulario */
+
 .container {
     margin: 20px auto;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
     width: 50%;
-    height: auto; /* Cambiado a auto */
-    overflow: auto; /* Añadido para habilitar el desplazamiento vertical si es necesario */
+    height: auto;
+    overflow: auto;
+    width: 50%;
 }
 
+@media only screen and (max-width: 800px) {
+    .container {
+        width: auto;
+    }
+}
 
-/* Estilo para los campos de entrada */
 #eventoForm input[type="text"],
 #eventoForm input[type="date"],
 #eventoForm textarea,
@@ -164,7 +167,7 @@
     height: 200px;
 }
 
-/* Estilo para los botones */
+#reservarBtn,
 #eventoForm button {
     color: #fff;
     padding: 10px 20px;
@@ -173,24 +176,27 @@
     cursor: pointer;
 }
 
-/* Estilo para el botón de submit */
+#reservarBtn,
 #eventoForm button[type="submit"] {
-    background-color: #28a745; /* Color verde */
+    background-color: #86c631;
+}
+#reservarBtn:hover,
+#eventoForm button[type="submit"]:hover{
+    background-color: #FFBE0B;
+
 }
 
-/* Estilo para el checkbox */
 #eventoForm input[type="checkbox"] {
     margin-right: 5px;
 }
 
-/* Estilo para los errores */
 #error_message {
     color: red;
     margin-bottom: 10px;
 }
 
 #boton-container {
-    margin-top: 20px; /* Ajusta la distancia entre el formulario y el botón */
+    margin-top: 20px;
 }
 
 

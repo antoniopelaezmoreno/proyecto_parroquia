@@ -4,46 +4,141 @@
 
 {% block content %}
 
-<form method="post" action="{% url 'crear_reservas' %}">
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert {% if message.tags == 'error' %}alert-danger{% elif message.tags == 'success' %}alert-success{% endif %}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+
+
+<form method="post" action="{% url 'crear_reservas' %}" id="crearReservasForm">
     {% csrf_token %}
-    <label for="usuario">Usuario:</label>
-    <select name="usuario" id="usuario">
-        {% for user in usuarios %}
-        <option value="{{ user.id }}">{{ user.first_name }} {{ user.last_name }} | {{ user.ciclo }}</option>
-        {% endfor %}
-    </select>
-    <br>
-    <label for="sala">Sala:</label>
-    <select name="sala" id="sala">
-        {% for sala in salas %}
-        <option value="{{ sala.id }}">{{ sala.nombre }}</option>
-        {% endfor %}
-    </select>
-    <br>
-    <label for="hora_inicio">Hora de inicio:</label>
-    <input type="time" name="hora_inicio" id="hora_inicio">
-    <br>
-    <label for="hora_fin">Hora de fin:</label>
-    <input type="time" name="hora_fin" id="hora_fin">
-    <br>
-    <label for="dia_semana">Día de la semana:</label>
-    <select name="dia_semana" id="dia_semana">
-        <option value="0">Lunes</option>
-        <option value="1">Martes</option>
-        <option value="2">Miércoles</option>
-        <option value="3">Jueves</option>
-        <option value="4">Viernes</option>
-        <option value="5">Sábado</option>
-        <option value="6">Domingo</option>
-    </select>
-    <br>
-    <button type="submit">Crear Reservas</button>
+    <div class="form-group">
+        <label for="usuario">Usuario:</label>
+        <select name="usuario" id="usuario">
+            {% for user in usuarios %}
+            <option value="{{ user.id }}">{{ user.nombre }} {{ user.apellidos }} | {{ user.ciclo }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="sala">Sala:</label>
+        <select name="sala" id="sala">
+            {% for sala in salas %}
+            <option value="{{ sala.id }}">{{ sala.nombre }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="hora_inicio">Hora de inicio:</label>
+        <input type="time" name="hora_inicio" id="hora_inicio">
+    </div>
+    <div class="form-group">
+        <label for="hora_fin">Hora de fin:</label>
+        <input type="time" name="hora_fin" id="hora_fin">
+    </div>
+    <div class="form-group">
+        <label for="dia_semana">Día de la semana:</label>
+        <select name="dia_semana" id="dia_semana">
+            <option value="0">Lunes</option>
+            <option value="1">Martes</option>
+            <option value="2">Miércoles</option>
+            <option value="3">Jueves</option>
+            <option value="4">Viernes</option>
+            <option value="5">Sábado</option>
+            <option value="6">Domingo</option>
+        </select>
+    </div>
+    <button type="submit" id="guardarBtn">Crear Reservas</button>
 </form>
+
+<style>
+    #crearReservasForm {
+        max-width: 500px;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: bold;
+    }
+
+    .form-group select,
+    .form-group input[type="time"] {
+        width: calc(100% - 20px);
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-size: 16px;
+    }
+
+    #hora_inicio,
+    #hora_fin {
+        width: calc(100% - 22px);
+    }
+
+    button[type="submit"] {
+        background-color: #86c631;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin-top: 10px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    button[type="submit"]:hover {
+        background-color: #FFBE0B;
+    }
+
+    button:disabled {
+        background-color: #cccccc;
+        cursor: not-allowed;
+    }
+
+    .alert {
+        padding: 15px;
+        margin-bottom: 20px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        text-align: center;
+    }
+
+    .alert-success {
+        color: #3c763d;
+        background-color: #dff0d8;
+        border-color: #d6e9c6;
+    }
+
+    .alert-danger {
+        color: #a94442;
+        background-color: #f2dede;
+        border-color: #ebccd1;
+    }
+</style>
+
+</style>
 
 <script>
     var horaInicioSelect = document.getElementById("hora_inicio");
     var horaFinSelect = document.getElementById("hora_fin");
-    var guardarBtn = document.querySelector('button[type="submit"]');
+    var guardarBtn = document.getElementById("guardarBtn");
 
     horaInicioSelect.addEventListener('change', function() {
         horaFin=horaFinSelect.value;
@@ -73,5 +168,3 @@
     });
 </script>
 {% endblock %}
-
-

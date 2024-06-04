@@ -17,32 +17,34 @@
     <button class="filter-btn" onclick="filterByCiclo('catecumenados_3')">Catecumenados 3</button>
 </div>
 {% if not grupos %}
-    <p>No hay grupos para mostrar</p>
+    <p class="no-grupos">No hay grupos para mostrar</p>
 {% else %}
     {% for grupo in grupos %}
         <h2>{{ grupo }}</h2>
-        <table class="alumnos-table rounded-border">
-            <thead>    
-                <tr>
-                    <th>Nombre</th>
-                    {% for sesion in sesiones %}
-                        <th>{{ sesion.fecha }}</th>
-                    {% endfor %}
-                </tr>
-            </thead>
-            <tbody>
-                {% for catecumeno in grupo.miembros.all %}
+        <div class="scrollmenu">
+            <table class="alumnos-table rounded-border">
+                <thead>    
                     <tr>
-                        <td>{{ catecumeno.nombre }}</td>
+                        <th>Nombre</th>
                         {% for sesion in sesiones %}
-                            <td>
-                                <div class="asistencia-box {% if catecumeno in sesion.asistentes.all %}asiste{% endif %}{% if catecumeno in sesion.ausentes.all %}ausente{% endif %}{% if catecumeno in sesion.justificados.all %}justificado{% endif %}"></div>
-                            </td>
+                            <th>{{ sesion.fecha }}</th>
                         {% endfor %}
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {% for catecumeno in grupo.miembros.all %}
+                        <tr>
+                            <td>{{ catecumeno.nombre }}</td>
+                            {% for sesion in sesiones %}
+                                <td>
+                                    <div class="asistencia-box {% if catecumeno in sesion.asistentes.all %}asiste{% endif %}{% if catecumeno in sesion.ausentes.all %}ausente{% endif %}{% if catecumeno in sesion.justificados.all %}justificado{% endif %}"></div>
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     {% endfor %}
 {% endif %}
     <style>
@@ -62,6 +64,17 @@
 
         .justificado {
             background-color: blue;
+        }
+
+        .no-grupos {
+            background-color: #d4edda; 
+            color: #155724; 
+            border: 1px solid #c3e6cb; 
+            border-radius: 10px;
+            padding: 10px;
+            text-align: center;
+            margin: 10px auto; 
+            max-width: 500px;
         }
     </style>
 

@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block title %} Detalles sesión {% endblock %}
+
+{% block content %}
+
+<div class="container session-details">
+    <h1 class="titulo">Detalles de la sesión - {{ sesion.titulo }}</h1>
+    <h2 class="subtitulo">Descripción</h2>
+    <p class="descripcion">{{ sesion.descripcion }}</p>
+    <h2 class="subtitulo">Fecha</h2>
+    <p class="texto">{{ sesion.fecha }}</p>
+    <p class="texto">{{ sesion.hora_inicio }} - {{ sesion.hora_fin }}</p>
+    <p class="texto" >Curso: {{ sesion.curso }}</p>
+    {% if sesion.archivos.all %}
+        <h2 class="subtitulo">Archivos</h2>
+        <ul>
+            {% for archivo in sesion.archivos.all %}
+            <li> <a href="/media/{{ archivo.archivo }}" alt="{{ archivo.name }}" target="_blank"> {{ archivo.name }} </a></li>
+            {% endfor %}
+        </ul>
+    {% endif %} 
+    <div style="display: flex; justify-content: center;">
+        <a href="{% url 'editar_sesion' sesion.id %}" class="btnEditar">Editar</a>
+    </div>
+    
+</div>
+
+<style>
+    .container {
+        margin: 20px auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 50%;
+        height: auto;
+        overflow: hidden;
+        word-wrap: break-word;
+    }
+
+    @media only screen and (max-width: 1000px) {
+        .container {
+            width: auto;
+        }
+    }
+
+    .titulo {
+        font-size: 2em;
+        margin-bottom: 20px;
+        text-align: center;
+        word-wrap: break-word;
+    }
+
+    .subtitulo {
+        color: #333;
+        font-size: 1.5em;
+        margin-top: 30px;
+        margin-bottom: 10px;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 5px;
+        word-wrap: break-word;
+    }
+
+    .texto {
+        color: #555;
+        line-height: 1.6;
+        margin: 5px 0;
+        word-wrap: break-word;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    ul li {
+        margin: 10px 0;
+    }
+
+    ul li a {
+        text-decoration: none;
+        color: #007BFF;
+        padding: 5px 10px;
+        border-radius: 4px;
+        transition: background-color 0.3s, color 0.3s;
+        word-wrap: break-word;
+    }
+
+    ul li a:hover {
+        background-color: #86c631;
+        color: #fff;
+    }
+
+    .btnEditar {
+        text-decoration: none;
+        background-color: #86c631; 
+        color: white; 
+        border: none; 
+        padding: 10px 20px; 
+        border-radius: 5px; 
+        cursor: pointer;
+        margin-top: 10px; 
+        display: inline-block;
+    }
+
+    .btnEditar:hover {
+        background-color: #FFBE0B;
+    }
+</style>
+
+{% endblock %}

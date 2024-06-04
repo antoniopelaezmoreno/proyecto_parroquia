@@ -6,28 +6,46 @@
 {% block content %}
 
 <div id="alumnos-container">
-    <table class="alumnos-table rounded-border">
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Apellidos</th>
-                <th>Email</th>
-                <th>Teléfono</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for catequista in catequistas %}
-                <tr class="alumno">
-                    <td>{{ catequista.first_name }}</td>
-                    <td>{{ catequista.last_name }}</td>
-                    <td>{{ catequista.email }}</td>
-                    <td>{{ catequista.telefono }}</td>
-
+    <div class="scrollmenu">
+        <table class="alumnos-table rounded-border">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Teléfono</th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {% if not catequistas %}
+                    <tr>
+                        <td colspan="10" class="no-alumnos">No hay catequistas para mostrar</td>
+                    </tr>
+                {% else %}
+                    {% for catequista in catequistas %}
+                        <tr class="alumno">
+                            <td>{{ catequista.nombre }} {{ catequista.apellidos }}</td>
+                            <td>{{ catequista.email }}</td>
+                            <td>{{ catequista.telefono }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
 </div>
+
+<style>
+    .no-alumnos {
+        background-color: #d4edda; 
+        color: #155724; 
+        border: 1px solid #c3e6cb; 
+        border-radius: 10px;
+        padding: 10px;
+        text-align: center;
+        margin: 10px auto; 
+        max-width: 500px;
+    }
+</style>
 
 
 {% endblock %}

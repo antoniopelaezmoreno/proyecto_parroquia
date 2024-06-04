@@ -53,7 +53,6 @@
 }
 
 .v-toast {
-    position: fixed;
     display: flex;
     top: 0;
     bottom: 0;
@@ -137,7 +136,7 @@
     position: absolute
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 800px) {
     .v-toast {
         padding:0;
         position: fixed!important
@@ -156,7 +155,6 @@
 
 .preview-menu-wrapper:hover {
     border-radius: var(--border-radius-lg, .5rem);
-    background-color: rgb(254 226 226 / var(--tw-bg-opacity));
     --tw-bg-opacity: .3
 }
 

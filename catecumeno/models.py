@@ -1,7 +1,5 @@
 from django.db import models
-
-from curso.models import Curso
-
+from django.core.validators import RegexValidator
     
 class Catecumeno(models.Model):
     class CicloChoices(models.TextChoices):
@@ -19,20 +17,56 @@ class Catecumeno(models.Model):
     nombre = models.CharField(max_length=100)
     apellidos = models.CharField(max_length=100)
     email = models.EmailField(max_length=100)
-    dni = models.CharField(max_length=10)
+    dni = models.CharField(
+        max_length=9,
+        validators=[
+            RegexValidator(
+                regex=r'^\d{8}[A-Za-z0-9]$',
+                message="El DNI debe tener 8 números seguidos de un carácter."
+            )
+        ]
+    )
+    telefono = models.CharField(
+        max_length=9,
+        validators=[
+            RegexValidator(
+                regex='^\d{9}$',
+                message='El teléfono debe tener 9 dígitos',
+                code='invalid_phone_number'
+            )
+        ]
+    )
     ciclo = models.CharField(max_length=20, choices=CicloChoices.choices, default=CicloChoices.POSCO_1)
     nombre_madre = models.CharField(max_length=100)
     apellidos_madre = models.CharField(max_length=100)
     email_madre = models.EmailField(max_length=100)
-    dni_madre = models.CharField(max_length=10)
+    telefono_madre = models.CharField(
+        max_length=9,
+        validators=[
+            RegexValidator(
+                regex='^\d{9}$',
+                message='El teléfono debe tener 9 dígitos',
+                code='invalid_phone_number'
+            )
+        ]
+    )
     nombre_padre = models.CharField(max_length=100)
     apellidos_padre = models.CharField(max_length=100)
     email_padre = models.EmailField(max_length=100)
-    dni_padre = models.CharField(max_length=10)
+    telefono_padre = models.CharField(
+        max_length=9,
+        validators=[
+            RegexValidator(
+                regex='^\d{9}$',
+                message='El teléfono debe tener 9 dígitos',
+                code='invalid_phone_number'
+            )
+        ]
+    )
     preferencias = models.CharField(max_length=200)
     preferencias_procesadas =models.ManyToManyField('self', related_name='preferencias_procesadas_rel', symmetrical=False)
     foto = models.ImageField(upload_to='autorizaciones/')
-    curso= models.ForeignKey(Curso, on_delete=models.CASCADE, null=True, blank=True)
+    grupo = models.ForeignKey('grupo.Grupo', on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.nombre + ' ' + self.apellidos

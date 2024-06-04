@@ -1,4 +1,3 @@
-from http.client import HTTPResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import GrupoForm
 from django.http import JsonResponse
@@ -7,28 +6,27 @@ from catecumeno.models import Catecumeno
 from sesion.models import Sesion
 from .models import Grupo
 from curso.models import Curso
-import random
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
-from django.contrib import messages
+from django.urls import reverse
+from pulp import LpMaximize, LpProblem, LpVariable
 
 # Create your views here.
 
 @login_required
 def crear_grupo(request):
-    if request.user.is_authenticated:
-        if request.user.is_coord:
-            ciclo = request.user.ciclo
-            grupo = Grupo.objects.create(ciclo=ciclo)
-            grupo.save()
-            return redirect('/grupo')
-        if request.user.is_superuser:
-            return redirect('crear_grupo_admin')
-        else:
-            return redirect('/403')
+    ciclo = request.user.ciclo
+    if request.user.is_superuser:
+        ciclo = request.GET.get('ciclo')
+        if ciclo not in [choice[0] for choice in Catecumeno.CicloChoices.choices]:
+            return redirect('/404')
+    if request.user.is_coord or request.user.is_superuser:
+        grupo = Grupo.objects.create(ciclo=ciclo)
+        grupo.save()
+        return redirect('/grupo?ciclo=' + ciclo)
+    
     else:
         return redirect('/403')
-    
         
 @login_required
 def editar_grupo(request, grupo_id):
@@ -40,15 +38,14 @@ def editar_grupo(request, grupo_id):
             if form.is_valid():
                 grupo = form.save(commit=False)
                 grupo.save()
-                return redirect('/grupo')
+                return redirect('/grupo?ciclo='+grupo.ciclo)
             else:
                 errores = form.errors['__all__'][0]
                 request.session['errores'] = [grupo.id,errores]
-                return redirect('/grupo')
-                
+                return redirect('/grupo?ciclo='+grupo.ciclo)
         else:
-            form = GrupoForm(instance=grupo, catequistas=catequistas)
-        return render(request, 'editar_grupo.html', {'form': form})
+            return redirect('/404')
+                
     else:
         return redirect('/403')
     
@@ -57,7 +54,7 @@ def eliminar_grupo(request, grupo_id):
     grupo = get_object_or_404(Grupo, pk=grupo_id)
     if request.user.ciclo == grupo.ciclo or request.user.is_superuser:
         grupo.delete()
-        return redirect('/grupo')
+        return redirect('/grupo?ciclo='+grupo.ciclo)
     else:
         return redirect('/403')
     
@@ -83,7 +80,6 @@ def crear_grupo_admin(request):
                 ciclo=ciclo,
                 catequista1=catequista1,
                 catequista2=catequista2,
-                curso= Curso.objects.latest('id')
             )
                 
             return redirect('/') 
@@ -96,119 +92,75 @@ def crear_grupo_admin(request):
 def ajax_obtener_catequistas(request):
     ciclo_id = request.GET.get('ciclo_id')
     catequistas = CustomUser.objects.filter(ciclo=ciclo_id)
-    catequistas_data = [{'id': catequista.id, 'first_name': catequista.first_name, 'last_name': catequista.last_name} for catequista in catequistas]
+    catequistas_data = [{'id': catequista.id, 'nombre': catequista.nombre, 'apellidos': catequista.apellidos} for catequista in catequistas]
     return JsonResponse({'catequistas': catequistas_data})
 
 @login_required
 def panel_grupos(request):
-    if request.user.is_coord:
-        error = request.session.pop('errores', "")
-        catequistas = CustomUser.objects.filter(ciclo=request.user.ciclo)
-        grupos = Grupo.objects.filter(ciclo=request.user.ciclo)
-        sesiones = Sesion.objects.filter(ciclo=request.user.ciclo, curso=Curso.objects.latest('id')).order_by('fecha')
-        return render(request, 'panel_grupos_coord.html', {'grupos': grupos, 'catequistas': catequistas, 'error': error, 'sesiones': sesiones})
-    
-def calcular_valor(grupos, lista_catecumenos, num_grupos):
-   
-    num_miembros_grupo = {}
-    preferencias = {}
-
-    for catecumeno in lista_catecumenos:
-        preferencias[catecumeno] = set(catecumeno.preferencias_procesadas.all())
-
-    numero_preferencias_cumplidas = 0
-    for i, catecumeno in enumerate(lista_catecumenos):
-        grupo_actual = grupos[i]
-        for otra_catecumeno in lista_catecumenos[i + 1:]:
-            if grupos[i] == grupos[i + 1:]:
-                if otra_catecumeno in preferencias[catecumeno]:
-                    numero_preferencias_cumplidas += 1
-
-        if grupo_actual not in num_miembros_grupo:
-            num_miembros_grupo[grupo_actual] = 1
-        else:
-            num_miembros_grupo[grupo_actual] += 1
-
-    num_keys = len(num_miembros_grupo.keys())
-    castigo=0
-    if num_keys < num_grupos:
-        castigo=1
-    
-    if num_miembros_grupo:
-        max_miembros = max(num_miembros_grupo.values())
-        min_miembros = min(num_miembros_grupo.values())
-        diferencia = max_miembros - min_miembros
+    from core.views import error
+    ciclo=request.user.ciclo
+    if request.user.is_superuser:
+        ciclo = request.GET.get('ciclo')
+        if ciclo not in [choice[0] for choice in Catecumeno.CicloChoices.choices]:
+            return redirect('/404')
+    mensaje_error = request.session.pop('errores', "")
+    sesiones = Sesion.objects.filter(ciclo=ciclo, curso=Curso.objects.latest('id')).order_by('fecha')
+    if request.user.is_coord or request.user.is_superuser:
+        catequistas = CustomUser.objects.filter(ciclo=ciclo)
+        grupos = Grupo.objects.filter(ciclo=ciclo)
+        return render(request, 'panel_grupos_coord.html', {'grupos': grupos, 'catequistas': catequistas, 'error': mensaje_error, 'sesiones': sesiones, 'ciclo': ciclo})
     else:
-        diferencia = 0
-
-    valor = numero_preferencias_cumplidas - diferencia *10 - castigo * 10
-
-    return valor
-
-def fitness(grupos, lista_catecumenos,num_grupos):
-    contador_preferencias = 0
-    map = {}
-
-    for grupo in grupos:
-        map[grupo] = map.get(grupo, 0) + 1
-    
-    min_value = min(map.values())
-    max_value = max(map.values())
-    num_keys = len(map.keys())
-    castigo=0
-    if num_keys < num_grupos:
-        castigo=1
-    
-    diff = max_value - min_value
-    
-    for i in range(len(grupos)):
-        for j in range(i + 1, len(grupos)):
-            if grupos[i] == grupos[j] and lista_catecumenos[j] in lista_catecumenos[i].preferencias_procesadas.all():
-                contador_preferencias += 1
-    
-    return contador_preferencias - diff * 100 - castigo * 1000
-
-
-def ag(request):
-    catecumenos = Catecumeno.objects.filter(ciclo='catecumenados_1')
-    num_grupos=4
-    num_catecumenos=len(catecumenos)
-    solutions=[]
-    for s in range(20):
-        lista = [random.randint(1, num_grupos) for _ in range(num_catecumenos)]
-        solutions.append(lista)
-    
-    for i in range(20):
-        rankedsolutions=[]
-        for s in solutions:
-            fit=calcular_valor(s, catecumenos, num_grupos)
-            rankedsolutions.append((fit,s))
-        rankedsolutions.sort(reverse=True)
-
-        bestsolutions = rankedsolutions[:100]
-        
-        lista=[[] for _ in range(num_catecumenos)]
-        for s in bestsolutions:
-            for i in range(num_catecumenos):
-                lista[i].append((s[1][i]))
-
-        newGen=[]
-        for s in range(20):
-            newGen.append(tuple(random.choice(lista[l]) for l in range(num_catecumenos)))
-        solutions = newGen
-    grupo_final=bestsolutions[0][1]
-
-    map = {}
-    for g in range(num_catecumenos):
-        if grupo_final[g] not in map:
-            map[grupo_final[g]] = [Catecumeno.objects.get(id=catecumenos[g].id)]
+        grupo1 = Grupo.objects.filter(catequista1=request.user).first()
+        grupo2 = Grupo.objects.filter(catequista2=request.user).first()
+        if grupo1:
+            catequistas = [grupo1.catequista1, grupo1.catequista2]
+            grupos = [grupo1]
+        elif grupo2:
+            catequistas = [grupo2.catequista1, grupo2.catequista2]
+            grupos = [grupo2]
         else:
-            map[grupo_final[g]].append(Catecumeno.objects.get(id=catecumenos[g].id))
-        
-    for key in map:
-        print("Grupo ", key)
-        for catecumeno in map[key]:
-            print(catecumeno.nombre)
-        print("-----------------")
-        
-    return redirect('/')
+            return error(request, 'No tienes grupo asignado')
+        return render(request, 'panel_grupos_catequista.html', {'grupos': grupos, 'catequistas': catequistas, 'error': mensaje_error, 'sesiones': sesiones, 'ciclo': ciclo})
+
+@login_required
+def generar_grupos_aleatorios(request):
+    ciclo=request.user.ciclo
+    if not request.user.is_superuser and not request.user.is_coord:
+        return redirect('/403')
+    if request.user.is_superuser:
+        ciclo = request.GET.get('ciclo')
+        if ciclo not in [choice[0] for choice in Catecumeno.CicloChoices.choices]:
+            return redirect('/404')
+    catecumenos = Catecumeno.objects.filter(ciclo=ciclo)
+    grupos_ciclo = Grupo.objects.filter(ciclo=ciclo)
+    n_grupos = grupos_ciclo.count()
+
+    max_miembros_grupo = catecumenos.count() / n_grupos + 3
+
+    prob = LpProblem("Distribucion_Catecumenos", LpMaximize)
+
+    asignaciones = LpVariable.dicts("Asignacion", ((catec.id, grupo) for catec in catecumenos for grupo in range(n_grupos)), cat='Binary')
+
+    # Función objetivo: maximizar la satisfacción de las preferencias
+    prob += sum(catec.preferencias_procesadas.count() * asignaciones[(catec.id, grupo)] for catec in catecumenos for grupo in range(n_grupos)), "Satisfaccion_Preferencias"
+
+    # Restricciones
+    # Cada catecúmeno solo puede pertenecer a un grupo
+    for catec in catecumenos:
+        prob += sum(asignaciones[(catec.id, grupo)] for grupo in range(n_grupos)) == 1, f"Unico_Grupo_{catec.id}"
+
+    # Restricción de número máximo de miembros por grupo
+    for grupo in range(n_grupos):
+        prob += sum(asignaciones[(catec.id, grupo)] for catec in catecumenos) <= max_miembros_grupo, f"Max_Miembros_Grupo_{grupo}"
+
+    prob.solve()
+
+    for catec in catecumenos:
+        catec.grupo_id = None
+        for grupo in range(n_grupos):
+            if asignaciones[(catec.id, grupo)].value() == 1.0:
+                catec.grupo_id = grupos_ciclo[grupo].id
+                catec.save()
+
+    return redirect(reverse('panel_grupos') + f'?ciclo={ciclo}')
+

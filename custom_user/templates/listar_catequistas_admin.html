@@ -6,48 +6,68 @@
 {% block content %}
 
 <div class="filter-panel">
-    <button class="filter-btn" onclick="filterByCiclo('')">Todos</button>
-    <button class="filter-btn" onclick="filterByCiclo('posco_1')">Poscomunión 1</button>
-    <button class="filter-btn" onclick="filterByCiclo('posco_2')">Poscomunión 2</button>
-    <button class="filter-btn" onclick="filterByCiclo('posco_3')">Poscomunión 3</button>
-    <button class="filter-btn" onclick="filterByCiclo('posco_4')">Poscomunión 4</button>
-    <button class="filter-btn" onclick="filterByCiclo('gr_juv_1')">Grupos Juveniles 1</button>
-    <button class="filter-btn" onclick="filterByCiclo('gr_juv_2')">Grupos Juveniles 2</button>
-    <button class="filter-btn" onclick="filterByCiclo('catecumenados_1')">Catecumenados 1</button>
-    <button class="filter-btn" onclick="filterByCiclo('catecumenados_2')">Catecumenados 2</button>
-    <button class="filter-btn" onclick="filterByCiclo('catecumenados_3')">Catecumenados 3</button>
+    <button class="filter-btn" onclick="filterByCiclo('', this)">Todos</button>
+    <button class="filter-btn" onclick="filterByCiclo('posco_1', this)">Poscomunión 1</button>
+    <button class="filter-btn" onclick="filterByCiclo('posco_2', this)">Poscomunión 2</button>
+    <button class="filter-btn" onclick="filterByCiclo('posco_3', this)">Poscomunión 3</button>
+    <button class="filter-btn" onclick="filterByCiclo('posco_4', this)">Poscomunión 4</button>
+    <button class="filter-btn" onclick="filterByCiclo('gr_juv_1', this)">Grupos Juveniles 1</button>
+    <button class="filter-btn" onclick="filterByCiclo('gr_juv_2', this)">Grupos Juveniles 2</button>
+    <button class="filter-btn" onclick="filterByCiclo('catecumenados_1', this)">Catecumenados 1</button>
+    <button class="filter-btn" onclick="filterByCiclo('catecumenados_2', this)">Catecumenados 2</button>
+    <button class="filter-btn" onclick="filterByCiclo('catecumenados_3', this)">Catecumenados 3</button>
 </div>
 <div id="alumnos-container">
-    <table class="alumnos-table rounded-border">
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Apellidos</th>
-                <th>Email</th>
-                <th>Teléfono</th>
-                <th>Ciclo</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for catequista in catequistas %}
-                <tr class="alumno" data-ciclo="{{ catequista.ciclo }}">
-                    <td>{{ catequista.first_name }}</td>
-                    <td>{{ catequista.last_name }}</td>
-                    <td>{{ catequista.email }}</td>
-                    <td>{{ catequista.telefono }}</td>
-                    <td>{{ catequista.ciclo }}</td>
+    <div class="scrollmenu">
+        <table class="alumnos-table rounded-border">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Teléfono</th>
+                    <th>Ciclo</th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {% if not catequistas %}
+                    <tr>
+                        <td colspan="10" class="no-alumnos">No hay catequistas para mostrar</td>
+                    </tr>
+                {% else %}
+                    {% for catequista in catequistas %}
+                        <tr class="alumno" data-ciclo="{{ catequista.ciclo }}">
+                            <td>{{ catequista.nombre }} {{ catequista.apellidos }}</td>
+                            <td>{{ catequista.email }}</td>
+                            <td>{{ catequista.telefono }}</td>
+                            <td>{{ catequista.ciclo }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+
+            </tbody>
+        </table>
+    </div>
 </div>
 
-
+<style>
+    .selected {
+        background-color: #FFBE0B;
+    }
+</style>
 
 <script>
     // Función para filtrar los alumnos por ciclo
-    function filterByCiclo(ciclo) {
+    function filterByCiclo(ciclo, btn) {
         var alumnos = document.getElementsByClassName('alumno');
+        var buttons = document.getElementsByClassName('filter-btn');
+
+        // Remover la clase 'selected' de todos los botones
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove('selected');
+        }
+
+        // Agregar la clase 'selected' al botón actual
+        btn.classList.add('selected');
 
         for (var i = 0; i < alumnos.length; i++) {
             var alumno = alumnos[i];
@@ -62,5 +82,17 @@
     }
 </script>
 
+<style>
+    .no-alumnos {
+        background-color: #d4edda; 
+        color: #155724; 
+        border: 1px solid #c3e6cb; 
+        border-radius: 10px;
+        padding: 10px;
+        text-align: center;
+        margin: 10px auto; 
+        max-width: 500px;
+    }
+</style>
 
 {% endblock %}

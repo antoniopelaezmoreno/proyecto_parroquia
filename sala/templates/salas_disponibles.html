@@ -22,21 +22,33 @@
     <button type="submit" id="guardarBtn">Buscar</button>
 </form>
 
-{% for sala in todas_salas %}
-    {% if sala in salas_ocupadas %}
-        {% for reserva in reservas_salas_ocupadas %}
-            {% if reserva.sala == sala %}
-                <div class="sala ocupada" data-reserva="{{ reserva }}">
-                    <p>{{ sala }}</p>
+{% if todas_salas %}
+    {% if todas_salas|length > 0 %}
+        <h2>Salas disponibles:</h2>
+
+        <div id="contenedorSalas">
+        {% for sala in todas_salas %}
+            {% if sala in salas_ocupadas %}
+                {% for reserva in reservas_salas_ocupadas %}
+                    {% if reserva.sala == sala %}
+                        <div class="sala ocupada" data-reserva="{{ reserva }}">
+                            <button style="cursor: auto; color: white;">{{ sala }}</button>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <div class="sala {% if sala.requiere_aprobacion %} aprobacion {% else %} libre {% endif %}">
+                    <button class="openModalBtn" data-sala-id="{{ sala.id }}" data-sala-nombre="{{ sala.nombre }}" data-sala-aprobacion="{{ sala.requiere_aprobacion }}"><p>{{ sala }}</p></button>
                 </div>
             {% endif %}
         {% endfor %}
+        </div>
     {% else %}
-        <div class="sala {% if sala.requiere_aprobacion %} aprobacion {% else %} libre {% endif %}">
-            <button class="openModalBtn" data-sala-id="{{ sala.id }}" data-sala-nombre="{{ sala.nombre }}" data-sala-aprobacion="{{ sala.requiere_aprobacion }}"><p>{{ sala }}</p></button>
+        <div id="contenedorSalas">
+            <p class="no-salas">No hay salas para reservar</p>
         </div>
     {% endif %}
-{% endfor %}
+{% endif %}
 
 <div id="myModal" class="modal">
   <div class="modal-content">
@@ -44,11 +56,87 @@
     <h2>Reservar la sala</h2>
     <p id="avisoAprobacion"></p>
     <p id="mensajeConfirmacion"></p>
+    <label id="motivoLabel" style="display: none;">Indique el motivo de la reserva:</label>
     <input type="text" id="motivo" name="motivo">
     <div id="motivoError" style="color: red;"></div>
-    <button id="reservarBtn">Reservar</button>
+    <label id="liberarLabel">¿Deja libre las salas que tengas reservadas?</label>
+    <input type="checkbox" id="liberar_sala" name="liberar_sala"><br>
+    <button id="reservarBtn" style="border-radius: 5px; padding: 10px 20px;">Reservar</button>
+    
   </div>
 </div>
 
 <script src="{% static 'core/js/sala.js' %}"></script>
+
+<style>
+    #solicitudForm {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    #solicitudForm input[type="date"],
+    #solicitudForm select,
+    #solicitudForm button {
+        width: 100%;
+        padding: 12px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-size: 16px;
+    }
+
+    #solicitudForm button,
+    #reservarBtn {
+        background-color: #86c631;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+    #solicitudForm button:hover,
+    #reservarBtn:hover {
+        background-color: #FFBE0B;
+    }
+
+    #solicitudForm button:disabled {
+        background-color: #cccccc;
+        cursor: not-allowed;
+    }
+
+    .error {
+        display: flex;
+        justify-content: center;
+        background-color: #d31d1d;
+        color: white;
+        border-radius: 5px;
+        margin-bottom: 15px;
+        padding: 10px;
+    }
+
+    #contenedorSalas {
+        background-color: #fff;
+        display: flex;
+        flex-wrap: wrap;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+    }
+
+    .no-salas {
+        background-color: #d4edda; 
+        color: #155724; 
+        border: 1px solid #c3e6cb; 
+        border-radius: 10px;
+        padding: 10px;
+        text-align: center;
+        margin: 10px auto; 
+        max-width: 500px;
+    }
+
+</style>
 {% endblock %}
+

@@ -1,11 +1,9 @@
-{% extends 'base.html' %}
-
-{% block title %} Mover archivo {% endblock %}
-
-{% block content %}
-<form method="post" enctype="multipart/form-data">
+<form method="post" id="moveFileForm" style="margin-top: 20px;">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Guardar</button>
+    <label for="carpeta_padre">Selecciona la carpeta destino:</label><br>
+    <select name="carpeta_padre" id="carpeta_padre_file">
+        <option value="" selected>Principal</option>
+    </select><br>
+    <button type="submit" style="background-color: #86c631; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Guardar</button>
+
 </form>
-{% endblock %}

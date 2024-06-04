@@ -1,17 +1,63 @@
-{% extends 'base.html' %}
+{% extends 'index/index.html' %}
 {% load static %}
-
-{% block title %} Iniciar Sesión {% endblock %}
 
 {% block content %}
 
-    <h1>Iniciar Sesión</h1>
-    {% if error_message %}
-        <p>{{ error_message }}</p>
-    {% endif %}
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Iniciar Sesión</button>
-    </form>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<style>
+   body {
+       overflow: hidden;
+   }
+
+   form {
+       margin: auto;
+       max-width: 400px;
+       padding: 20px;
+   }
+
+   form p {
+       margin-bottom: 10px;
+   }
+
+   form input[type="text"],
+   form input[type="password"] {
+       width: 100%;
+       padding: 10px;
+       margin-bottom: 10px;
+       border: 1px solid #cccccc;
+       border-radius: 4px;
+       box-sizing: border-box;
+   }
+
+   form button[type="submit"] {
+       width: 100%;
+       padding: 10px;
+       color: #ffffff;
+       border: none;
+       border-radius: 4px;
+       cursor: pointer;
+   }
+
+   form .error-message {
+       color: #ff0000;
+       margin-top: 10px;
+   }
+</style>
+
+<div id="login-form-container" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
+   <div class="bg-white p-6 rounded-lg shadow-lg">
+      <a href="{% url 'index' %}"><span class="material-icons">
+         close
+         </span> </a>
+      <h1 style="font-size: xx-large; font-weight: bold; text-align: center;">Iniciar Sesión</h1>
+      {% if error_message %}
+         <p class="error-message" style="color:#ff0000">{{ error_message }}</p>
+      {% endif %}
+      <form method="post">
+         {% csrf_token %}
+         {{ form.as_p }}
+         <button class="ui-button-primary shrink-0 font-sans font-semibold leading-6 capitalize text-type-900 dark:text-white" type="submit">Iniciar Sesión</button>
+      </form>
+   </div>
+</div>
 {% endblock %}

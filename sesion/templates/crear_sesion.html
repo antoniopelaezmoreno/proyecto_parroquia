@@ -5,32 +5,84 @@
 
 {% block content %}
 
-{% if messages %}
-    {% for message in messages %}
-        <div class="alert alert-danger" role="alert">
-            {{ message }}
-        </div>
-    {% endfor %}
-{% endif %}
-
+<div class="container">
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {% if user.is_superuser%}
-            <label for="ciclo">Ciclo:</label>
-            <select name="ciclo" id="ciclo" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
-                <option value="posco_1" >Posco 1</option>
-                <option value="posco_2" >Posco 2</option>
-                <option value="posco_3" >Posco 3</option> 
-                <option value="posco_4" >Posco 4</option>
-                <option value="gr_juv_1" >Gruos Juveniles 1</option>  
-                <option value="gr_juv_2" >Gruos Juveniles 2</option>  
-                <option value="catecumenados_1" >Catecumenados 1</option>  
-                <option value="catecumenados_2" >Catecumenados 2</option>  
-                <option value="catecumenados_3" >Catecumenados 3</option>  
-            </select>
+        <label for="ciclo">Ciclo:</label>
+        <select name="ciclo" id="ciclo" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+            <option value="posco_1">Posco 1</option>
+            <option value="posco_2">Posco 2</option>
+            <option value="posco_3">Posco 3</option>
+            <option value="posco_4">Posco 4</option>
+            <option value="gr_juv_1">Gruos Juveniles 1</option>
+            <option value="gr_juv_2">Gruos Juveniles 2</option>
+            <option value="catecumenados_1">Catecumenados 1</option>
+            <option value="catecumenados_2">Catecumenados 2</option>
+            <option value="catecumenados_3">Catecumenados 3</option>
+        </select>
         {% endif %}
         {{ form.as_p }}
         <button type="submit">Guardar</button>
     </form>
+</div>
 
+<style>
+    .container {
+        margin: 20px auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 50%;
+        height: auto;
+        overflow: auto;
+        width: 50%;
+    }
+
+    @media only screen and (max-width: 800px) {
+        .container {
+            width: auto;
+        }
+    }
+    
+    form input[type="text"],
+    form input[type="date"],
+    form input[type="file"],
+    form textarea,
+    form select {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+    }
+
+    form textarea {
+        height: 200px;
+    }
+
+    /* Estilo para los botones */
+    form button {
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        background-color: #86c631;
+    }
+
+    /* Estilo para el botón de submit */
+    form button:hover {
+        background-color: #FFBE0B;
+        /* Color verde */
+    }
+
+    .errorlist {
+        list-style-type: none;
+        padding: 0;
+        color: #f53131;
+    }
+</style>
 {% endblock %}

@@ -10054,7 +10054,7 @@ jQuery.ajaxSettings.xhr = function() {
 
 var xhrSuccessStatus = {
 
-		// File protocol always yields status code 0, assume 200
+		// Archivo protocol always yields status code 0, assume 200
 		0: 200,
 
 		// Support: IE <=9 only
@@ -10130,7 +10130,7 @@ jQuery.ajaxTransport( function( options ) {
 								} else {
 									complete(
 
-										// File: protocol always yields status 0; see trac-8605, trac-14207
+										// Archivo: protocol always yields status 0; see trac-8605, trac-14207
 										xhr.status,
 										xhr.statusText
 									);

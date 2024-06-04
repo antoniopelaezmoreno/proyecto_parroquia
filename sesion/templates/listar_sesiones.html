@@ -5,37 +5,141 @@
 
 {% block content %}
 
-<div id="alumnos-container">
-    <table class="alumnos-table rounded-border">
-        <thead>
-            <tr>
-                <th>Título</th>
-                <th>Descripción</th>
-                <th>Fecha</th>
-                <th></th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for sesion in sesiones %}
-                <tr class="alumno" data-ciclo="{{ catecumeno.ciclo }}">
-                    <td>{{ sesion.titulo }}</td>
-                    <td>{{ sesion.descripcion }}</td>
-                    <td>{{ sesion.fecha }}</td>
-                    <td>
-                        <a href="{% url 'pasar_lista' sesion.id %}">Pasar Lista</a>
-                    </td>
-                    <td>
-                        <a href="{% url 'editar_sesion' sesion.id %}">Editar</a>
-                    </td>
-                    <td>
-                        <a href="{% url 'eliminar_sesion' sesion.id %}">Eliminar</a>
-                    </td>
-                </tr>
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;">
+    <div>
+        <select id="curso-filter">
+            <option value="">---</option>
+            {% for curso in cursos %}
+                <option value="{{ curso.id }}" {% if curso.id == id_curso %} selected {% endif %}>{{ curso.curso }}</option>
             {% endfor %}
-        </tbody>
-    </table>
+        </select>
+        <button id="aplicar-filtro">Buscar</button>
+    </div>
+
+    <h1>Sesiones del curso {{ curso_seleccionado.curso }} </h1>
 </div>
 
+<a href="{% url 'crear_sesion' %}" class="crearbtn">
+    <span class="material-icons" style="font-size: 75px; color: #86c631">
+        add_circle
+    </span>
+</a>
 
+{% if not sesiones %}
+    <h2 style="text-align: center;">No hay sesiones registradas</h2>
+{% else %}
+<div class="sesion-container">
+    {% for sesion in sesiones %}
+    <div class="sesion" data-ciclo="{{ sesion.ciclo }}" id="{{ sesion.id }}">
+        <div class="titulo"><h3>{{ sesion.titulo }}</h3></div>
+        <div class="descripcion">{{ sesion.descripcion }}</div>
+        <p> - {{ sesion.fecha }} - </p>
+        <div class="botones">
+            {% if user.ciclo == sesion.ciclo %}
+                <a class="boton" style="background-color: #86c631;" href="{% url 'pasar_lista' sesion.id %}">Pasar Lista</a>
+            {% endif %}
+            <a class="boton" style="background-color: #2792d8;" href="{% url 'editar_sesion' sesion.id %}">Editar</a>
+            <a class="boton" style="background-color: #eb2a2a;" href="{% url 'eliminar_sesion' sesion.id %}">Eliminar</a>
+            
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<style>
+    .sesion-container{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: row;
+    }
+
+    .sesion{
+        background-color: #fff;
+        margin: 10px;
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        position: relative;
+        max-width: 400px;
+        min-width: 250px;
+        cursor: pointer;
+    }
+
+    .sesion h3{
+        text-align: center;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .titulo,
+    .descripcion {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .botones{
+        display: flex;
+        justify-content: center;
+    }
+
+    .boton{
+        display: inline-block;
+        margin: 10px;
+        padding: 5px 10px;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+    .crearbtn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        border: none;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        margin: 4px 2px;
+        cursor: pointer;
+        z-index: 10;
+    }
+
+    h1 {
+        text-align: center;
+        flex-grow: 1;
+    }
+
+    #aplicar-filtro {
+        background-color: #86c631;
+        color: #fff;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(39, 94, 137, 0.2);
+        margin-bottom: 4px;
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var cursoFilter = document.getElementById('curso-filter');
+        var aplicarFiltroBtn = document.getElementById('aplicar-filtro');
+
+        aplicarFiltroBtn.addEventListener('click', function() {
+            var selectedCurso = cursoFilter.value;
+            var url = "{% url 'listar_sesiones' %}?curso=" + selectedCurso;
+            window.location.href = url;
+        });
+
+        var sesiones = document.querySelectorAll(".sesion");
+        sesiones.forEach(function(sesion) {
+            sesion.addEventListener("click", function() {
+                var id = this.id;
+                var url = "{% url 'mostrar_sesion' 0 %}".replace("0", id);
+                window.location.href = url;
+            });
+        });
+    });
+</script>
 {% endblock %}

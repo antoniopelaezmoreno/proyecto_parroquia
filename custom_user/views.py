@@ -34,27 +34,29 @@ def editar_catequista(request, id):
             form = EditCustomUserForm(request.POST, instance=catequista)
             if form.is_valid():
                 form.save()
-                return redirect('listar_catequistas')
+                return redirect('/')
         else:
             form = EditCustomUserForm(instance=catequista)
     else:
         return redirect('/403')
     return render(request, 'editar_catequista.html', {'form': form})
     
-def crear_usuario_desde_solicitud(request, id, ciclo):
-    solicitud = SolicitudCatequista.objects.get(id=id)
+def crear_usuario_desde_solicitud(request, token):
+    solicitud = get_object_or_404(SolicitudCatequista, token=token)
 
     if request.method == 'POST':
         # Si se envió un formulario, procesar los datos
         form = CustomUserForm(request.POST)
         if form.is_valid():
             # Crear un nuevo CustomUser a partir de los datos del formulario
+            ciclo = solicitud.ciclo_asignado
+
             opcion_ciclo = Catecumeno.CicloChoices(ciclo)
             if opcion_ciclo is None:
                 return redirect('/404')
             custom_user = form.save(commit=False)
-            custom_user.first_name = solicitud.nombre
-            custom_user.last_name = solicitud.apellidos
+            custom_user.nombre = solicitud.nombre
+            custom_user.apellidos = solicitud.apellidos
             custom_user.email = solicitud.email
             custom_user.ciclo = opcion_ciclo
             custom_user.save()
@@ -63,7 +65,7 @@ def crear_usuario_desde_solicitud(request, id, ciclo):
             solicitud.delete()
             
             # Redirigir a una página de éxito o a donde sea apropiado
-            return redirect('/')
+            return redirect('/user/login')
     else:
         # Si es una solicitud GET, mostrar el formulario
         form = CustomUserForm()

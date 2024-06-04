@@ -10,6 +10,7 @@
   <title>Dashboard</title>
   {% load static %}
   <link rel="stylesheet" href="{% static 'core/css/styles.css' %}">
+  <script src="https://kit.fontawesome.com/63b9fca43d.js" crossorigin="anonymous"></script>
   <style>
     .dropdown {
       position: relative;
@@ -37,7 +38,7 @@
       background-color: #f1f1f1;
       min-width: 160px;
       box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-      z-index: 1;
+      z-index: 50;
     }
 
     .dropdown-content a {
@@ -70,6 +71,8 @@
 <body>
   <header class="content-shift" id="header">
     <div class="header-content">
+        <!-- Nuevo botón para pantallas pequeñas -->
+        <button class="sidebar-btn-mobile" onclick="toggleSidebarMobile()"><i class="bi bi-list"></i></button>
         <div style="margin-left: 10px;" class="text-center">
           <p>{% block title %} {% endblock %}</p>
         </div>
@@ -78,7 +81,7 @@
           <div class="dropdown">
             <button class="dropbtn"> 
               <i class="bi bi-person-circle" style="font-size: 30px; margin-right: 10px;"></i> 
-              {{ user.first_name }} {{ user.last_name }}
+              {{ user.nombre }} {{ user.apellidos }}
               <i class="fa fa-caret-down"></i>
             </button>
             <div class="dropdown-content">
@@ -98,27 +101,23 @@
         <div class="welcome-box">
           <img src="/static/icons/pjv_verde.png" alt="Welcome Image" style="margin-bottom: 10px;">
         </div>
+        <a href="{% url 'index' %}" class="menu-btn">Inicio</a>
         {% if user.is_superuser %}
-            <a href="{% url 'index' %}" class="menu-btn">Inicio</a>
-            <a href="{% url 'listar_catecumenos' %}" class="menu-btn">Lista catecúmenos</a>
-            <a href="{% url 'ver_autorizaciones' %}" class="menu-btn">Autorizaciones</a>
+            <a href="{% url 'panel_ciclos' %}" class="menu-btn">Ciclos</a>
             <a href="{% url 'tabla_asistencias_admin' 'posco_1' %}" class="menu-btn">Tabla asistencias</a>
             <a href="{% url 'solicitudes_reserva' %}" class="menu-btn">Solicitudes Sala</a>
-            <a href="{% url 'inbox' %}" class="menu-btn">Correo</a>
         {% else %}
           {% if user.is_coord %}
-            <a href="{% url 'index' %}" class="menu-btn">Inicio</a>
             <a href="{% url 'panel_grupos' %}" class="menu-btn">Grupos</a>
-            <a href="{% url 'listar_sesiones' %}" class="menu-btn">Sesiones</a>
-            <a href="{% url 'mis_reservas' %}" class="menu-btn">Salas</a>
-            <a href="{% url 'listar_archivos' %}" class="menu-btn">Materiales</a>
-            <a href="{% url 'inbox' %}" class="menu-btn">Correo</a>
+            <a href="{% url 'mis_reservas' %}" class="menu-btn">Mis Reservas</a>
           {% else %}
-            <a href="{% url 'index' %}" class="menu-btn">Inicio</a>
-            <button class="menu-btn" onclick="toggleSidebar()">Reports</button>
-            <button class="menu-btn" onclick="toggleSidebar()">Analytics</button>
+            <a href="{% url 'panel_grupos' %}" class="menu-btn">Mi Grupo</a>
           {% endif %}
+          
         {% endif %}
+        <a href="{% url 'listar_sesiones' %}" class="menu-btn">Sesiones <i class="fa-brands fa-google"></i></a>
+        <a href="{% url 'listar_archivos' %}" class="menu-btn">Materiales</a>
+        <a href="{% url 'inbox' %}" class="menu-btn">Correo <i class="fa-brands fa-google"></i></a>
       {% else %}
         <p>Inicia sesión para acceder</p>
       {% endif %}
@@ -132,16 +131,48 @@
       var sidebar = document.getElementById('sidebar');
       var dashboard = document.getElementById('dashboard');
       var header = document.getElementById('header');
-      if (sidebar.style.left === '0px' || sidebar.style.left === '') {
-        sidebar.style.left = '-250px';
+      if (window.innerWidth <= 800) {
+        if (sidebar.style.left === '0px' || sidebar.style.left === '') {
+          sidebar.style.left = '-100%';
+          dashboard.classList.remove('content-shift');
+          header.classList.remove('content-shift');
+        } else {
+          sidebar.style.left = '0px';
+          dashboard.classList.add('content-shift');
+          header.classList.add('content-shift');
+        }
+      } else {
+        if (sidebar.style.left === '0px' || sidebar.style.left === '') {
+          sidebar.style.left = '-250px';
+          dashboard.classList.remove('content-shift');
+          header.classList.remove('content-shift');
+        } else {
+          sidebar.style.left = '0px';
+          dashboard.classList.add('content-shift');
+          header.classList.add('content-shift');
+        }
+      }
+    }
+  
+    function toggleSidebarMobile() {
+      var sidebar = document.getElementById('sidebar');
+      sidebar.style.left = '0';
+    }
+  
+    window.addEventListener('resize', function() {
+      if (window.innerWidth <= 800) {
+        var sidebar = document.getElementById('sidebar');
+        sidebar.style.left = '-100%';
         dashboard.classList.remove('content-shift');
         header.classList.remove('content-shift');
       } else {
+        var sidebar = document.getElementById('sidebar');
         sidebar.style.left = '0px';
         dashboard.classList.add('content-shift');
         header.classList.add('content-shift');
       }
-    }
+    });
   </script>
+  
 </body>
 </html>

@@ -1,8 +1,8 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 from django.utils import timezone
-from curso.models import Curso
 from catecumeno.models import Catecumeno
+from django.core.validators import RegexValidator
 
 
 class CustomUserManager(BaseUserManager):
@@ -28,15 +28,23 @@ class CustomUserManager(BaseUserManager):
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
-    telefono = models.CharField(max_length=10, null=True, blank=True)
+    telefono = models.CharField(
+        max_length=9,
+        validators=[
+            RegexValidator(
+                regex='^\d{9}$',
+                message='El teléfono debe tener 9 dígitos',
+                code='invalid_phone_number'
+            )
+        ]
+    )
     is_coord = models.BooleanField(default=False)
     ciclo = models.CharField(max_length=20, choices=Catecumeno.CicloChoices.choices, default=Catecumeno.CicloChoices.POSCO_1)
-    first_name = models.CharField(max_length=30, blank=True)
-    last_name = models.CharField(max_length=150, blank=True)
+    nombre = models.CharField(max_length=30, blank=True)
+    apellidos = models.CharField(max_length=150, blank=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
-    curso= models.ForeignKey(Curso, on_delete=models.CASCADE, null=True, blank=True)
     token_json=models.JSONField(null=True, blank=True)
 
     USERNAME_FIELD = 'email'
@@ -45,7 +53,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     objects = CustomUserManager()
 
     def __str__(self):
-        return self.first_name + ' ' + self.last_name
+        return self.nombre + ' ' + self.apellidos
 
     def get_by_natural_key(self, email):
         return self.get(email=email)

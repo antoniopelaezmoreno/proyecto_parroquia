@@ -3,20 +3,25 @@ from custom_user.models import CustomUser
 from django.core.validators import FileExtensionValidator
 from django.core.exceptions import ValidationError
 
-class Folder(models.Model):
-    name = models.CharField(max_length=255)
-    owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    files = models.ManyToManyField('File', related_name='folders')
-    parent_folder = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
+class Carpeta(models.Model):
+    nombre = models.CharField(max_length=30)
+    dueño = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    carpeta_padre = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='subfolders')
 
+    def get_descendants(self):
+        descendants = [self]
+        for subfolder in self.subfolders.all():
+            descendants.extend(subfolder.get_descendants())
+        return descendants
+    
     def __str__(self):
         return self.name
 
-class File(models.Model):
-    name = models.CharField(max_length=255)
-    file = models.FileField(upload_to='files/')
-    owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    parent_folder = models.ForeignKey(Folder, on_delete=models.CASCADE, null=True, blank=True)
+class Archivo(models.Model):
+    name = models.CharField(max_length=50)
+    archivo = models.FileField(upload_to='files/')
+    dueño = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    carpeta_padre = models.ForeignKey(Carpeta, on_delete=models.CASCADE, null=True, blank=True)
 
     def is_pdf(self):
         try:
@@ -64,11 +69,13 @@ class File(models.Model):
         return self.name
     
     def clean(self):
-        if self.file:
+        # Si el archivo ya existe, entonces se valida la extensión
+        if self.archivo:
             try:
-                FileExtensionValidator(allowed_extensions=['pdf','jpeg','jpg','png','doc','docx','dot','dotx','docm','dotm','xls','xlsx','xlsm','xlsb','xltx','xltm','ppt','pptx','pot','potx','pptm','potm','mp4','mov','avi','mkv','txt'])(self.file)
+                FileExtensionValidator(allowed_extensions=['pdf','jpeg','jpg','png','doc','docx','dot','dotx','docm','dotm','xls','xlsx','xlsm','xlsb','xltx','xltm','ppt','pptx','pot','potx','pptm','potm','mp4','mov','avi','mkv','txt'])(self.archivo)
             except ValidationError as e:
-                raise ValidationError({'file': ('Este tipo de archivo no está permitido')}) 
-        else:
-            raise ValidationError({'file': ('Debe subir un archivo.')})
+                raise ValidationError({'archivo': ('Este tipo de archivo no está permitido')}) 
+        # Si se está moviendo el archivo y no se selecciona un nuevo archivo, no se realiza ninguna validación
+        elif not self.carpeta_padre:
+            raise ValidationError({'archivo': ('Debe subir un archivo.')})
         

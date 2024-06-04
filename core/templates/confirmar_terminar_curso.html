@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Terminar curso {% endblock %}
+
+{% block content %}
+
+<h1>¿Estás seguro de que quieres eliminar todos los datos?</h1>
+<form action="{% url 'terminar_curso' %}" method="post">
+    {% csrf_token %}
+    <input type="submit" value="Confirmar">
+</form>
+
+<style>
+    input[type="submit"] {
+        background-color: #86c631;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin-top: 10px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #FFBE0B;
+    }
+</style>
+{% endblock %}

@@ -1,5 +1,6 @@
 from email.mime.text import MIMEText
 import os.path
+from django.http import HttpResponseRedirect
 
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
@@ -18,12 +19,16 @@ def enviar_email(request, sender, to, subject, message_text, user):
   """
   request.session['redirect_to'] = request.path
   creds = conseguir_credenciales(request, user)
+  if isinstance(creds, HttpResponseRedirect):
+    return creds
 
   try:
     # Call the Gmail API
     service = build("gmail", "v1", credentials=creds)
     message = create_message(sender, to, subject, message_text)
     send_message(service, "me", message)
+
+  
 
     
 

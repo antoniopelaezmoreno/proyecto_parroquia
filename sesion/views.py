@@ -13,6 +13,7 @@ from django.db.models import Count
 from correo.views import conseguir_credenciales
 from googleapiclient.discovery import build
 from django.http import HttpResponseRedirect
+import datetime
 # Create your views here.
 
 @login_required
@@ -36,24 +37,24 @@ def crear_sesion(request):
                     sesion.ciclo = ciclo
 
                     if ciclo == 'posco_1' or ciclo == 'posco_2' or ciclo == 'gr_juv_1' or ciclo == 'gr_juv_2':
-                        sesion.hora_inicio = '16:30'
-                        sesion.hora_fin = '17:30'
+                        sesion.hora_inicio = datetime.time(16,30)
+                        sesion.hora_fin = datetime.time(17, 30)
                     elif ciclo == 'posco_3' or ciclo == 'posco_4':
-                        sesion.hora_inicio = '17:30'
-                        sesion.hora_fin = '18:30'
+                        sesion.hora_inicio = datetime.time(17, 30)
+                        sesion.hora_fin = datetime.time(18, 30)
                     elif ciclo == 'catecumenados_3':
-                        sesion.hora_inicio = '19:00'
-                        sesion.hora_fin = '20:30'
+                        sesion.hora_inicio = datetime.time(19, 0)
+                        sesion.hora_fin = datetime.time(20, 30)
                     else:
-                        sesion.hora_inicio = '17:00'
-                        sesion.hora_fin = '18:30'
+                        sesion.hora_inicio = datetime.time(17, 0)
+                        sesion.hora_fin = datetime.time(18, 30)
 
 
                     sesion.save()
 
-                    files = form.cleaned_data['files']
+                    files = form.cleaned_data['archivos']
                     for file in files:
-                        sesion.files.add(file)
+                        sesion.archivos.add(file)
                     
                     crear_sesion_en_calendar(request,sesion, request.user)
                     return redirect('/sesion/listar')
@@ -107,19 +108,24 @@ def editar_sesion(request, sesionId):
             if form.is_valid():
                 sesion = form.save(commit=False)
                 sesion.save()
-                sesion.files.clear()
-                files = form.cleaned_data['files']
+                sesion.archivos.clear()
+                files = form.cleaned_data['archivos']
                 for file in files:
-                    sesion.files.add(file)
-                return redirect('/sesion/listar')
+                    sesion.archivos.add(file)
+                url_anterior = request.session.get('url_anterior', '/sesion/listar')
+                del request.session['url_anterior']
+
+                return redirect(url_anterior)
             else:
                 messages.error(request, "Hay algo mal en el formulario, por favor revisa los campos")
         else:
+            url_anterior = request.META.get('HTTP_REFERER')
+            request.session['url_anterior'] = url_anterior
+            
             form = SesionForm(instance=sesion)
         return render(request, 'editar_sesion.html', {'form': form, 'sesion': sesion})
     else:
         return redirect('/403')
-    
 
 @login_required
 def eliminar_sesion(request, sesionId):
@@ -132,17 +138,35 @@ def eliminar_sesion(request, sesionId):
  
 @login_required
 def listar_sesiones(request):
-    if request.user.is_authenticated:
-        if request.user.is_superuser:
-            sesiones = Sesion.objects.all().order_by('fecha')
-            return render(request, 'listar_sesiones_admin.html', {'sesiones': sesiones})
+    id_curso = request.GET.get('curso')
+    
+    ultimo_curso = Curso.objects.latest('id')
+    curso = ultimo_curso
+    cursos = Curso.objects.all().order_by('id').reverse()
+    if request.user.is_superuser:
+        if id_curso:
+            curso = get_object_or_404(Curso, pk=id_curso)
+            sesiones = Sesion.objects.filter(curso_id=id_curso).order_by('fecha', 'id')
         else:
-            ciclo=request.user.ciclo
-            sesiones = Sesion.objects.filter(ciclo=ciclo).order_by('fecha')
-            return render(request, 'listar_sesiones.html', {'sesiones': sesiones})
+            sesiones = Sesion.objects.filter(curso=ultimo_curso).order_by('fecha', 'id')
+        return render(request, 'listar_sesiones_admin.html', {'sesiones': sesiones, 'cursos': cursos, 'id_curso': id_curso, 'curso_seleccionado': curso})
+    else:
+        ciclo=request.user.ciclo
+        if id_curso:
+            curso = get_object_or_404(Curso, pk=id_curso)
+            sesiones = Sesion.objects.filter(ciclo=ciclo).filter(curso_id=id_curso).order_by('fecha', 'id')
+        else:
+            sesiones = Sesion.objects.filter(ciclo=ciclo).filter(curso=ultimo_curso).order_by('fecha', 'id')
+        return render(request, 'listar_sesiones.html', {'sesiones': sesiones, 'cursos': cursos, 'id_curso': id_curso, 'curso_seleccionado': curso})
+
+
+@login_required
+def mostrar_sesion(request, sesionId):
+    sesion = get_object_or_404(Sesion, pk=sesionId)
+    if request.user.is_superuser or request.user.ciclo == sesion.ciclo:
+        return render(request, 'mostrar_sesion.html', {'sesion': sesion})
     else:
         return redirect('/403')
-
 
 @login_required
 def pasar_lista(request, sesionid):
@@ -153,6 +177,9 @@ def pasar_lista(request, sesionid):
             if sesion.fecha > timezone.now().date():
                 return error(request, "No puedes pasar lista de una sesión futura")
             if request.method == 'POST':
+                sesion.asistentes.clear()
+                sesion.justificados.clear()
+                sesion.ausentes.clear()
                 for catecumeno in catecumenos_desde_catequista(request.user):
                     categoria = request.POST.get(f'categoria_{catecumeno.id}')
                     if categoria in ['asistente', 'justificado', 'ausente']:
@@ -179,9 +206,9 @@ def catecumenos_desde_catequista(catequista):
     grupo2 = Grupo.objects.filter(catequista2=catequista).first()
     
     if grupo1:
-        return grupo1.miembros.all()
+        return grupo1.miembros()
     elif grupo2:
-        return grupo2.miembros.all()
+        return grupo2.miembros()
     else:
         return []
 @login_required
@@ -217,27 +244,31 @@ def tabla_asistencias_admin(request, ciclo):
     
 @login_required
 def contar_ausencias(request):
+    if request.user.is_superuser:
+        return redirect('/403')
+    sesiones_ausentes = Sesion.objects.filter(ciclo = request.user.ciclo, ausentes__isnull=False)
     if request.user.is_coord:
-        sesiones_ausentes = Sesion.objects.filter(ciclo = request.user.ciclo, ausentes__isnull=False)
-
-        # Anotar el número de ausencias de cada catecúmeno
         catecumenos_con_ausencias = Catecumeno.objects.annotate(num_ausencias=Count('sesiones_ausentes')).filter(num_ausencias__gte=3)
 
-        # Contar el número de catecúmenos resultantes
         return catecumenos_con_ausencias
     else:
-        return redirect('/403')
+        catecumenos = catecumenos_desde_catequista(request.user)
+        catecumenos_con_ausencias = Catecumeno.objects.annotate(num_ausencias=Count('sesiones_ausentes')).filter(num_ausencias__gte=3).filter(id__in=[catecumeno.id for catecumeno in catecumenos])
+        return catecumenos_con_ausencias
     
 @login_required
 def contar_ausencias_ultima_sesion(request):
-    if request.user.is_coord:
-        sesion = Sesion.objects.filter(ciclo=request.user.ciclo, fecha__lte=timezone.now().date())
-        if sesion.exists():
-            sesion = sesion.latest('fecha')
-            ausentes = sesion.ausentes.all()
-            return ausentes
-        else:
-            ausentes=[]
-            return ausentes
-    else:
+    if request.user.is_superuser:
         return redirect('/403')
+    sesion = Sesion.objects.filter(ciclo=request.user.ciclo, fecha__lte=timezone.now().date())
+    
+    if sesion.exists():
+        sesion = sesion.latest('fecha')
+    else:
+        return []
+    
+    if request.user.is_coord:
+        return sesion.ausentes.all()
+    else:
+        catecumenos = catecumenos_desde_catequista(request.user)
+        return sesion.ausentes.filter(id__in=[catecumeno.id for catecumeno in catecumenos])

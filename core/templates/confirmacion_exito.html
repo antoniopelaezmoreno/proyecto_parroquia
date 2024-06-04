@@ -1,0 +1,22 @@
+{% extends 'index/index.html' %}
+{% load static %}
+
+{% block content %}
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<style>
+   body {
+       overflow: hidden;
+   }
+</style>
+
+<div id="login-form-container" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
+   <div class="p-6 rounded-lg shadow-lg" style="background-color: lightgreen;">
+      <a href="{% url 'index' %}"><span class="material-icons">
+         close
+         </span> </a>
+      <h1 style="font-size: xx-large; font-weight: bold; text-align: center;">¡RECIBIDO!</h1>
+        <p style="text-align: center;">El registro ha sido completado con éxito.</p>
+   </div>
+</div>
+{% endblock %}
