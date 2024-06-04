@@ -1,9 +1,10 @@
 import json
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import SolicitudCatequistaForm
 from .models import SolicitudCatequista
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 from .quickstart import enviar_email
 from django.urls import reverse
 from correo.views import conseguir_credenciales
@@ -30,6 +31,7 @@ def crear_solicitud_cateqista(request):
         return JsonResponse({'success': False, 'error': str(e)})
 
 @csrf_exempt
+@login_required
 def asignar_catequistas(request):
     if not request.user.is_superuser:
         return redirect('/403')
@@ -60,6 +62,14 @@ def asignar_catequistas(request):
     solicitudes_por_asignar = SolicitudCatequista.objects.filter(ciclo_asignado__isnull=True)
     return render(request, 'asignar_catequistas.html', {'solicitudes_asignadas': solicitudes_asignadas, 'solicitudes_por_asignar':solicitudes_por_asignar})
 
+@login_required
+def eliminar_solicitud(request, solicitud_id):
+    if not request.user.is_superuser:
+        return redirect('/403')
+
+    solicitud = get_object_or_404(SolicitudCatequista, pk=solicitud_id)
+    solicitud.delete()
+    return redirect('asignar_catequistas')
 
 def enviar_correo_solicitud(request, to, token, user):
     sender = "antoniopelaez2002@gmail.com"
