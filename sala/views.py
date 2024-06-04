@@ -131,6 +131,11 @@ def reservar_sala(request):
             if reservas_exist.exists():
                 return HttpResponse('Ya existe una reserva en el plazo seleccionado. La fecha ocupada es: ', reservas_exist.first().fecha)
             else:
+                liberar_salas = request.POST.get('liberar_sala')
+                if liberar_salas == 'true':
+                    reserva_para_liberar = Reserva.objects.filter(usuario=request.user, fecha=fecha, hora_inicio__lt=hora_fin, hora_fin__gt=hora_inicio, estado=Reserva.EstadoChoices.ACEPTADA)
+                    if reserva_para_liberar.exists():
+                        reserva_para_liberar.delete()
                 if sala.requiere_aprobacion:
                     motivo = request.POST.get('motivo')
                     if len(motivo) > 250:
@@ -140,6 +145,7 @@ def reservar_sala(request):
                 else:
                     reserva = Reserva(usuario=request.user, sala=sala, fecha=fecha, hora_inicio=hora_inicio, hora_fin=hora_fin, estado=Reserva.EstadoChoices.ACEPTADA)
                     reserva.save()
+                
                 return redirect('mis_reservas')
         else:
             return redirect('/404')
