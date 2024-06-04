@@ -49,17 +49,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (requiereAprobacion == "True") {
                 avisoAprobacion.textContent = "Esta sala requiere aprobación";
+                document.getElementById("motivoLabel").style.display = "block";
                 document.getElementById("motivo").style.display = "block";
                 document.getElementById("motivoError").style.display = "block";
             } else {
                 avisoAprobacion.textContent = "";
+                document.getElementById("motivoLabel").style.display = "none";
                 document.getElementById("motivo").style.display = "none";
                 document.getElementById("motivoError").style.display = "none";
             }
 
             reservarBtn.addEventListener("click", function () {
                 const motivo = document.getElementById("motivo").value;
-                reservarSala(salaId, fecha, inicio, fin, motivo);
+                const liberar_sala = document.getElementById("liberar_sala").checked;
+                reservarSala(salaId, fecha, inicio, fin, motivo, liberar_sala);
             });
         });
     });
@@ -126,13 +129,14 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-function reservarSala(salaId, fecha, horaInicio, horaFin, motivo) {
+function reservarSala(salaId, fecha, horaInicio, horaFin, motivo, liberar_sala) {
     var formData = new FormData();
     formData.append("sala_id", salaId);
     formData.append("fecha", fecha);
     formData.append("hora_inicio", horaInicio);
     formData.append("hora_fin", horaFin);
     formData.append("motivo", motivo);
+    formData.append("liberar_sala", liberar_sala);
 
     const motivoError = document.getElementById("motivoError");
     const motivoInput = document.getElementById("motivo");
