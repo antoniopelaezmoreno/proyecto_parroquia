@@ -23,29 +23,31 @@
 </form>
 
 {% if todas_salas %}
-    <h2>Salas disponibles:</h2>
+    {% if todas_salas|length > 0 %}
+        <h2>Salas disponibles:</h2>
 
-    <div id="contenedorSalas">
-    {% for sala in todas_salas %}
-        {% if sala in salas_ocupadas %}
-            {% for reserva in reservas_salas_ocupadas %}
-                {% if reserva.sala == sala %}
-                    <div class="sala ocupada" data-reserva="{{ reserva }}">
-                        <button style="cursor: auto; color: white;">{{ sala }}</button>
-                    </div>
-                {% endif %}
-            {% endfor %}
-        {% else %}
-            <div class="sala {% if sala.requiere_aprobacion %} aprobacion {% else %} libre {% endif %}">
-                <button class="openModalBtn" data-sala-id="{{ sala.id }}" data-sala-nombre="{{ sala.nombre }}" data-sala-aprobacion="{{ sala.requiere_aprobacion }}"><p>{{ sala }}</p></button>
-            </div>
-        {% endif %}
-    {% endfor %}
-    </div>
-{% else %}
-    <div id="contenedorSalas">
-        <p class="no-salas">No hay salas para reservar</p>
-    </div>
+        <div id="contenedorSalas">
+        {% for sala in todas_salas %}
+            {% if sala in salas_ocupadas %}
+                {% for reserva in reservas_salas_ocupadas %}
+                    {% if reserva.sala == sala %}
+                        <div class="sala ocupada" data-reserva="{{ reserva }}">
+                            <button style="cursor: auto; color: white;">{{ sala }}</button>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <div class="sala {% if sala.requiere_aprobacion %} aprobacion {% else %} libre {% endif %}">
+                    <button class="openModalBtn" data-sala-id="{{ sala.id }}" data-sala-nombre="{{ sala.nombre }}" data-sala-aprobacion="{{ sala.requiere_aprobacion }}"><p>{{ sala }}</p></button>
+                </div>
+            {% endif %}
+        {% endfor %}
+        </div>
+    {% else %}
+        <div id="contenedorSalas">
+            <p class="no-salas">No hay salas para reservar</p>
+        </div>
+    {% endif %}
 {% endif %}
 
 <div id="myModal" class="modal">
@@ -54,9 +56,13 @@
     <h2>Reservar la sala</h2>
     <p id="avisoAprobacion"></p>
     <p id="mensajeConfirmacion"></p>
+    <label id="motivoLabel" style="display: none;">Indique el motivo de la reserva:</label>
     <input type="text" id="motivo" name="motivo">
     <div id="motivoError" style="color: red;"></div>
+    <label id="liberarLabel">¿Deja libre las salas que tengas reservadas?</label>
+    <input type="checkbox" id="liberar_sala" name="liberar_sala"><br>
     <button id="reservarBtn" style="border-radius: 5px; padding: 10px 20px;">Reservar</button>
+    
   </div>
 </div>
 
