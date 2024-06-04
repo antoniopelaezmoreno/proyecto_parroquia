@@ -10,7 +10,7 @@ class FileForm(forms.ModelForm):
 class FolderForm(forms.ModelForm):
     class Meta:
         model = Carpeta
-        fields = ['name']
+        fields = ['nombre']
 
 class MoveFileForm(forms.ModelForm):
     class Meta:
