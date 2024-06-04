@@ -11,6 +11,7 @@
     <h2 class="subtitulo">Fecha</h2>
     <p class="texto">{{ sesion.fecha }}</p>
     <p class="texto">{{ sesion.hora_inicio }} - {{ sesion.hora_fin }}</p>
+    <p class="texto" >Curso: {{ sesion.curso }}</p>
     {% if sesion.files.all %}
         <h2 class="subtitulo">Archivos</h2>
         <ul>
