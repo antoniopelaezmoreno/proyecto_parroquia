@@ -21,9 +21,7 @@
 .estaditicas {
     display: flex;
     flex-wrap: wrap;
-    /* Ajuste para que se ajuste al tamaño de la pantalla */
     justify-content: center;
-    /* Espaciado entre los cuadros */
     gap: 15px;
 }
 
@@ -170,8 +168,8 @@
 
 .boton {
     display: inline-block;
-    background-color: #F7A24F;
-    color: #322d28;
+    background-color: #86c631;
+    color: white;
     font-weight: bold;
     padding: 0 20px;
     border-radius: 5px;
@@ -186,13 +184,9 @@
 .leido-btn {
     text-align: center;
     color: green;
-    /* Color del icono */
     font-size: 24px;
-    /* Tamaño del icono */
     margin-top: 5px;
-    /* Espaciado superior */
     display: inline-block;
-    /* Asegura que el botón se ajuste al icono */
 }
 
 
@@ -210,7 +204,6 @@
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     transition: transform 0.5s, box-shadow 0.5s;
-    /* Agregado box-shadow a la transición */
 }
 
 .grupo {
@@ -223,7 +216,6 @@
 .caja:hover {
     transform: scale(1.05);
     box-shadow: 0 0 10px rgba(160, 59, 59, 0.5);
-    /* Cambiado el color de la sombra en :hover */
 }
 
 .miembros {

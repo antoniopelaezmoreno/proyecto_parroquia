@@ -13,6 +13,7 @@ from django.db.models import Count
 from correo.views import conseguir_credenciales
 from googleapiclient.discovery import build
 from django.http import HttpResponseRedirect
+import datetime
 # Create your views here.
 
 @login_required
@@ -36,17 +37,17 @@ def crear_sesion(request):
                     sesion.ciclo = ciclo
 
                     if ciclo == 'posco_1' or ciclo == 'posco_2' or ciclo == 'gr_juv_1' or ciclo == 'gr_juv_2':
-                        sesion.hora_inicio = '16:30'
-                        sesion.hora_fin = '17:30'
+                        sesion.hora_inicio = datetime.time(16,30)
+                        sesion.hora_fin = datetime.time(17, 30)
                     elif ciclo == 'posco_3' or ciclo == 'posco_4':
-                        sesion.hora_inicio = '17:30'
-                        sesion.hora_fin = '18:30'
+                        sesion.hora_inicio = datetime.time(17, 30)
+                        sesion.hora_fin = datetime.time(18, 30)
                     elif ciclo == 'catecumenados_3':
-                        sesion.hora_inicio = '19:00'
-                        sesion.hora_fin = '20:30'
+                        sesion.hora_inicio = datetime.time(19, 0)
+                        sesion.hora_fin = datetime.time(20, 30)
                     else:
-                        sesion.hora_inicio = '17:00'
-                        sesion.hora_fin = '18:30'
+                        sesion.hora_inicio = datetime.time(17, 0)
+                        sesion.hora_fin = datetime.time(18, 30)
 
 
                     sesion.save()
@@ -144,6 +145,13 @@ def listar_sesiones(request):
     else:
         return redirect('/403')
 
+@login_required
+def mostrar_sesion(request, sesionId):
+    sesion = get_object_or_404(Sesion, pk=sesionId)
+    if request.user.is_superuser or request.user.ciclo == sesion.ciclo:
+        return render(request, 'mostrar_sesion.html', {'sesion': sesion})
+    else:
+        return redirect('/403')
 
 @login_required
 def pasar_lista(request, sesionid):

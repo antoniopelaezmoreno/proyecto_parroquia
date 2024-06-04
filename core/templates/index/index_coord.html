@@ -55,10 +55,16 @@
                     <p style="margin: 0;"><b>Descripción: </b></p>
                     <p id="descripcionSesion">{{ proxima_sesion.descripcion }}</p>
                     <p><b>Fecha: </b> {{ proxima_sesion.fecha }}</p>
+                    <p><b>Horario: </b> {{ proxima_sesion.hora_inicio }} - {{ proxima_sesion.hora_fin }}</p>
                     <div style="display: flex; flex-flow: row; justify-content: space-between;">
                         <a href="{% url 'pasar_lista' proxima_sesion.id %}" class="boton" style="margin-top: 20px;">
                             <p> PASAR LISTA </p>
                         </a>
+
+                        <a href="{% url 'mostrar_sesion' proxima_sesion.id %}" class="boton" style="margin-top: 20px;">
+                            <p> DETALLES </p>
+                        </a>
+                        
                         <a href="{% url 'listar_sesiones' %}" class="boton" style="margin-top: 20px;">
                             <p> TODAS LAS SESIONES </p>
                         </a>
