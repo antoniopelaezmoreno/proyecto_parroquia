@@ -137,6 +137,11 @@
                     <p><b>Sala: </b></p> {{ proximo_evento.sala_reservada }}
                     {% endif %}
                 </div>
+                <div style="display: flex; flex-flow: row; justify-content: space-between;">
+                    <a href="{% url 'detalles_evento' proximo_evento.id %}" class="boton" style="margin-top: 20px;">
+                        <p> DETALLES </p>
+                    </a>
+                </div>
             </div>
             {% else %}
             <p> No hay próximo evento</p>

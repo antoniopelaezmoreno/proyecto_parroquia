@@ -58,6 +58,11 @@
                             {% endif %}
                         </div>
                     </div>
+                    <div style="display: flex; flex-flow: row; justify-content: space-between;">
+                        <a href="{% url 'detalles_evento' proximo_evento.id %}" class="boton" style="margin-top: 20px;">
+                            <p> DETALLES </p>
+                        </a>
+                    </div>
                 {% else %}
                     <p> No hay próximo evento</p>
                 {% endif %}
