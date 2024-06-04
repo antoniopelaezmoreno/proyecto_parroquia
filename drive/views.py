@@ -36,12 +36,12 @@ def listar_archivos(request, folder_id=None):
 @login_required
 def crear_carpeta(request):
     if request.method == 'POST':
-        nombre = request.POST.get('name')
+        nombre = request.POST.get('nombre')
         id_carpeta_actual = request.POST.get('carpeta_actual')
         carpeta_actual = None
         if id_carpeta_actual is not None and id_carpeta_actual != 'None':
             carpeta_actual = get_object_or_404(Carpeta, id=id_carpeta_actual)
-        nueva_carpeta = Carpeta(name=nombre, dueño=request.user, carpeta_padre=carpeta_actual)
+        nueva_carpeta = Carpeta(nombre=nombre, dueño=request.user, carpeta_padre=carpeta_actual)
         nueva_carpeta.save()
         return JsonResponse({'success': True})
     return redirect('listar_archivos')
@@ -104,14 +104,14 @@ def obtener_carpetas_destino_carpeta(request, folder_id):
     available_folders = list(Carpeta.objects.exclude(
         Q(id__in=[subfolder.id for subfolder in subfolders]) |
         Q(id=folder_id)
-    ).values("id", "name"))
+    ).values("id", "nombre"))
     
     data = {"available_folders": available_folders}
     return JsonResponse(data)
 
 @login_required
 def obtener_carpetas_destino_archivo(request):
-    available_folders = list(Carpeta.objects.all().values("id", "name"))
+    available_folders = list(Carpeta.objects.all().values("id", "nombre"))
     data = {"available_folders": available_folders}
     return JsonResponse(data)
 

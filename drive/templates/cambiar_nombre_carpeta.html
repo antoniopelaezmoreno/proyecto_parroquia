@@ -1,5 +1,5 @@
 <form method="post" action="{% if folder %}{% url 'cambiar_nombre_carpeta' folder.id %}{% endif %}" id="changeNameForm" style="margin-top: 20px;">
     {% csrf_token %}
-    <input type="text" name="name" id="name" required maxlength="30" style="margin-bottom: 10px;" placeholder="Nombre de la carpeta" >
+    <input type="text" name="nombre" id="nombre" required maxlength="30" style="margin-bottom: 10px;" placeholder="Nombre de la carpeta" >
     <button type="submit" style="background-color: #86c631; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Guardar</button>
 </form>

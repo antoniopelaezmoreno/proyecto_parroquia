@@ -4,7 +4,7 @@ from django.core.validators import FileExtensionValidator
 from django.core.exceptions import ValidationError
 
 class Carpeta(models.Model):
-    name = models.CharField(max_length=30)
+    nombre = models.CharField(max_length=30)
     dueño = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     carpeta_padre = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='subfolders')
 
