@@ -12,11 +12,11 @@
     <p class="texto">{{ sesion.fecha }}</p>
     <p class="texto">{{ sesion.hora_inicio }} - {{ sesion.hora_fin }}</p>
     <p class="texto" >Curso: {{ sesion.curso }}</p>
-    {% if sesion.files.all %}
+    {% if sesion.archivos.all %}
         <h2 class="subtitulo">Archivos</h2>
         <ul>
-            {% for archivo in sesion.files.all %}
-            <li> <a href="/media/{{ archivo.file }}" alt="{{ archivo.name }}" target="_blank"> {{ archivo.name }} </a></li>
+            {% for archivo in sesion.archivos.all %}
+            <li> <a href="/media/{{ archivo.archivo }}" alt="{{ archivo.name }}" target="_blank"> {{ archivo.name }} </a></li>
             {% endfor %}
         </ul>
     {% endif %} 

@@ -15,7 +15,7 @@ class Sesion(models.Model):
     asistentes = models.ManyToManyField(Catecumeno, related_name='sesiones_asistentes')
     justificados = models.ManyToManyField(Catecumeno, related_name='sesiones_justificados')
     ausentes = models.ManyToManyField(Catecumeno, related_name='sesiones_ausentes') 
-    files = models.ManyToManyField(Archivo, related_name='sesiones', blank=True)
+    archivos = models.ManyToManyField(Archivo, related_name='sesiones', blank=True)
 
     def __str__(self):
         return f"Sesión de {self.ciclo} - {self.fecha}"

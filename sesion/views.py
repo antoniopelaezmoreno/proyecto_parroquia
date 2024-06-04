@@ -52,9 +52,9 @@ def crear_sesion(request):
 
                     sesion.save()
 
-                    files = form.cleaned_data['files']
+                    files = form.cleaned_data['archivos']
                     for file in files:
-                        sesion.files.add(file)
+                        sesion.archivos.add(file)
                     
                     crear_sesion_en_calendar(request,sesion, request.user)
                     return redirect('/sesion/listar')
@@ -108,10 +108,10 @@ def editar_sesion(request, sesionId):
             if form.is_valid():
                 sesion = form.save(commit=False)
                 sesion.save()
-                sesion.files.clear()
-                files = form.cleaned_data['files']
+                sesion.archivos.clear()
+                files = form.cleaned_data['archivos']
                 for file in files:
-                    sesion.files.add(file)
+                    sesion.archivos.add(file)
                 url_anterior = request.session.get('url_anterior', '/sesion/listar')
                 del request.session['url_anterior']
 
