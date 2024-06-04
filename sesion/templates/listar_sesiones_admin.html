@@ -26,7 +26,7 @@
                 <option value="{{ curso.id }}" {% if curso == curso_seleccionado %} selected {% endif %}>{{ curso.curso }}</option>
             {% endfor %}
         </select>
-        <button id="aplicar-filtro">Aplicar filtro</button>
+        <button id="aplicar-filtro">Buscar</button>
     </div>
 
     <h1>Sesiones del curso {{ curso_seleccionado.curso }} </h1>
@@ -122,6 +122,17 @@
 
     .selected {
         background-color: #FFBE0B;
+    }
+
+    #aplicar-filtro {
+        background-color: #86c631;
+        color: #fff;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(39, 94, 137, 0.2);
+        margin-bottom: 4px;
     }
 </style>
 
