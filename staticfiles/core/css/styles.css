@@ -224,6 +224,15 @@ div.scrollmenu a:hover {
   background-color: #777;
 }
 
+.scrollmenu {
+  overflow-x: auto;
+}
+
+.scrollmenu table {
+  width: 100%;
+  white-space: nowrap; /* Para que los elementos no se rompan */
+}
+
 .grid-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Columnas de tamaño variable */
