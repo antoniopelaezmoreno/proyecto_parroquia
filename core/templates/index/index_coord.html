@@ -78,31 +78,31 @@
                         <div class="grid-item">
                             <p>{{ file.name }}</p>
                             {% if file.is_image %}
-                            <a href="/media/{{ file.file }}" alt="{{ file.name }}" target="_blank">
-                                <img src="/media/{{ file.file }}" alt="{{ file.name }}" class="thumbnail">
+                            <a href="/media/{{ file.archivo }}" alt="{{ file.name }}" target="_blank">
+                                <img src="/media/{{ file.archivo }}" alt="{{ file.name }}" class="thumbnail">
                             </a>
                             {% elif file.is_video %}
-                            <a href="/media/{{ file.file }}" alt="{{ file.name }}" target="_blank">
+                            <a href="/media/{{ file.archivo }}" alt="{{ file.name }}" target="_blank">
                                 <img src="/static/icons/video_icon3.png" alt="{{ file.name }}" class="thumbnail">
                             </a>
                             {% elif file.is_pdf %}
-                            <a href="/media/{{ file.file }}" alt="{{ file.name }}" target="_blank">
+                            <a href="/media/{{ file.archivo }}" alt="{{ file.name }}" target="_blank">
                                 <img src="/static/icons/pdf_icon3.png" alt="{{ file.name }}" class="thumbnail">
                             </a>
                             {% elif file.is_doc %}
-                            <a href="/media/{{ file.file }}" alt="{{ file.name }}" target="_blank">
+                            <a href="/media/{{ file.archivo }}" alt="{{ file.name }}" target="_blank">
                                 <img src="/static/icons/doc_icon3.png" alt="{{ file.name }}" class="thumbnail">
                             </a>
                             {% elif file.is_excel %}
-                            <a href="/media/{{ file.file }}" alt="{{ file.name }}" target="_blank">
+                            <a href="/media/{{ file.archivo }}" alt="{{ file.name }}" target="_blank">
                                 <img src="/static/icons/xls_icon3.png" alt="{{ file.name }}" class="thumbnail">
                             </a>
                             {% elif file.is_ppt %}
-                            <a href="/media/{{ file.file }}" alt="{{ file.name }}" target="_blank">
+                            <a href="/media/{{ file.archivo }}" alt="{{ file.name }}" target="_blank">
                                 <img src="/static/icons/ppt_icon3.png" alt="{{ file.name }}" class="thumbnail">
                             </a>
                             {% else %}
-                            <a href="/media/{{ file.file }}" alt="{{ file.name }}" target="_blank">
+                            <a href="/media/{{ file.archivo }}" alt="{{ file.name }}" target="_blank">
                                 <img src="/static/icons/file_icon3.png" alt="{{ file.name }}" class="thumbnail">
                             </a>
                             {% endif %}
