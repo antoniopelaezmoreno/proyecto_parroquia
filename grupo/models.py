@@ -10,11 +10,11 @@ class Grupo(models.Model):
 
     def __str__(self):
         if self.catequista1 and self.catequista2:
-            return "Grupo de " +self.catequista1.first_name +" y " + self.catequista2.first_name
+            return "Grupo de " +self.catequista1.nombre +" y " + self.catequista2.nombre
         elif self.catequista1 and not self.catequista2:
-            return "Grupo de " + self.catequista1.first_name + " y Catequista 2"
+            return "Grupo de " + self.catequista1.nombre + " y Catequista 2"
         elif not self.catequista1 and self.catequista2:
-            return "Grupo de Catequista 1 y " + self.catequista2.first_name
+            return "Grupo de Catequista 1 y " + self.catequista2.nombre
         else:
             return "Grupo de Catequista 1 y Catequista 2"
         

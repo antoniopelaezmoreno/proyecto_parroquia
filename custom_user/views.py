@@ -55,8 +55,8 @@ def crear_usuario_desde_solicitud(request, token):
             if opcion_ciclo is None:
                 return redirect('/404')
             custom_user = form.save(commit=False)
-            custom_user.first_name = solicitud.nombre
-            custom_user.last_name = solicitud.apellidos
+            custom_user.nombre = solicitud.nombre
+            custom_user.apellidos = solicitud.apellidos
             custom_user.email = solicitud.email
             custom_user.ciclo = opcion_ciclo
             custom_user.save()

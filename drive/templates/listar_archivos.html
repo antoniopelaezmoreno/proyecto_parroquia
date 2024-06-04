@@ -372,7 +372,7 @@
     }
 
     function cargarOpcionesCarpeta(folderId) {
-        const select = document.getElementById("parent_folder_folder");
+        const select = document.getElementById("carpeta_padre_folder");
         if(folderId){
             fetch(`/drive/carpetas_destino_carpeta/${folderId}`)
             .then(response => response.json())
@@ -392,7 +392,7 @@
     }
 
     function cargarOpcionesArchivo(fileId) {
-        const select = document.getElementById("parent_folder_file");
+        const select = document.getElementById("carpeta_padre_file");
         if(fileId){
             fetch(`/drive/carpetas_destino_archivo`)
             .then(response => response.json())

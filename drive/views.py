@@ -14,7 +14,7 @@ def subir_archivo(request):
         carpeta_actual = None
         if id_carpeta_actual is not None and id_carpeta_actual != 'None':
             carpeta_actual = get_object_or_404(Carpeta, id=id_carpeta_actual)
-        nuevo_archivo = Archivo(file=archivo, owner=request.user, name=archivo.name, parent_folder=carpeta_actual)
+        nuevo_archivo = Archivo(file=archivo, dueño=request.user, name=archivo.name, carpeta_padre=carpeta_actual)
         nuevo_archivo.save()
         return JsonResponse({'success': True})
     return redirect('listar_archivos')
@@ -23,12 +23,12 @@ def subir_archivo(request):
 def listar_archivos(request, folder_id=None):
     ruta = []
     if folder_id is None:
-        files = Archivo.objects.filter(parent_folder=None).order_by('id')
-        folders = Carpeta.objects.filter(parent_folder=None).order_by('id')
+        files = Archivo.objects.filter(carpeta_padre=None).order_by('id')
+        folders = Carpeta.objects.filter(carpeta_padre=None).order_by('id')
     else:
         folder = get_object_or_404(Carpeta,id=folder_id)
-        files = Archivo.objects.filter(parent_folder=folder).order_by('id')
-        folders = Carpeta.objects.filter(parent_folder=folder).order_by('id')
+        files = Archivo.objects.filter(carpeta_padre=folder).order_by('id')
+        folders = Carpeta.objects.filter(carpeta_padre=folder).order_by('id')
         ruta = obtener_ruta_carpeta(folder) 
     return render(request, 'listar_archivos.html', {'files': files, 'folders':folders, 'actual_folder':folder_id, 'ruta':ruta})
 
@@ -41,16 +41,16 @@ def crear_carpeta(request):
         carpeta_actual = None
         if id_carpeta_actual is not None and id_carpeta_actual != 'None':
             carpeta_actual = get_object_or_404(Carpeta, id=id_carpeta_actual)
-        nueva_carpeta = Carpeta(name=nombre, owner=request.user, parent_folder=carpeta_actual)
+        nueva_carpeta = Carpeta(name=nombre, dueño=request.user, carpeta_padre=carpeta_actual)
         nueva_carpeta.save()
         return JsonResponse({'success': True})
     return redirect('listar_archivos')
 
 def obtener_ruta_carpeta(carpeta):
-    if carpeta.parent_folder is None:
+    if carpeta.carpeta_padre is None:
         return [carpeta]
     else:
-        return obtener_ruta_carpeta(carpeta.parent_folder) + [carpeta]
+        return obtener_ruta_carpeta(carpeta.carpeta_padre) + [carpeta]
     
 @login_required
 def eliminar_archivo(request, file_id):
@@ -70,8 +70,8 @@ def mover_archivo(request, file_id):
     if request.method == 'POST':
         form = MoveFileForm(request.POST)
         if form.is_valid():
-            folder = form.cleaned_data['parent_folder']
-            file.parent_folder = folder
+            folder = form.cleaned_data['carpeta_padre']
+            file.carpeta_padre = folder
             file.save()
             return redirect('listar_archivos')
     else:
@@ -86,9 +86,9 @@ def mover_carpeta(request, folder_id):
     if request.method == 'POST':
         form = MoveFolderForm(request.POST, current_folder=folder)
         if form.is_valid():
-            parent_folder = form.cleaned_data['parent_folder']
-            if parent_folder != folder:
-                folder.parent_folder = parent_folder
+            carpeta_padre = form.cleaned_data['carpeta_padre']
+            if carpeta_padre != folder:
+                folder.carpeta_padre = carpeta_padre
                 folder.save()
             return redirect(request.META.get('HTTP_REFERER'))
         else:

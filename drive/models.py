@@ -5,8 +5,8 @@ from django.core.exceptions import ValidationError
 
 class Carpeta(models.Model):
     name = models.CharField(max_length=30)
-    owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    parent_folder = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='subfolders')
+    dueño = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    carpeta_padre = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='subfolders')
 
     def get_descendants(self):
         descendants = [self]
@@ -20,8 +20,8 @@ class Carpeta(models.Model):
 class Archivo(models.Model):
     name = models.CharField(max_length=50)
     file = models.FileField(upload_to='files/')
-    owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    parent_folder = models.ForeignKey(Carpeta, on_delete=models.CASCADE, null=True, blank=True)
+    dueño = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    carpeta_padre = models.ForeignKey(Carpeta, on_delete=models.CASCADE, null=True, blank=True)
 
     def is_pdf(self):
         try:
@@ -76,6 +76,6 @@ class Archivo(models.Model):
             except ValidationError as e:
                 raise ValidationError({'file': ('Este tipo de archivo no está permitido')}) 
         # Si se está moviendo el archivo y no se selecciona un nuevo archivo, no se realiza ninguna validación
-        elif not self.parent_folder:
+        elif not self.carpeta_padre:
             raise ValidationError({'file': ('Debe subir un archivo.')})
         

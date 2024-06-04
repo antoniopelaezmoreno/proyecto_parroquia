@@ -53,9 +53,9 @@
         <select name="participantes" id="participantes" multiple>
             {% for usuario in usuarios %}
                 {% if usuario.id in participantes_seleccionados %}
-                    <option value="{{ usuario.id }}" selected>{{ usuario.first_name }} {{ usuario.last_name }}</option>
+                    <option value="{{ usuario.id }}" selected>{{ usuario.nombre }} {{ usuario.apellidos }}</option>
                 {% else %}
-                    <option value="{{ usuario.id }}">{{ usuario.first_name }} {{ usuario.last_name }}</option>
+                    <option value="{{ usuario.id }}">{{ usuario.nombre }} {{ usuario.apellidos }}</option>
                 {% endif %}
             {% endfor %}
         </select>
