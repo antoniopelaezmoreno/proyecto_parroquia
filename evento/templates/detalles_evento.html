@@ -1,18 +1,18 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Detalles del Evento: {{ evento.nombre }}{% endblock %}
+{% block title %}Detalles de Evento{% endblock %}
 
 {% block content %}
-    <div class="evento-details">
-        <h2>{{ evento.nombre }}</h2>
-        <p><strong>Fecha:</strong> {{ evento.fecha }}</p>
-        <p><strong>Hora:</strong> {{ evento.hora_inicio }} - {{ evento.hora_fin }}</p>
-        <p><strong>Descripción:</strong> {{ evento.descripcion }}</p>
-        <p><strong>Tipo:</strong> {{ evento.tipo }}</p>
+    <div class="container event-details">
+        <h2 class="titulo"> Detalles del evento: {{ evento.nombre }}</h2>
+        <p class="texto"><strong>Fecha:</strong> {{ evento.fecha }}</p>
+        <p class="texto"><strong>Hora:</strong> {{ evento.hora_inicio }} - {{ evento.hora_fin }}</p>
+        <p class="texto"><strong>Descripción:</strong> {{ evento.descripcion }}</p>
+        <p class="texto"><strong>Tipo:</strong> {{ evento.tipo }}</p>
         {% if evento.participantes %}
-            <p><strong>Participantes:</strong></p>
-            <ul>
+            <p class="texto"><strong>Participantes:</strong></p>
+            <ul class="texto">
                 {% for participante in evento.participantes.all %}
                     <li>{{ participante }}</li>
                 {% endfor %}
@@ -20,31 +20,57 @@
         {% endif %}
 
         {% if evento.sala_reservada %}
-            <p><strong>Sala:</strong> {{ evento.sala }}</p>
+            <p class="texto"><strong>Sala:</strong> {{ evento.sala }}</p>
         {% endif %}
     </div>
 
     <style>
-
-        .evento-details h2 {
-            color: #343a40;
-            font-size: 24px;
-            margin-bottom: 10px;
+        .container {
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 50%;
+            height: auto;
+            overflow: hidden;
+            word-wrap: break-word;
         }
 
-        .evento-details p {
+        @media only screen and (max-width: 1000px) {
+            .container {
+                width: auto;
+            }
+        }
+
+        .titulo {
+            font-size: 2em;
+            margin-bottom: 20px;
+            text-align: center;
+            word-wrap: break-word;
+            color: #343a40;
+        }
+
+        .texto {
             font-size: 16px;
             margin-bottom: 5px;
+            color: #555;
+            line-height: 1.6;
+            word-wrap: break-word;
         }
 
-        .evento-details ul {
+        ul {
             list-style-type: none;
-            padding-left: 20px;
-            margin-top: 5px;
+            padding: 0;
         }
 
-        .evento-details ul li {
-            margin-bottom: 5px;
+        ul li {
+            margin: 10px 0;
         }
+
+        ul li a:hover {
+            background-color: #86c631;
+            color: #fff;
+        }
+
     </style>
 {% endblock %}

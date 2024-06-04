@@ -13,7 +13,7 @@
     <hr>
     <div class="sesion-container">
         {% for evento in eventos %}
-            <div class="sesion">
+            <div class="sesion" id="{{ evento.id }}">
                 <div class="titulo"><h3>{{ evento.nombre }}</h3></div>
                 <div class="descripcion">{{ evento.descripcion }}</div>
                 <p>Tipo: {{ evento.tipo }}</p>
@@ -51,6 +51,7 @@
         position: relative;
         max-width: 400px;
         min-width: 250px;
+        cursor: pointer;
     }
 
     .sesion h3{
@@ -80,5 +81,18 @@
     }
 
 </style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var sesiones = document.querySelectorAll(".sesion");
+        sesiones.forEach(function(sesion) {
+            sesion.addEventListener("click", function() {
+                var id = this.id;
+                var url = "{% url 'detalles_evento' 0 %}".replace("0", id);
+                window.location.href = url;
+            });
+        });
+    });
+</script>
 
 {% endblock %}
