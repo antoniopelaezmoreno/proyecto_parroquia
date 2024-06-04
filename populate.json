@@ -2530,8 +2530,8 @@
       {
         "model": "custom_user.CustomUser",
         "fields": {
-          "first_name": "Adminsitrador",
-          "last_name": "Administrador",
+          "nombre": "Adminsitrador",
+          "apellidos": "Administrador",
           "email": "antoniopelaez2002@gmail.com",
           "telefono": "698547123",
           "password":"pbkdf2_sha256$600000$3coKQXrrjNeNeMDHvbAtT9$mfRrvsFtmKBvxtT1CngLYwKQgTorvJqiBKC3yrxlYVA=",
@@ -2544,8 +2544,8 @@
       {
         "model": "custom_user.CustomUser",
         "fields": {
-          "first_name": "Ramón",
-          "last_name": "Pastor Molero",
+          "nombre": "Ramón",
+          "apellidos": "Pastor Molero",
           "email": "ramon@gmail.com",
           "telefono": "628963214",
           "password":"pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
@@ -2558,8 +2558,8 @@
       {
         "model": "custom_user.CustomUser",
         "fields": {
-          "first_name": "Andrea",
-          "last_name": "Vals Mora",
+          "nombre": "Andrea",
+          "apellidos": "Vals Mora",
           "email": "andreavals@gmail.com",
           "telefono": "628963214",
           "password":"pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
@@ -2572,8 +2572,8 @@
       {
         "model": "custom_user.CustomUser",
         "fields": {
-          "first_name": "Ramón2",
-          "last_name": "Pastor Molero",
+          "nombre": "Ramón2",
+          "apellidos": "Pastor Molero",
           "email": "ramon2@gmail.com",
           "telefono": "628963214",
           "password":"pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
@@ -2586,8 +2586,8 @@
       {
         "model": "custom_user.CustomUser",
         "fields": {
-          "first_name": "Andrea2",
-          "last_name": "Vals Mora",
+          "nombre": "Andrea2",
+          "apellidos": "Vals Mora",
           "email": "andreavals2@gmail.com",
           "telefono": "628963214",
           "password":"pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
@@ -2600,8 +2600,8 @@
       {
         "model": "custom_user.CustomUser",
         "fields": {
-          "first_name": "Luis",
-          "last_name": "Pla Pino",
+          "nombre": "Luis",
+          "apellidos": "Pla Pino",
           "email": "luis@gmail.com",
           "telefono": "628963214",
           "password":"pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
@@ -2613,8 +2613,8 @@
       },{
         "model": "custom_user.CustomUser",
         "fields": {
-          "first_name": "Elladine",
-          "last_name": "Allchorn",
+          "nombre": "Elladine",
+          "apellidos": "Allchorn",
           "email": "eallchorn0@skyrock.com",
           "telefono": "698547123",
           "password": "pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
@@ -2626,8 +2626,8 @@
       }, {
         "model": "custom_user.CustomUser",
         "fields": {
-          "first_name": "Buffy",
-          "last_name": "Casse",
+          "nombre": "Buffy",
+          "apellidos": "Casse",
           "email": "bcasse1@discovery.com",
           "telefono": "698547123",
           "password": "pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
@@ -2639,8 +2639,8 @@
       }, {
         "model": "custom_user.CustomUser",
         "fields": {
-          "first_name": "Rube",
-          "last_name": "Roberti",
+          "nombre": "Rube",
+          "apellidos": "Roberti",
           "email": "rroberti2@mapy.cz",
           "telefono": "698547123",
           "password": "pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
@@ -2652,8 +2652,8 @@
       }, {
         "model": "custom_user.CustomUser",
         "fields": {
-          "first_name": "Jenni",
-          "last_name": "Pitone",
+          "nombre": "Jenni",
+          "apellidos": "Pitone",
           "email": "jpitone3@webs.com",
           "telefono": "698547123",
           "password": "pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
@@ -2665,8 +2665,8 @@
       }, {
         "model": "custom_user.CustomUser",
         "fields": {
-          "first_name": "Opaline",
-          "last_name": "Mengue",
+          "nombre": "Opaline",
+          "apellidos": "Mengue",
           "email": "omengue4@dmoz.org",
           "telefono": "698547123",
           "password": "pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
@@ -2678,8 +2678,8 @@
       }, {
         "model": "custom_user.CustomUser",
         "fields": {
-          "first_name": "Bradford",
-          "last_name": "Paulou",
+          "nombre": "Bradford",
+          "apellidos": "Paulou",
           "email": "bpaulou5@google.com.br",
           "telefono": "698547123",
           "password": "pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
@@ -2691,8 +2691,8 @@
       }, {
         "model": "custom_user.CustomUser",
         "fields": {
-          "first_name": "Ealasaid",
-          "last_name": "Crosetti",
+          "nombre": "Ealasaid",
+          "apellidos": "Crosetti",
           "email": "ecrosetti6@wiley.com",
           "telefono": "698547123",
           "password": "pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
@@ -2704,8 +2704,8 @@
       }, {
         "model": "custom_user.CustomUser",
         "fields": {
-          "first_name": "Arleen",
-          "last_name": "Castella",
+          "nombre": "Arleen",
+          "apellidos": "Castella",
           "email": "acastella7@cnbc.com",
           "telefono": "698547123",
           "password": "pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
@@ -2717,8 +2717,8 @@
       }, {
         "model": "custom_user.CustomUser",
         "fields": {
-          "first_name": "Karoly",
-          "last_name": "McComiskey",
+          "nombre": "Karoly",
+          "apellidos": "McComiskey",
           "email": "kmccomiskey8@fastcompany.com",
           "telefono": "698547123",
           "password": "pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
@@ -2730,8 +2730,8 @@
       }, {
         "model": "custom_user.CustomUser",
         "fields": {
-          "first_name": "Katalin",
-          "last_name": "Kellegher",
+          "nombre": "Katalin",
+          "apellidos": "Kellegher",
           "email": "kkellegher9@cbslocal.com",
           "telefono": "698547123",
           "password": "pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
@@ -2743,8 +2743,8 @@
       }, {
         "model": "custom_user.CustomUser",
         "fields": {
-          "first_name": "Dun",
-          "last_name": "Phettiplace",
+          "nombre": "Dun",
+          "apellidos": "Phettiplace",
           "email": "dphettiplacea@netscape.com",
           "telefono": "698547123",
           "password": "pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
@@ -2756,8 +2756,8 @@
       }, {
         "model": "custom_user.CustomUser",
         "fields": {
-          "first_name": "Kaleena",
-          "last_name": "Inkles",
+          "nombre": "Kaleena",
+          "apellidos": "Inkles",
           "email": "kinklesb@time.com",
           "telefono": "698547123",
           "password": "pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
@@ -2769,8 +2769,8 @@
       }, {
         "model": "custom_user.CustomUser",
         "fields": {
-          "first_name": "Terra",
-          "last_name": "Fores",
+          "nombre": "Terra",
+          "apellidos": "Fores",
           "email": "tforesc@woothemes.com",
           "telefono": "698547123",
           "password": "pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
@@ -2782,8 +2782,8 @@
       }, {
         "model": "custom_user.CustomUser",
         "fields": {
-          "first_name": "Denny",
-          "last_name": "Foort",
+          "nombre": "Denny",
+          "apellidos": "Foort",
           "email": "dfoortd@flickr.com",
           "telefono": "698547123",
           "password": "pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
@@ -2795,8 +2795,8 @@
       }, {
         "model": "custom_user.CustomUser",
         "fields": {
-          "first_name": "Judas",
-          "last_name": "Farndell",
+          "nombre": "Judas",
+          "apellidos": "Farndell",
           "email": "jfarndelle@netlog.com",
           "telefono": "698547123",
           "password": "pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
@@ -2808,8 +2808,8 @@
       }, {
         "model": "custom_user.CustomUser",
         "fields": {
-          "first_name": "Christi",
-          "last_name": "Elnaugh",
+          "nombre": "Christi",
+          "apellidos": "Elnaugh",
           "email": "celnaughf@un.org",
           "telefono": "698547123",
           "password": "pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
@@ -2821,8 +2821,8 @@
       }, {
         "model": "custom_user.CustomUser",
         "fields": {
-          "first_name": "Goldi",
-          "last_name": "Dowdle",
+          "nombre": "Goldi",
+          "apellidos": "Dowdle",
           "email": "gdowdleg@edublogs.org",
           "telefono": "698547123",
           "password": "pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
@@ -2834,8 +2834,8 @@
       }, {
         "model": "custom_user.CustomUser",
         "fields": {
-          "first_name": "Asher",
-          "last_name": "Pawlaczyk",
+          "nombre": "Asher",
+          "apellidos": "Pawlaczyk",
           "email": "apawlaczykh@t-online.de",
           "telefono": "698547123",
           "password": "pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
@@ -2847,8 +2847,8 @@
       }, {
         "model": "custom_user.CustomUser",
         "fields": {
-          "first_name": "Tanitansy",
-          "last_name": "Soggee",
+          "nombre": "Tanitansy",
+          "apellidos": "Soggee",
           "email": "tsoggeei@sina.com.cn",
           "telefono": "698547123",
           "password": "pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
@@ -2860,8 +2860,8 @@
       }, {
         "model": "custom_user.CustomUser",
         "fields": {
-          "first_name": "Madelaine",
-          "last_name": "Margetts",
+          "nombre": "Madelaine",
+          "apellidos": "Margetts",
           "email": "mmargettsj@dailymail.co.uk",
           "telefono": "698547123",
           "password": "pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",

@@ -44,7 +44,7 @@ class EditCustomUserForm(forms.ModelForm):
 
     class Meta:
         model = CustomUser
-        fields = ['first_name', 'last_name', 'email', 'telefono']
+        fields = ['nombre', 'apellidos', 'email', 'telefono']
         widgets = {
             'email': forms.TextInput(attrs={'readonly': 'readonly', 'style': 'background-color: #c3c3c3;'})
         }

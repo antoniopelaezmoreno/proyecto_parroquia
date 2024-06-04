@@ -20,12 +20,12 @@
             <!-- Nombre de catequistas -->
             <h3 class="catequistas-info" style="display: block;">
                 {% if grupo.catequista1 %}
-                    {{ grupo.catequista1.first_name }} y
+                    {{ grupo.catequista1.nombre }} y
                 {% else %}
                     Catequista 1 y 
                 {% endif %}
                 {% if grupo.catequista2 %}
-                    {{ grupo.catequista2.first_name }}
+                    {{ grupo.catequista2.nombre }}
                 {% else %}
                     Catequista 2
                 {% endif %}
@@ -37,7 +37,7 @@
                 <select id="catequista1" name="catequista1">
                     {% for catequista in catequistas %}
                         <option value="{{ catequista.id }}" {% if grupo.catequista1.id == catequista.id %}selected{% endif %}>
-                            {{ catequista.first_name }}
+                            {{ catequista.nombre }}
                         </option>
                     {% endfor %}
                 </select>
@@ -45,7 +45,7 @@
                 <select id="catequista2" name="catequista2">
                     {% for catequista in catequistas %}
                         <option value="{{ catequista.id }}" {% if grupo.catequista2.id == catequista.id %}selected{% endif %}>
-                            {{ catequista.first_name }}
+                            {{ catequista.nombre }}
                         </option>
                     {% endfor %}
                 </select>

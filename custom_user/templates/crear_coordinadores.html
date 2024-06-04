@@ -12,7 +12,7 @@
       <select name="cycle_{{ cycle.0 }}">
         <option value="">Seleccione un usuario</option>
         {% for user in users %}
-        <option value="{{ user.id }}" {% if user.is_coord %} selected {% endif %}>{{ user.first_name }} {{user.last_name }}</option>
+        <option value="{{ user.id }}" {% if user.is_coord %} selected {% endif %}>{{ user.nombre }} {{user.apellidos }}</option>
         {% endfor %}
       </select>
     </div>

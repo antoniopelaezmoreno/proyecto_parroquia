@@ -93,7 +93,7 @@ def crear_grupo_admin(request):
 def ajax_obtener_catequistas(request):
     ciclo_id = request.GET.get('ciclo_id')
     catequistas = CustomUser.objects.filter(ciclo=ciclo_id)
-    catequistas_data = [{'id': catequista.id, 'first_name': catequista.first_name, 'last_name': catequista.last_name} for catequista in catequistas]
+    catequistas_data = [{'id': catequista.id, 'nombre': catequista.nombre, 'apellidos': catequista.apellidos} for catequista in catequistas]
     return JsonResponse({'catequistas': catequistas_data})
 
 @login_required

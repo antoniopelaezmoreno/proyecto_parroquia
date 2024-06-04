@@ -14,7 +14,7 @@
                     <h2 style="border-bottom: 1px solid #86c631;">{{ ciclo.1|upper }}</h2>
                     {% for catequista in catequistas %}
                         {% if catequista.ciclo == ciclo.0 %}
-                            <p style="text-align: center;">{% if catequista.is_coord %} <b>{{ catequista.first_name }} (Coordinador)</b>  {% else %} {{ catequista.first_name }} {% endif %}</p>
+                            <p style="text-align: center;">{% if catequista.is_coord %} <b>{{ catequista.nombre }} (Coordinador)</b>  {% else %} {{ catequista.nombre }} {% endif %}</p>
                         {% endif %}
                     {% endfor %}
                 </div>
@@ -31,7 +31,7 @@
                     <h2 style="border-bottom: 1px solid #f39c12;">{{ ciclo.1|upper }}</h2>
                     {% for catequista in catequistas %}
                         {% if catequista.ciclo == ciclo.0 %}
-                            <p style="text-align: center;">{% if catequista.is_coord %} <b>{{ catequista.first_name }} (Coordinador)</b>  {% else %} {{ catequista.first_name }} {% endif %}</p>
+                            <p style="text-align: center;">{% if catequista.is_coord %} <b>{{ catequista.nombre }} (Coordinador)</b>  {% else %} {{ catequista.nombre }} {% endif %}</p>
                         {% endif %}
                     {% endfor %}
                 </div>
@@ -48,7 +48,7 @@
                     <h2 style="border-bottom: 1px solid #3498db;">{{ ciclo.1|upper }}</h2>
                     {% for catequista in catequistas %}
                         {% if catequista.ciclo == ciclo.0 %}
-                            <p style="text-align: center;">{% if catequista.is_coord %} <b>{{ catequista.first_name }} (Coordinador)</b>  {% else %} {{ catequista.first_name }} {% endif %}</p>
+                            <p style="text-align: center;">{% if catequista.is_coord %} <b>{{ catequista.nombre }} (Coordinador)</b>  {% else %} {{ catequista.nombre }} {% endif %}</p>
                         {% endif %}
                     {% endfor %}
                 </div>

@@ -40,8 +40,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     )
     is_coord = models.BooleanField(default=False)
     ciclo = models.CharField(max_length=20, choices=Catecumeno.CicloChoices.choices, default=Catecumeno.CicloChoices.POSCO_1)
-    first_name = models.CharField(max_length=30, blank=True)
-    last_name = models.CharField(max_length=150, blank=True)
+    nombre = models.CharField(max_length=30, blank=True)
+    apellidos = models.CharField(max_length=150, blank=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
@@ -53,7 +53,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     objects = CustomUserManager()
 
     def __str__(self):
-        return self.first_name + ' ' + self.last_name
+        return self.nombre + ' ' + self.apellidos
 
     def get_by_natural_key(self, email):
         return self.get(email=email)

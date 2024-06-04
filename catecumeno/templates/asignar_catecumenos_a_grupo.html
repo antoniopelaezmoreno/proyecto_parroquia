@@ -49,7 +49,7 @@
         <div class="cuadricula-column">
             <div class="grid-container">
                 {% for grupo in grupos %}
-                    <div class="grid-cell-title">{% if grupo.catequista1 %}{{ grupo.catequista1.first_name }}{% else %}Catequista1{% endif %} y {% if grupo.catequista2 %}{{ grupo.catequista2.first_name }}{% else %}Catequista2{% endif %}</div>
+                    <div class="grid-cell-title">{% if grupo.catequista1 %}{{ grupo.catequista1.nombre }}{% else %}Catequista1{% endif %} y {% if grupo.catequista2 %}{{ grupo.catequista2.nombre }}{% else %}Catequista2{% endif %}</div>
                 {% endfor %}
             </div>
             <!-- Cuadrícula debajo de la tabla -->
