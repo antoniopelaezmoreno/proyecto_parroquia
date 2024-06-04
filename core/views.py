@@ -34,7 +34,7 @@ def index(request):
             ausencias= contar_ausencias(request)
             ausencias_ultima_sesion = contar_ausencias_ultima_sesion(request)
             if proxima_sesion:
-                archivos_sesion = proxima_sesion.files.all()
+                archivos_sesion = proxima_sesion.archivos.all()
             else:
                 archivos_sesion = None
             return render(request, 'index/index_coord.html', {'proxima_sesion': proxima_sesion, 'archivos_sesion': archivos_sesion,'proximo_evento':proximo_evento,'notificaciones': notificaciones, 'num_catecumenos': num_catecumenos, 'ausencias': ausencias, 'ausencias_ultima_sesion': ausencias_ultima_sesion})
@@ -46,7 +46,7 @@ def index(request):
             num_ausencias= contar_ausencias(request).count()
             num_ausencias_ultima_sesion = len(contar_ausencias_ultima_sesion(request))
             if proxima_sesion:
-                archivos_sesion = proxima_sesion.files.all()
+                archivos_sesion = proxima_sesion.archivos.all()
             else:
                 archivos_sesion = None
             return render(request, 'index/index_cat.html', {'proxima_sesion': proxima_sesion, 'archivos_sesion': archivos_sesion,'proximo_evento':proximo_evento,'notificaciones': notificaciones, 'num_catecumenos': num_catecumenos, 'num_ausencias': num_ausencias, 'num_ausencias_ultima_sesion': num_ausencias_ultima_sesion})
