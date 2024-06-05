@@ -15,8 +15,13 @@ def subir_archivo(request):
         if id_carpeta_actual is not None and id_carpeta_actual != 'None':
             carpeta_actual = get_object_or_404(Carpeta, id=id_carpeta_actual)
         nuevo_archivo = Archivo(archivo=archivo, dueño=request.user, name=archivo.name, carpeta_padre=carpeta_actual)
-        nuevo_archivo.save()
-        return JsonResponse({'success': True})
+        try:
+            nuevo_archivo.clean()
+            nuevo_archivo.save()
+            return JsonResponse({'success': True})
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': "Este tipo de archivo no está permitido"}, status=400)
+        
     return redirect('listar_archivos')
 
 @login_required

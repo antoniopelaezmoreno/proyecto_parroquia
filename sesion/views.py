@@ -113,7 +113,8 @@ def editar_sesion(request, sesionId):
                 for file in files:
                     sesion.archivos.add(file)
                 url_anterior = request.session.get('url_anterior', '/sesion/listar')
-                del request.session['url_anterior']
+                if 'url_anterior' in request.session:
+                    del request.session['url_anterior']
 
                 return redirect(url_anterior)
             else:

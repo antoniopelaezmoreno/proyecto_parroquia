@@ -1,14 +1,11 @@
-from django.test import TestCase, RequestFactory
-from custom_user.views import crear_usuario_desde_solicitud
+from django.test import TestCase
 from solicitud_catequista.models import SolicitudCatequista
 from custom_user.models import CustomUser
-from unittest.mock import MagicMock
-from unittest.mock import patch
 import uuid
 from django.urls import reverse
 
 
-class TestCrearUsuarioDesdeSolicitud(TestCase):
+class TestsUnitariosCrearUsuarioDesdeSolicitud(TestCase):
 
     def setUp(self):
         self.solicitud = SolicitudCatequista.objects.create(
@@ -44,8 +41,7 @@ class TestCrearUsuarioDesdeSolicitud(TestCase):
         response = self.client.post(reverse('crear_usuario_desde_solicitud', kwargs={'token': self.solicitud.token}), data)
         self.assertEqual(response.status_code, 200)
 
-
-class ConvertirCoordinadorTestCase(TestCase):
+class TestsUnitariosConvertirCoordinador(TestCase):
     def setUp(self):
         self.superuser = CustomUser.objects.create_superuser(email='admin@gmail.com', password='admin123')
         self.usuario1 = CustomUser.objects.create(email='usuario1@example.com', ciclo='posco_1')
@@ -68,7 +64,6 @@ class ConvertirCoordinadorTestCase(TestCase):
         user3 = CustomUser.objects.get(email='usuario3@example.com')
         self.assertFalse(user2.is_coord)
         self.assertFalse(user3.is_coord) 
-
 
     def test_renderizar_template(self):
         self.client.force_login(self.superuser)

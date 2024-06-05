@@ -116,21 +116,47 @@ class TestsUnitariosEditarCatecumeno(TestCase):
         self.coord.ciclo = Catecumeno.CicloChoices.POSCO_1
         self.coord.save()
         self.catequista = CustomUser.objects.create_user(email='catequista@gmail.com', password='catequista123')
+        small_gif = (
+            b'\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\x80\x00\x00\x05\x04\x04\x00\x00\x00\x2c\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x02\x44\x01\x00\x3b'
+        )
+        uploaded = SimpleUploadedFile('small.jpg', small_gif, content_type='image/jpg')
+        self.data = {
+            'nombre': 'Nombre Modificado',
+            'apellidos': 'Apellidos Modificados',
+            'email':'email@gmail.com',
+            'dni':'12345678A',
+            'telefono':'123456789',
+            'ciclo': Catecumeno.CicloChoices.POSCO_1,
+            'nombre_madre':'Nombre Madre',
+            'apellidos_madre':'Apellidos Madre',
+            'email_madre':'emailmadre@gmail.com',
+            'telefono_madre':'123456789',
+            'nombre_padre':'Nombre Padre',
+            'apellidos_padre':'Apellidos Padre',
+            'email_padre':'emailpadre@gmail.com',
+            'telefono_padre':'123456789',
+            'preferencias':'Preferencias',
+            'foto': uploaded
+        }
 
     def test_editar_catecumeno_superusuario(self):
         self.client.force_login(self.superuser)
-        catecumeno = Catecumeno.objects.create(nombre='Nombre', apellidos='Apellidos', email='email@gmail.com', dni='12345678A', telefono='123456789', ciclo=Catecumeno.CicloChoices.POSCO_1)
-        response = self.client.get(reverse('editar_catecumeno', args=[catecumeno.id]))
-        self.assertEqual(response.status_code, 200)
+        catecumeno = Catecumeno.objects.create(nombre='Nombre', apellidos='Apellidos', email='email@gmail.com', dni='12345678A', telefono='123456789', ciclo=Catecumeno.CicloChoices.POSCO_1)        
+        response = self.client.post(reverse('editar_catecumeno', args=[catecumeno.id]), self.data)
+        self.assertEqual(response.status_code, 302)
+        catecumeno.refresh_from_db()
+        self.assertEqual(catecumeno.nombre, 'Nombre Modificado')
+        self.assertEqual(catecumeno.apellidos, 'Apellidos Modificado')
     
-
     def test_editar_catecumeno_coordinador_autorizado(self):
         self.client.force_login(self.coord)
         catecumeno = Catecumeno.objects.create(nombre='Nombre', apellidos='Apellidos', email='email@gmail.com', dni='12345678A', telefono='123456789', ciclo=Catecumeno.CicloChoices.POSCO_1)
-        response = self.client.get(reverse('editar_catecumeno', args=[catecumeno.id]))
-        self.assertEqual(response.status_code, 200)
+        response = self.client.post(reverse('editar_catecumeno', args=[catecumeno.id]), self.data)
+        self.assertEqual(response.status_code, 302)
+        catecumeno.refresh_from_db()
+        self.assertEqual(catecumeno.nombre, 'Nombre Modificado')
+        self.assertEqual(catecumeno.apellidos, 'Apellidos Modificado')
         
-
     def test_editar_catecumeno_coordinador_no_autorizado(self):
         self.client.force_login(self.coord)
         catecumeno = Catecumeno.objects.create(nombre='Nombre', apellidos='Apellidos', email='email@gmail.com', dni='12345678A', telefono='123456789', ciclo=Catecumeno.CicloChoices.POSCO_2)  
@@ -142,7 +168,6 @@ class TestsUnitariosEditarCatecumeno(TestCase):
         catecumeno = Catecumeno.objects.create(nombre='Nombre', apellidos='Apellidos', email='email@gmail.com', dni='12345678A', telefono='123456789', ciclo=Catecumeno.CicloChoices.POSCO_1)
         response = self.client.get(reverse('editar_catecumeno', args=[catecumeno.id]))
         self.assertEqual(response.status_code, 302)
-
 
 class TestsUnitariosAsignarCatecumenosAGrupo(TestCase):
 
