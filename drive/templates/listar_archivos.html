@@ -309,6 +309,9 @@
                 window.location.reload();
             } else {
                 console.error("Ha ocurrido un error al subir el archivo.");
+                if (data.error && data.error == "Este tipo de archivo no está permitido") {
+                    alert(data.error);
+                }
             }
         })
         .catch(error => {
