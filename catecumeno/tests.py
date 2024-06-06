@@ -1,17 +1,113 @@
-from django.test import TestCase, Client
+from django.test import TestCase, Client, RequestFactory
 from catecumeno.models import Catecumeno
 from django.urls import reverse
 from django.core.files.uploadedfile import SimpleUploadedFile
 from custom_user.models import CustomUser
 from grupo.models import Grupo
 import json
+from catecumeno.views import crear_catecumeno, listar_catecumenos, editar_catecumeno
+from django.contrib.sessions.middleware import SessionMiddleware
+from django.http import JsonResponse, HttpResponse
+from django.contrib.auth.models import AnonymousUser
+from django.core.exceptions import ValidationError
 
 # Create your tests here.
 
-class TestsUnitariosCrearCatecumeno(TestCase):
+class CrearCatecumenoTestCase(TestCase):
 
+    def setUp(self):
+        self.datos_invalidos = {
+            'nombre': 'nombre',
+            'apellidos': 'apellidos'
+        }
+        self.datos = {
+            'nombre': 'nombre',
+            'apellidos': 'apellidos',
+            'email':'email@gmail.com',
+            'dni':'12345678A',
+            'telefono':'123456789',
+            'ciclo': Catecumeno.CicloChoices.POSCO_1,
+            'nombre_madre':'Nombre Madre',
+            'apellidos_madre':'Apellidos Madre',
+            'email_madre':'emailmadre@gmail.com',
+            'telefono_madre':'123456789',
+            'nombre_padre':'Nombre Padre',
+            'apellidos_padre':'Apellidos Padre',
+            'email_padre':'emailpadre@gmail.com',
+            'telefono_padre':'123456789',
+            'preferencias':'Preferencias'
+        }
+        small_gif = (
+            b'\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\x80\x00\x00\x05\x04\x04\x00\x00\x00\x2c\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x02\x44\x01\x00\x3b'
+        )
+        self.uploaded = SimpleUploadedFile('small.jpg', small_gif, content_type='image/jpg')
+        self.datos['foto'] = self.uploaded
+    
+    def _add_session_to_request(self, request):
+        middleware = SessionMiddleware(lambda req: None)
+        middleware.process_request(request)
+        request.session.save()
+
+    #Unitario
+    def test_modelo_catecumeno(self):
+        catecumeno = Catecumeno.objects.create(**self.datos)
+        self.assertEqual(catecumeno.nombre, 'nombre')
+        self.assertEqual(catecumeno.apellidos, 'apellidos')
+
+    #Unitario
+    def test_nombre_max_length(self):
+        catecumeno = Catecumeno(nombre='a' * 101, apellidos='Apellidos', email='email@gmail.com', dni='12345678A', telefono='123456789', ciclo=Catecumeno.CicloChoices.POSCO_1)
+        with self.assertRaises(ValidationError):
+            catecumeno.full_clean()
+
+    #Unitario
+    def test_validacion_telefono(self):
+        catecumeno = Catecumeno(nombre='Nombre', apellidos='Apellidos', email='email@gmail.com', dni='12345678A', telefono='1234567890', ciclo=Catecumeno.CicloChoices.POSCO_1)
+        with self.assertRaises(ValidationError):
+            catecumeno.full_clean()
+
+    #Unitario
+    def test_validacion_dni(self):
+        catecumeno = Catecumeno(nombre='Nombre', apellidos='Apellidos', email='email@gmail.com', dni='12345678', telefono='123456789', ciclo=Catecumeno.CicloChoices.POSCO_1)
+        with self.assertRaises(ValidationError):
+            catecumeno.full_clean()
+
+    #Unitario
+    def test_foto_extension_valida(self):
+        uploaded = SimpleUploadedFile('test_image.exe', b"contenido de prueba")
+        
+        catecumeno = Catecumeno(nombre='Nombre', apellidos='Apellidos', email='email@gmail.com', dni='12345678A', telefono='123456789', ciclo=Catecumeno.CicloChoices.POSCO_1, foto=uploaded)
+        
+        with self.assertRaises(ValidationError):
+            catecumeno.full_clean()
+
+    #Unitario
+    def test_vista_crear_catecumeno(self):
+        request = RequestFactory().post(reverse('crear_catecumeno'), self.datos)
+        request.user = CustomUser.objects.create_user(email='testuser@example.com', password='testuser123')
+        self._add_session_to_request(request)
+        self.client.force_login(request.user)
+        response = crear_catecumeno(request)
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(response, JsonResponse)
+        self.assertTrue(json.loads(response.content.decode('utf-8')).get('success'))
+
+    #Unitario
+    def test_vista_crear_catecumeno_datos_vacios(self):
+
+        request = RequestFactory().post(reverse('crear_catecumeno'), self.datos_invalidos)
+        request.user = CustomUser.objects.create_user(email='testuser@example.com', password='testuser123')
+        self._add_session_to_request(request)
+        self.client.force_login(request.user)
+        response = crear_catecumeno(request)
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(response, JsonResponse)
+        self.assertFalse(json.loads(response.content.decode('utf-8')).get('success'))
+
+    #Integración
     def test_crear_catecumeno(self):
         datos = {
+
             'nombre': 'nombre',
             'apellidos': 'apellidos',
             'email':'email@gmail.com',
@@ -72,7 +168,7 @@ class TestsUnitariosCrearCatecumeno(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertFalse(Catecumeno.objects.exists())
 
-class TestsUnitariosListarCatecumenos(TestCase):
+class ListarCatecumenosTestCase(TestCase):
 
     def setUp(self):
         # Crear usuarios para simular diferentes roles y ciclos
@@ -83,6 +179,22 @@ class TestsUnitariosListarCatecumenos(TestCase):
         self.coord.save()
         self.catequista = CustomUser.objects.create_user(email='catequista@gmail.com', password='catequista123')
 
+    #Unitario
+    def test_listar_catecumenos(self):
+        request = RequestFactory().get(reverse('listar_catecumenos'))
+        request.user = self.superuser
+        response = listar_catecumenos(request)
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(response, HttpResponse)
+
+    #Unitario
+    def test_listar_catecumenos_usuario_no_autenticado(self):
+        request = RequestFactory().get(reverse('listar_catecumenos'))
+        request.user = AnonymousUser()
+        response = listar_catecumenos(request)
+        self.assertEqual(response.status_code, 302)
+    
+    #Integración
     def test_listar_catecumenos_superuser(self):
         self.client.force_login(self.superuser)
         response = self.client.get(reverse('listar_catecumenos'))
@@ -106,7 +218,7 @@ class TestsUnitariosListarCatecumenos(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, '/user/login?next=/catecumeno/listar/')
 
-class TestsUnitariosEditarCatecumeno(TestCase):
+class EditarCatecumenoTestCase(TestCase):
 
     def setUp(self):
         self.client = Client()
@@ -146,7 +258,7 @@ class TestsUnitariosEditarCatecumeno(TestCase):
         self.assertEqual(response.status_code, 302)
         catecumeno.refresh_from_db()
         self.assertEqual(catecumeno.nombre, 'Nombre Modificado')
-        self.assertEqual(catecumeno.apellidos, 'Apellidos Modificado')
+        self.assertEqual(catecumeno.apellidos, 'Apellidos Modificados')
     
     def test_editar_catecumeno_coordinador_autorizado(self):
         self.client.force_login(self.coord)
@@ -155,7 +267,7 @@ class TestsUnitariosEditarCatecumeno(TestCase):
         self.assertEqual(response.status_code, 302)
         catecumeno.refresh_from_db()
         self.assertEqual(catecumeno.nombre, 'Nombre Modificado')
-        self.assertEqual(catecumeno.apellidos, 'Apellidos Modificado')
+        self.assertEqual(catecumeno.apellidos, 'Apellidos Modificados')
         
     def test_editar_catecumeno_coordinador_no_autorizado(self):
         self.client.force_login(self.coord)
@@ -169,7 +281,7 @@ class TestsUnitariosEditarCatecumeno(TestCase):
         response = self.client.get(reverse('editar_catecumeno', args=[catecumeno.id]))
         self.assertEqual(response.status_code, 302)
 
-class TestsUnitariosAsignarCatecumenosAGrupo(TestCase):
+class AsignarCatecumenosAGrupoTestCase(TestCase):
 
     def setUp(self):
         self.client = Client()

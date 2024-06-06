@@ -2,14 +2,26 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from custom_user.models import CustomUser
 from grupo.models import Grupo
+from django.core.exceptions import ValidationError
 
-class TestUnitariosCrearGrupoAdmin(TestCase):
+class CrearGrupoTestCase(TestCase):
     def setUp(self):
         self.client = Client()
         self.url = reverse('crear_grupo_admin')
         self.superuser = CustomUser.objects.create_superuser(email='admin@example.com', password='admin')
         self.catequista1 = CustomUser.objects.create_user(email='catequista1@example.com', password='catequista1')
         self.catequista2 = CustomUser.objects.create_user(email='catequista2@example.com', password='catequista2')
+
+    #Unitario
+    def test_modelo_grupo(self):
+        grupo = Grupo.objects.create(ciclo='posco_1')
+        self.assertEqual(grupo.ciclo, 'posco_1')
+
+    #Unitario
+    def test_ciclo_opcion_invalida(self):
+        grupo = Grupo.objects.create(ciclo='opcion_invalida')
+        with self.assertRaises(ValidationError):
+            grupo.full_clean()
 
     def test_crear_grupo_admin_success(self):
         self.client.login(email='admin@example.com', password='admin')
@@ -27,17 +39,14 @@ class TestUnitariosCrearGrupoAdmin(TestCase):
         self.assertEqual(grupo.catequista2, self.catequista2)
         self.client.logout()
 
-    
     def test_crear_grupo_admin_not_superuser(self):
         self.client.login(email='catequista1@example.com', password='catequista1')
         response = self.client.get(self.url)
-        print(response)
         self.assertEqual(Grupo.objects.count(), 0)
         self.assertEqual(response.url, '/403')
         self.client.logout()
         
-
-class TestsUnitariosEditarGrupo(TestCase):
+class EditarGrupoTestCase(TestCase):
     def setUp(self):
         self.user = CustomUser.objects.create_user(email='testuser@example.com', password='testpassword', is_coord=True)
         self.grupo = Grupo.objects.create(ciclo='posco_1')

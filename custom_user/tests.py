@@ -3,9 +3,10 @@ from solicitud_catequista.models import SolicitudCatequista
 from custom_user.models import CustomUser
 import uuid
 from django.urls import reverse
+from django.core.exceptions import ValidationError
 
 
-class TestsUnitariosCrearUsuarioDesdeSolicitud(TestCase):
+class CrearUsuarioTestCase(TestCase):
 
     def setUp(self):
         self.solicitud = SolicitudCatequista.objects.create(
@@ -16,6 +17,32 @@ class TestsUnitariosCrearUsuarioDesdeSolicitud(TestCase):
             token = uuid.uuid4()
         )
 
+    #Unitario
+    def test_modelo_custom_user(self):
+        datos={
+            'email': 'testuser@example.com',
+            'nombre': 'nombre',
+            'apellidos': 'apellidos',
+            'telefono': '123456789',
+            'ciclo': 'posco_1'
+        }
+        user = CustomUser.objects.create(**datos)
+        self.assertEqual(user.nombre, 'nombre')
+        self.assertEqual(user.apellidos, 'apellidos')
+
+    #Unitario
+    def test_nombre_max_length(self):
+        user = CustomUser(nombre='a' * 31, apellidos='Apellidos', email='email@gmail.com', telefono='123456789', ciclo='posco_1')
+        with self.assertRaises(ValidationError):
+            user.full_clean()
+
+    #Unitario
+    def test_validacion_telefono(self):
+        user = CustomUser(nombre='Nombre', apellidos='Apellidos', email='email@gmail.com', telefono='1234567890', ciclo='posco_1')
+        with self.assertRaises(ValidationError):
+            user.full_clean()
+
+    #Integración
     def test_crear_usuario_desde_solicitud_post(self):
         # Hacer una solicitud POST a la vista con datos válidos
         data = {
@@ -41,7 +68,7 @@ class TestsUnitariosCrearUsuarioDesdeSolicitud(TestCase):
         response = self.client.post(reverse('crear_usuario_desde_solicitud', kwargs={'token': self.solicitud.token}), data)
         self.assertEqual(response.status_code, 200)
 
-class TestsUnitariosConvertirCoordinador(TestCase):
+class ConvertirCoordinadorTestCase(TestCase):
     def setUp(self):
         self.superuser = CustomUser.objects.create_superuser(email='admin@gmail.com', password='admin123')
         self.usuario1 = CustomUser.objects.create(email='usuario1@example.com', ciclo='posco_1')

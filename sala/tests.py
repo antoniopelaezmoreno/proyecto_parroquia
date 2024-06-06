@@ -5,13 +5,32 @@ from custom_user.models import CustomUser
 from datetime import datetime, timedelta
 import datetime as dt
 from unittest.mock import patch
+from django.core.exceptions import ValidationError
 
-class TestsUnitariosSala(TestCase):
+class SalaTestCase(TestCase):
     def setUp(self):
         self.user = CustomUser.objects.create_superuser(email='testuser@example.com', password='testpassword')
         self.sala = Sala.objects.create(nombre='Sala 1')
         self.reserva = Reserva.objects.create(usuario=self.user, sala=self.sala, fecha='2030-01-01', hora_inicio=dt.time(11,0), hora_fin=dt.time(12,0), estado=Reserva.EstadoChoices.ACEPTADA)
         self.client.force_login(self.user)
+
+    #Unitario
+    def test_modelo_sala(self):
+        sala = Sala.objects.create(nombre='Sala Test')
+        self.assertEqual(sala.nombre, 'Sala Test')
+        self.assertEqual(sala.requiere_aprobacion, False)
+
+    #Unitario
+    def test_modelo_reserva(self):
+        reserva = Reserva.objects.create(usuario=self.user, sala=self.sala, fecha='2040-01-01', hora_inicio=dt.time(11,0), hora_fin=dt.time(12,0), estado=Reserva.EstadoChoices.ACEPTADA)
+        self.assertEqual(reserva.usuario, self.user)
+        self.assertEqual(reserva.fecha, '2040-01-01')
+
+    #Unitario
+    def test_estado_opcion_invalida(self):
+        reserva = Reserva.objects.create(usuario=self.user, sala=self.sala, fecha='2050-01-01', hora_inicio=dt.time(11,0), hora_fin=dt.time(12,0), estado='opcion_invalida')
+        with self.assertRaises(ValidationError):
+            reserva.full_clean()
 
     def test_reservar_sala_success(self):
         response = self.client.post(reverse('reservar'), {

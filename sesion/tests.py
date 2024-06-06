@@ -1,19 +1,24 @@
 from django.test import TestCase
 from django.urls import reverse
 from sesion.models import Sesion
-from datetime import datetime, timedelta
 import datetime as dt
 from custom_user.models import CustomUser
 from curso.models import Curso
 from grupo.models import Grupo
 from catecumeno.models import Catecumeno
 
-class TestsUnitariosEditarSesion(TestCase):
+class SesionTestCase(TestCase):
     def setUp(self):
-        curso = Curso.objects.create(curso='23-24')
+        self.curso = Curso.objects.create(curso='23-24')
         self.user = CustomUser.objects.create_user(email='testuser@example.com', password='testpassword', ciclo='posco_1')
-        self.sesion = Sesion.objects.create(titulo='Test Sesion', descripcion='This is a test session', fecha='2030-01-01', hora_inicio=dt.time(11,0), hora_fin=dt.time(12,0), ciclo='posco_1', curso=curso)
+        self.sesion = Sesion.objects.create(titulo='Test Sesion', descripcion='This is a test session', fecha='2030-01-01', hora_inicio=dt.time(11,0), hora_fin=dt.time(12,0), ciclo='posco_1', curso=self.curso)
         self.client.force_login(self.user)
+
+    #Unitario
+    def test_modelo_sesion(self):
+        sesion = Sesion.objects.create(titulo='Crear Sesion', descripcion='This is a test session', fecha='2040-01-01', hora_inicio=dt.time(11,0), hora_fin=dt.time(12,0), ciclo='posco_1', curso=self.curso)
+        self.assertEqual(sesion.titulo, 'Crear Sesion')
+        self.assertEqual(sesion.descripcion, 'This is a test session')
 
     def test_editar_sesion(self):
         data = {
@@ -30,7 +35,7 @@ class TestsUnitariosEditarSesion(TestCase):
         self.assertEqual(self.sesion.titulo, 'Test Sesion')
         self.assertEqual(self.sesion.descripcion, 'Description modified')
 
-class TestsUnitariosPasarLista(TestCase):
+class PasarListaTestCase(TestCase):
     def setUp(self):
         curso = Curso.objects.create(curso='23-24')
         self.catequista1 = CustomUser.objects.create_user(email='testuser@email.com', password='testpassword')
