@@ -5,9 +5,9 @@ from custom_user.models import CustomUser
 from datetime import datetime
 import datetime as dt
 import json
+from django.core.exceptions import ValidationError
 
-
-class TestUnitariosEvento(TestCase):
+class EventoTestCase(TestCase):
 
     def setUp(self):
         self.client = Client()
@@ -18,6 +18,24 @@ class TestUnitariosEvento(TestCase):
         self.evento.participantes.add(self.user)
         self.client.force_login(self.user)
     
+    #Unitario
+    def test_modelo_evento(self):
+        evento = Evento.objects.create(nombre='Evento de prueba', fecha='2030-01-01', hora_inicio=dt.time(11,0), hora_fin=dt.time(12,0), tipo=Evento.TIPO_EVENTO.REUNION, descripcion='Descripción del evento', sala_reservada=None)
+        self.assertEqual(evento.nombre, 'Evento de prueba')
+        self.assertEqual(evento.fecha, '2030-01-01')
+
+    #Unitario
+    def test_nombre_max_length(self):
+        evento = Evento(nombre='a' * 76, fecha='2030-01-01', hora_inicio=dt.time(11,0), hora_fin=dt.time(12,0), tipo=Evento.TIPO_EVENTO.REUNION, descripcion='Descripción del evento', sala_reservada=None)
+        with self.assertRaises(ValidationError):
+            evento.full_clean()
+
+    #Unitario
+    def test_tipo_opcion_invalida(self):
+        evento = Evento(nombre='Evento de prueba', fecha='2030-01-01', hora_inicio=dt.time(11,0), hora_fin=dt.time(12,0), tipo='tipo_invalido', descripcion='Descripción del evento', sala_reservada=None)
+        with self.assertRaises(ValidationError):
+            evento.full_clean()
+
     def test_obtener_eventos(self):
         response = self.client.get(reverse('obtener_eventos'))
         self.assertEqual(response.status_code, 200)

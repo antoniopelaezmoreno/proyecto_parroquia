@@ -3,14 +3,40 @@ from django.urls import reverse
 from django.core.files.uploadedfile import SimpleUploadedFile
 from drive.models import Archivo, Carpeta
 from custom_user.models import CustomUser
+from django.core.exceptions import ValidationError
 
-class TestsUnitariosSubirYEliminarArchivo(TestCase):
+class SubirYEliminarArchivoTestCase(TestCase):
     def setUp(self):
         self.user = CustomUser.objects.create(email='prueba@example.com', password='useruser')
         self.archivo = Archivo.objects.create(name='Archivo Test.txt', archivo='files/archivo_test.txt', dueño=self.user, carpeta_padre=None)
         self.client = Client()
         self.client.force_login(self.user)
 
+    #Unitario
+    def test_modelo_archivo(self):
+        archivo = Archivo.objects.create(name='Archivo Test.txt', archivo='files/archivo_test.txt', dueño=self.user, carpeta_padre=None)
+        self.assertEqual(archivo.name, 'Archivo Test.txt')
+        self.assertEqual(archivo.archivo, 'files/archivo_test.txt')
+
+    #Unitario
+    def test_modelo_carpeta(self):
+        carpeta = Carpeta.objects.create(nombre='Carpeta Nombre', dueño=self.user, carpeta_padre=None)
+        self.assertEqual(carpeta.nombre, 'Carpeta Nombre')
+
+    #Unitario
+    def test_nombre_max_length(self):
+        archivo = Archivo(name='a' * 101, archivo='files/archivo_test.txt', dueño=self.user, carpeta_padre=None)
+        with self.assertRaises(ValidationError):
+            archivo.full_clean()
+
+    #Unitario
+    def test_archivo_extension_valida(self):
+        uploaded = SimpleUploadedFile('test_file.exe', b"contenido de prueba")
+        archivo = Archivo(name='Archivo Test.txt', archivo=uploaded, dueño=self.user, carpeta_padre=None)
+        
+        with self.assertRaises(ValidationError):
+            archivo.full_clean()
+    
     def test_subir_archivo(self):
         carpeta = Carpeta.objects.create(nombre='Carpeta de prueba', dueño=self.user)
         archivo = SimpleUploadedFile("archivo.txt", b"contenido de prueba")
@@ -40,7 +66,7 @@ class TestsUnitariosSubirYEliminarArchivo(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertFalse(Archivo.objects.filter(name='Archivo Test.txt').exists())
 
-class TestsUnitariosListarArchivos(TestCase):
+class ListarArchivosTestCase(TestCase):
     def setUp(self):
         self.user = CustomUser.objects.create(email='prueba@example.com', password='useruser')
         self.client = Client()
@@ -68,7 +94,7 @@ class TestsUnitariosListarArchivos(TestCase):
         response = self.client.get('/drive/listar/9999')
         self.assertEqual(response.status_code, 404)
 
-class TestUnitariosMoverArchivo(TestCase):
+class MoverArchivoTestCase(TestCase):
 
     def setUp(self):
         self.factory = RequestFactory()

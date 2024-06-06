@@ -2,8 +2,16 @@ from django.test import TestCase
 from django.urls import reverse
 from solicitud_catequista.models import SolicitudCatequista
 from custom_user.models import CustomUser
+from django.core.exceptions import ValidationError
 
-class TestsUnitariosCrearSolicitudCatequista(TestCase):
+class CrearSolicitudCatequistaTestCase(TestCase):
+
+    #Unitario
+    def test_modelo_catecumeno(self):
+        solicitud = SolicitudCatequista.objects.create(nombre='nombre', apellidos='apellidos', email='emailtest@example.com', disponibilidad='Tardes', preferencias='No tengo preferencias')
+        self.assertEqual(solicitud.nombre, 'nombre')
+        self.assertEqual(solicitud.apellidos, 'apellidos')
+        self.assertEqual(solicitud.email, 'emailtest@example.com')
     
     def test_crear_solicitud_catequista_exitosa(self):
         data = {
@@ -34,11 +42,10 @@ class TestsUnitariosCrearSolicitudCatequista(TestCase):
         self.assertFalse(SolicitudCatequista.objects.filter(email='pedro@example.com').exists())
         self.assertIn('email', response.json()['errors'])
 
-class TestUnitariosAsignarCatequistas(TestCase):
+class AsignarCatequistasTestCase(TestCase):
 
     def setUp(self):
         self.catequista = CustomUser.objects.create_user(email='user@example.com', password='password')
-
 
     def test_acceso_denegado_usuario_no_superuser(self):
         # Probar el acceso denegado para un usuario que no es superadmin
