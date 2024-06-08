@@ -70,13 +70,11 @@ def crear_reservas_por_defecto(request):
             hora_fin = request.POST.get('hora_fin')
             if hora_inicio >= hora_fin:
                 messages.error(request, 'La hora de inicio debe ser menor a la hora de fin.')
-                return redirect('crear_reservas')  # Reemplaza 'nombre_de_la_url' con el nombre de la URL a la que deseas redirigir
+                return redirect('crear_reservas')
 
-            # Obtener usuario y sala
             usuario = get_object_or_404(CustomUser, pk=usuario_id)
             sala = get_object_or_404(Sala, pk=sala_id)
 
-            # Obtener la fecha actual
             fecha_actual = date.today()
 
             # Calcular la fecha del próximo día de la semana elegido
@@ -88,12 +86,12 @@ def crear_reservas_por_defecto(request):
             fecha_limite = date(fecha_actual.year, 6, 30)
 
             lista_reservas = []
-            # Crear reservas hasta la fecha límite (30 de junio) para cada viernes
+            # Crear reservas hasta la fecha límite (30 de junio)
             while proxima_fecha <= fecha_limite:
                 reservas_exist = Reserva.objects.filter(sala=sala, fecha=proxima_fecha, hora_inicio__lt=hora_fin, hora_fin__gt=hora_inicio, estado=Reserva.EstadoChoices.ACEPTADA)
                 if reservas_exist.exists():
                     messages.error(request, f'Ya existe una reserva en el plazo seleccionado. La fecha ocupada es: {reservas_exist.first().fecha}')
-                    return redirect('crear_reservas')  # Reemplaza 'nombre_de_la_url' con el nombre de la URL a la que deseas redirigir
+                    return redirect('crear_reservas') 
                 
                 reserva = Reserva(usuario=usuario, sala=sala, fecha=proxima_fecha, hora_inicio=hora_inicio, hora_fin=hora_fin)
                 lista_reservas.append(reserva)
@@ -102,7 +100,7 @@ def crear_reservas_por_defecto(request):
             Reserva.objects.bulk_create(lista_reservas)
             
             messages.success(request, 'Reservas creadas exitosamente.')
-            return redirect('crear_reservas')  # Reemplaza 'nombre_de_la_url' con el nombre de la URL a la que deseas redirigir
+            return redirect('crear_reservas')
 
         salas = Sala.objects.all()
         usuarios = CustomUser.objects.filter(is_coord=True)
