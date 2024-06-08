@@ -62,9 +62,10 @@ class SalaTestCase(TestCase):
         self.assertContains(response, self.sala.nombre)
         self.assertNotContains(response, 'No hay salas disponibles')
 
-    @patch('django.utils.timezone.now')
-    def test_crear_reservas_por_defecto(self, mock_now):
-        mock_now.return_value = datetime(2024, 6, 6)
+    @patch('sala.views.date')
+    def test_crear_reservas_por_defecto(self, mock_date):
+        mock_date.today.return_value = dt.date(2024, 6, 6)
+        mock_date.side_effect = lambda *args, **kw: dt.date(*args, **kw)
 
         sala = Sala.objects.create(nombre='Sala 2')
         response = self.client.post(reverse('crear_reservas'), {
@@ -77,8 +78,9 @@ class SalaTestCase(TestCase):
 
         self.assertEqual(response.status_code, 302)
 
-        today = datetime.now().date()
-        next_friday = today + timedelta(days=(4 - today.weekday() + 7) % 7)
+        # Usar el mismo valor mockeado para calcular next_friday
+        mock_today = dt.date(2024, 6, 6)
+        next_friday = mock_today + timedelta(days=(4 - mock_today.weekday() + 7) % 7)
         
         reservations = Reserva.objects.filter(usuario=self.user, sala=sala, fecha__gte=next_friday)
         self.assertEqual(reservations.count(), 4)
