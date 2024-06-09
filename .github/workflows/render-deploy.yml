@@ -47,7 +47,6 @@ jobs:
 
     - name: Set environment variables
       run: |
-        echo "DATABASE_URL=postgres://parroquiaUser:password@localhost:5432/parroquiaDB" >> $GITHUB_ENV
         echo "ALLOWED_HOSTS=localhost 127.0.0.1" >> $GITHUB_ENV
 
     - name: Run tests
