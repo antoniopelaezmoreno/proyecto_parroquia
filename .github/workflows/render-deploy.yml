@@ -23,6 +23,11 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
+    - name: Run tests
+      run: |
+        python manage.py test
+
     - name: Deploy to Render
+      if: success()
       run: |
         curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer ${{ secrets.RENDER_TOKEN }}" -d '{}' https://api.render.com/v1/services/srv-con2hacf7o1s73fccrdg/deploys
