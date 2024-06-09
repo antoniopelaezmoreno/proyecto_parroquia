@@ -9,6 +9,21 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_DB: parroquiaDB
+          POSTGRES_USER: parroquiaUser
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
@@ -25,10 +40,12 @@ jobs:
 
     - name: Set environment variables
       run: |
+        echo "DATABASE_URL=postgres://parroquiaUser:password@localhost:5432/parroquiaDB" >> $GITHUB_ENV
         echo "ALLOWED_HOSTS=localhost 127.0.0.1" >> $GITHUB_ENV
 
     - name: Run tests
       run: |
+        python manage.py migrate
         python manage.py test
 
     - name: Deploy to Render
