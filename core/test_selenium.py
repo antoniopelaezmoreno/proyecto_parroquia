@@ -10,7 +10,9 @@ class TestTestinterfazlogin(StaticLiveServerTestCase):
   def setUp(self):
     options = webdriver.ChromeOptions()
     options.add_argument("--no-sandbox")
-    options.headless = True
+    options.add_argument("--headless")
+    options.add_argument("--disable-gpu")
+    options.add_argument("--window-size=1936,1048")
     self.driver = webdriver.Chrome(options=options)
     self.user = CustomUser.objects.create_superuser(email='tesuser@example.com', password='user123')
     self.vars = {}

@@ -46,7 +46,7 @@ class PasarListaTestCase(TestCase):
         self.client.force_login(self.catequista1)
 
     def test_pasar_lista(self):
-        response = self.client.post(reverse('pasar_lista', args=[self.sesion.id]), {'categoria_1': 'asistente'})
+        response = self.client.post(reverse('pasar_lista', args=[self.sesion.id]), {f'categoria_{self.catecumeno.id}': 'asistente'})
         self.sesion.refresh_from_db()
         self.assertEqual(response.status_code, 302)
         self.assertEqual(self.sesion.asistentes.count(), 1)
