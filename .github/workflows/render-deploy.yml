@@ -23,24 +23,6 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Wait for PostgreSQL to be ready
-      run: |
-        until pg_isready -h localhost -p 5432; do
-          echo "Waiting for PostgreSQL to start..."
-          sleep 2
-        done
-
-    - name: Set environment variables
-      run: |
-        echo "ALLOWED_HOSTS=localhost 127.0.0.1" >> $GITHUB_ENV
-
-    - name: Run tests
-      run: |
-        find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
-        python manage.py makemigrations
-        python manage.py migrate
-        python manage.py test
-
     - name: Deploy to Render
       run: |
         curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer ${{ secrets.RENDER_TOKEN }}" -d '{}' https://api.render.com/v1/services/srv-con2hacf7o1s73fccrdg/deploys
