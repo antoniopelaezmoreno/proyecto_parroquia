@@ -140,9 +140,10 @@ def conseguir_credenciales(request, user):
     creds = None
 
     try:
-        if user.token_json:
+        if user.token_json_encrypted:
+            token_json = user.decrypt_token()
             creds = Credentials.from_authorized_user_info(
-                json.loads(user.token_json), SCOPES)
+                json.loads(token_json), SCOPES)
 
         if not creds or not creds.valid:
             if creds and creds.expired and creds.refresh_token:
@@ -199,8 +200,7 @@ def oauth2callback(request):
     # Almacenar las credenciales en la sesión del usuario
     credentials = flow.credentials
     creds = credentials.to_json()
-    request.user.token_json = creds
-    request.user.save()
+    request.user.encrypt_token(creds)
 
     redirect_to = request.session.get('redirect_to', 'index')
     del request.session['redirect_to']
@@ -573,7 +573,6 @@ def pantalla_enviar_correo_destinatarios(request):
         user = request.user
         destinatarios = request.GET.get('destinatarios')
         request.session['redirect_to'] = request.path + f'?destinatarios={destinatarios}'
-        print(request.path)
         creds = conseguir_credenciales(request, user)
         if isinstance(creds, HttpResponseRedirect):
             return creds

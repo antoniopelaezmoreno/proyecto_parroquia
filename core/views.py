@@ -71,10 +71,15 @@ def terminar_curso(request):
     if request.user.is_superuser:
         if request.method == 'POST':
             SolicitudCatequista.objects.all().delete()
-            Catecumeno.objects.all().delete()
+            catecumenos = Catecumeno.objects.all()
             usuarios = CustomUser.objects.all().exclude(is_superuser=True)
+
+            for catecumeno in catecumenos:
+                enviar_correo_fin_curso_familias(request, catecumeno)
+                catecumeno.delete()
+
             for usuario in usuarios:
-                enviar_correo_renovacion(request, usuario.email)
+                enviar_correo_renovacion(request, usuario)
                 usuario.delete()
 
             Grupo.objects.all().delete()
@@ -98,13 +103,37 @@ def terminar_curso(request):
         return redirect('/403')
 
 @login_required
-def enviar_correo_renovacion(request, to):
-    sender = "antoniopelaez2002@gmail.com"
+def enviar_correo_renovacion(request, usuario):
+    sender = request.user.email
     subject="Renovación de catequista"
     url = reverse('crear_solicitud_catequista')
     enlace = request.build_absolute_uri(url)
-    message_text = f'Haga clic para volver a solicitar ser catequista: {enlace}'
-    enviar_email(request, sender, to, subject, message_text, request.user)
+    message_text = """
+        Hola , """ + usuario.nombre + " " + usuario.apellidos + """,
+        Este curso ha terminado. ¡Muchas gracias por tu compromiso! 
+        Si deseas seguir siendo catequista, por favor, enviar tu solicitud para el curso que viene en este enlace: """ + enlace + """
+        Atentamente,
+        Parroquia
+        """
+    enviar_email(request, sender, usuario.email, subject, message_text, request.user)
+
+def enviar_correo_fin_curso_familias(request, catecumeno):
+    sender = request.user.email
+    subject="Fin de curso de catequesis"
+    url = reverse('index')
+    enlace = request.build_absolute_uri(url)
+    message_text = """
+        Estimadas familias,
+        Este curso de catequesis ha terminado. Ha sido un año muy productivo y divertido.
+        Si desean inscribir a sus hijos para el curso que viene, por favor, hagan clic en el siguiente enlace: """ + enlace + """ 
+        Atentamente,
+        Parroquia
+        """
+    if catecumeno.email_madre == catecumeno.email_padre:
+        enviar_email(request, sender, catecumeno.email_madre, subject, message_text, request.user)
+    else:
+        enviar_email(request, sender, catecumeno.email_madre, subject, message_text, request.user)
+        enviar_email(request, sender, catecumeno.email_padre, subject, message_text, request.user)
 
 @login_required
 def notificar_familias_ultima_ausencia(request, catecumeno_id):

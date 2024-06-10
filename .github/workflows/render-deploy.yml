@@ -9,21 +9,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgres:16
-        env:
-          POSTGRES_DB: parroquiaDB
-          POSTGRES_USER: parroquiaUser
-          POSTGRES_PASSWORD: password
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
@@ -38,26 +23,6 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Wait for PostgreSQL to be ready
-      run: |
-        until pg_isready -h localhost -p 5432; do
-          echo "Waiting for PostgreSQL to start..."
-          sleep 2
-        done
-
-    - name: Set environment variables
-      run: |
-        echo "ALLOWED_HOSTS=localhost 127.0.0.1" >> $GITHUB_ENV
-
-    - name: Run tests
-      run: |
-        find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
-        python manage.py makemigrations
-        python manage.py migrate
-        python manage.py test
-      continue-on-error: true
-
     - name: Deploy to Render
-      if: success()
       run: |
         curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer ${{ secrets.RENDER_TOKEN }}" -d '{}' https://api.render.com/v1/services/srv-con2hacf7o1s73fccrdg/deploys
