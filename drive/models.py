@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 
 class Carpeta(models.Model):
     nombre = models.CharField(max_length=30)
-    dueño = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    dueño = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True)
     carpeta_padre = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='subfolders')
 
     def get_descendants(self):
@@ -20,7 +20,7 @@ class Carpeta(models.Model):
 class Archivo(models.Model):
     name = models.CharField(max_length=50)
     archivo = models.FileField(upload_to='files/')
-    dueño = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    dueño = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True)
     carpeta_padre = models.ForeignKey(Carpeta, on_delete=models.CASCADE, null=True, blank=True)
 
     def is_pdf(self):

@@ -9,7 +9,7 @@ from curso.models import Curso
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.urls import reverse
-from pulp import LpMaximize, LpProblem, LpVariable
+from pulp import LpMaximize, LpProblem, LpVariable, lpSum
 
 # Create your views here.
 
@@ -124,7 +124,7 @@ def panel_grupos(request):
 
 @login_required
 def generar_grupos_aleatorios(request):
-    ciclo=request.user.ciclo
+    ciclo = request.user.ciclo
     if not request.user.is_superuser and not request.user.is_coord:
         return redirect('/403')
     if request.user.is_superuser:
@@ -139,30 +139,26 @@ def generar_grupos_aleatorios(request):
 
     max_miembros_grupo = catecumenos.count() / n_grupos + 3
 
-    prob = LpProblem("Distribucion_Catecumenos", LpMaximize)
+    prob = LpProblem("Asignación de catecúmenos a grupos", LpMaximize)
 
-    asignaciones = LpVariable.dicts("Asignacion", ((catec.id, grupo) for catec in catecumenos for grupo in range(n_grupos)), cat='Binary')
+    # Definir las variables de decisión
+    x = LpVariable.dicts("Asignación", [(c.id, g.id) for c in catecumenos for g in grupos_ciclo], cat='Binary')
 
-    # Función objetivo: maximizar la satisfacción de las preferencias
-    prob += sum(catec.preferencias_procesadas.count() * asignaciones[(catec.id, grupo)] for catec in catecumenos for grupo in range(n_grupos)), "Satisfaccion_Preferencias"
+    # Definir la función objetivo
+    prob += lpSum([x[(c.id, g.id)] for c in catecumenos for g in grupos_ciclo])
 
-    # Restricciones
-    # Cada catecúmeno solo puede pertenecer a un grupo
-    for catec in catecumenos:
-        prob += sum(asignaciones[(catec.id, grupo)] for grupo in range(n_grupos)) == 1, f"Unico_Grupo_{catec.id}"
-
-    # Restricción de número máximo de miembros por grupo
-    for grupo in range(n_grupos):
-        prob += sum(asignaciones[(catec.id, grupo)] for catec in catecumenos) <= max_miembros_grupo, f"Max_Miembros_Grupo_{grupo}"
+    # Definir las restricciones
+    for c in catecumenos:
+        prob += sum(x[(c.id, g.id)] for g in grupos_ciclo) == 1  # Cada catecúmeno debe estar en un solo grupo
+    for g in grupos_ciclo:
+        prob += sum(x[(c.id, g.id)] for c in catecumenos) <= max_miembros_grupo # Número máximo de catecúmenos por grupo
 
     prob.solve()
 
-    for catec in catecumenos:
-        catec.grupo_id = None
-        for grupo in range(n_grupos):
-            if asignaciones[(catec.id, grupo)].value() == 1.0:
-                catec.grupo_id = grupos_ciclo[grupo].id
-                catec.save()
+    for c in catecumenos:
+        for g in grupos_ciclo:
+            if x[(c.id, g.id)].value() == 1:
+                c.grupo = g
+                c.save()
 
     return redirect(reverse('panel_grupos') + f'?ciclo={ciclo}')
-
