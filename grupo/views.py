@@ -134,6 +134,8 @@ def generar_grupos_aleatorios(request):
     catecumenos = Catecumeno.objects.filter(ciclo=ciclo)
     grupos_ciclo = Grupo.objects.filter(ciclo=ciclo)
     n_grupos = grupos_ciclo.count()
+    if n_grupos == 0:
+        return redirect(reverse('panel_grupos') + f'?ciclo={ciclo}')
 
     max_miembros_grupo = catecumenos.count() / n_grupos + 3
 
