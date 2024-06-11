@@ -264,7 +264,7 @@
             sessionStorage.setItem("nombreEvento", this.value);
         });
         checkbox_sala.addEventListener("change", function () {
-            sessionStorage.setItem("salaNecesaria", this.checked.toString()); // Convertir a cadena
+            sessionStorage.setItem("salaNecesaria", this.checked.toString());
         });
         descripcion_input.addEventListener("change", function () {
             sessionStorage.setItem("descripcionEvento", this.value);
@@ -299,12 +299,11 @@
             motivoInput.style.borderColor = "red";
             return;
         } else {
-            motivoError.textContent = ""; // Limpiar el mensaje de error si no hay problemas
+            motivoError.textContent = "";
             motivoError.style.display = "none";
-            motivoInput.style.borderColor = ""; // Restaurar el color del borde
+            motivoInput.style.borderColor = "";
         }
 
-        // Enviar la solicitud POST utilizando fetch
         fetch("/sala/reservar/", {
             method: "POST",
             body: formData,

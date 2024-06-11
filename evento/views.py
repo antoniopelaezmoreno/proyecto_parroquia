@@ -160,8 +160,8 @@ def obtener_eventos(request):
     eventos_data = [{
         'id': evento.id,
         'title': evento.nombre,
-        'start': evento.fecha.strftime('%Y-%m-%dT'+evento.hora_inicio.strftime('%H:%M:%S')),  # Formatea la fecha y hora de inicio
-        'end': evento.fecha.strftime('%Y-%m-%dT'+evento.hora_fin.strftime('%H:%M:%S')),    # Formatea la fecha y hora de fin
+        'start': evento.fecha.strftime('%Y-%m-%dT'+evento.hora_inicio.strftime('%H:%M:%S')),
+        'end': evento.fecha.strftime('%Y-%m-%dT'+evento.hora_fin.strftime('%H:%M:%S')),
         'color': '#2c36bd' if evento.tipo == Evento.TIPO_EVENTO.REUNION else ('green' if evento.tipo ==  Evento.TIPO_EVENTO.CONVIVENCIA else '#c02424'),
         'tipo': 'Evento',
         'description': evento.descripcion,

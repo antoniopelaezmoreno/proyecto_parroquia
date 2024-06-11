@@ -138,20 +138,22 @@ def generar_grupos_aleatorios(request):
         return redirect(reverse('panel_grupos') + f'?ciclo={ciclo}')
 
     max_miembros_grupo = catecumenos.count() / n_grupos + 3
+    min_miembros_grupo = catecumenos.count() / n_grupos - 3
 
     prob = LpProblem("Asignación de catecúmenos a grupos", LpMaximize)
 
     # Definir las variables de decisión
     x = LpVariable.dicts("Asignación", [(c.id, g.id) for c in catecumenos for g in grupos_ciclo], cat='Binary')
+    
 
     # Definir la función objetivo
-    prob += lpSum([x[(c.id, g.id)] for c in catecumenos for g in grupos_ciclo])
-
+    prob += lpSum([1 if not c.id == c2.id and c2 in c.preferencias_procesadas.all() and x[(c.id, g.id)] == x[(c2.id, g.id)] == 1 else 0 for c in catecumenos for c2 in catecumenos for g in grupos_ciclo])
     # Definir las restricciones
     for c in catecumenos:
-        prob += sum(x[(c.id, g.id)] for g in grupos_ciclo) == 1  # Cada catecúmeno debe estar en un solo grupo
+        prob += lpSum([x[(c.id, g.id)] for g in grupos_ciclo]) == 1  # Cada catecúmeno debe estar en un solo grupo
     for g in grupos_ciclo:
-        prob += sum(x[(c.id, g.id)] for c in catecumenos) <= max_miembros_grupo # Número máximo de catecúmenos por grupo
+        prob += lpSum([x[(c.id, g.id)] for c in catecumenos]) <= max_miembros_grupo  # Número máximo de catecúmenos por grupo
+        prob += lpSum([x[(c.id, g.id)] for c in catecumenos]) >= min_miembros_grupo # Número mínimo de catecúmenos por grupo
 
     prob.solve()
 

@@ -27,7 +27,6 @@ def crear_solicitud_cateqista(request):
         else:
             return JsonResponse({'success': False, 'error': 'Método no permitido'})
     except Exception as e:
-        # Manejar otras excepciones
         return JsonResponse({'success': False, 'error': str(e)})
 
 @csrf_exempt

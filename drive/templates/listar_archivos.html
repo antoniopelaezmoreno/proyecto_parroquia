@@ -380,7 +380,7 @@
             fetch(`/drive/carpetas_destino_carpeta/${folderId}`)
             .then(response => response.json())
             .then(data => {
-                select.innerHTML = '<option value="" selected>Principal</option>'; // Limpiamos las opciones antes de cargar nuevas
+                select.innerHTML = '<option value="" selected>Principal</option>';
                 data.available_folders.forEach(folder => {
                     const option = document.createElement("option");
                     option.value = folder.id;

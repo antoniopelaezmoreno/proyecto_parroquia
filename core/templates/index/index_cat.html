@@ -209,24 +209,24 @@
         var calendar = new FullCalendar.Calendar(calendarEl, {
             themeSystem: 'bootstrap5',
             firstDay: 1,
-            events: "{% url 'obtener_eventos' %}", // URL para obtener los eventos
+            events: "{% url 'obtener_eventos' %}",
             initialView: 'dayGridMonth', // Vista predeterminada del calendario
             headerToolbar: {
                 left: 'prev,next today',
                 center: 'title',
                 right: 'dayGridMonth,timeGridWeek,timeGridDay'
             },
-            dayMaxEventRows: true, // allow "more" link when too many events            
+            dayMaxEventRows: true,           
             views: {
                 timeGrid: {
-                    eventLimit: 3 // adjust to 6 only for agendaWeek/agendaDay
+                    eventLimit: 3
                 }
             },
             locale: 'es',
             eventContent: function (info) {
                 return { html: '<b>' + info.event.title + '</b>' };
             },
-            eventDisplay: 'block',  // Muestra el evento como un bloque
+            eventDisplay: 'block', 
             scrollTime: '16:00:00',
             eventClick: function (info) {
 
