@@ -92,7 +92,6 @@
             const selectOptions = document.querySelectorAll(".select-option");
             const gridCells = document.querySelectorAll(".grid-cell");
 
-            // Inicializar el objeto para realizar un seguimiento de las opciones seleccionadas
             const selectedOptions = {};
 
             // Obtener el mapeo de ID de usuario a nombres
@@ -107,14 +106,11 @@
             // Agregar evento de cambio a cada barra de selección
             selectOptions.forEach((selectOption, index) => {
                 selectOption.addEventListener("change", function () {
-                    // Obtener el valor seleccionado y el ID de usuario
                     const selectedValue = this.value;
                     const userId = this.getAttribute("data-user-id");
 
-                    // Realizar un seguimiento de la opción seleccionada para el usuario
                     selectedOptions[userId] = selectedValue;
                     
-                    // Actualizar la cuadrícula
                     updateGrid();
                 });
 
@@ -137,19 +133,15 @@
                 for (const userId in selectedOptions) {
                     const selectedValue = selectedOptions[userId];
 
-                    // Verificar si el valor seleccionado no está vacío (no es la opción "Seleccionar grupo")
                     if (selectedValue !== "") {
                         // Obtener la celda de la cuadrícula correspondiente al grupo seleccionado
                         const gridCell = document.querySelector(`.grid-cell[data-option="${selectedValue}"]`);
                         if (gridCell) {
-                            // Mostrar el nombre del usuario en lugar del ID
                             const userName = userNames[userId];
 
-                            // Crear un elemento de separación
                             const spaceDiv = document.createElement("div");
-                            spaceDiv.style.marginBottom = "8px"; // Ajusta el espacio entre cada solicitud
+                            spaceDiv.style.marginBottom = "8px";
 
-                            // Añadir el elemento de separación a la celda
                             gridCell.appendChild(spaceDiv);
 
                             // Crear un elemento div para mostrar el nombre del usuario
@@ -157,7 +149,6 @@
                             rectangleDiv.className = "name-rectangle";
                             rectangleDiv.textContent = userName;
 
-                            // Añadir el elemento div a la celda
                             gridCell.appendChild(rectangleDiv);
                         } else {
                             console.error(`No se encontró una celda de cuadrícula para la opción ${selectedValue}`);
@@ -166,12 +157,8 @@
                 }
             }
 
-
-
-            // Obtener el botón "Asignar"
             const asignarButton = document.querySelector(".asignar-button");
 
-            // Agregar un evento de clic al botón "Asignar"
             asignarButton.addEventListener("click", function () {
                 const asignaciones = [];
 

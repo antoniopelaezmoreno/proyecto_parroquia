@@ -62,8 +62,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     
     def encrypt_token(self, token):
         GOOGLE_SECRET_KEY = os.environ.get('GOOGLE_SECRET_KEY')
-        encodado = GOOGLE_SECRET_KEY.encode()
-        cipher_suite = Fernet(encodado)
+        encoded_key = GOOGLE_SECRET_KEY.encode()
+        cipher_suite = Fernet(encoded_key)
         encrypted_token = cipher_suite.encrypt(token.encode())
         self.token_json_encrypted = encrypted_token
         self.save()
@@ -72,8 +72,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         if self.token_json_encrypted:
             token_bytes = bytes(self.token_json_encrypted)
             GOOGLE_SECRET_KEY = os.environ.get('GOOGLE_SECRET_KEY')
-            encodado = GOOGLE_SECRET_KEY.encode()
-            cipher_suite = Fernet(encodado)
+            encoded_key = GOOGLE_SECRET_KEY.encode()
+            cipher_suite = Fernet(encoded_key)
             decrypted_token = cipher_suite.decrypt(token_bytes)
             return decrypted_token.decode()
         else:

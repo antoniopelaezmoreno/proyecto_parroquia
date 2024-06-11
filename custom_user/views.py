@@ -45,10 +45,8 @@ def crear_usuario_desde_solicitud(request, token):
     solicitud = get_object_or_404(SolicitudCatequista, token=token)
 
     if request.method == 'POST':
-        # Si se envió un formulario, procesar los datos
         form = CustomUserForm(request.POST)
         if form.is_valid():
-            # Crear un nuevo CustomUser a partir de los datos del formulario
             ciclo = solicitud.ciclo_asignado
 
             opcion_ciclo = Catecumeno.CicloChoices(ciclo)
@@ -61,30 +59,23 @@ def crear_usuario_desde_solicitud(request, token):
             custom_user.ciclo = opcion_ciclo
             custom_user.save()
             
-            # Eliminar la solicitud de catequista
             solicitud.delete()
             
-            # Redirigir a una página de éxito o a donde sea apropiado
             return redirect('/user/login')
     else:
-        # Si es una solicitud GET, mostrar el formulario
         form = CustomUserForm()
     
-    # Renderizar el formulario para la creación de un CustomUser
     return render(request, 'crear_usuario_desde_solicitud.html', {'form': form})
 
 @login_required
 def convertir_a_coordinador(request):
     if request.method == 'POST':
-        # Procesar los datos enviados por el formulario
         for ciclo in request.POST:
-            # Verificar si el campo corresponde a un ciclo
             if ciclo.startswith('cycle_'):
-                # Obtener el ciclo y el ID del usuario seleccionado
+
                 cic = ciclo.split('cycle_')[1]
                 user_id = request.POST[ciclo]
 
-                # Marcar al usuario seleccionado como coordinador
                 if user_id:
                     todos_users = CustomUser.objects.filter(ciclo=cic)
                     todos_users.update(is_coord=False)
@@ -92,18 +83,14 @@ def convertir_a_coordinador(request):
                     user.is_coord = True
                     user.save()
 
-        # Redirigir a alguna página de éxito
         return redirect('/')
 
-    # Obtener todos los ciclos únicos
     ciclos = [('posco_1','Posco 1'),('posco_2','Posco 2'),('posco_3','Posco 3'),('posco_4','Posco 4'),('gr_juv_1','Grupos Juveniles 1'),('gr_juv_2','Grupos Juveniles 2'),('catecumenados_1','Catecumenados 1'),('catecumenados_2','Catecumenados 2'),('catecumenados_3','Catecumenados 3')]
 
 
-    # Crear un diccionario para almacenar los usuarios por ciclo
     usuarios_por_ciclo = {}
     for cycle in ciclos:
         usuarios_de_ciclo = CustomUser.objects.filter(ciclo=cycle[0])
         usuarios_por_ciclo[cycle] = usuarios_de_ciclo
-
 
     return render(request, 'crear_coordinadores.html', {'users_by_cycle': usuarios_por_ciclo})

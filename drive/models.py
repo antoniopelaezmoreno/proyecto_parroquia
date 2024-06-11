@@ -69,13 +69,11 @@ class Archivo(models.Model):
         return self.name
     
     def clean(self):
-        # Si el archivo ya existe, entonces se valida la extensión
         if self.archivo:
             try:
                 FileExtensionValidator(allowed_extensions=['pdf','jpeg','jpg','png','doc','docx','dot','dotx','docm','dotm','xls','xlsx','xlsm','xlsb','xltx','xltm','ppt','pptx','pot','potx','pptm','potm','mp4','mov','avi','mkv','txt'])(self.archivo)
             except ValidationError as e:
                 raise ValidationError({'archivo': ('Este tipo de archivo no está permitido')}) 
-        # Si se está moviendo el archivo y no se selecciona un nuevo archivo, no se realiza ninguna validación
         elif not self.carpeta_padre:
             raise ValidationError({'archivo': ('Debe subir un archivo.')})
         

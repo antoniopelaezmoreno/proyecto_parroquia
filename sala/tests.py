@@ -78,7 +78,6 @@ class SalaTestCase(TestCase):
 
         self.assertEqual(response.status_code, 302)
 
-        # Usar el mismo valor mockeado para calcular next_friday
         mock_today = dt.date(2024, 6, 6)
         next_friday = mock_today + timedelta(days=(4 - mock_today.weekday() + 7) % 7)
         
