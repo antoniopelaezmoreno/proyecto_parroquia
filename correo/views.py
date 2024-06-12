@@ -183,7 +183,6 @@ def conseguir_credenciales(request, user):
 
 
 def oauth2callback(request):
-    os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
     SCOPES = ["https://www.googleapis.com/auth/gmail.readonly",
               "https://www.googleapis.com/auth/gmail.send",
               "https://www.googleapis.com/auth/gmail.modify",
