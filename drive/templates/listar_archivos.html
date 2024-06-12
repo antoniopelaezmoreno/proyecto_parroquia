@@ -309,6 +309,9 @@
                 window.location.reload();
             } else {
                 console.error("Ha ocurrido un error al subir el archivo.");
+                if (data.error && data.error == "Este tipo de archivo no está permitido") {
+                    alert(data.error);
+                }
             }
         })
         .catch(error => {
@@ -377,7 +380,7 @@
             fetch(`/drive/carpetas_destino_carpeta/${folderId}`)
             .then(response => response.json())
             .then(data => {
-                select.innerHTML = '<option value="" selected>Principal</option>'; // Limpiamos las opciones antes de cargar nuevas
+                select.innerHTML = '<option value="" selected>Principal</option>';
                 data.available_folders.forEach(folder => {
                     const option = document.createElement("option");
                     option.value = folder.id;

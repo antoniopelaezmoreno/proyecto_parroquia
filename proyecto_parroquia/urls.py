@@ -46,7 +46,6 @@ if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 else:
-    # Configuración para servir archivos estáticos y de medios en modo de producción (DEBUG=False)
     urlpatterns += [
         # URL para servir archivos estáticos
         path('static/<path:path>', serve, {'document_root': settings.STATIC_ROOT}),

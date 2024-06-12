@@ -25,7 +25,6 @@ def capturar_valores_anteriores(sender, instance, **kwargs):
 def crear_notificacion_edicion_grupo(sender, instance, **kwargs):
     # Comparar los valores anteriores con los valores actuales
     if instance.catequista1_id != instance._old_catequista1_id:
-        # Los valores han cambiado, por lo tanto, crear las notificaciones
         catequista1 = instance.catequista1
         if catequista1:
             mensaje = "Se te ha asignado a un grupo"

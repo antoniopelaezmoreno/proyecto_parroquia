@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 
 class Carpeta(models.Model):
     nombre = models.CharField(max_length=30)
-    dueño = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    dueño = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True)
     carpeta_padre = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='subfolders')
 
     def get_descendants(self):
@@ -15,12 +15,12 @@ class Carpeta(models.Model):
         return descendants
     
     def __str__(self):
-        return self.name
+        return self.nombre
 
 class Archivo(models.Model):
     name = models.CharField(max_length=50)
     archivo = models.FileField(upload_to='files/')
-    dueño = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    dueño = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True)
     carpeta_padre = models.ForeignKey(Carpeta, on_delete=models.CASCADE, null=True, blank=True)
 
     def is_pdf(self):
@@ -69,13 +69,11 @@ class Archivo(models.Model):
         return self.name
     
     def clean(self):
-        # Si el archivo ya existe, entonces se valida la extensión
         if self.archivo:
             try:
                 FileExtensionValidator(allowed_extensions=['pdf','jpeg','jpg','png','doc','docx','dot','dotx','docm','dotm','xls','xlsx','xlsm','xlsb','xltx','xltm','ppt','pptx','pot','potx','pptm','potm','mp4','mov','avi','mkv','txt'])(self.archivo)
             except ValidationError as e:
                 raise ValidationError({'archivo': ('Este tipo de archivo no está permitido')}) 
-        # Si se está moviendo el archivo y no se selecciona un nuevo archivo, no se realiza ninguna validación
         elif not self.carpeta_padre:
             raise ValidationError({'archivo': ('Debe subir un archivo.')})
         

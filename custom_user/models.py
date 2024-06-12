@@ -3,6 +3,8 @@ from django.db import models
 from django.utils import timezone
 from catecumeno.models import Catecumeno
 from django.core.validators import RegexValidator
+from cryptography.fernet import Fernet
+import os
 
 
 class CustomUserManager(BaseUserManager):
@@ -45,7 +47,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
-    token_json=models.JSONField(null=True, blank=True)
+    token_json_encrypted = models.BinaryField(null=True, blank=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -57,3 +59,22 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def get_by_natural_key(self, email):
         return self.get(email=email)
+    
+    def encrypt_token(self, token):
+        GOOGLE_SECRET_KEY = os.environ.get('GOOGLE_SECRET_KEY')
+        encoded_key = GOOGLE_SECRET_KEY.encode()
+        cipher_suite = Fernet(encoded_key)
+        encrypted_token = cipher_suite.encrypt(token.encode())
+        self.token_json_encrypted = encrypted_token
+        self.save()
+
+    def decrypt_token(self):
+        if self.token_json_encrypted:
+            token_bytes = bytes(self.token_json_encrypted)
+            GOOGLE_SECRET_KEY = os.environ.get('GOOGLE_SECRET_KEY')
+            encoded_key = GOOGLE_SECRET_KEY.encode()
+            cipher_suite = Fernet(encoded_key)
+            decrypted_token = cipher_suite.decrypt(token_bytes)
+            return decrypted_token.decode()
+        else:
+            return None

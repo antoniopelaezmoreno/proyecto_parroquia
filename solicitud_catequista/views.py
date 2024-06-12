@@ -27,7 +27,6 @@ def crear_solicitud_cateqista(request):
         else:
             return JsonResponse({'success': False, 'error': 'Método no permitido'})
     except Exception as e:
-        # Manejar otras excepciones
         return JsonResponse({'success': False, 'error': str(e)})
 
 @csrf_exempt
@@ -54,7 +53,7 @@ def asignar_catequistas(request):
                 return redirect('/404')
             solicitud.ciclo_asignado = opcion_ciclo
             solicitud.save()
-            enviar_correo_solicitud(request,solicitud.email,token, request.user)
+            enviar_correo_solicitud(request,solicitud.email,token, request.user, solicitud)
             
         return JsonResponse({'message': 'Asignaciones procesadas correctamente'})
 
@@ -71,10 +70,16 @@ def eliminar_solicitud(request, solicitud_id):
     solicitud.delete()
     return redirect('asignar_catequistas')
 
-def enviar_correo_solicitud(request, to, token, user):
-    sender = "antoniopelaez2002@gmail.com"
+def enviar_correo_solicitud(request, to, token, user, solicitud):
+    sender = request.user.email
     subject="Asignación de ciclo"
     url = reverse('crear_usuario_desde_solicitud', args=[token])
     enlace = request.build_absolute_uri(url)
-    message_text = f'Haga clic en el siguiente enlace para completar su registro: {enlace}'
+    message_text = """
+        Hola , """ + solicitud.nombre + " " + solicitud.apellidos + """,
+        Para las catequesis de la paroquia se te ha asignado el ciclo """ + solicitud.ciclo_asignado + """
+        Haz clic en el siguiente enlace para completar tu registro: """ + enlace + """
+        Atentamente,
+        Parroquia
+        """
     enviar_email(request, sender, to, subject, message_text, user)

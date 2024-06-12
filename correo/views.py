@@ -140,9 +140,10 @@ def conseguir_credenciales(request, user):
     creds = None
 
     try:
-        if user.token_json:
+        if user.token_json_encrypted:
+            token_json = user.decrypt_token()
             creds = Credentials.from_authorized_user_info(
-                json.loads(user.token_json), SCOPES)
+                json.loads(token_json), SCOPES)
 
         if not creds or not creds.valid:
             if creds and creds.expired and creds.refresh_token:
@@ -196,11 +197,9 @@ def oauth2callback(request):
     authorization_response = request.build_absolute_uri()
     flow.fetch_token(authorization_response=authorization_response)
 
-    # Almacenar las credenciales en la sesión del usuario
     credentials = flow.credentials
     creds = credentials.to_json()
-    request.user.token_json = creds
-    request.user.save()
+    request.user.encrypt_token(creds)
 
     redirect_to = request.session.get('redirect_to', 'index')
     del request.session['redirect_to']
@@ -295,7 +294,6 @@ def marcar_mensaje_visto(request, message_id):
 
     try:
         service = build("gmail", "v1", credentials=creds)
-        # Marcar el mensaje como visto
         return service.users().messages().modify(userId="me", id=message_id, body={"removeLabelIds": ["UNREAD"]}).execute()
 
     except HttpError as err:
@@ -368,7 +366,6 @@ def obtener_detalles_mensaje(request, mensaje_id):
 
         formatted_date = formatear_fecha(headers)
 
-        # Construir el objeto de respuesta JSON
         response_data = {
             'subject': subject,
             'sender': emisor,
@@ -377,7 +374,6 @@ def obtener_detalles_mensaje(request, mensaje_id):
             'attachments': attachments
         }
 
-        # Si es una solicitud POST, procesar el formulario de respuesta
         if request.method == 'POST':
             form_data = request.POST
             if "<" in emisor:
@@ -388,20 +384,16 @@ def obtener_detalles_mensaje(request, mensaje_id):
             asunto = "Re: " + subject
             mensaje = form_data.get('mensaje')
 
-            # Llamar al método existente para enviar el correo de respuesta
             try:
                 mensaje = create_message(emisor, destinatario, asunto, mensaje)
                 send_message(service, "me", mensaje)
                 return redirect('inbox')
             except HttpError as err:
-                # Manejar la excepción HttpError
                 return JsonResponse({'success': False, 'error': str(err)})
 
             except Exception as e:
-                # Manejar otras excepciones
                 return JsonResponse({'success': False, 'error': str(e)})
 
-        # Si es una solicitud GET, renderizar la página de detalles del mensaje
         return render(request, 'detalles_mensaje.html', {'mensaje': response_data})
 
     except Exception as err:
@@ -424,7 +416,6 @@ def obtener_detalles_mensaje_enviado(request, mensaje_id):
         message = service.users().messages().get(
             userId="me", id=mensaje_id, format='full').execute()
 
-        # Extraer los detalles relevantes del mensaje
         headers = message['payload']['headers']
         subject = next(
             (header['value'] for header in headers if header['name'] == 'Subject'), None)
@@ -463,7 +454,6 @@ def obtener_detalles_mensaje_enviado(request, mensaje_id):
                     body_data = payload['body']['data']
                     body = base64.urlsafe_b64decode(body_data).decode('utf-8')
                 elif 'parts' in payload:
-                    # Si hay partes en el payload, procesarlas
                     for part in payload['parts']:
                         if part['mimeType'] == 'text/html':
                             # Si es texto plano, agregar al cuerpo
@@ -473,7 +463,6 @@ def obtener_detalles_mensaje_enviado(request, mensaje_id):
 
         formatted_date = formatear_fecha(headers)
 
-        # Construir el objeto de respuesta JSON
         response_data = {
             'subject': subject,
             'receiver': receptor,
@@ -525,23 +514,18 @@ def enviar_correo(request):
             message_text = request.POST.get('mensaje')
 
             for destinatario in lista_destinatarios:
-                # strip() para eliminar espacios en blanco
                 message = create_message(
                     sender, destinatario.strip(), subject, message_text)
                 send_message(service, "me", message)
 
-            # Devolver una respuesta JSON
             return JsonResponse({'success': True})
 
-        # En caso de que no sea una solicitud POST
         return JsonResponse({'success': False, 'error': 'No es una solicitud POST'})
 
     except HttpError as err:
-        # Manejar la excepción HttpError
         return JsonResponse({'success': False, 'error': str(err)})
 
     except Exception as e:
-        # Manejar otras excepciones
         return JsonResponse({'success': False, 'error': str(e)})
 
 
@@ -573,7 +557,6 @@ def pantalla_enviar_correo_destinatarios(request):
         user = request.user
         destinatarios = request.GET.get('destinatarios')
         request.session['redirect_to'] = request.path + f'?destinatarios={destinatarios}'
-        print(request.path)
         creds = conseguir_credenciales(request, user)
         if isinstance(creds, HttpResponseRedirect):
             return creds
