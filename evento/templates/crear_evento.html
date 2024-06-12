@@ -102,8 +102,13 @@
       <h2>Reservar la sala</h2>
       <p id="avisoAprobacion"></p>
       <p id="mensajeConfirmacion"></p>
+      <p id="motivoLabel" style="display: none;">Indique el motivo de la reserva:</p>
       <input type="text" id="motivo" name="motivo">
       <div id="motivoError" style="color: red;"></div>
+        <div style="display: flex;">
+            <p id="liberarLabel">¿Deja libre las salas que tengas reservadas?</p>
+            <input type="checkbox" id="liberar_sala" name="liberar_sala"><br>
+        </div>
       <button id="reservarBtn" style="border-radius: 5px; padding: 10px 20px;">Reservar</button>
     </div>
 </div>

@@ -24,19 +24,16 @@
                         <td>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="categoria_{{ catecumeno.id }}" id="asistente_{{ catecumeno.id }}" value="asistente" {% if catecumeno in sesion.asistentes.all %}checked{% endif %}>
-                                <label class="form-check-label" for="asistente_{{ catecumeno.id }}"></label>
                             </div>
                         </td>
                         <td>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="categoria_{{ catecumeno.id }}" id="justificado_{{ catecumeno.id }}" value="justificado" {% if catecumeno in sesion.justificados.all %}checked{% endif %}>
-                                <label class="form-check-label" for="justificado_{{ catecumeno.id }}"></label>
                             </div>
                         </td>
                         <td>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="categoria_{{ catecumeno.id }}" id="ausente_{{ catecumeno.id }}" value="ausente" {% if catecumeno in sesion.ausentes.all %}checked{% endif %}>
-                                <label class="form-check-label" for="ausente_{{ catecumeno.id }}"></label>
                             </div>
                         </td>
                     </tr>

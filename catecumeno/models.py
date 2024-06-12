@@ -1,6 +1,9 @@
 from django.db import models
 from django.core.validators import RegexValidator
     
+
+validador_telefono_formato = '^\d{9}$'
+validador_telefono_mensaje = 'El teléfono debe tener 9 dígitos'
 class Catecumeno(models.Model):
     class CicloChoices(models.TextChoices):
         POSCO_1 = 'posco_1', 'Poscomunión 1'
@@ -14,6 +17,7 @@ class Catecumeno(models.Model):
         CATECUMENADOS_3 = 'catecumenados_3', 'Catecumenados 3'
 
 
+    
     nombre = models.CharField(max_length=100)
     apellidos = models.CharField(max_length=100)
     email = models.EmailField(max_length=100)
@@ -30,8 +34,8 @@ class Catecumeno(models.Model):
         max_length=9,
         validators=[
             RegexValidator(
-                regex='^\d{9}$',
-                message='El teléfono debe tener 9 dígitos',
+                regex=validador_telefono_formato,
+                message=validador_telefono_mensaje,
                 code='invalid_phone_number'
             )
         ]
@@ -44,8 +48,8 @@ class Catecumeno(models.Model):
         max_length=9,
         validators=[
             RegexValidator(
-                regex='^\d{9}$',
-                message='El teléfono debe tener 9 dígitos',
+                regex=validador_telefono_formato,
+                message=validador_telefono_mensaje,
                 code='invalid_phone_number'
             )
         ]
@@ -57,8 +61,8 @@ class Catecumeno(models.Model):
         max_length=9,
         validators=[
             RegexValidator(
-                regex='^\d{9}$',
-                message='El teléfono debe tener 9 dígitos',
+                regex=validador_telefono_formato,
+                message=validador_telefono_mensaje,
                 code='invalid_phone_number'
             )
         ]
