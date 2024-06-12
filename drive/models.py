@@ -74,6 +74,4 @@ class Archivo(models.Model):
                 FileExtensionValidator(allowed_extensions=['pdf','jpeg','jpg','png','doc','docx','dot','dotx','docm','dotm','xls','xlsx','xlsm','xlsb','xltx','xltm','ppt','pptx','pot','potx','pptm','potm','mp4','mov','avi','mkv','txt'])(self.archivo)
             except ValidationError as e:
                 raise ValidationError({'archivo': ('Este tipo de archivo no está permitido')}) 
-        elif not self.carpeta_padre:
-            raise ValidationError({'archivo': ('Debe subir un archivo.')})
         
