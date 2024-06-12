@@ -13,11 +13,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const guardarBtn = document.getElementById("guardarBtn");
 
     // Rellenar los selectores de hora
-    for (var hora = 8; hora < 24; hora++) {
-        for (var minuto = 0; minuto < 60; minuto += 30) {
-            var hora_str = (hora < 10 ? "0" : "") + hora;
-            var minuto_str = minuto === 0 ? "00" : minuto;
-            var opcion = document.createElement("option");
+    for (let hora = 8; hora < 24; hora++) {
+        for (let minuto = 0; minuto < 60; minuto += 30) {
+            let hora_str = (hora < 10 ? "0" : "") + hora;
+            let minuto_str = minuto === 0 ? "00" : minuto;
+            let opcion = document.createElement("option");
             opcion.text = hora_str + ":" + minuto_str;
             opcion.value = hora_str + ":" + minuto_str;
             horaInicioSelect.add(opcion);
@@ -33,9 +33,9 @@ document.addEventListener("DOMContentLoaded", function () {
             const sala = btn.getAttribute("data-sala-nombre");
             const salaId = btn.getAttribute("data-sala-id");
             const requiereAprobacion = btn.getAttribute("data-sala-aprobacion");
-            var fecha = sessionStorage.getItem("fechaSeleccionada");
-            var inicio = sessionStorage.getItem("horaInicioSeleccionada");
-            var fin = sessionStorage.getItem("horaFinSeleccionada");
+            let fecha = sessionStorage.getItem("fechaSeleccionada");
+            let inicio = sessionStorage.getItem("horaInicioSeleccionada");
+            let fin = sessionStorage.getItem("horaFinSeleccionada");
             mensajeConfirmacionElement.textContent =
                 "Va a reservar la sala " +
                 sala +
@@ -60,6 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             reservarBtn.addEventListener("click", function () {
+                console.log("voy a reservar");
                 const motivo = document.getElementById("motivo").value;
                 const liberar_sala = document.getElementById("liberar_sala").checked;
                 reservarSala(salaId, fecha, inicio, fin, motivo, liberar_sala);
@@ -130,7 +131,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function reservarSala(salaId, fecha, horaInicio, horaFin, motivo, liberar_sala) {
-    var formData = new FormData();
+    let formData = new FormData();
     formData.append("sala_id", salaId);
     formData.append("fecha", fecha);
     formData.append("hora_inicio", horaInicio);
