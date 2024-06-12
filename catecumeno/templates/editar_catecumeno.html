@@ -74,19 +74,23 @@
         <div style="display: flex;">
             <div style="flex: 1;">
                 <p><strong>Ausencias:</strong> {{ ausencias|length }}</p>
-                {% for ausencia in ausencias %}
-                    <li>
-                        {{ ausencia.fecha }}
-                    </li>
-                {% endfor %}
+                <ul>
+                    {% for ausencia in ausencias %}
+                        <li>
+                            {{ ausencia.fecha }}
+                        </li>
+                    {% endfor %}
+                </ul>
             </div>
             <div style="flex: 1;">
                 <p><strong>Faltas justificadas:</strong> {{ justificaciones|length }}</p>
-                {% for justificacion in justificaciones %}
-                    <li>
-                        {{ justificacion.fecha }}
-                    </li>
-                {% endfor %}
+                <ul>
+                    {% for justificacion in justificaciones %}
+                        <li>
+                            {{ justificacion.fecha }}
+                        </li>
+                    {% endfor %}
+                </ul>
             </div>
             {% if ausencias|length > 0 or justificaciones|length > 0 or asistencias|length > 0 %}
                 <div style="flex: 1;">
