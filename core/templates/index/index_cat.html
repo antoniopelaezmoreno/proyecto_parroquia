@@ -39,8 +39,7 @@
                 <span class="material-icons icono" style="color: #deac19;">info_outline</span>
                 <div class="info-estadisticas">
                     <p style="margin-bottom: 10px; font-size: 20px;"> Faltas </p>
-                    <p style="font-size: 50px; text-align: center; margin-top: 0px;"> <b>{{ num_ausencias_ultima_sesion
-                            }}</b></p>
+                    <p style="font-size: 50px; text-align: center; margin-top: 0px;"> <b>{{ num_ausencias_ultima_sesion }}</b></p>
                 </div>
             </div>
         </div>
@@ -131,8 +130,7 @@
                 <div style="max-width: calc(100% - 20px); min-width: 250px;">
                     <p><b>Descripción: </b></p>
                     <p id="descripcionProximoEvento">{{ proximo_evento.descripcion }}</p>
-                    <p><b>Horario: </b></p> {{ proximo_evento.fecha }} - {{ proximo_evento.hora_inicio}} - {{
-                    proximo_evento.hora_fin}}
+                    <p><b>Horario: </b></p> {{ proximo_evento.fecha }} - {{ proximo_evento.hora_inicio}} - {{ proximo_evento.hora_fin}}
                     {% if proximo_evento.sala_reservada %}
                     <p><b>Sala: </b></p> {{ proximo_evento.sala_reservada }}
                     {% endif %}

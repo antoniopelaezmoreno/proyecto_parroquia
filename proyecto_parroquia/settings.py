@@ -28,10 +28,15 @@ load_dotenv()
 SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 
+
 DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(' ')
 
+permitir_http = os.environ.get('OAUTHLIB_INSECURE_TRANSPORT')
+
+if permitir_http:
+    OAUTHLIB_INSECURE_TRANSPORT = os.environ.get('OAUTHLIB_INSECURE_TRANSPORT', 'False').lower() == 'true'
 
 # Application definition
 
