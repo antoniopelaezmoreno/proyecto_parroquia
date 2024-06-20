@@ -578,24 +578,20 @@ def pantalla_enviar_correo_destinatarios(request):
                 return redirect('/403')
         elif destinatarios == "familias":
             if user.is_superuser:
-                correos = Catecumeno.objects.all().values_list('email_madre', 'email_padre')
-                emails = []
-                for tupla in correos:
-                    for email in tupla:
-                        if email:
-                            emails.append(email)
-                emails = ", ".join(emails)
+                catecuemnos = Catecumeno.objects.all()
             elif user.is_coord:
-                correos = Catecumeno.objects.filter(ciclo=user.ciclo).values_list('email_madre', 'email_padre')
-                emails = []
+                catecuemnos = Catecumeno.objects.filter(ciclo=user.ciclo).values_list('email_madre', 'email_padre')
+            else:
+                catecuemnos = catecumenos_desde_catequista(user)
+            
+            emails = []
+            if len(catecuemnos) > 0:
+                correos = catecuemnos.values_list('email_madre', 'email_padre')
                 for tupla in correos:
                     for email in tupla:
                         if email:
                             emails.append(email)
                 emails = ", ".join(emails)
-            else:
-                correos = catecumenos_desde_catequista(user).values_list('email_madre', 'email_padre')
-                emails = ", ".join(correos)
         else:
             return redirect('/404')
         return render(request, 'pantalla_enviar_correo.html', {'emails': emails})
