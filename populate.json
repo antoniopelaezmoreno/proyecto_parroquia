@@ -2530,11 +2530,11 @@
       {
         "model": "custom_user.CustomUser",
         "fields": {
-          "nombre": "Adminsitrador",
-          "apellidos": "Administrador",
-          "email": "antoniopelaez2002@gmail.com",
+          "nombre": "Párroco",
+          "apellidos": "Parroquia",
+          "email": "parrocotest@gmail.com",
           "telefono": "698547123",
-          "password":"pbkdf2_sha256$600000$3coKQXrrjNeNeMDHvbAtT9$mfRrvsFtmKBvxtT1CngLYwKQgTorvJqiBKC3yrxlYVA=",
+          "password":"pbkdf2_sha256$600000$B8msPD9q6ffXqFgEGTjVkq$GiqhDQdJMvBYB0pnXPHJtJa8kou+4kpAEGjfrNKDSyM=",
           "is_coord": false,
           "is_superuser": true,
           "is_staff": true
@@ -2544,11 +2544,11 @@
       {
         "model": "custom_user.CustomUser",
         "fields": {
-          "nombre": "Ramón",
-          "apellidos": "Pastor Molero",
-          "email": "ramon@gmail.com",
+          "nombre": "Coordinador",
+          "apellidos": "Catecumenados 1",
+          "email": "coordinadorcatequesistest@gmail.com",
           "telefono": "628963214",
-          "password":"pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
+          "password":"pbkdf2_sha256$600000$B8msPD9q6ffXqFgEGTjVkq$GiqhDQdJMvBYB0pnXPHJtJa8kou+4kpAEGjfrNKDSyM=",
           "ciclo": "catecumenados_1",
           "is_coord": true,
           "is_superuser": false
@@ -2600,12 +2600,12 @@
       {
         "model": "custom_user.CustomUser",
         "fields": {
-          "nombre": "Luis",
-          "apellidos": "Pla Pino",
-          "email": "luis@gmail.com",
+          "nombre": "Catequista",
+          "apellidos": "Catecumenados 1",
+          "email": "catequistatest@gmail.com",
           "telefono": "628963214",
-          "password":"pbkdf2_sha256$600000$M62LYPy7yYKE09SvWWFtAG$OhYK6ABQ5pjOveSCgaSUIfpGHEieSJrMe98JujoInZU=",
-          "ciclo": "catecumenados_2",
+          "password":"pbkdf2_sha256$600000$B8msPD9q6ffXqFgEGTjVkq$GiqhDQdJMvBYB0pnXPHJtJa8kou+4kpAEGjfrNKDSyM=",
+          "ciclo": "catecumenados_1",
           "is_coord": false,
           "is_superuser": false
           
@@ -2877,7 +2877,7 @@
         "fields": {
           "nombre": "Luis",
           "apellidos": "García Cortés",
-          "email": "antoniopelmore@gmail.com",
+          "email": "solicitud@example2.com",
           "disponibilidad": "Lunes y miércoles",
           "preferencias": "No tiene ninguna preferencia"
         }
@@ -2887,7 +2887,7 @@
         "fields": {
           "nombre": "María",
           "apellidos": "Ramírez Pérez",
-          "email": "antoniopemore@gmail.com",
+          "email": "solicitud2@example2.com",
           "disponibilidad": "Viernes",
           "preferencias": "Grupos Juveniles 1"
         }

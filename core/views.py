@@ -137,6 +137,7 @@ def enviar_correo_fin_curso_familias(request, catecumeno):
 
 @login_required
 def notificar_familias_ultima_ausencia(request, catecumeno_id):
+    request.session['redirect_to'] = request.path
     catecumeno = get_object_or_404(Catecumeno, pk=catecumeno_id)
     if request.user.is_superuser or (request.user.is_coord and catecumeno.ciclo == request.user.ciclo):
         creds=conseguir_credenciales(request, request.user)
@@ -162,6 +163,7 @@ def notificar_familias_ultima_ausencia(request, catecumeno_id):
 
 @login_required
 def notificar_familias_ausencias_reiteradas(request, catecumeno_id):
+    request.session['redirect_to'] = request.path
     catecumeno = get_object_or_404(Catecumeno, pk=catecumeno_id)
     if request.user.is_superuser or (request.user.is_coord and catecumeno.ciclo == request.user.ciclo):
         creds=conseguir_credenciales(request, request.user)
